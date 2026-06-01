@@ -1,0 +1,90 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ===== Virtual environments =====
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# ===== Environment / secrets =====
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets/
+
+# ===== Data (do NOT commit crawled / processed data) =====
+data/raw/*
+data/cleaned/*
+data/processed/*
+!data/**/.gitkeep
+!data/samples/
+# keep small samples committed; ignore everything else under samples that is large
+data/samples/*.parquet
+
+# ===== Model / index artifacts =====
+*.bin
+*.pt
+*.ckpt
+*.faiss
+*.index
+indexing/**/*.index
+embeddings/
+
+# ===== Vector store / search engine local volumes =====
+qdrant_storage/
+opensearch_data/
+elasticsearch_data/
+.docker_volumes/
+
+# ===== Logs =====
+*.log
+logs/
+observability/**/*.log
+
+# ===== Evaluation outputs =====
+evaluation/reports/*
+!evaluation/reports/.gitkeep
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ===== Testing / coverage =====
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# ===== IDE / OS =====
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini

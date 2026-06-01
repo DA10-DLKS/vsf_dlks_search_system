@@ -1,0 +1,22 @@
+# Production config (override via env vars / secrets manager)
+app:
+  env: prod
+  log_level: WARNING
+
+embedding:
+  model: BAAI/bge-m3
+
+vector_store:
+  url: ${QDRANT_URL}
+  collection: ${QDRANT_COLLECTION}
+
+keyword_store:
+  url: ${OPENSEARCH_URL}
+  index: ${OPENSEARCH_INDEX}
+
+retrieval:
+  hybrid_top_k: 20
+  rerank_top_k: 5
+
+context:
+  token_budget: 4000

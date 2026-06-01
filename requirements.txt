@@ -1,0 +1,37 @@
+# ===== Core / API (Layer 8) =====
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+
+# ===== Config =====
+pyyaml
+python-dotenv
+
+# ===== Crawler (Layer 1) =====
+scrapy
+beautifulsoup4
+lxml
+httpx
+
+# ===== Ingestion / data processing (Layer 2-3) =====
+pandas
+
+# ===== Embedding & Indexing (Layer 4) =====
+sentence-transformers
+# openai            # if using OpenAI embeddings
+
+# ===== Retrieval (Layer 6) =====
+qdrant-client
+opensearch-py
+rank-bm25
+
+# ===== Evaluation (cross-cutting) =====
+# ragas
+# datasets
+
+# ===== Observability =====
+structlog
+
+# ===== Testing =====
+pytest

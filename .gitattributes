@@ -1,0 +1,10 @@
+# Normalize line endings: store as LF in the repo, check out native on each OS.
+* text=auto eol=lf
+
+# Treat these as binary (never normalize)
+*.parquet binary
+*.faiss binary
+*.index binary
+*.bin binary
+*.pt binary
+*.ckpt binary

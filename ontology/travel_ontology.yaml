@@ -1,0 +1,17 @@
+# Travel ontology (Layer 3) — concepts & relationships used for query expansion and enrichment.
+# TODO: flesh out with real entity types and relations.
+version: 0.1.0
+
+entities:
+  Hotel:
+    attributes: [name, star_rating, address, city, amenities, price_range]
+  Resort:
+    attributes: [name, beachfront, facilities, city]
+  Villa:
+    attributes: [name, bedrooms, private_pool, city]
+  Attraction:
+    attributes: [name, category, city]
+
+relations:
+  - { from: Hotel, type: located_in, to: City }
+  - { from: Hotel, type: near, to: Attraction }

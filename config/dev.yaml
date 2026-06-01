@@ -1,0 +1,22 @@
+# Development config
+app:
+  env: dev
+  log_level: INFO
+
+embedding:
+  model: BAAI/bge-m3
+
+vector_store:
+  url: http://localhost:6333
+  collection: vsf_travel
+
+keyword_store:
+  url: http://localhost:9200
+  index: vsf_travel
+
+retrieval:
+  hybrid_top_k: 20
+  rerank_top_k: 5
+
+context:
+  token_budget: 4000
