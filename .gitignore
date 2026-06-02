@@ -35,8 +35,9 @@ ENV/
 *.pem
 secrets/
 
-# ===== Data (do NOT commit crawled / processed data) =====
-data/raw/*
+# ===== Data =====
+# data/raw is committed so the team can see crawled source data
+# cleaned/processed are derived outputs — keep them out of git
 data/cleaned/*
 data/processed/*
 !data/**/.gitkeep
@@ -58,6 +59,14 @@ qdrant_storage/
 opensearch_data/
 elasticsearch_data/
 .docker_volumes/
+
+# ===== Crawler runtime artifacts =====
+.scrapy/
+playwright-report/
+test-results/
+crawler/output/
+*.har
+trace.zip
 
 # ===== Logs =====
 *.log
