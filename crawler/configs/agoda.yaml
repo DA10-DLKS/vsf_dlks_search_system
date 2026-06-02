@@ -1,0 +1,59 @@
+# =====================================================================
+# Config crawl site Agoda (Layer 1)
+# Khai bao: URL goc, endpoint API, gioi han toc do, bo loc bat response.
+# Code (spiders/agoda.py) doc file nay -> khong hardcode trong logic.
+# Them site moi = them <site>.yaml + spiders/<site>.py.
+# =====================================================================
+site: agoda
+base_url: https://www.agoda.com
+locale: vi-vn
+user_agent: >-
+  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+  (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+
+# --- Tang 1: autocomplete (keyword -> danh sach hotel) ---
+autocomplete_api: /api/cronos/search/GetUnifiedSuggestResult/3/24/24/0/vi-vn/
+# Cac hau to dia diem de gom du KS cua 1 chuoi o nhieu noi
+# (autocomplete chi tra ~6 ket qua/luot).
+region_hints:
+  - Nha Trang
+  - Phu Quoc
+  - Da Nang
+  - Ha Long
+  - Hoi An
+  - Nam Hoi An
+  - Resort
+  - Hotel
+  - Condotel
+  - Ha Noi
+  - Sai Gon
+  - Da Lat
+
+# --- Tang 2: trang chi tiet (url query mac dinh) ---
+detail_query:
+  currency: VND
+  rooms: 1
+  adults: 2
+  children: 0
+checkin_offset_days: 10   # ngay check-in = hom nay + N (tang kha nang co gia)
+los_nights: 1             # so dem (check-out = check-in + los)
+
+# Cac nguon can BAT o trang detail: ten_noi_bo -> chuoi nhan dien trong URL
+capture_endpoints:
+  details: graphql/property
+  rooms: /api/v1/property/room-grid
+  reviews: review/HotelReviews
+  secondary: BelowFoldParams/GetSecondaryData
+  activities: /api/activities/graphql
+  faq: /api/cronos/geo/hotel/faq
+
+# --- Gioi han toc do (lich su, tranh bi chan) ---
+rate_limit:
+  between_details: [2, 5]      # random.uniform giua moi hotel (giay)
+  autocomplete_delay: 0.6      # cho giua moi lan goi autocomplete
+  resolve_delay: 1.5           # cho giua moi lan resolve slug
+
+# --- Viewport trinh duyet ---
+viewport:
+  width: 1366
+  height: 900
