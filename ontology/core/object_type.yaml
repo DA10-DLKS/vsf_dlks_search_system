@@ -1,0 +1,60 @@
+# core/object_type.yaml — facet: object_type (HARD fact). Loại hình lưu trú.
+# tier: core. Provenance: domain_knowledge + Agoda accommodation_type.
+# Schema: xem ontology/_meta.yaml
+concepts:
+
+  OBJ_HOTEL:
+    facet: object_type
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking, google_hotels]
+    label: {vi: Khách sạn, en: Hotel}
+    surface_forms:
+      vi: [khách sạn, ks]
+      en: [hotel]
+    description: {vi: Cơ sở lưu trú dạng khách sạn, en: Hotel-type accommodation}
+
+  OBJ_RESORT:
+    facet: object_type
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking, google_hotels]
+    label: {vi: Resort, en: Resort}
+    surface_forms:
+      vi: [resort, khu nghỉ dưỡng, khu nghi duong]
+      en: [resort]
+    description: {vi: Khu nghỉ dưỡng, thường nhiều tiện ích giải trí, en: Resort, typically with extensive leisure facilities}
+
+  OBJ_VILLA:
+    facet: object_type
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Biệt thự, en: Villa}
+    surface_forms:
+      vi: [biệt thự, biệt thự nghỉ dưỡng, biet thu]
+      en: [villa]
+    description: {vi: Biệt thự nghỉ dưỡng, không gian riêng tư, en: Villa-type accommodation, private space}
+    related: [AMEN_PRIVATE_POOL]
+
+  OBJ_HOMESTAY:
+    facet: object_type
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Homestay, en: Homestay}
+    surface_forms:
+      vi: [homestay, nhà nghỉ tại gia]
+      en: [homestay]
+    description: {vi: Lưu trú dạng homestay, en: Homestay accommodation}
+
+  OBJ_APARTMENT:
+    facet: object_type
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Căn hộ, en: Apartment}
+    surface_forms:
+      vi: [căn hộ, toàn bộ căn nhà, căn hộ dịch vụ, apartment]
+      en: [apartment, entire place, serviced apartment]
+    description: {vi: Căn hộ / toàn bộ căn nhà cho thuê, en: Apartment / entire place rental}
