@@ -143,9 +143,75 @@ def run_batch(keyword: str, site: str = "agoda", headful: bool = False, limit: i
 
 
 # ---------------------------------------------------------------------------
+# Nhanh 3: RECRAWL -> chay lai dung cac KS thieu (tu recrawl_queue.json)
+# ---------------------------------------------------------------------------
+def run_recrawl(site: str = "agoda", headful: bool = False):
+    """Doc data/raw/recrawl_queue.json -> crawl lai tung KS thieu field.
+
+    Queue do `crawler.validate` sinh ra. Sau khi crawl xong, tu chay validate
+    lai de cap nhat queue (cac KS da day du se bi loai khoi queue).
+    """
+    from crawler import validate as V
+
+    spider = _make_spider(site, headful)
+    queue = V.load_recrawl_queue()
+    if not queue:
+        print("[i] recrawl_queue.json rong -> khong co gi de crawl lai.")
+        print("    Chay `python -m crawler.validate` truoc de sinh queue.")
+        return
+
+    print(f"[i] Nhanh RECRAWL ({site}) | {len(queue)} khach san trong queue")
+    between = spider.cfg["rate_limit"]["between_details"]
+    redone, still_failed = 0, []
+
+    with browser_context(spider.cfg, headful) as context:
+        for n, item in enumerate(queue, 1):
+            hid = item.get("hotel_id")
+            hotel = {
+                "hotel_id": hid,
+                "name": item.get("name"),
+                "property_page": item.get("property_page"),
+                "full_url": item.get("source_url"),
+            }
+            record, err = spider.crawl_detail(context, hotel)
+            if err:
+                print(f"  [{n}/{len(queue)}] {hid} VAN LOI: {err}")
+                still_failed.append({"hotel_id": hid, "name": item.get("name"),
+                                     "error": err})
+                continue
+            path = PL.save_detail_record(record)
+            PL.upsert_detail(record)   # dong bo vao kho tong
+            inc = record.get("_incomplete")
+            tag = f" | _incomplete={[i['field'] for i in inc]}" if inc else ""
+            print(f"  [{n}/{len(queue)}] {hid} OK -> {record['name'][:35]}{tag}")
+            redone += 1
+            if n < len(queue):
+                time.sleep(random.uniform(*between))
+
+    if still_failed:
+        PL.save_failed(still_failed)
+    print("\n" + "=" * 60)
+    print(f"  RECRAWL XONG: {redone} thanh cong | {len(still_failed)} van loi")
+    print("=" * 60)
+    print("\n[i] Cap nhat lai queue (validate):")
+    V.validate_dir(quiet=False)
+
+
+# ---------------------------------------------------------------------------
 def main():
     args = sys.argv[1:]
     headful = "--headful" in args
+
+    # Nhanh recrawl: khong can target, doc tu queue
+    if "--recrawl" in args:
+        site = "agoda"
+        if "--site" in args:
+            try:
+                site = args[args.index("--site") + 1]
+            except IndexError:
+                pass
+        run_recrawl(site=site, headful=headful)
+        return
 
     def opt(name, cast=str, default=None):
         if name in args:
@@ -167,6 +233,8 @@ def main():
         print('  python -m crawler.main "https://www.agoda.com/...hotel=65153..."  (1 KS)')
         print('  python -m crawler.main "Vinpearl"                                 (hang loat)')
         print('  python -m crawler.main "Muong Thanh" --limit 5 --headful')
+        print('  python -m crawler.main --recrawl                                  (crawl lai KS thieu)')
+        print("  (truoc --recrawl: chay `python -m crawler.validate` de sinh queue)")
         sys.exit(1)
 
     target = positional[0]

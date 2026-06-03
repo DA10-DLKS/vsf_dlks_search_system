@@ -46,6 +46,61 @@ def safe(d, *keys, default=None):
     return cur
 
 
+# Map id grade (tieng Anh, tu providerReviewScore) -> nhan tieng Viet
+# (khop format chuan cua HotelReviews.combinedReview.grades)
+_GRADE_ID_TO_VI = {
+    "overall": "Điểm chung",
+    "cleanliness": "Độ sạch sẽ",
+    "facilities": "Cơ sở vật chất",
+    "location": "Vị trí",
+    "roomComfort": "Sự thoải mái và chất lượng phòng",
+    "staffPerformance": "Dịch vụ",
+    "valueForMoney": "Đáng tiền",
+    "food": "Ăn uống",
+    "comfort": "Sự thoải mái và chất lượng phòng",
+}
+
+
+def parse_grades_from_details(body: dict) -> list:
+    """Lay grades (breakdown theo hang muc) tu propertyDetailsSearch.
+
+    Nguon: contentReviewScore.providerReviewScore[isDefault].demographics
+           .allGuest.grades  (id tieng Anh + score).
+    Day la nguon ON DINH (endpoint details luon ve) — dung khi HotelReviews
+    khong tra combinedReview.grades (KS multi-provider, grades lazy theo tab).
+
+    Tra ve [{name, score}] da map sang nhan tieng Viet, BO grade 'overall'
+    (vi do la diem tong, da co o rating_overall).
+    """
+    details = safe(body, "data", "propertyDetailsSearch", "propertyDetails", default=[])
+    if not details:
+        return []
+    crs = safe(details[0], "contentDetail", "contentReviewScore", default={}) or {}
+    providers = crs.get("providerReviewScore") or []
+    # uu tien provider isDefault, fallback provider dau co grades
+    chosen = None
+    for p in providers:
+        if p.get("isDefault") and safe(p, "demographics", "allGuest", "grades"):
+            chosen = p
+            break
+    if not chosen:
+        for p in providers:
+            if safe(p, "demographics", "allGuest", "grades"):
+                chosen = p
+                break
+    if not chosen:
+        return []
+
+    out = []
+    for g in (safe(chosen, "demographics", "allGuest", "grades", default=[]) or []):
+        gid = g.get("id")
+        score = g.get("score")
+        if gid == "overall" or score is None:
+            continue
+        out.append({"name": _GRADE_ID_TO_VI.get(gid, gid), "score": score})
+    return out
+
+
 # ---------------------------------------------------------------------------
 # 1) propertyDetailsSearch — thong tin chinh
 # ---------------------------------------------------------------------------
@@ -484,8 +539,23 @@ def build_record(stores: dict, hotel_meta: dict, source_url: str) -> dict:
     # 3) Danh gia chi tiet
     if "reviews" in stores:
         rec["reviews_detail"] = parse_reviews(stores["reviews"])
-        # alias giong mau A: rating_overall, rating_breakdown
         rv = rec["reviews_detail"]
+
+        # FALLBACK grades tu details: nhieu KS multi-provider khong tra
+        # combinedReview.grades qua HotelReviews (grades lazy theo tab). Grades
+        # van co trong propertyDetailsSearch (endpoint details, luon ve) ->
+        # dung lam nguon chinh khi reviews thieu.
+        if not rv.get("grades") and "details" in stores:
+            grades_d = parse_grades_from_details(stores["details"])
+            if grades_d:
+                rv["grades"] = grades_d
+        # score/review_count: uu tien tu reviews, fallback tu details (review_score)
+        if not rv.get("score") and rec.get("review_score"):
+            rv["score"] = rec["review_score"]
+        if not rv.get("review_count") and rec.get("review_count"):
+            rv["review_count"] = rec["review_count"]
+
+        # alias giong mau A: rating_overall, rating_breakdown
         if rv.get("score"):
             rec["rating_overall"] = rv["score"]
             rec["rating_count"] = rv.get("review_count")

@@ -1,0 +1,29 @@
+# candidate/candidate_queue.yaml — CANDIDATE ontology (Phần 0.5 DA10 — BA THỨ TÁCH BIỆT).
+# Owner: Trương Anh Long. Task 1.2 (v2) — Sprint 1.
+#
+# Concept ỨNG VIÊN, định nghĩa từ: review, faq, article, query log.
+# CHƯA dùng cho retrieval. Quy trình lên Core (xem _meta.yaml > tiers.candidate.promotion):
+#   keyword lạ lặp nhiều -> vào đây -> HUMAN duyệt -> thêm vào core/<facet>.yaml
+#   -> generate lại synonym/expansion -> chạy golden set -> tốt hơn MỚI merge.
+#
+# HIỆN TRỐNG: chưa có review được ABSA, chưa có golden set, chưa có query log của DA09.
+# Khi Sprint 2 (ABSA review) chạy hoặc nhận query log -> điền vào đây, KHÔNG tự thêm thẳng vào Core.
+
+version: "2.0.0"
+
+# Schema mỗi mục ứng viên:
+candidate_schema:
+  fields:
+    candidate_keyword:   "surface form lạ gặp trong review/faq/query log"
+    suggested_facet:     "facet dự đoán (object_type/amenity/purpose/style/...)"
+    suggested_concept_id: "ID đề xuất nếu được duyệt (vd PURPOSE_STAYCATION)"
+    frequency:           "số lần xuất hiện"
+    examples:            "[câu trích dẫn nguồn]"
+    source:              "review | faq | article | query_log"
+    status:              "pending | approved | rejected"
+
+# Ví dụ các purpose/style thường gặp trong review/query log nhưng CHƯA có bằng chứng đủ trong
+# corpus hiện tại (staycation, workation, team building, wedding, anniversary, instagrammable...).
+# -> KHÔNG đưa vào Core cho tới khi có frequency thật + human duyệt + golden set.
+
+candidates: []   # rỗng — sẽ điền từ Sprint 2 (review ABSA) và query log DA09

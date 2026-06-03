@@ -47,6 +47,22 @@ capture_endpoints:
   activities: /api/activities/graphql
   faq: /api/cronos/geo/hotel/faq
 
+# Phan loai nguon (quyet dinh khi nao 1 record duoc coi la "du"):
+#   required  : thieu = LOI -> retry; con thieu sau retry -> danh dau _incomplete
+#   optional  : co the vang mat hop le (KS moi/it tieng) -> khong tinh la loi
+required_sources: [details, rooms, reviews, secondary]
+optional_sources: [faq, activities]
+
+# Cho trang detail: so lan thu lai + thoi gian cho (giay)
+detail_crawl:
+  max_attempts: 2          # mo trang lai toi da N lan neu thieu required
+  wait_after_scroll: 30    # cho toi da bao lau de required ve het (giay)
+  scroll_steps: 18         # so lan cuon (FAQ/review o cuoi trang)
+  scroll_pause_ms: 800     # nghi giua moi lan cuon
+  # Duoi nguong nay + grades rong => coi la THIEU THAT (KS qua it review),
+  # danh dau _incomplete nhung KHONG day vao recrawl_queue.
+  min_reviews_threshold: 20
+
 # --- Gioi han toc do (lich su, tranh bi chan) ---
 rate_limit:
   between_details: [2, 5]      # random.uniform giua moi hotel (giay)
