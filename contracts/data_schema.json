@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vsf-dlks.local/contracts/data_schema.json",
+  "title": "VSF DLKS Document Schema",
+  "description": "CONTRACT giữa DA09 (provider) và DA10 (consumer). Định nghĩa cấu trúc mỗi document đi vào pipeline ingestion. Owner phía DA10: Đỗ Minh Hiếu (Data Quality).",
+  "version": "0.1.0-draft",
+  "type": "object",
+  "TODO(hieudm)": "Thay thế placeholder schema bên dưới bằng schema thật khi DA09 cung cấp data_schema.json. Mọi field 'TODO' phải được resolve trước khi close Sprint 1.",
+
+  "required": [
+    "id",
+    "doc_type",
+    "title",
+    "content",
+    "source_url",
+    "crawled_at"
+  ],
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "UUID ổn định cho document (vd: 'doc_<uuid>'). TODO(hieudm): quy ước id ổn định xuyên suốt pipeline.",
+      "TODO": "Pattern regex khi chốt với DA09"
+    },
+    "doc_type": {
+      "type": "string",
+      "enum": ["hotel", "resort", "villa", "attraction", "faq", "review", "article"],
+      "description": "Loại tài liệu — dùng để chọn validation rule & ontology.",
+      "TODO": "Enum cuối cùng chốt với Trương Anh Long (Knowledge)"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "Tiêu đề (đã làm sạch)."
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Nội dung văn bản thuần (đã strip HTML). Nguồn cho embedding & BM25."
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL gốc để trích dẫn."
+    },
+    "crawled_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Thời điểm crawl (ISO 8601)."
+    },
+    "language": {
+      "type": "string",
+      "enum": ["vi", "en"],
+      "default": "vi",
+      "description": "TODO(hieudm): mặc định 'vi' theo corpus dự án."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Metadata bổ sung theo doc_type — schema chi tiết ở metadata_schema.yaml (CONTRACT do Trương Anh Long phụ trách).",
+      "TODO": "Liên kết $ref sang metadata_schema.yaml khi chốt"
+    },
+    "image_urls": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "description": "URL ảnh trích từ HTML (optional)."
+    }
+  },
+
+  "additionalProperties": false
+}
