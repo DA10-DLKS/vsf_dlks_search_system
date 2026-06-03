@@ -5,10 +5,9 @@ from ingestion.deduplication.minhash import (
     DEFAULT_NUM_PERM,
     DEFAULT_THRESHOLD,
     DuplicateGroup,
+    compute_jaccard,
     dedup_documents,
     find_duplicates,
-    minhash_signature,
-    shingle,
 )
 
 __all__ = [
@@ -16,8 +15,7 @@ __all__ = [
     "DEFAULT_NUM_PERM",
     "DEFAULT_THRESHOLD",
     "DuplicateGroup",
+    "compute_jaccard",
     "dedup_documents",
     "find_duplicates",
-    "minhash_signature",
-    "shingle",
 ]

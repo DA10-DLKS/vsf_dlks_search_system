@@ -17,6 +17,8 @@ playwright==1.49.1
 
 # ===== Ingestion / data processing (Layer 2-3) =====
 pandas
+datasketch               # MinHash LSH for near-duplicate detection
+deep-translator          # Dịch review text sang tiếng Việt (Google Translate engine)
 
 # ===== Embedding & Indexing (Layer 4) =====
 sentence-transformers

@@ -37,8 +37,7 @@ secrets/
 
 # ===== Data =====
 # data/raw is committed so the team can see crawled source data
-# cleaned/processed are derived outputs — keep them out of git
-data/cleaned/*
+# cleaned data is committed for downstream consumption; processed are derived outputs
 data/processed/*
 !data/**/.gitkeep
 !data/samples/

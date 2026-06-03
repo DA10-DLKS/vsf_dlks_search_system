@@ -9,6 +9,11 @@ from ingestion.cleaning.text_normalizer import (
     normalize_unicode,
     remove_control_chars,
 )
+from ingestion.cleaning.amenity_normalizer import (
+    normalize_amenities,
+    normalize_amenities_batch,
+)
+from ingestion.cleaning.translator import translate_to_vi, translate_batch
 
 __all__ = [
     "StrippedDocument",
@@ -20,4 +25,8 @@ __all__ = [
     "normalize_text",
     "normalize_unicode",
     "remove_control_chars",
+    "normalize_amenities",
+    "normalize_amenities_batch",
+    "translate_to_vi",
+    "translate_batch",
 ]

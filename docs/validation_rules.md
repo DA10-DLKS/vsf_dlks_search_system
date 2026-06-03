@@ -1,42 +1,125 @@
-# Validation Rules — Quy tắc kiểm định schema & chất lượng
+# Validation Rules — Kiểm định schema & chất lượng
 
-> Owner: Đỗ Minh Hiếu (Data Quality) — Sprint 1
-> Nguồn schema: `contracts/data_schema.json` (CONTRACT với DA09).
-> Metric cam kết: **Missing Rate < 5%**, **Duplicate Rate < 2%**.
+> Owner: Đỗ Minh Hiếu (Data Quality)
+> Schema nguồn: `contracts/data_schema.json` (dựa trên `relational_schema.md` từ DA09)
+> Metric cam kết: **Missing Rate < 5%**, **Duplicate Rate < 2%**
 
-## TODO(hieudm): Hoàn thiện rule bên dưới
+## 1. Kiến trúc validate
 
-### 1. Validate schema bắt buộc
-- [ ] Mọi `required` field trong `data_schema.json` phải tồn tại & không rỗng.
-- [ ] Type check: string / number / boolean / array / object theo schema.
-- [ ] Enum check: giá trị phải nằm trong tập cho phép.
-- [ ] Format check: `date` (ISO 8601), `url`, `email`...
+Mỗi hotel JSON đầu vào được validate ở 2 cấp:
 
-### 2. Phân loại severity
-- [ ] **Error** (drop doc): thiếu field bắt buộc, sai type, vi phạm enum.
-- [ ] **Warning** (giữ doc): field optional bị thiếu, độ dài vượt khuyến nghị.
+```
+Cấp 1: Hotel document (top-level)
+  ├── required: id, name, source_url
+  └── optional: accommodation_type, star_rating, …, reviews_detail
 
-### 3. Quy tắc riêng theo doc_type
-- [ ] **hotel/resort**: bắt buộc có `name`, `address`, `latitude`, `longitude`, `star_rating`.
-- [ ] **attraction**: bắt buộc có `name`, `category`, `location`.
-- [ ] **faq**: bắt buộc có `question`, `answer`.
-- [ ] **review**: cảnh báo nếu `rating` ngoài [1, 5].
+Cấp 2: Sub-documents (nested arrays)
+  ├── rooms[]        → required: hotel_id, name
+  ├── nearby_places[] → required: hotel_id, name
+  └── activities[]   → required: hotel_id, title
+```
 
-### 4. Đo Missing Rate
-- [ ] Công thức: `missing_count / (total_docs * num_required_fields)`.
-- [ ] Báo cáo chi tiết theo từng field (`missing_by_field`).
-- [ ] Cảnh báo khi `> 3%` (gần ngưỡng 5%).
+## 2. Required fields — Error (drop doc nếu thiếu)
 
-### 5. Đo Duplicate Rate
-- [ ] Dùng kết quả từ `scripts/dedup_pipeline.py` (`data/dedup_groups.json`).
-- [ ] Công thức: `(tổng doc bị loại vì trùng) / total_docs`.
-- [ ] Báo cáo số nhóm trùng (`duplicate_group_count`).
+### 2.1 Hotel level
 
-### 6. Quarantine
-- [ ] Doc lỗi error được ghi vào `data/quarantine/` cùng lý do (JSON).
-- [ ] Doc cảnh báo warning vẫn đi tiếp nhưng flag trong metadata.
+| Field | Type | Ràng buộc | Lý do |
+|---|---|---|---|
+| `id` | integer | PRIMARY KEY, NOT NULL | Định danh duy nhất |
+| `name` | string | VARCHAR(255), NOT NULL | Tìm kiếm & hiển thị |
+| `source_url` | string | TEXT, NOT NULL | Trích dẫn nguồn |
 
-## Tham chiếu
-- Code: `ingestion/validation/schema_validator.py`, `ingestion/validation/quality_checks.py`
-- Pipeline: `scripts/validation_pipeline.py`
-- Báo cáo: `quality_report_mock.md` (Sprint 2), `data_quality_report.md` (Sprint 3)
+### 2.2 Room level (trong `rooms[]`)
+
+| Field | Type | Ràng buộc |
+|---|---|---|
+| `hotel_id` | integer | FK → hotels.id |
+| `name` | string | VARCHAR(255), NOT NULL |
+
+### 2.3 Nearby place level (trong `nearby_places[]`)
+
+| Field | Type | Ràng buộc |
+|---|---|---|
+| `hotel_id` | integer | FK → hotels.id |
+| `name` | string | VARCHAR(255), NOT NULL |
+
+### 2.4 Activity level (trong `activities[]`)
+
+| Field | Type | Ràng buộc |
+|---|---|---|
+| `hotel_id` | integer | FK → hotels.id |
+| `title` | string | VARCHAR(255), NOT NULL |
+
+## 3. Type & format checks — Warning (giữ doc, flag)
+
+### 3.1 Numeric constraints
+
+| Field | Min | Max | Step | Ghi chú |
+|---|---|---|---|---|
+| `star_rating` | 1.0 | 5.0 | 0.5 | Hotel rating |
+| `review_score` | 0 | 10 | 0.1 | Hotel / room / activity |
+| `latitude` | -90 | 90 | – | WGS84 |
+| `longitude` | -180 | 180 | – | WGS84 |
+| `price` / `price_amount` | 0 | – | – | VND |
+| `distance_km` | 0 | – | – | Nearby place |
+| `max_occupancy` | 1 | – | – | Số người |
+
+Vi phạm → **warning**, không drop.
+
+### 3.2 Format checks
+
+| Field | Format | Ví dụ |
+|---|---|---|
+| `crawled_at` | ISO 8601 | `"2026-06-02T14:53:46"` |
+| `images[]` | URI (https) | `"https://pix8.agoda.net/..."` |
+
+### 3.3 Array checks
+
+| Field | Expected type | Ghi chú |
+|---|---|---|
+| `amenities` | `array[string]` | Nếu là string → warning |
+| `images` | `array[string (uri)]` | Nếu là array[object] → cảnh báo |
+| `useful_info` | `object` (JSONB) | Nếu là string → warning |
+| `reviews_detail` | `object` (JSONB) | Nếu là string → warning |
+| `policyNotes` | `array[string]` | Nếu missing → warning |
+
+## 4. Quy tắc riêng theo doc_type
+
+Không có field `doc_type` trong schema. Thay vào đó, `accommodation_type` đóng vai trò phân loại:
+
+| `accommodation_type` | Validation mở rộng |
+|---|---|
+| `"Resort"`, `"Khách sạn"`, `"Hotel"` | Bắt buộc có `star_rating`, `review_score`, `review_count` → warning nếu thiếu |
+| `"Biệt thự"`, `"Villa"`, `"Homestay"` | `star_rating` optional |
+| Thiếu / rỗng | Warning — không drop |
+
+## 5. Đo Missing Rate
+
+- **Công thức:** `missing_count / (total_hotels × num_required_fields_hotel)`
+- Required fields hotel: `["id", "name", "source_url"]` (3 field)
+- Cảnh báo khi `> 3%` (gần ngưỡng 5%)
+- Báo cáo `missing_by_field` chi tiết theo từng field
+
+## 6. Đo Duplicate Rate
+
+- Dùng kết quả từ `scripts/dedup_pipeline.py` (`data/dedup_groups.json`)
+- So sánh trên `description` và `name` sau khi clean
+- **Công thức:** `số_doc_bị_loại_vì_trùng / total_hotels`
+- Ngưỡng Jaccard mặc định: `≥ 0.85`
+
+## 7. Quarantine
+
+- Doc lỗi error → ghi vào `data/quarantine/hotels/` + lý do
+- Doc cảnh báo warning → giữ nguyên, flag trong `metadata.validation_warnings`
+
+## 8. Tham chiếu
+
+| File | Vai trò |
+|---|---|
+| `contracts/data_schema.json` | JSON schema đầy đủ |
+| `docs/relational_schema.md` | Schema gốc từ DA09 (PostgreSQL) |
+| `ingestion/validation/schema_validator.py` | Code validate |
+| `ingestion/validation/quality_checks.py` | Code đo missing rate + duplicate rate |
+| `scripts/validation_pipeline.py` | Pipeline orchestration |
+| `quality_report_mock.md` | Báo cáo mock (Sprint 2) |
+| `data_quality_report.md` | Báo cáo real (Sprint 3) |

@@ -1,71 +1,121 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://vsf-dlks.local/contracts/data_schema.json",
-  "title": "VSF DLKS Document Schema",
-  "description": "CONTRACT giữa DA09 (provider) và DA10 (consumer). Định nghĩa cấu trúc mỗi document đi vào pipeline ingestion. Owner phía DA10: Đỗ Minh Hiếu (Data Quality).",
-  "version": "0.1.0-draft",
-  "type": "object",
-  "TODO(hieudm)": "Thay thế placeholder schema bên dưới bằng schema thật khi DA09 cung cấp data_schema.json. Mọi field 'TODO' phải được resolve trước khi close Sprint 1.",
-
-  "required": [
-    "id",
-    "doc_type",
-    "title",
-    "content",
-    "source_url",
-    "crawled_at"
-  ],
-
-  "properties": {
-    "id": {
-      "type": "string",
-      "description": "UUID ổn định cho document (vd: 'doc_<uuid>'). TODO(hieudm): quy ước id ổn định xuyên suốt pipeline.",
-      "TODO": "Pattern regex khi chốt với DA09"
-    },
-    "doc_type": {
-      "type": "string",
-      "enum": ["hotel", "resort", "villa", "attraction", "faq", "review", "article"],
-      "description": "Loại tài liệu — dùng để chọn validation rule & ontology.",
-      "TODO": "Enum cuối cùng chốt với Trương Anh Long (Knowledge)"
-    },
-    "title": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 300,
-      "description": "Tiêu đề (đã làm sạch)."
-    },
-    "content": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Nội dung văn bản thuần (đã strip HTML). Nguồn cho embedding & BM25."
-    },
-    "source_url": {
-      "type": "string",
-      "format": "uri",
-      "description": "URL gốc để trích dẫn."
-    },
-    "crawled_at": {
-      "type": "string",
-      "format": "date-time",
-      "description": "Thời điểm crawl (ISO 8601)."
-    },
-    "language": {
-      "type": "string",
-      "enum": ["vi", "en"],
-      "default": "vi",
-      "description": "TODO(hieudm): mặc định 'vi' theo corpus dự án."
-    },
-    "metadata": {
+  "title": "VSF DLKS Document Schema (DA09-relational)",
+  "description": "Schema chính thức từ DA09 (relational_schema.md). Ánh xạ 1-1 với 4 bảng PostgreSQL: hotels, rooms, nearby_places, activities.",
+  "version": "1.0.0",
+  "definitions": {
+    "hotel": {
       "type": "object",
-      "description": "Metadata bổ sung theo doc_type — schema chi tiết ở metadata_schema.yaml (CONTRACT do Trương Anh Long phụ trách).",
-      "TODO": "Liên kết $ref sang metadata_schema.yaml khi chốt"
+      "description": "Thông tin khách sạn (bảng hotels).",
+      "required": ["id", "name", "source_url"],
+      "properties": {
+        "id": { "type": "integer", "description": "hotel_id: ID duy nhất" },
+        "name": { "type": "string", "maxLength": 255, "description": "Tên khách sạn" },
+        "accommodation_type": { "type": "string", "maxLength": 100, "description": "Loại chỗ ở (Resort, Biệt thự, Homestay…)" },
+        "star_rating": { "type": "number", "minimum": 1.0, "maximum": 5.0, "description": "Số sao (step 0.5)" },
+        "is_luxury": { "type": "boolean", "default": false, "description": "Phân khúc cao cấp" },
+        "review_score": { "type": "number", "minimum": 0, "maximum": 10, "description": "Điểm đánh giá trung bình" },
+        "review_count": { "type": "integer", "minimum": 0, "default": 0, "description": "Số lượng nhận xét" },
+        "address": { "type": "string", "description": "Địa chỉ chi tiết" },
+        "city": { "type": "string", "maxLength": 100, "description": "Thành phố/Tỉnh" },
+        "latitude": { "type": "number", "minimum": -90, "maximum": 90, "description": "Vĩ độ WGS84" },
+        "longitude": { "type": "number", "minimum": -180, "maximum": 180, "description": "Kinh độ WGS84" },
+        "description": { "type": "string", "description": "Bài viết mô tả chi tiết (đã strip HTML)" },
+        "amenities": { "type": "array", "items": { "type": "string" }, "description": "Mảng tiện ích" },
+        "useful_info": { "type": "object", "description": "Thông tin bổ sung dạng key-value (JSONB)" },
+        "policyNotes": { "type": "array", "items": { "type": "string" }, "description": "Ghi chú chính sách nhận phòng" },
+        "suitable_for": { "type": "array", "items": { "type": "string" }, "description": "Đối tượng phù hợp" },
+        "reviews_detail": { "type": "object", "description": "Điểm số đánh giá chi tiết + tag nhận xét (JSONB)" },
+        "images": { "type": "array", "items": { "type": "string", "format": "uri" }, "description": "URL ảnh khách sạn" },
+        "source_url": { "type": "string", "format": "uri", "description": "Đường dẫn trang nguồn crawl" },
+        "crawled_at": { "type": "string", "format": "date-time", "description": "Thời điểm crawl ISO 8601" }
+      },
+      "additionalProperties": false
     },
-    "image_urls": {
-      "type": "array",
-      "items": { "type": "string", "format": "uri" },
-      "description": "URL ảnh trích từ HTML (optional)."
+    "room": {
+      "type": "object",
+      "description": "Thông tin loại phòng (bảng rooms).",
+      "required": ["hotel_id", "name"],
+      "properties": {
+        "hotel_id": { "type": "integer", "description": "FK → hotels.id" },
+        "room_type_id": { "type": "integer", "description": "ID loại phòng gốc" },
+        "name": { "type": "string", "maxLength": 255, "description": "Tên loại phòng" },
+        "price": { "type": "number", "minimum": 0, "description": "Giá phòng (VND)" },
+        "room_size": { "type": "string", "maxLength": 50, "description": "Kích thước phòng (vd: '38 m²')" },
+        "max_occupancy": { "type": "integer", "minimum": 1, "description": "Số người tối đa" },
+        "bed_type": { "type": "string", "maxLength": 255, "description": "Loại giường" },
+        "room_view": { "type": "string", "maxLength": 100, "description": "Hướng phòng" },
+        "room_amenities": { "type": "array", "items": { "type": "string" }, "description": "Tiện ích phòng" },
+        "images": { "type": "array", "items": { "type": "string", "format": "uri" }, "description": "URL ảnh phòng" },
+        "review_score": { "type": "number", "minimum": 0, "maximum": 10, "description": "Điểm đánh giá loại phòng" }
+      },
+      "additionalProperties": false
+    },
+    "nearby_place": {
+      "type": "object",
+      "description": "Địa điểm lân cận (bảng nearby_places).",
+      "required": ["hotel_id", "name"],
+      "properties": {
+        "hotel_id": { "type": "integer", "description": "FK → hotels.id" },
+        "name": { "type": "string", "maxLength": 255, "description": "Tên địa danh" },
+        "type": { "type": "string", "maxLength": 100, "description": "Phân loại (Khu vui chơi, Bãi biển…)" },
+        "distance_km": { "type": "number", "minimum": 0, "description": "Khoảng cách (km)" }
+      },
+      "additionalProperties": false
+    },
+    "activity": {
+      "type": "object",
+      "description": "Hoạt động giải trí (bảng activities).",
+      "required": ["hotel_id", "title"],
+      "properties": {
+        "hotel_id": { "type": "integer", "description": "FK → hotels.id" },
+        "title": { "type": "string", "maxLength": 255, "description": "Tên vé/hoạt động" },
+        "description": { "type": "string", "description": "Mô tả chi tiết" },
+        "price_amount": { "type": "number", "minimum": 0, "description": "Giá vé (VND)" },
+        "review_score": { "type": "number", "minimum": 0, "maximum": 10, "description": "Điểm đánh giá hoạt động" }
+      },
+      "additionalProperties": false
     }
   },
-
+  "type": "object",
+  "required": ["id", "name", "source_url"],
+  "properties": {
+    "id": { "$ref": "#/definitions/hotel/properties/id" },
+    "name": { "$ref": "#/definitions/hotel/properties/name" },
+    "accommodation_type": { "$ref": "#/definitions/hotel/properties/accommodation_type" },
+    "star_rating": { "$ref": "#/definitions/hotel/properties/star_rating" },
+    "is_luxury": { "$ref": "#/definitions/hotel/properties/is_luxury" },
+    "review_score": { "$ref": "#/definitions/hotel/properties/review_score" },
+    "review_count": { "$ref": "#/definitions/hotel/properties/review_count" },
+    "address": { "$ref": "#/definitions/hotel/properties/address" },
+    "city": { "$ref": "#/definitions/hotel/properties/city" },
+    "latitude": { "$ref": "#/definitions/hotel/properties/latitude" },
+    "longitude": { "$ref": "#/definitions/hotel/properties/longitude" },
+    "description": { "$ref": "#/definitions/hotel/properties/description" },
+    "amenities": { "$ref": "#/definitions/hotel/properties/amenities" },
+    "useful_info": { "$ref": "#/definitions/hotel/properties/useful_info" },
+    "policyNotes": { "$ref": "#/definitions/hotel/properties/policyNotes" },
+    "suitable_for": { "$ref": "#/definitions/hotel/properties/suitable_for" },
+    "reviews_detail": { "$ref": "#/definitions/hotel/properties/reviews_detail" },
+    "images": { "$ref": "#/definitions/hotel/properties/images" },
+    "source_url": { "$ref": "#/definitions/hotel/properties/source_url" },
+    "crawled_at": { "$ref": "#/definitions/hotel/properties/crawled_at" },
+    "rooms": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/room" },
+      "description": "Danh sách loại phòng"
+    },
+    "nearby_places": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/nearby_place" },
+      "description": "Danh sách địa điểm lân cận"
+    },
+    "activities": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/activity" },
+      "description": "Danh sách hoạt động giải trí"
+    }
+  },
   "additionalProperties": false
 }
