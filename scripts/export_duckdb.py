@@ -124,6 +124,9 @@ def run(
             _safe_list(doc.get("image_urls")),
             doc.get("source_url"),
             doc.get("crawled_at"),
+            _safe_list(doc.get("amenities_general")),
+            _safe_list(doc.get("amenities_leisure")),
+            _safe_list(doc.get("amenities_dining")),
         ))
 
         # Rooms
@@ -187,13 +190,16 @@ def run(
             policy_notes    VARCHAR[],
             suitable_for    VARCHAR[],
             reviews_detail  JSON,
-            images          VARCHAR[],
-            source_url      VARCHAR,
-            crawled_at      VARCHAR
+            images              VARCHAR[],
+            source_url          VARCHAR,
+            crawled_at          VARCHAR,
+            amenities_general   VARCHAR[],
+            amenities_leisure   VARCHAR[],
+            amenities_dining    VARCHAR[]
         )
     """)
     conn.executemany(
-        "INSERT INTO hotels VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO hotels VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         hotels_rows,
     )
 
