@@ -1,0 +1,12 @@
+venv
+.git
+__pycache__
+*.pyc
+.env
+.docker_volumes
+data/raw/*
+data/processed/*
+data/cleaned/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/cleaned/.gitkeep
