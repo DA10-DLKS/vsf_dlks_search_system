@@ -1,0 +1,172 @@
+# core/amenity.yaml — facet: amenity (HARD fact: có/không, lấy từ structured data).
+# tier: core. Provenance: domain_knowledge + Agoda amenities/amenity_groups/tags.
+# Schema: xem ontology/_meta.yaml
+concepts:
+
+  # ---- Pool family ----------------------------------------------------------
+  AMEN_POOL:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking, google_hotels]
+    label: {vi: Hồ bơi, en: Swimming pool}
+    surface_forms:
+      vi: [hồ bơi, bể bơi, ho boi, be boi, bể bơi ngoài trời, hồ bơi ngoài trời]
+      en: [pool, swimming pool, outdoor pool]
+    description: {vi: Hồ bơi (bể bơi) tại cơ sở lưu trú, en: Swimming pool at the property}
+    narrower: [AMEN_INFINITY_POOL, AMEN_KIDS_POOL, AMEN_PRIVATE_POOL]
+
+  AMEN_INFINITY_POOL:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Hồ bơi vô cực, en: Infinity pool}
+    surface_forms:
+      vi: [hồ bơi vô cực, bể bơi vô cực, bể bơi có tầm nhìn]
+      en: [infinity pool, view pool]
+    description: {vi: Hồ bơi vô cực hoặc hồ bơi có tầm nhìn, en: Infinity pool or pool with a view}
+    broader: AMEN_POOL
+
+  AMEN_KIDS_POOL:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Hồ bơi trẻ em, en: Kids pool}
+    surface_forms:
+      vi: [hồ bơi trẻ em, bể bơi trẻ em]
+      en: [kids pool, children pool]
+    description: {vi: Hồ bơi dành cho trẻ em, en: Pool for children}
+    broader: AMEN_POOL
+    related: [PURPOSE_FAMILY]
+
+  AMEN_PRIVATE_POOL:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Hồ bơi riêng, en: Private pool}
+    surface_forms:
+      vi: [hồ bơi riêng, bể bơi riêng, hồ bơi trong phòng]
+      en: [private pool]
+    description: {vi: Hồ bơi riêng của phòng / villa, en: Private pool for the room / villa}
+    broader: AMEN_POOL
+    related: [OBJ_VILLA]
+
+  # ---- Beach / water ---------------------------------------------------------
+  AMEN_BEACHFRONT:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Bãi biển riêng, en: Beachfront}
+    surface_forms:
+      vi: [sát biển, ven biển, gần biển, ngay bãi biển, bãi biển riêng, lối ra bãi biển, gan bien, sat bien]
+      en: [beachfront, by the beach, private beach, beach access]
+    description: {vi: Vị trí ngay sát bãi biển / có bãi biển riêng, en: Right on the beach / has private beach access}
+    broader: SETTING_COASTAL
+
+  AMEN_SEA_VIEW:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Hướng biển, en: Sea view}
+    surface_forms:
+      vi: [view biển, hướng biển, hướng đại dương, tầm nhìn ra biển, nhìn ra biển, view bien]
+      en: [sea view, ocean view]
+    description: {vi: Phòng có hướng nhìn ra biển / đại dương, en: Room facing the sea / ocean}
+
+  # ---- Wellness / sport ------------------------------------------------------
+  AMEN_SPA:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking, google_hotels]
+    label: {vi: Spa, en: Spa}
+    surface_forms:
+      vi: [spa, mát-xa, massage, xông hơi, xông khô, phòng xông ướt, sauna]
+      en: [spa, massage, sauna]
+    description: {vi: Dịch vụ spa, mát-xa, xông hơi, en: Spa, massage and sauna services}
+    related: [PURPOSE_WELLNESS]
+
+  AMEN_GYM:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Phòng tập, en: Gym}
+    surface_forms:
+      vi: [phòng tập, phòng gym, gym, phòng thể dục]
+      en: [gym, fitness, fitness center]
+    description: {vi: Phòng tập thể dục / trung tâm thể hình, en: Gym / fitness center}
+
+  AMEN_GOLF:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Sân golf, en: Golf}
+    surface_forms:
+      vi: [sân golf, sân gôn, golf, chơi golf]
+      en: [golf, golf course]
+    description: {vi: Sân golf tại chỗ hoặc gần kề, en: Golf course on-site or nearby}
+
+  # ---- Family ----------------------------------------------------------------
+  AMEN_KIDS_CLUB:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Câu lạc bộ trẻ em, en: Kids club}
+    surface_forms:
+      vi: [câu lạc bộ trẻ em, clb trẻ em, khu vui chơi trẻ em, sân chơi]
+      en: [kids club, children club, playground]
+    description: {vi: Câu lạc bộ / khu vui chơi cho trẻ em, en: Kids club / children play area}
+    related: [PURPOSE_FAMILY]
+
+  # ---- Services --------------------------------------------------------------
+  AMEN_AIRPORT_SHUTTLE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Đưa đón sân bay, en: Airport shuttle}
+    surface_forms:
+      vi: [đưa đón sân bay, dịch vụ đưa đón, xe đưa đón]
+      en: [airport shuttle, airport transfer]
+    description: {vi: Dịch vụ đưa đón sân bay, en: Airport shuttle / transfer service}
+
+  AMEN_WIFI:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking, google_hotels]
+    label: {vi: Wi-Fi, en: Wi-Fi}
+    surface_forms:
+      vi: [wifi, wi-fi, wifi miễn phí, internet, mạng]
+      en: [wifi, free wifi, internet]
+    description: {vi: Wi-Fi / Internet (thường miễn phí), en: Wi-Fi / Internet access (often free)}
+
+  AMEN_BAR:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Quán bar, en: Bar}
+    surface_forms:
+      vi: [quán bar, bar, quán bar cạnh bể bơi, pool bar]
+      en: [bar, pool bar]
+    description: {vi: Quán bar tại cơ sở lưu trú, en: Bar at the property}
+
+  AMEN_RESTAURANT:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking, google_hotels]
+    label: {vi: Nhà hàng, en: Restaurant}
+    surface_forms:
+      vi: [nhà hàng, ẩm thực, quán cà phê, dịch vụ phòng]
+      en: [restaurant, dining, cafe]
+    description: {vi: Nhà hàng / dịch vụ ẩm thực tại chỗ, en: On-site restaurant / dining}
