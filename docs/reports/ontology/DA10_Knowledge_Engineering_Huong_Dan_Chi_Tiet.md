@@ -6,6 +6,33 @@
 
 ---
 
+## ⚙ CẬP NHẬT THỰC TẾ (sau Sprint 1) — đọc trước khi theo phần thân
+
+> Bản thân hướng dẫn dưới đây giữ NGUYÊN làm tham chiếu thiết kế. Nhưng khi thực thi Sprint 1 trên
+> **51 hotel Agoda thật** (+ một lượt phản biện theo chuẩn search thực tế), một số quyết định đã được
+> điều chỉnh cho đúng/scale hơn. **Khi làm theo tài liệu này, ưu tiên các điểm cập nhật dưới đây**
+> ở những chỗ mâu thuẫn. Chi tiết đầy đủ: `docs/reports/ontology/sprint1/SPRINT1_REPORT.md` (mục 4).
+
+| Chỗ trong hướng dẫn gốc | Đã điều chỉnh thành | Lý do |
+|---|---|---|
+| 1 file `concepts.yaml` gộp (Task 1.2) | **Tách theo facet**: `ontology/core/{object_type,amenity,location,setting,price_tier,purpose,style,aspect}.yaml` + `_meta.yaml` | 1 file vỡ khi lên 500–1000 concept |
+| `labels` chứa lẫn synonym | Tách **`label`** (nhãn đại diện) khỏi **`surface_forms`** (cách gõ) | bản gốc trộn ontology với từ điển đồng nghĩa |
+| (không có) | Thêm **`fact_type: hard\|soft`** trên mỗi concept | phân biệt lọc cứng vs tăng điểm |
+| (không có) | Mô hình **Core vs Candidate** (`ontology/candidate/candidate_queue.yaml`) | kiểm soát ontology phình loạn |
+| (mỏng) | Thêm hẳn **Location ontology** (25 địa danh + landmark) trong `location.yaml` | 90% query du lịch theo địa danh |
+| star/giá/khoảng cách như concept | Để ở **`range_filters`** (metadata_schema), KHÔNG làm concept | đó là filter dạng khoảng, không phải khái niệm |
+| synonym 1 form → 1 concept (Task 1.6) | 1 form → **LIST concept** | "lãng mạn" vừa purpose vừa style — giữ cả hai |
+| metadata field `near_<landmark>` | Mô hình **`nearby_places[]` (category + distance)** + quan hệ `near` trỏ `LMK_*` | `near_vinwonders` là anti-pattern, không scale |
+| file đầu ra ở `data/output/` hay `knowledge-engineering/output/` | **`docs/reports/ontology/sprint1/`** (code ở `knowledge_engineering/`, config ở `ontology/`) | tách báo cáo khỏi code; data/ là của ingestion |
+
+> **Lớp A (tự sinh từ data):** quan hệ `near`, synonym_dictionary, domain stats — đều có script
+> regenerate (xem SPRINT1_REPORT mục 6), chạy lại khi corpus đổi thay vì sửa tay.
+>
+> **Chưa xong Sprint 1 (chờ golden set DA09):** Task 1.1 Bước 2; Task 1.7 query_expansion (21 luật ở
+> trạng thái `unverified`). Không đánh dấu "đã kiểm" khi chưa có golden set.
+
+---
+
 ## Quy ước đọc
 
 Vì DA10 là việc nhóm, mỗi phần được gắn nhãn ranh giới:
@@ -780,14 +807,14 @@ output/  domain_analysis.md · knowledge_objects.json · hotel_semantic_profiles
 
 ## Checklist tổng
 
-**Sprint 1 — Foundation**
-- [ ] `concepts.yaml` ≥ 30 concept, **TRUNG TÍNH** (không `NOT_/CLEAN/FRIENDLY` trong ID)
-- [ ] `normalize.py` xử lý dấu + tách từ (thống nhất bản chung với Anh Tài/Data Quality)
-- [ ] `facets.yaml` đủ facet + `cardinality` + `da09_slot`
-- [ ] `ontology.yaml` có quan hệ `near`/`located_in`
-- [ ] `synonym_dictionary.yaml` ≥ 100 form (kể cả bỏ dấu) → bàn giao Anh Tài
-- [ ] `query_expansion.yaml` ≥ 20 rule (đã kiểm golden set) → bàn giao Anh Tài
-- [ ] `metadata_schema.yaml` chốt CONTRACT v1.0, đồng bộ DA09
+**Sprint 1 — Foundation**  _(trạng thái 2026-06-04 — chi tiết: `sprint1/SPRINT1_REPORT.md`)_
+- [x] `concepts.yaml` ≥ 30 concept, **TRUNG TÍNH** — **73 concept**, tách 8 file `ontology/core/*.yaml`
+- [x] `normalize.py` xử lý dấu + tách từ — `knowledge_engineering/common/normalize.py` (test 15/15)
+- [x] `facets.yaml` đủ facet + `cardinality` + `da09_slot` (+ `metadata_field`)
+- [x] `ontology.yaml` có quan hệ `near`/`located_in` — 22 quan hệ `near` (tự sinh)
+- [x] `synonym_dictionary.yaml` ≥ 100 form (kể cả bỏ dấu) → Anh Tài — **543 form**
+- [~] `query_expansion.yaml` ≥ 20 rule → Anh Tài — **21 rule ĐỦ số nhưng `unverified`**; phần "đã kiểm golden set" CHỜ golden set DA09
+- [x] `metadata_schema.yaml` chốt CONTRACT v1.0, đồng bộ DA09 — + pydantic validate; metadata.md đồng bộ concept_id
 
 **Sprint 2 — Enrichment**
 - [ ] `ontology_mapper.py` 3 tầng + fuse, tag có confidence + sources, xử lý phủ định
