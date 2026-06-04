@@ -88,17 +88,26 @@ def _all_hotels() -> list:
     return hotels
 
 
-def _run_one(spider, context, hotel: dict, n=None, total=None) -> bool:
+def _run_one(spider, context, hotel: dict, n=None, total=None, retries=2) -> bool:
     prefix = f"[{n}/{total}] " if n else ""
     hid = hotel.get("hotel_id")
-    record, err = spider.crawl_reviews(context, hotel)
-    if err:
-        print(f"  {prefix}{hid} LOI: {err}")
-        return False
-    path = PL.save_reviews(record)
-    print(f"  {prefix}{hid} OK -> {record['crawled_count']}/{record['comments_count_total']} "
-          f"review (tier={record['cap_tier']}, cap={record['cap_applied']}) -> {os.path.basename(path)}")
-    return True
+    # Retry ca quy trinh: KS review nang tra response muon / post phan trang lo
+    # giua batch -> thu lai (moi lan mo trang moi). retries=so lan thu THEM.
+    err = None
+    for attempt in range(retries + 1):
+        record, err = spider.crawl_reviews(context, hotel)
+        if not err:
+            path = PL.save_reviews(record)
+            tag = f" (sau {attempt+1} lan)" if attempt else ""
+            print(f"  {prefix}{hid} OK -> {record['crawled_count']}/{record['comments_count_total']} "
+                  f"review (tier={record['cap_tier']}, cap={record['cap_applied']}){tag} "
+                  f"-> {os.path.basename(path)}")
+            return True
+        if attempt < retries:
+            print(f"  {prefix}{hid} thu lai ({attempt+1}/{retries}): {err}")
+            time.sleep(random.uniform(2, 4))
+    print(f"  {prefix}{hid} LOI: {err}")
+    return False
 
 
 def main():
@@ -151,12 +160,22 @@ def main():
 
     print(f"[i] Crawl review ({args.site}) | {len(hotels)} khach san | headful={args.headful}")
     ok = 0
-    with browser_context(spider.cfg, args.headful) as context:
-        for i, h in enumerate(hotels, 1):
-            if _run_one(spider, context, h, i, len(hotels)):
-                ok += 1
-            if i < len(hotels):
-                time.sleep(random.uniform(*delay))
+    # Lam moi browser sau moi REFRESH_EVERY KS: KS review nang lam browser
+    # tich luy mem (memory phinh, JS cham dan) -> response review den muon ->
+    # lo timeout. Mo context moi dinh ky giu browser "tuoi".
+    refresh_every = spider.cfg["review_crawl"].get("refresh_browser_every", 15)
+
+    i = 0
+    while i < len(hotels):
+        batch = hotels[i:i + refresh_every]
+        with browser_context(spider.cfg, args.headful) as context:
+            retries = spider.cfg["review_crawl"].get("retries", 2)
+            for h in batch:
+                i += 1
+                if _run_one(spider, context, h, i, len(hotels), retries=retries):
+                    ok += 1
+                if i < len(hotels):
+                    time.sleep(random.uniform(*delay))
 
     print("\n" + "=" * 60)
     print(f"  XONG: {ok}/{len(hotels)} KS co review | output: {PL.REVIEWS_DIR}")

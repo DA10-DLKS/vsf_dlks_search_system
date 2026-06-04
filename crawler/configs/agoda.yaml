@@ -71,6 +71,13 @@ review_crawl:
   page_size: 25            # so review/request (Agoda gop da provider, co the > size gui)
   max_pages_per_sort: 40   # tran an toan moi vong sort (chong lap vo han)
   request_delay: [1.0, 2.5]  # random.uniform giua moi request phan trang (giay)
+  # Bat seed trang 1: 1 so KS tra response review RAT muon (~19s) -> can cho lau
+  # + thu lai. (KS dau tien dinh: Jeju Renaissance 11025533.)
+  seed_max_attempts: 2     # mo lai trang N lan neu lo response review trang 1
+  seed_scroll_steps: 25    # so lan cuon de ep widget review lazy-load (truoc: 18)
+  seed_wait_secs: 35       # cho toi da bao lau sau cuon de response review ve (truoc: 20)
+  retries: 2               # so lan thu THEM ca quy trinh 1 KS (runner) neu loi
+  refresh_browser_every: 15  # mo lai browser sau moi N KS (chong tich luy mem)
   # Cap dong theo so review (xem thao luan thiet ke):
   #   <= cap_normal            -> lay het (co text)
   #   cap_normal < n           -> dung cap_normal

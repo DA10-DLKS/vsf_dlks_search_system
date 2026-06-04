@@ -387,94 +387,23 @@ def parse_reviews(body: dict) -> dict:
 # ---------------------------------------------------------------------------
 # 3b) Review CHI TIET (tool crawl_reviews) — map 1 comment Agoda -> review sach
 # ---------------------------------------------------------------------------
-# Bang chuyen ten thang -> so (parse "03 thang 8 2025" / "Thang 7 nam 2025")
-_VN_MONTHS = {
-    "tháng 1": 1, "tháng 2": 2, "tháng 3": 3, "tháng 4": 4, "tháng 5": 5,
-    "tháng 6": 6, "tháng 7": 7, "tháng 8": 8, "tháng 9": 9, "tháng 10": 10,
-    "tháng 11": 11, "tháng 12": 12,
-}
-# ky tu chi co trong tieng Viet (du de phan biet vi vs en/khac)
-_VN_CHARS = set("ăâđêôơưàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵ")
-
-# ten thang tieng Anh -> so (review en: "August 03, 2025")
-_EN_MONTHS = {
-    "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
-    "july": 7, "august": 8, "september": 9, "october": 10, "november": 11,
-    "december": 12,
-}
-
-
-def detect_lang(text: str) -> str:
-    """Heuristic re: text co ky tu tieng Viet co dau -> 'vi'; co chu Latin ->
-    'en'; con lai -> 'other'. Du dung de Sprint 2 loc theo ngon ngu; KHONG tin
-    field cua Agoda (languageId hay null)."""
-    if not text:
-        return "other"
-    low = text.lower()
-    if any(c in _VN_CHARS for c in low):
-        return "vi"
-    if any("a" <= c <= "z" for c in low):
-        return "en"
-    return "other"
-
-
-def parse_review_date(s: str):
-    """Chuan hoa ngay review (vi + en) -> ISO. None neu khong parse duoc —
-    de mo duong incremental sau.
-
-      '03 tháng 8 2025'   -> '2025-08-03'
-      'Tháng 7 năm 2025'  -> '2025-07'   (chi thang)
-      'August 03, 2025'   -> '2025-08-03'
-    """
-    if not s:
-        return None
-    import re
-    low = s.lower().strip()
-    year = month = day = None
-
-    # --- tieng Viet: "thang N" + (tuy chon) ngay dau chuoi ---
-    m = re.search(r"tháng\s+(\d{1,2})", low)
-    if m:
-        month = int(m.group(1))
-        md = re.match(r"(\d{1,2})\s+tháng", low)
-        if md:
-            day = int(md.group(1))
-    else:
-        # --- tieng Anh: "<Month> <DD>, <YYYY>" ---
-        m = re.search(r"([a-z]+)\s+(\d{1,2}),?\s+\d{4}", low)
-        if m and m.group(1) in _EN_MONTHS:
-            month = _EN_MONTHS[m.group(1)]
-            day = int(m.group(2))
-
-    my = re.search(r"(\d{4})", low)
-    if my:
-        year = int(my.group(1))
-    if not (year and month):
-        return None
-    if day:
-        return f"{year:04d}-{month:02d}-{day:02d}"
-    return f"{year:04d}-{month:02d}"
-
-
 def parse_review_comment(c: dict) -> dict:
     """1 comment tho tu commentList.comments -> review sach theo schema da chot.
 
-    Giu review_id THAT (hotelReviewId — Task 2.4d can), bo responseText (#5),
-    them date_iso + lang. Tai dung dung cac field nhu parse_reviews."""
+    Giu review_id THAT (hotelReviewId — Task 2.4d can) + response cua KS.
+    Tai dung dung cac field nhu parse_reviews."""
     info = c.get("reviewerInfo") or {}
-    text = c.get("reviewComments") or ""
     return {
         "review_id": c.get("hotelReviewId"),
         "rating": c.get("rating"),
         "rating_text": c.get("ratingText"),
         "date": c.get("formattedReviewDate"),
-        "date_iso": parse_review_date(c.get("formattedReviewDate")),
         "check_in": c.get("checkInDateMonthAndYear"),
         "title": c.get("reviewTitle"),
-        "text": text,
+        "text": c.get("reviewComments") or "",
         "positives": c.get("reviewPositives"),
         "negatives": c.get("reviewNegatives"),
-        "lang": detect_lang(text or c.get("reviewTitle") or ""),
+        "response": c.get("responseText"),
         "reviewer_name": info.get("displayMemberName"),
         "reviewer_type": info.get("reviewGroupName"),
         "reviewer_country": info.get("countryName"),

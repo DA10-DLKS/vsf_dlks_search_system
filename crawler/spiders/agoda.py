@@ -359,9 +359,11 @@ class AgodaSpider(BaseSpider):
         Tra ve None neu khong bat duoc.
         """
         sig = self.cfg["capture_endpoints"]["reviews"]
+        rc = self.cfg["review_crawl"]
         dc = self.cfg.get("detail_crawl", {})
-        steps = dc.get("scroll_steps", 18)
+        steps = rc.get("seed_scroll_steps", dc.get("scroll_steps", 18))
         pause = dc.get("scroll_pause_ms", 800)
+        wait_secs = rc.get("seed_wait_secs", 20)
 
         store = {"body": None, "req": None}
         page = context.new_page()
@@ -387,7 +389,8 @@ class AgodaSpider(BaseSpider):
                     break
                 page.mouse.wheel(0, 1500)
                 page.wait_for_timeout(pause)
-            deadline = time.time() + 20
+            # 1 so KS tra response review rat muon -> cho lau (config seed_wait_secs)
+            deadline = time.time() + wait_secs
             while time.time() < deadline and not store["body"]:
                 page.wait_for_timeout(700)
         except Exception:
@@ -479,10 +482,22 @@ class AgodaSpider(BaseSpider):
         if not url:
             return None, "no slug/url"
 
-        seed = self._capture_review_seed(context, url)
+        # Retry mo trang: 1 so KS tra response review rat muon/chap chon ->
+        # thu lai toi seed_max_attempts lan (giong crawl_detail).
+        attempts = rc.get("seed_max_attempts", 2)
+        seed = None
+        for _ in range(attempts):
+            seed = self._capture_review_seed(context, url)
+            if seed:
+                break
         if not seed:
-            return None, "khong bat duoc response review (trang 1)"
+            return None, f"khong bat duoc response review (trang 1) sau {attempts} lan"
         page = seed["page"]
+        comments_count = review_count = 0
+        seed_comments, out = [], []
+        hid = hotel.get("hotel_id") or (seed["body"] or {}).get("hotelId")
+        hotel_name = hotel.get("name") or ""
+        cap, tier = rc["cap_normal"], "unknown"
         try:
             body = seed["body"]
             comments_count = P.safe(body, "combinedReview", "score",
@@ -532,6 +547,15 @@ class AgodaSpider(BaseSpider):
                                    if seed_sort == rc["sort_recent"] else None)
         finally:
             page.close()
+
+        # 0 review nhung co dau hieu KS THUC SU co review => loi tool (post phan
+        # trang lo / trang qua tai), KHONG phai KS rong. Tra error de retry.
+        # comments_count cua Agoda thuong = 0 sai (vd 1176921/1179398) -> dung
+        # them seed trang 1 + review_count (da bu tu file KS) lam tin hieu.
+        if not out and (comments_count or len(seed_comments) or review_count):
+            return None, (f"0 review nhung KS co review "
+                          f"(comments_count={comments_count}, seed_trang1={len(seed_comments)}, "
+                          f"review_count={review_count})")
 
         record = {
             "hotel_id": hid,

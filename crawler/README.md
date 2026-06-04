@@ -87,7 +87,7 @@ crawler/
 └── parsers/       Bóc tách response thô -> record sạch
     └── agoda.py       5 nguồn (details/rooms/reviews/secondary/activities/faq)
                        + build_record() gom thành 1 record + embedding_text
-                       + parse_review_comment/detect_lang/parse_review_date (tool review)
+                       + parse_review_comment (tool review)
 ```
 
 Tool review nằm ở `scripts/run_crawl_reviews.py` + `AgodaSpider.crawl_reviews`
