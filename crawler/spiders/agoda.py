@@ -4,6 +4,7 @@ Gom logic tu cac file cu (crawl_list / resolve_slugs / crawl_details) vao 1
 class, doc tham so tu configs/agoda.yaml thay vi hardcode.
 """
 import json
+import random
 import time
 from datetime import datetime, timedelta
 from urllib.parse import urlparse, parse_qs
@@ -325,6 +326,227 @@ class AgodaSpider(BaseSpider):
 
         if incomplete:
             record["_incomplete"] = incomplete
+
+    # =====================================================================
+    # TOOL REVIEW: 1 hotel -> nhieu review chi tiet (phan trang endpoint review)
+    # =====================================================================
+    def _cap_for(self, hotel_id, review_count) -> tuple:
+        """Tra ve (cap, tier) theo config review_crawl + so review that.
+
+        review_count >= flagship_min_reviews -> cap_flagship (tier=flagship);
+                                      KS rat nhieu review = trong diem (tu suy)
+        khong biet so (None/0)     -> cap_normal (tier=unknown) — KHONG de 0
+                                      chan crawl; nhieu KS multi-provider thieu
+                                      reviewCommentsCount nhung van co review that
+        0 < n <= cap_normal        -> lay het n (tier=small)
+        cap_normal < n             -> cap_normal (tier=normal)
+        """
+        rc = self.cfg["review_crawl"]
+        flagship_min = rc.get("flagship_min_reviews") or 0
+        if flagship_min and review_count and review_count >= flagship_min:
+            return rc["cap_flagship"], "flagship"
+        if not review_count:                 # None hoac 0 -> khong tin, lay cap thuong
+            return rc["cap_normal"], "unknown"
+        if review_count <= rc["cap_normal"]:
+            return review_count, "small"
+        return rc["cap_normal"], "normal"
+
+    def _capture_review_seed(self, context, url: str) -> dict | None:
+        """Mo trang KS, bat response review/HotelReviews dau tien (trang 1).
+
+        Tra ve dict cua response (de lay providerIds, comments_count, comments
+        trang 1) + giu page MO de tai dung session cho page.request.post().
+        Tra ve None neu khong bat duoc.
+        """
+        sig = self.cfg["capture_endpoints"]["reviews"]
+        dc = self.cfg.get("detail_crawl", {})
+        steps = dc.get("scroll_steps", 18)
+        pause = dc.get("scroll_pause_ms", 800)
+
+        store = {"body": None, "req": None}
+        page = context.new_page()
+
+        def on_resp(r, st=store):
+            if sig not in r.url or st["body"] is not None:
+                return
+            try:
+                st["body"] = json.loads(r.body().decode("utf-8", "replace"))
+                st["req"] = r.request.post_data
+            except Exception:
+                pass
+
+        page.on("response", on_resp)
+        try:
+            page.goto(url, wait_until="commit", timeout=60000)
+            try:
+                page.wait_for_selector("h1", timeout=20000, state="visible")
+            except Exception:
+                pass
+            for _ in range(steps):
+                if store["body"]:
+                    break
+                page.mouse.wheel(0, 1500)
+                page.wait_for_timeout(pause)
+            deadline = time.time() + 20
+            while time.time() < deadline and not store["body"]:
+                page.wait_for_timeout(700)
+        except Exception:
+            page.close()
+            return None
+
+        if not store["body"]:
+            page.close()
+            return None
+        store["page"] = page   # giu page mo cho caller post() roi tu dong close
+        return store
+
+    def _post_reviews_page(self, page, base_vars: dict, page_no: int,
+                           sorting: int) -> list:
+        """Goi 1 trang review qua page.request.post() (dung session cua page).
+
+        base_vars: payload mau lay tu request goc cua trang. Ta chi thay
+        pageNo + sorting + pageSize. Tra ve list comment tho (co the rong).
+        """
+        rc = self.cfg["review_crawl"]
+        api = self.cfg["base_url"] + rc["api_path"]
+        payload = dict(base_vars)
+        payload["pageNo"] = page_no
+        payload["sorting"] = sorting
+        payload["pageSize"] = rc["page_size"]
+        try:
+            resp = page.request.post(api, data=json.dumps(payload), headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Referer": self.cfg["base_url"] + "/",
+            })
+            if not resp.ok:
+                return []
+            body = resp.json()
+        except Exception:
+            return []
+        return (P.safe(body, "commentList", "comments", default=[]) or [])
+
+    def _collect_sort(self, page, base_vars, sorting, cap, seen, out,
+                      seed_comments=None):
+        """Lap phan trang 1 vong sort: them review (co text, chua trung) vao out
+        toi khi du cap / het trang / cham tran max_pages. `seen` = set review_id.
+
+        seed_comments: comment trang 1 da bat san (chi dung cho vong sort dau de
+        khoi goi lai trang 1)."""
+        rc = self.cfg["review_crawl"]
+        require_content = rc.get("require_content", True)
+        delay = rc.get("request_delay", [1.0, 2.5])
+
+        for page_no in range(1, rc["max_pages_per_sort"] + 1):
+            if len(out) >= cap:
+                break
+            if page_no == 1 and seed_comments is not None:
+                comments = seed_comments
+            else:
+                comments = self._post_reviews_page(page, base_vars, page_no, sorting)
+                time.sleep(random.uniform(*delay))
+            if not comments:
+                break   # het trang
+            added = 0
+            for c in comments:
+                rid = c.get("hotelReviewId")
+                if rid is None or rid in seen:
+                    continue
+                review = P.parse_review_comment(c)
+                has_content = any((review.get(k) or "").strip()
+                                  for k in ("text", "positives", "negatives"))
+                if require_content and not has_content:
+                    seen.add(rid)   # danh dau de khong xet lai, nhung khong luu
+                    continue
+                seen.add(rid)
+                out.append(review)
+                added += 1
+                if len(out) >= cap:
+                    break
+            if added == 0 and page_no > 1:
+                # trang co data nhung toan trung/khong text -> nhieu kha nang het moi
+                continue
+
+    def crawl_reviews(self, context, hotel: dict) -> tuple:
+        """1 hotel -> (review_record, error).
+
+        Huong C: mo trang lay seed (providerIds + comments trang 1 + payload
+        mau) roi page.request.post() lap phan trang. Chien luoc 2 vong sort:
+        vet review diem THAP truoc (sort_low_first), roi lap bang review MOI NHAT
+        (sort_recent) toi khi du cap. Dedup theo review_id."""
+        rc = self.cfg["review_crawl"]
+        url = self._detail_url(hotel) or hotel.get("full_url")
+        if not url:
+            return None, "no slug/url"
+
+        seed = self._capture_review_seed(context, url)
+        if not seed:
+            return None, "khong bat duoc response review (trang 1)"
+        page = seed["page"]
+        try:
+            body = seed["body"]
+            comments_count = P.safe(body, "combinedReview", "score",
+                                    "reviewCommentsCount", default=0) or 0
+            review_count = P.safe(body, "combinedReview", "score",
+                                  "reviewCount", default=0) or 0
+            # bu tu file KS goc khi seed thieu (KS multi-provider hay rong so)
+            if not review_count:
+                review_count = hotel.get("review_count") or 0
+            hid = hotel.get("hotel_id") or body.get("hotelId")
+            hotel_name = body.get("hotelName") or hotel.get("name") or ""
+
+            # payload mau tu request goc cua trang (co providerIds + token an)
+            base_vars = {}
+            if seed.get("req"):
+                try:
+                    base_vars = json.loads(seed["req"])
+                except Exception:
+                    base_vars = {}
+            # fallback toi thieu neu khong doc duoc request goc
+            if "hotelId" not in base_vars:
+                base_vars = {
+                    "hotelId": hid,
+                    "hotelProviderId": P.safe(body, "combinedReview", "providers",
+                                              default=[{}])[0].get("providerId", 332),
+                    "demographicId": 0, "isReviewPage": False,
+                    "isCrawlablePage": True, "paginationSize": 5,
+                }
+
+            # Dung review_count (tong) lam co so cap — KHONG dung comments_count
+            # (so co text, nho hon) keo cap small chan som. Vong lap van tu dung
+            # khi het trang that.
+            cap, tier = self._cap_for(hid, review_count or comments_count)
+            seen, out = set(), []
+            seed_comments = P.safe(body, "commentList", "comments", default=[]) or []
+
+            # vong 1: review diem thap (hiem, quy) — dung seed cho trang 1? KHONG,
+            # vi seed la sort mac dinh (7); seed_comments chi tai dung khi sort khop.
+            seed_sort = P.safe(body, "commentList", "selectedSortOption", default=None)
+            self._collect_sort(page, base_vars, rc["sort_low_first"], cap, seen, out,
+                               seed_comments=seed_comments
+                               if seed_sort == rc["sort_low_first"] else None)
+            # vong 2: lap phan con lai bang review moi nhat
+            if len(out) < cap:
+                self._collect_sort(page, base_vars, rc["sort_recent"], cap, seen, out,
+                                   seed_comments=seed_comments
+                                   if seed_sort == rc["sort_recent"] else None)
+        finally:
+            page.close()
+
+        record = {
+            "hotel_id": hid,
+            "hotel_name": hotel_name,
+            "source": self.site,
+            "crawled_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+            "review_count_total": review_count,
+            "comments_count_total": comments_count,
+            "crawled_count": len(out),
+            "cap_applied": cap,
+            "cap_tier": tier,
+            "sort_strategy": f"low_first({rc['sort_low_first']})+recent({rc['sort_recent']})",
+            "reviews": out,
+        }
+        return record, None
 
     # =====================================================================
     # NHANH LINK: 1 url -> hotel dict

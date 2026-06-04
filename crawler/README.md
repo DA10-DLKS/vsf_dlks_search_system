@@ -26,6 +26,48 @@ từ khóa**. Nhánh link tự chọn spider theo domain; nhánh từ khóa dùn
 | `--limit N` | Giới hạn số khách sạn (nhánh từ khóa) |
 | `--headful` | Hiện trình duyệt (mặc định chạy ẩn) |
 
+## Crawl REVIEW chi tiết (tool riêng)
+
+Crawl KS ở trên chỉ kèm `sample_comments` (~10 review). Để lấy NHIỀU review (nuôi
+ABSA + hotel semantic profile cho DA10 KE) dùng tool riêng — **tách hẳn**, chạy trên
+các KS đã crawl:
+
+```powershell
+# 1 KS theo hotel_id (đọc URL từ file KS đã crawl trong data/raw/hotels/)
+python scripts/run_crawl_reviews.py --id 1973
+
+# hàng loạt: mọi KS trong data/raw/hotels/ (tự bỏ qua KS đã có file review)
+python scripts/run_crawl_reviews.py --all
+python scripts/run_crawl_reviews.py --all --limit 5 --force
+
+# từ 1 link trực tiếp
+python scripts/run_crawl_reviews.py "https://www.agoda.com/...hotel=1973..."
+```
+
+| Tham số | Ý nghĩa |
+|---------|---------|
+| `--id N` | 1 hotel_id (tìm URL trong file KS đã crawl) |
+| `--all` | Mọi KS trong `data/raw/hotels/`; **resume được** (bỏ qua KS đã có review) |
+| `--limit N` | Giới hạn số KS (đi với `--all`) |
+| `--force` | Crawl lại cả KS đã có file review (mặc định bỏ qua) |
+| `--headful` `--site` | Như trên |
+
+**Cơ chế** (hướng C): mở trang lấy session + payload mẫu (có `reviewProviderIds` +
+token), rồi `page.request.post()` lặp phân trang endpoint `review/HotelReviews`.
+Chiến lược 2 vòng sort: **điểm thấp trước** (sort=3, vét review chê — hiếm + quý cho
+ABSA) → **mới nhất** (sort=1) tới đủ cap. Dedup theo `hotelReviewId` (review_id thật).
+
+**Cap động** (config `review_crawl` trong `agoda.yaml`): `review_count` ≥
+`flagship_min_reviews` → `cap_flagship` (400); n ≤ `cap_normal` → lấy hết;
+n > `cap_normal` → 250; seed thiếu số → cap_normal (`unknown`).
+
+> ⚠ **Trần dữ liệu Agoda:** `comments_count` trang quảng cáo (vd 584) chỉ là marketing;
+> API thực chỉ cho truy cập ~100–250 review unique. Tool lấy hết trong trần đó là đúng,
+> không phải thiếu sót. Giữ review có text HOẶC positives/negatives (`require_content`).
+
+Output: `data/raw/reviews/hotel_<id>_reviews.json` (file riêng, **không** đụng file KS;
+`sample_comments` giữ nguyên làm preview).
+
 ## Kiến trúc
 
 ```
@@ -45,13 +87,18 @@ crawler/
 └── parsers/       Bóc tách response thô -> record sạch
     └── agoda.py       5 nguồn (details/rooms/reviews/secondary/activities/faq)
                        + build_record() gom thành 1 record + embedding_text
+                       + parse_review_comment/detect_lang/parse_review_date (tool review)
 ```
 
-Dữ liệu xuất ra `data/` (cùng cấp với `crawler/`):
-- `data/hotels_list.json` — danh sách KS (tầng 1)
-- `data/hotels_detail.json` — checkpoint gộp (resume được)
-- `data/hotels/hotel_<id>_<slug>.json` — kết quả cuối, mỗi KS 1 file
-- `data/failed.json` — các KS lỗi
+Tool review nằm ở `scripts/run_crawl_reviews.py` + `AgodaSpider.crawl_reviews`
+(spider) + `pipelines.save_reviews` (I/O).
+
+Dữ liệu xuất ra `data/raw/` (cùng cấp với `crawler/`):
+- `data/raw/hotels_list.json` — danh sách KS (tầng 1)
+- `data/raw/hotels_detail.json` — checkpoint gộp (resume được)
+- `data/raw/hotels/hotel_<id>_<slug>.json` — kết quả cuối, mỗi KS 1 file
+- `data/raw/reviews/hotel_<id>_reviews.json` — review chi tiết (tool review riêng)
+- `data/raw/failed.json` — các KS lỗi
 
 ## Luồng xử lý
 
