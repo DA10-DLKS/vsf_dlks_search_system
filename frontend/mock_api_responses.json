@@ -1,0 +1,276 @@
+{
+  "search_api": {
+    "queries": [
+      {
+        "query": "Tôi muốn resort yên tĩnh gần biển cho gia đình",
+        "results": [
+          {
+            "id": "hotel_805030",
+            "title": "Vinpearl Resort & Spa Nha Trang Bay",
+            "snippet": "Khu nghỉ dưỡng gần biển, không gian riêng tư, phù hợp gia đình cần nghỉ dưỡng yên tĩnh tại Nha Trang.",
+            "score": 0.94,
+            "metadata": {
+              "location": "Nha Trang, Khánh Hòa",
+              "category": "Beach resort",
+              "amenities": ["Bãi biển riêng", "Hồ bơi", "Kids club", "Spa", "Nhà hàng gia đình"],
+              "ranking_info": "High semantic match for quiet beach family resort",
+              "price_level": "Premium",
+              "best_for": ["Gia đình", "Nghỉ dưỡng biển", "Kỳ nghỉ dài ngày"]
+            },
+            "citations": [
+              {
+                "id": "cit_805030_01",
+                "source_document_id": "doc_805030",
+                "chunk_id": "chunk_805030_family",
+                "label": "Hotel detail page",
+                "url": "data/raw/hotels/hotel_805030_vinpearl-resort-spa-nha-trang-bay.json",
+                "quote": "Family-friendly resort amenities include beach access, pool and children facilities."
+              }
+            ],
+            "source_documents": [
+              {
+                "id": "doc_805030",
+                "title": "Vinpearl Resort & Spa Nha Trang Bay hotel detail",
+                "type": "hotel_detail",
+                "path": "data/raw/hotels/hotel_805030_vinpearl-resort-spa-nha-trang-bay.json"
+              }
+            ],
+            "context_chunks": [
+              {
+                "id": "chunk_805030_family",
+                "source_document_id": "doc_805030",
+                "text": "Resort gần biển với tiện ích phù hợp gia đình: bãi biển, hồ bơi, khu vui chơi trẻ em và dịch vụ nghỉ dưỡng.",
+                "rank": 1
+              },
+              {
+                "id": "chunk_805030_location",
+                "source_document_id": "doc_805030",
+                "text": "Vị trí tại Nha Trang Bay giúp khách dễ tiếp cận trải nghiệm biển nhưng vẫn giữ cảm giác nghỉ dưỡng tách biệt.",
+                "rank": 2
+              }
+            ]
+          },
+          {
+            "id": "hotel_6377313",
+            "title": "Vinpearl Wonderworld Phú Quốc",
+            "snippet": "Resort biệt thự rộng, có nhiều tiện ích cho gia đình và nhóm khách cần không gian yên tĩnh.",
+            "score": 0.89,
+            "metadata": {
+              "location": "Phú Quốc, Kiên Giang",
+              "category": "Villa resort",
+              "amenities": ["Biệt thự", "Bãi biển", "Hồ bơi riêng", "Ẩm thực", "Khu vui chơi"],
+              "ranking_info": "Strong family and resort intent match",
+              "price_level": "Premium",
+              "best_for": ["Gia đình đông người", "Nghỉ dưỡng riêng tư"]
+            },
+            "citations": [
+              {
+                "id": "cit_6377313_01",
+                "source_document_id": "doc_6377313",
+                "chunk_id": "chunk_6377313_villa",
+                "label": "Hotel detail page",
+                "url": "data/raw/hotels/hotel_6377313_vinpearl-wonderworld-phu-quoc.json",
+                "quote": "Villa resort with private space and family facilities."
+              }
+            ],
+            "source_documents": [
+              {
+                "id": "doc_6377313",
+                "title": "Vinpearl Wonderworld Phú Quốc hotel detail",
+                "type": "hotel_detail",
+                "path": "data/raw/hotels/hotel_6377313_vinpearl-wonderworld-phu-quoc.json"
+              }
+            ],
+            "context_chunks": [
+              {
+                "id": "chunk_6377313_villa",
+                "source_document_id": "doc_6377313",
+                "text": "Không gian biệt thự và tiện ích resort hỗ trợ nhóm gia đình cần riêng tư, tiện nghi và hoạt động ngoài trời.",
+                "rank": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "query": "Khách sạn phù hợp cho chuyến công tác ở trung tâm",
+        "results": [
+          {
+            "id": "hotel_6428322",
+            "title": "Vinpearl Landmark 81, Autograph Collection",
+            "snippet": "Khách sạn cao cấp tại trung tâm TP.HCM, phù hợp chuyến công tác, gặp đối tác và di chuyển trong thành phố.",
+            "score": 0.96,
+            "metadata": {
+              "location": "Bình Thạnh, TP. Hồ Chí Minh",
+              "category": "Business hotel",
+              "amenities": ["Trung tâm", "Phòng họp", "Nhà hàng", "Wi-Fi", "Dịch vụ doanh nhân"],
+              "ranking_info": "Top match for central business hotel intent",
+              "price_level": "Luxury",
+              "best_for": ["Công tác", "Gặp đối tác", "Lưu trú ngắn ngày"]
+            },
+            "citations": [
+              {
+                "id": "cit_6428322_01",
+                "source_document_id": "doc_6428322",
+                "chunk_id": "chunk_6428322_business",
+                "label": "Hotel detail page",
+                "url": "data/raw/hotels/hotel_6428322_vinpearl-landmark-81-autograph-collection.json",
+                "quote": "Central hotel with premium services suitable for business stays."
+              }
+            ],
+            "source_documents": [
+              {
+                "id": "doc_6428322",
+                "title": "Vinpearl Landmark 81 hotel detail",
+                "type": "hotel_detail",
+                "path": "data/raw/hotels/hotel_6428322_vinpearl-landmark-81-autograph-collection.json"
+              }
+            ],
+            "context_chunks": [
+              {
+                "id": "chunk_6428322_business",
+                "source_document_id": "doc_6428322",
+                "text": "Khách sạn nằm tại khu vực trung tâm, phù hợp khách công tác cần dịch vụ cao cấp, kết nối nhanh và tiện ích làm việc.",
+                "rank": 1
+              }
+            ]
+          },
+          {
+            "id": "hotel_4947690",
+            "title": "Melia Vinpearl Riverfront Đà Nẵng",
+            "snippet": "Lựa chọn phù hợp cho công tác tại Đà Nẵng với vị trí ven sông, tiện nghi khách sạn và kết nối trung tâm.",
+            "score": 0.87,
+            "metadata": {
+              "location": "Đà Nẵng",
+              "category": "City hotel",
+              "amenities": ["Vị trí trung tâm", "Wi-Fi", "Nhà hàng", "Phòng họp", "Gym"],
+              "ranking_info": "Good business travel match for Da Nang",
+              "price_level": "Upper upscale",
+              "best_for": ["Công tác", "Du lịch kết hợp làm việc"]
+            },
+            "citations": [],
+            "source_documents": [
+              {
+                "id": "doc_4947690",
+                "title": "Melia Vinpearl Riverfront Đà Nẵng hotel detail",
+                "type": "hotel_detail",
+                "path": "data/raw/hotels/hotel_4947690_melia-vinpearl-riverfront-da-nang.json"
+              }
+            ],
+            "context_chunks": []
+          }
+        ]
+      },
+      {
+        "query": "Địa điểm nghỉ dưỡng có tiện ích cho trẻ em",
+        "results": [
+          {
+            "id": "hotel_625168",
+            "title": "Vinpearl Resort & Spa Phú Quốc",
+            "snippet": "Khu nghỉ dưỡng biển có nhiều tiện ích cho trẻ em, gia đình và hoạt động giải trí tại Phú Quốc.",
+            "score": 0.93,
+            "metadata": {
+              "location": "Phú Quốc, Kiên Giang",
+              "category": "Family resort",
+              "amenities": ["Kids club", "Bãi biển", "Hồ bơi", "Spa", "Nhà hàng", "Hoạt động gia đình"],
+              "ranking_info": "High match for children amenities and resort intent",
+              "price_level": "Premium",
+              "best_for": ["Gia đình có trẻ nhỏ", "Nghỉ dưỡng biển"]
+            },
+            "citations": [
+              {
+                "id": "cit_625168_01",
+                "source_document_id": "doc_625168",
+                "chunk_id": "chunk_625168_kids",
+                "label": "Hotel detail page",
+                "url": "data/raw/hotels/hotel_625168_vinpearl-resort-spa-phu-quoc.json",
+                "quote": "Family resort with children-friendly facilities and beach activities."
+              }
+            ],
+            "source_documents": [
+              {
+                "id": "doc_625168",
+                "title": "Vinpearl Resort & Spa Phú Quốc hotel detail",
+                "type": "hotel_detail",
+                "path": "data/raw/hotels/hotel_625168_vinpearl-resort-spa-phu-quoc.json"
+              }
+            ],
+            "context_chunks": [
+              {
+                "id": "chunk_625168_kids",
+                "source_document_id": "doc_625168",
+                "text": "Tiện ích cho gia đình gồm khu vui chơi trẻ em, hồ bơi, hoạt động ngoài trời và không gian nghỉ dưỡng ven biển.",
+                "rank": 1
+              }
+            ]
+          },
+          {
+            "id": "hotel_4593719",
+            "title": "Vinpearl Resort & Golf Nam Hội An",
+            "snippet": "Resort có không gian rộng, hoạt động giải trí và tiện ích phù hợp gia đình có trẻ em tại Nam Hội An.",
+            "score": 0.88,
+            "metadata": {
+              "location": "Nam Hội An, Quảng Nam",
+              "category": "Resort and golf",
+              "amenities": ["Khu vui chơi", "Hồ bơi", "Golf", "Nhà hàng", "Hoạt động gia đình"],
+              "ranking_info": "Good match for family activities and children amenities",
+              "price_level": "Premium",
+              "best_for": ["Gia đình", "Giải trí cuối tuần"]
+            },
+            "citations": [
+              {
+                "id": "cit_4593719_01",
+                "source_document_id": "doc_4593719",
+                "chunk_id": "chunk_4593719_family",
+                "label": "Hotel detail page",
+                "url": "data/raw/hotels/hotel_4593719_vinpearl-resort-golf-nam-hoi-an.json",
+                "quote": "Resort facilities support family recreation and children-friendly stays."
+              }
+            ],
+            "source_documents": [
+              {
+                "id": "doc_4593719",
+                "title": "Vinpearl Resort & Golf Nam Hội An hotel detail",
+                "type": "hotel_detail",
+                "path": "data/raw/hotels/hotel_4593719_vinpearl-resort-golf-nam-hoi-an.json"
+              }
+            ],
+            "context_chunks": [
+              {
+                "id": "chunk_4593719_family",
+                "source_document_id": "doc_4593719",
+                "text": "Khu nghỉ dưỡng hướng đến trải nghiệm gia đình với không gian rộng, hoạt động vui chơi và tiện ích giải trí.",
+                "rank": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "context_api": {
+    "contexts_by_result_id": {
+      "hotel_805030": {
+        "result_id": "hotel_805030",
+        "llm_context": "Vinpearl Resort & Spa Nha Trang Bay phù hợp gia đình cần resort yên tĩnh gần biển nhờ bãi biển, hồ bơi, kids club và không gian nghỉ dưỡng tại Nha Trang Bay.",
+        "citations": ["cit_805030_01"],
+        "source_documents": ["doc_805030"],
+        "context_chunks": ["chunk_805030_family", "chunk_805030_location"]
+      },
+      "hotel_6428322": {
+        "result_id": "hotel_6428322",
+        "llm_context": "Vinpearl Landmark 81 phù hợp chuyến công tác ở trung tâm TP.HCM nhờ vị trí kết nối tốt, dịch vụ cao cấp và tiện ích doanh nhân.",
+        "citations": ["cit_6428322_01"],
+        "source_documents": ["doc_6428322"],
+        "context_chunks": ["chunk_6428322_business"]
+      },
+      "hotel_625168": {
+        "result_id": "hotel_625168",
+        "llm_context": "Vinpearl Resort & Spa Phú Quốc phù hợp gia đình có trẻ em nhờ kids club, hồ bơi, bãi biển và nhiều hoạt động gia đình.",
+        "citations": ["cit_625168_01"],
+        "source_documents": ["doc_625168"],
+        "context_chunks": ["chunk_625168_kids"]
+      }
+    }
+  }
+}

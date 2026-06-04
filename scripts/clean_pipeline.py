@@ -21,6 +21,8 @@ from ingestion.cleaning.html_stripper import strip_html
 from ingestion.cleaning.text_normalizer import normalize_text
 from ingestion.cleaning.amenity_normalizer import normalize_amenities, normalize_amenities_batch
 from ingestion.cleaning.translator import translate_to_vi
+from ingestion.cleaning.occupancy_imputer import impute_max_occupancy
+from ingestion.cleaning.price_mocker import mock_room_prices
 
 DEFAULT_INPUT_DIR: Path = Path(__file__).resolve().parents[1] / "data" / "raw"
 DEFAULT_OUTPUT_DIR: Path = Path(__file__).resolve().parents[1] / "data" / "cleaned"
@@ -50,6 +52,22 @@ def _clean_str(val: Any) -> str | None:
         cleaned = normalize_text(cleaned)
         return cleaned
     return str(val)
+
+
+def _clean_room(room: dict[str, Any], hotel: dict[str, Any]) -> dict[str, Any]:
+    cr = dict(room)
+    for fk in ("name", "bed_type", "room_view"):
+        if fk in cr and isinstance(cr[fk], str):
+            cr[fk] = _clean_str(cr[fk])
+    if "room_amenities" in cr and isinstance(cr["room_amenities"], list):
+        cr["room_amenities"] = normalize_amenities(cr["room_amenities"])
+    cr["max_occupancy"] = impute_max_occupancy(cr)
+    prices = mock_room_prices(cr, hotel)
+    cr["price_per_night"] = prices["price_per_night"]
+    cr["original_price"] = prices["original_price"]
+    if "price" in cr:
+        del cr["price"]
+    return cr
 
 
 def clean_document(doc: dict[str, Any]) -> dict[str, Any]:
@@ -153,15 +171,18 @@ def clean_document(doc: dict[str, Any]) -> dict[str, Any]:
             cleaned[key] = []
             for room in val:
                 if isinstance(room, dict):
-                    cr = dict(room)
-                    for fk in ("name", "bed_type", "room_view"):
-                        if fk in cr and isinstance(cr[fk], str):
-                            cr[fk] = _clean_str(cr[fk])
-                    if "room_amenities" in cr and isinstance(cr["room_amenities"], list):
-                        cr["room_amenities"] = normalize_amenities(cr["room_amenities"])
+                    cr = _clean_room(room, doc)
                     cleaned[key].append(cr)
                 else:
                     cleaned[key].append(room)
+
+        # room_grid → clean nested rooms too (duplicate from raw)
+        elif key == "room_grid" and isinstance(val, dict):
+            cleaned[key] = dict(val)
+            grid_rooms = cleaned[key].get("rooms")
+            if isinstance(grid_rooms, list):
+                cleaned[key]["rooms"] = [_clean_room(r, doc) if isinstance(r, dict) else r for r in grid_rooms]
+            # also pass through cheapest_price, etc.
 
         # Strings that aren't HTML (just normalize, skip strip_html)
         elif isinstance(val, str):
@@ -181,7 +202,11 @@ def read_raw(input_dir: Path = DEFAULT_INPUT_DIR) -> Iterable[dict[str, Any]]:
         if fpath.name in ("hotels_detail.json", "hotels_list.json", "failed.json"):
             continue
         with open(fpath, encoding="utf-8") as f:
-            yield json.load(f)
+            doc = json.load(f)
+        if not isinstance(doc, dict):
+            print(f"WARN: skipping non-dict file {fpath.name} ({type(doc).__name__})")
+            continue
+        yield doc
 
 
 def write_cleaned(

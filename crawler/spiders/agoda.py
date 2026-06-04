@@ -209,20 +209,19 @@ class AgodaSpider(BaseSpider):
                 store["faq"] = data
         return on_response
 
-    def crawl_detail(self, context, hotel: dict):
-        """1 hotel -> (record, error). Tai dung 1 browser context cho ca batch.
+    def _open_and_capture(self, context, url: str, store: dict) -> str | None:
+        """Mo 1 trang detail, cuon, cho cac REQUIRED nguon ve het (hoac het gio).
 
-        URL de mo trang:
-          - Co property_page + hotel_id -> ghep URL chuan (_detail_url).
-          - Khong co (link tho khong id) -> goto THANG `full_url`; hotel_id se
-            lay tu propertyId trong record sau khi parse.
+        Ghi cac response bat duoc vao `store` (dung chung de tich luy qua nhieu
+        lan thu). Tra ve None neu OK, hoac chuoi loi neu goto that bai.
         """
-        url = self._detail_url(hotel) or hotel.get("full_url")
-        if not url:
-            return None, "no slug"
+        dc = self.cfg.get("detail_crawl", {})
+        required = self.cfg.get("required_sources", ["details"])
+        steps = dc.get("scroll_steps", 18)
+        pause = dc.get("scroll_pause_ms", 800)
+        wait_secs = dc.get("wait_after_scroll", 30)
 
         page = context.new_page()
-        store = {}
         page.on("response", self._make_handler(store))
         try:
             page.goto(url, wait_until="commit", timeout=60000)
@@ -230,21 +229,62 @@ class AgodaSpider(BaseSpider):
                 page.wait_for_selector("h1", timeout=20000, state="visible")
             except Exception:
                 pass
-            for _ in range(18):          # cuon het xuong (FAQ o cuoi trang)
+            # Cuon co chu dich: keo het trang de ep cac widget lazy-load
+            # (review, FAQ) ban response ra; dung som neu da du required.
+            for _ in range(steps):
+                if all(s in store for s in required):
+                    break
                 page.mouse.wheel(0, 1500)
-                page.wait_for_timeout(800)
-            deadline = time.time() + 18  # cho details + faq (faq den muon nhat)
+                page.wait_for_timeout(pause)
+            # Sau khi cuon, cho them cho cac response den muon (review hay cham)
+            deadline = time.time() + wait_secs
             while time.time() < deadline:
-                if "details" in store and "faq" in store:
+                if all(s in store for s in required):
                     break
                 page.wait_for_timeout(700)
         except Exception as e:
+            return f"goto/scroll: {e}"
+        finally:
             page.close()
-            return None, f"goto/scroll: {e}"
-        page.close()
+        return None
+
+    def _missing_required(self, store: dict) -> list:
+        """Cac REQUIRED nguon chua bat duoc trong store."""
+        required = self.cfg.get("required_sources", ["details"])
+        return [s for s in required if s not in store]
+
+    def crawl_detail(self, context, hotel: dict):
+        """1 hotel -> (record, error). Tai dung 1 browser context cho ca batch.
+
+        URL de mo trang:
+          - Co property_page + hotel_id -> ghep URL chuan (_detail_url).
+          - Khong co (link tho khong id) -> goto THANG `full_url`; hotel_id se
+            lay tu propertyId trong record sau khi parse.
+
+        Co RETRY: neu sau khi mo trang van thieu REQUIRED nguon (vd review
+        lazy-load chua kip ve) -> mo lai toi `max_attempts` lan. `store` duoc
+        TICH LUY qua cac lan (nguon nao da co thi giu). Het luot van thieu ->
+        van build record + danh dau `_incomplete` (KHONG vut), tru khi thieu
+        ca `details` (khong co gi de parse).
+        """
+        url = self._detail_url(hotel) or hotel.get("full_url")
+        if not url:
+            return None, "no slug"
+
+        dc = self.cfg.get("detail_crawl", {})
+        max_attempts = dc.get("max_attempts", 2)
+
+        store = {}
+        last_err = None
+        for attempt in range(max_attempts):
+            err = self._open_and_capture(context, url, store)
+            if err:
+                last_err = err
+            if not self._missing_required(store):
+                break  # da du required -> khong can thu lai
 
         if "details" not in store:
-            return None, "no propertyDetailsSearch"
+            return None, last_err or "no propertyDetailsSearch"
 
         record = P.build_record(store, hotel, url)
         # Link tho khong co hotel_id: lay propertyId tu record (parse tu details)
@@ -252,7 +292,39 @@ class AgodaSpider(BaseSpider):
             hotel["hotel_id"] = record["hotel_id"]
         if not record.get("hotel_id"):
             return None, "khong xac dinh duoc hotel_id (propertyId rong)"
+
+        # Danh gia day du / thieu that / thieu do loi crawl
+        self._annotate_completeness(record, store)
         return record, None
+
+    def _annotate_completeness(self, record: dict, store: dict):
+        """Gan record['_incomplete'] = danh sach field con thieu.
+
+        Phan biet 2 loai:
+          - THIEU THAT (KS qua it review -> Agoda khong render widget): grades
+            rong va review_count < nguong. Danh dau nhung KHONG nen recrawl.
+          - THIEU DO LOI CRAWL: nguon required khong bat duoc. Nen recrawl.
+        validate.py se doc _incomplete + reason de quyet dinh co day vao
+        recrawl_queue hay khong.
+        """
+        dc = self.cfg.get("detail_crawl", {})
+        threshold = dc.get("min_reviews_threshold", 20)
+
+        incomplete = []
+        # 1) Required nguon khong bat duoc -> loi crawl
+        for s in self._missing_required(store):
+            incomplete.append({"field": s, "reason": "crawl_miss"})
+
+        # 2) reviews ve nhung rong: phan biet it-review-that vs loi
+        rv = record.get("reviews_detail") or {}
+        review_count = rv.get("review_count") or record.get("review_count") or 0
+        grades_empty = not rv.get("grades")
+        if "reviews" in store and grades_empty:
+            reason = "few_reviews" if review_count < threshold else "crawl_miss"
+            incomplete.append({"field": "reviews_detail.grades", "reason": reason})
+
+        if incomplete:
+            record["_incomplete"] = incomplete
 
     # =====================================================================
     # NHANH LINK: 1 url -> hotel dict
