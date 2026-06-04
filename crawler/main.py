@@ -224,6 +224,19 @@ def main():
     limit = opt("--limit", int, None)
     site = opt("--site", str, "agoda")
 
+    if "--keys" in args:
+        raw_keys = opt("--keys", str, "")
+        keys = [k.strip() for k in raw_keys.split(",") if k.strip()]
+        if not keys:
+            print("[X] --keys can co danh sach keyword, vi du: --keys \"Hotels,Resort,Fusion\"")
+            sys.exit(1)
+        for i, key in enumerate(keys, 1):
+            print("\n" + "#" * 70)
+            print(f"# KEY {i}/{len(keys)}: {key}")
+            print("#" * 70)
+            run_batch(key, site=site, headful=headful, limit=limit)
+        return
+
     # Tham so dau tien khong phai --flag va khong phai gia tri cua flag
     flag_values = {str(limit), site}
     positional = [a for a in args

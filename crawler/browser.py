@@ -26,6 +26,7 @@ def browser_context(cfg: dict, headful: bool = False):
             context = browser.new_context(
                 user_agent=cfg.get("user_agent"),
                 locale=cfg.get("locale", "vi-vn"),
+                ignore_https_errors=True,
                 viewport={"width": vp.get("width", 1366),
                           "height": vp.get("height", 900)},
             )
