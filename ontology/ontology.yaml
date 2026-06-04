@@ -1,0 +1,45 @@
+# ontology/ontology.yaml — Quan hệ / Knowledge Graph nhẹ. Task 1.5 — Sprint 1.
+# Owner: Trương Anh Long (Knowledge Engineering).
+#
+# Mục đích: thêm QUAN HỆ giữa entity để trả lời query "gần X" bằng ĐỒ THỊ (không phải keyword).
+# concepts.* (mô tả + broader) đã nằm ở ontology/core/*.yaml — KHÔNG lặp lại ở đây.
+# File này tập trung phần KG: entities (landmark) + relations (located_in, near).
+#
+# CẤU TRÚC quan hệ:
+#   - located_in : landmark thuộc place nào (viết tay, ổn định). LMK_* -> LOC_* (place).
+#   - near       : hotel <-> landmark + distance_km. SINH TỰ ĐỘNG (Lớp A) từ nearby_places,
+#                  nằm ở ontology/relations_near.generated.yaml. Regenerate khi corpus đổi:
+#                  .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.entity_extraction.build_relations
+#
+# LƯU Ý: hotel entity (acc_<hotel_id>) KHÔNG liệt kê tĩnh ở đây vì có 51 (sẽ 500-1000).
+# Hotel entity sống trong knowledge_objects.json (Sprint 3). near.from trỏ acc_<hotel_id>.
+
+version: "2.0.0"
+
+# -----------------------------------------------------------------------------
+# ENTITIES — landmark (điểm tham quan). Place (LOC_*) đã định nghĩa ở core/location.yaml.
+# Ở đây nêu lại landmark kèm located_in để đồ thị tra cứu "landmark này ở đâu".
+# (Nguồn: ontology/core/location.yaml, kind=landmark + located_in.)
+# -----------------------------------------------------------------------------
+entities:
+  LMK_VINWONDERS_NHA_TRANG:  {type: landmark, landmark_type: amusement_park, located_in: LOC_HON_TRE}
+  LMK_VINWONDERS_PHU_QUOC:   {type: landmark, landmark_type: amusement_park, located_in: LOC_GANH_DAU}
+  LMK_GRAND_WORLD_PHU_QUOC:  {type: landmark, landmark_type: entertainment,  located_in: LOC_GANH_DAU}
+  LMK_BAI_DAI:               {type: landmark, landmark_type: beach,          located_in: LOC_PHU_QUOC}
+  LMK_VIEN_HAI_DUONG_HOC:    {type: landmark, landmark_type: museum,         located_in: LOC_NHA_TRANG}
+  LMK_DINH_BAO_DAI:          {type: landmark, landmark_type: historic,       located_in: LOC_NHA_TRANG}
+
+# -----------------------------------------------------------------------------
+# RELATIONS — quan hệ KG.
+#
+# (1) located_in: place con thuộc place cha (cây hành chính). Khớp parent ở core/location.yaml.
+# -----------------------------------------------------------------------------
+relations:
+  located_in:
+    - {from: LOC_NHA_TRANG, to: LOC_KHANH_HOA}    # city thuộc province
+    - {from: LOC_HON_TRE,   to: LOC_NHA_TRANG}     # area (đảo) thuộc city
+    - {from: LOC_GANH_DAU,  to: LOC_PHU_QUOC}      # area thuộc đảo/city
+    - {from: LOC_CUA_DAI,   to: LOC_HOI_AN}        # area thuộc city
+
+# (2) near: hotel <-> landmark + distance_km. SINH TỰ ĐỘNG, xem file:
+near_relations_file: relations_near.generated.yaml
