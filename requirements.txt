@@ -19,6 +19,9 @@ playwright==1.49.1
 pandas
 datasketch               # MinHash LSH for near-duplicate detection
 deep-translator          # Dịch review text sang tiếng Việt (Google Translate engine)
+psycopg2-binary          # PostgreSQL driver
+sqlalchemy               # ORM / Core for PostgreSQL
+alembic                  # Schema migrations
 
 # ===== Embedding & Indexing (Layer 4) =====
 sentence-transformers
