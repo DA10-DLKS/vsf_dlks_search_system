@@ -20,12 +20,15 @@ if str(_PROJECT_ROOT) not in sys.path:
 from ingestion.cleaning.html_stripper import strip_html
 from ingestion.cleaning.text_normalizer import normalize_text
 from ingestion.cleaning.amenity_normalizer import normalize_amenities, normalize_amenities_batch
-from ingestion.cleaning.translator import translate_to_vi
+from ingestion.cleaning.translator import translate_to_vi, translate_batch_parallel
+from ingestion.cleaning.html_stripper import strip_html
+from ingestion.cleaning.text_normalizer import normalize_text
 from ingestion.cleaning.occupancy_imputer import impute_max_occupancy
 from ingestion.cleaning.price_mocker import mock_room_prices
 
 DEFAULT_INPUT_DIR: Path = Path(__file__).resolve().parents[1] / "data" / "raw"
 DEFAULT_OUTPUT_DIR: Path = Path(__file__).resolve().parents[1] / "data" / "cleaned"
+_REVIEWS_DIR: Path = Path(__file__).resolve().parents[1] / "data" / "raw" / "reviews"
 
 TEXT_FIELDS_TO_CLEAN: list[str] = [
     "description",
@@ -70,7 +73,7 @@ def _clean_room(room: dict[str, Any], hotel: dict[str, Any]) -> dict[str, Any]:
     return cr
 
 
-def clean_document(doc: dict[str, Any]) -> dict[str, Any]:
+def clean_document(doc: dict[str, Any], translate_comments: bool = False) -> dict[str, Any]:
     cleaned: dict[str, Any] = {}
 
     for key, val in doc.items():
@@ -143,10 +146,24 @@ def clean_document(doc: dict[str, Any]) -> dict[str, Any]:
                         for fk in ("text", "title", "positives", "negatives", "response"):
                             if fk in nc and isinstance(nc[fk], str):
                                 nc[fk] = _clean_str(nc[fk])
-                                nc[fk] = translate_to_vi(nc[fk])
                         cleaned_comments.append(nc)
                     else:
                         cleaned_comments.append(c)
+                # Batch translate all text fields in parallel
+                all_texts: list[str] = []
+                text_positions: list[tuple[int, str]] = []
+                for ci, nc in enumerate(cleaned_comments):
+                    if not isinstance(nc, dict):
+                        continue
+                    for fk in ("text", "title", "positives", "negatives", "response"):
+                        val = nc.get(fk)
+                        if isinstance(val, str) and val:
+                            all_texts.append(val)
+                            text_positions.append((ci, fk))
+                if translate_comments and all_texts:
+                    translated = translate_batch_parallel(all_texts, max_workers=8)
+                    for (ci, fk), t in zip(text_positions, translated):
+                        cleaned_comments[ci][fk] = t
                 cleaned[key]["sample_comments"] = cleaned_comments
 
         # amenities — normalize + merge near-duplicates
@@ -195,18 +212,68 @@ def clean_document(doc: dict[str, Any]) -> dict[str, Any]:
     return cleaned
 
 
+def _merge_reviews_into_doc(doc: dict) -> dict:
+    """Inject review crawl data into doc.reviews_detail.sample_comments.
+
+    Dedup key: (reviewer_name, date) — existing comments from hotel detail
+    crawl don't have review_id, so fallback to name+date.
+    """
+    hotel_id = doc.get("id") or doc.get("hotel_id")
+    if hotel_id is None:
+        return doc
+
+    review_path = _REVIEWS_DIR / f"hotel_{hotel_id}_reviews.json"
+    if not review_path.exists():
+        return doc
+
+    with open(review_path, encoding="utf-8") as f:
+        review_data = json.load(f)
+
+    new_reviews = review_data.get("reviews", [])
+    if not new_reviews:
+        return doc
+
+    seen_by_id: set = set()
+    seen_by_fallback: set = set()
+    for r in new_reviews:
+        rid = r.get("review_id")
+        if rid is not None:
+            seen_by_id.add(rid)
+        seen_by_fallback.add((r.get("reviewer_name"), r.get("date")))
+
+    existing = doc.get("reviews_detail", {}).get("sample_comments", [])
+    kept = []
+    for c in existing:
+        rid = c.get("review_id")
+        if rid is not None and rid in seen_by_id:
+            continue
+        if (c.get("reviewer_name"), c.get("date")) in seen_by_fallback:
+            continue
+        kept.append(c)
+
+    merged = kept + new_reviews
+
+    if "reviews_detail" not in doc:
+        doc["reviews_detail"] = {}
+    doc["reviews_detail"]["sample_comments"] = merged
+    return doc
+
+
 def read_raw(input_dir: Path = DEFAULT_INPUT_DIR) -> Iterable[dict[str, Any]]:
     json_files = sorted(input_dir.rglob("*.json"))
     for fpath in json_files:
         # Skip aggregated files (non-hotel)
         if fpath.name in ("hotels_detail.json", "hotels_list.json", "failed.json"):
             continue
+        # Skip raw review files (loaded on-demand via _merge_reviews_into_doc)
+        if fpath.parent.name == "reviews" or fpath.name.endswith("_reviews.json"):
+            continue
         with open(fpath, encoding="utf-8") as f:
             doc = json.load(f)
         if not isinstance(doc, dict):
             print(f"WARN: skipping non-dict file {fpath.name} ({type(doc).__name__})")
             continue
-        yield doc
+        yield _merge_reviews_into_doc(doc)
 
 
 def write_cleaned(
@@ -228,16 +295,24 @@ def write_cleaned(
 def run(
     input_dir: Path = DEFAULT_INPUT_DIR,
     output_dir: Path = DEFAULT_OUTPUT_DIR,
+    translate_comments: bool = False,
 ) -> list[Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
     paths = []
-    for doc in read_raw(input_dir):
-        cleaned = clean_document(doc)
-        doc_id = cleaned.get("id") or cleaned.get("hotel_id", "unknown")
+    for idx, doc in enumerate(read_raw(input_dir), 1):
+        doc_id = doc.get("id") or doc.get("hotel_id", "unknown")
+        import time
+        t0 = time.time()
+        cleaned = clean_document(doc, translate_comments=translate_comments)
+        elapsed = time.time() - t0
         fname = f"hotel_{doc_id}.json"
         fpath = output_dir / fname
         with open(fpath, "w", encoding="utf-8") as f:
             json.dump(cleaned, f, ensure_ascii=False, indent=2)
         paths.append(fpath)
+        n_reviews = len(cleaned.get("reviews_detail", {}).get("sample_comments", []))
+        print(f"[{idx}] hotel_{doc_id}: {elapsed:.0f}s - {n_reviews} reviews", flush=True)
+    print(f"Cleaned {len(paths)} documents")
     return paths
 
 
@@ -246,8 +321,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Clean raw hotel documents")
     parser.add_argument("--input-dir", type=str, default=str(DEFAULT_INPUT_DIR))
     parser.add_argument("--output-dir", type=str, default=str(DEFAULT_OUTPUT_DIR))
+    parser.add_argument("--translate", action="store_true", help="Translate reviews to Vietnamese")
     args = parser.parse_args()
-    paths = run(Path(args.input_dir), Path(args.output_dir))
+    paths = run(Path(args.input_dir), Path(args.output_dir), translate_comments=args.translate)
     print(f"Cleaned {len(paths)} documents → {args.output_dir}")
 
 
