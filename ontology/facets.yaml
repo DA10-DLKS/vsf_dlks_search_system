@@ -33,9 +33,12 @@ facets:
     cardinality: one          # một cơ sở ở một địa điểm chính (place); landmark gắn qua quan hệ near (Task 1.5)
     fact_type: hard
     da09_slot: destination
-    metadata_field: core_metadata.city               # + area, district, province (cây địa danh)
-    description: Địa danh hành chính (place) + landmark. Cây phân cấp country>province>city>area.
-    hierarchy: [country, province, city, area]
+    metadata_field: core_metadata.city               # + area, country (cây địa danh)
+    description: >
+      Địa danh hành chính (country>city>area) + landmark. Toàn cầu, TỰ SINH từ data:
+      xem ontology/core/location.generated.yaml (build_locations.py, Lớp A). location.yaml giữ
+      landmark LMK_* + alias curated. Corpus: 39 country / 202 city / 333 area (555 hotel).
+    hierarchy: [country, city, area]   # 3 tầng thực: Agoda crawl province==city, district==area -> đã gộp
     # values phân theo kind (xem ontology/core/location.yaml). Place dùng để FILTER destination;
     # landmark (LMK_*) chủ yếu dùng cho quan hệ near ở ontology.yaml.
     values_places:
