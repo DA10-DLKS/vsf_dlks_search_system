@@ -3,55 +3,28 @@
 # Mỗi form -> LIST concept_id (giữ mọi ứng viên khi một form ứng nhiều concept).
 version: 2.0.0
 synonyms:
-  1 borneo:
-  - LOC_KOTA_KINABALU__1_BORNEO
+  112 m:
+  - LMK_112M
+  151 m:
+  - LMK_151M
+  153 m:
+  - LMK_153M
   '4':
+  - LMK_CONG_VIEN_16_4
   - LMK_QUANG_TRUONG_2_4
-  a rap xe ut:
-  - LOC_SAUDI_ARABIA
-  aberdeen:
-  - LOC_HAMPTON_VA__ABERDEEN
-  abu dhabi:
-  - LOC_ABU_DHABI
-  abu dhabi corniche:
-  - LOC_ABU_DHABI__ABU_DHABI_CORNICHE
+  89 m:
+  - LMK_89M
   affordable:
   - PRICE_BUDGET
-  air power park:
-  - LMK_AIR_POWER_PARK
   airport shuttle:
   - AMEN_AIRPORT_SHUTTLE
   airport transfer:
   - AMEN_AIRPORT_SHUTTLE
-  ajyad:
-  - LOC_MECCA__AJYAD
-  akasaka:
-  - LOC_TOKYO__AKASAKA
-  aktau:
-  - LOC_AKTAU
-  al barsha:
-  - LOC_DUBAI__AL_BARSHA
-  al bustan:
-  - LOC_MUSCAT__AL_BUSTAN
-  al khobar al shamalia:
-  - LOC_AL_KHOBAR__AL_KHOBAR_AL_SHAMALIA
-  al khobar_al shamalia:
-  - LOC_AL_KHOBAR__AL_KHOBAR_AL_SHAMALIA
-  al quoz:
-  - LOC_DUBAI__AL_QUOZ
-  al-khobar:
-  - LOC_AL_KHOBAR
   am thuc:
   - AMEN_RESTAURANT
   - ASPECT_FOOD
   amenities quality:
   - ASPECT_FACILITIES
-  ampang:
-  - LOC_KUALA_LUMPUR__AMPANG
-  amsterdam:
-  - LOC_AMSTERDAM
-  an do:
-  - LOC_INDIA
   an hai bac:
   - LOC_DA_NANG__AN_HAI_BAC
   an thoi:
@@ -60,55 +33,40 @@ synonyms:
   - LOC_PHU_QUOC__AN_THOI
   an uong:
   - ASPECT_FOOD
+  an vinh:
+  - LOC_LY_SON__AN_VINH
+  an vĩnh:
+  - LOC_LY_SON__AN_VINH
   an_hải bắc:
   - LOC_DA_NANG__AN_HAI_BAC
-  anaheim:
-  - LOC_ANAHEIM_CA
-  - LOC_ANAHEIM_CA__ANAHEIM
-  anaheim ( ca ):
-  - LOC_ANAHEIM_CA
+  an_vinh:
+  - LOC_LY_SON__AN_VINH
   apartment:
   - OBJ_APARTMENT
-  argentina:
-  - LOC_ARGENTINA
-  arithang:
-  - LOC_GANGTOK__ARITHANG
-  aruba:
-  - LOC_ARUBA
-  austin:
-  - LOC_AUSTIN_TX
-  austin ( tx ):
-  - LOC_AUSTIN_TX
   ba dinh:
   - LOC_HA_NOI__BA_DINH
-  ba lan:
-  - LOC_POLAND
   ba đình:
   - LOC_HA_NOI__BA_DINH
-  baan klong khong:
-  - LOC_KOH_LANTA__BAAN_KLONG_KHONG
-  bac kinh:
-  - LOC_BAC_KINH
+  bac giang:
+  - LOC_BAC_GIANG
+  bac kan:
+  - LOC_BAC_KAN
+  bac lieu:
+  - LOC_BAC_LIEU
   bac ninh:
   - LOC_BAC_NINH
-  baga:
-  - LOC_GOA__BAGA
-  bai bien boca raton:
-  - LOC_BOCA_RATON_FL__BAI_BIEN_BOCA_RATON
-  bai bien clearwater:
-  - LOC_CLEARWATER_FL__BAI_BIEN_CLEARWATER
+  bai bien bac my an:
+  - LMK_BAI_BIEN_BAC_MY_AN
+  bai bien ca na:
+  - LOC_BAI_BIEN_CA_NA
   bai bien cua dai:
   - LMK_BAI_BIEN_CUA_DAI
   bai bien cua lo:
   - LOC_CUA_LO__BAI_BIEN_CUA_LO
-  bai bien desaru:
-  - LOC_DESARU__BAI_BIEN_DESARU
-  bai bien doc lap:
-  - LOC_SIHANOUKVILLE__BAI_BIEN_DOC_LAP
-  bai bien longboat key:
-  - LOC_LONGBOAT_KEY_FL__BAI_BIEN_LONGBOAT_KEY
-  bai bien naiyang:
-  - LOC_PHUKET__BAI_BIEN_NAIYANG
+  bai bien ham tien:
+  - LMK_BAI_BIEN_HAM_TIEN
+  bai bien ho tram:
+  - LOC_VUNG_TAU__BAI_BIEN_HO_TRAM
   bai bien pham van dong:
   - LMK_BAI_BIEN_PHAM_VAN_DONG
   bai bien quy nhon:
@@ -118,8 +76,8 @@ synonyms:
   bai bien rieng:
   - AMEN_BEACHFRONT
   bai bien sam son:
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON__BAI_BIEN_SAM_SON
+  - LOC_BAI_BIEN_SAM_SON
+  - LOC_BAI_BIEN_SAM_SON__BAI_BIEN_SAM_SON
   bai chay:
   - LMK_BAI_CHAY
   bai dai:
@@ -128,34 +86,36 @@ synonyms:
   - LOC_PHU_QUOC__BAI_KHEM
   bai sao:
   - LMK_BAI_SAO
+  bai sau:
+  - LMK_BAI_SAU
   bai tam hoang hau:
   - LMK_BAI_TAM_HOANG_HAU
   bai tam_hoang_hau:
   - LMK_BAI_TAM_HOANG_HAU
-  bali:
-  - LOC_BALI
-  bandar baru permas jaya:
-  - LOC_JOHOR_BAHRU__BANDAR_BARU_PERMAS_JAYA
-  bang phu:
-  - LOC_BANG_PHU
-  bang saray:
-  - LOC_PATTAYA__BANG_SARAY
-  bangalore:
-  - LOC_BANGALORE
-  bangkok:
-  - LOC_BANGKOK
-  bangkok riverside:
-  - LOC_BANGKOK__BANGKOK_RIVERSIDE
+  bao tang binh dinh:
+  - LMK_BAO_TANG_BINH_DINH
+  bao tang con dao:
+  - LMK_BAO_TANG_CON_DAO
   bao tang hai duong hoc quoc gia viet nam:
   - LMK_BAO_TANG_HAI_DUONG_HOC_QUOC_GIA_VIET_NAM
   bao tang hai duong hoc quoc gia_viet nam:
   - LMK_BAO_TANG_HAI_DUONG_HOC_QUOC_GIA_VIET_NAM
+  bao tang lam dong:
+  - LMK_BAO_TANG_LAM_DONG
+  bao tang ninh thuan:
+  - LMK_BAO_TANG_NINH_THUAN
+  bao tang phu yen:
+  - LMK_BAO_TANG_PHU_YEN
+  bao tang_binh dinh:
+  - LMK_BAO_TANG_BINH_DINH
+  bao tang_lam dong:
+  - LMK_BAO_TANG_LAM_DONG
+  bao tang_ninh thuan:
+  - LMK_BAO_TANG_NINH_THUAN
+  bao tang_phu yen:
+  - LMK_BAO_TANG_PHU_YEN
   bar:
   - AMEN_BAR
-  barra da tijuc:
-  - LOC_RIO_DE_JANEIRO__BARRA_DA_TIJUC
-  batu ferringhi:
-  - LOC_PENANG__BATU_FERRINGHI
   be boi:
   - AMEN_POOL
   be boi co tam nhin:
@@ -174,27 +134,26 @@ synonyms:
   - LMK_BEACH_HOTEL_PARK
   beachfront:
   - AMEN_BEACHFRONT
-  - LOC_RAS_AL_KHAIMAH__BEACHFRONT
-  beijing nvren jie:
-  - LMK_BEIJING_NVREN_JIE
+  ben cang rach gia:
+  - LMK_BEN_CANG_RACH_GIA
+  ben cang rach_gia:
+  - LMK_BEN_CANG_RACH_GIA
   ben ninh kieu:
   - LOC_CAN_THO__BEN_NINH_KIEU
   ben tau du lich bai chay:
   - LMK_BEN_TAU_DU_LICH_BAI_CHAY
   ben tau du_lich bai chay:
   - LMK_BEN_TAU_DU_LICH_BAI_CHAY
-  ben thuong hai & khu phia bac:
-  - LOC_THUONG_HAI__BEN_THUONG_HAI_KHU_PHIA_BAC
-  beppu:
-  - LOC_BEPPU
-  berlin:
-  - LOC_BERLIN
-  bermuda:
-  - LOC_BERMUDA
+  ben tre:
+  - LOC_BEN_TRE
+  bien an hai:
+  - LOC_CON_DAO__BIEN_AN_HAI
   bien cua lo:
   - LOC_CUA_LO
-  bien haadson:
-  - LOC_KHAO_LAK__BIEN_HAADSON
+  bien hoa:
+  - LOC_BIEN_HOA
+  bien lo voi:
+  - LOC_CON_DAO__BIEN_LO_VOI
   bien my khe:
   - LMK_BIEN_MY_KHE
   bien nha trang:
@@ -202,75 +161,49 @@ synonyms:
   bien nha_trang:
   - LMK_BIEN_NHA_TRANG
   bien tuy hoa:
-  - LOC_TUY_HOA_PHU_YEN__BIEN_TUY_HOA
+  - LOC_TUY_HOA__BIEN_TUY_HOA
   biet thu:
   - OBJ_VILLA
   biet thu nghi duong:
   - OBJ_VILLA
   binh dan:
   - PRICE_BUDGET
+  binh dinh:
+  - LOC_BINH_DINH_TINH
   binh duong:
   - LOC_BINH_DUONG
   binh thanh:
   - LOC_HO_CHI_MINH__BINH_THANH
   binh_thanh:
   - LOC_HO_CHI_MINH__BINH_THANH
+  biên_hòa:
+  - LOC_BIEN_HOA
+  biển an_hải:
+  - LOC_CON_DAO__BIEN_AN_HAI
   biển cửa lò:
   - LOC_CUA_LO
-  biển haadson:
-  - LOC_KHAO_LAK__BIEN_HAADSON
+  biển lò vôi:
+  - LOC_CON_DAO__BIEN_LO_VOI
   biển mỹ_khê:
   - LMK_BIEN_MY_KHE
   biển nha_trang:
   - LMK_BIEN_NHA_TRANG
   biển tuy hòa:
-  - LOC_TUY_HOA_PHU_YEN__BIEN_TUY_HOA
+  - LOC_TUY_HOA__BIEN_TUY_HOA
   biệt_thự:
   - OBJ_VILLA
   biệt_thự nghỉ_dưỡng:
   - OBJ_VILLA
-  bloomington:
-  - LOC_BLOOMINGTON_MN
-  bloomington ( mn ):
-  - LOC_BLOOMINGTON_MN
-  blue mountains:
-  - LOC_BLUE_MOUNTAINS
-  bluebird gap farm:
-  - LMK_BLUEBIRD_GAP_FARM
-  blydenburgh park:
-  - LMK_BLYDENBURGH_PARK
-  boca la caja:
-  - LOC_THANH_PHO_PANAMA__BOCA_LA_CAJA
-  boca raton:
-  - LOC_BOCA_RATON_FL
-  boca raton ( fl ):
-  - LOC_BOCA_RATON_FL
-  bogor:
-  - LOC_BOGOR
-  bohol:
-  - LOC_BOHOL
-  brazil:
-  - LOC_BRAZIL
   breakfast:
   - ASPECT_FOOD
   bua sang:
   - ASPECT_FOOD
   budget:
   - PRICE_BUDGET
-  bukit bintang:
-  - LOC_KUALA_LUMPUR__BUKIT_BINTANG
-  bundang-gu:
-  - LOC_SEONGNAM_SI__BUNDANG_GU
   buon ma thuot:
   - LOC_BUON_MA_THUOT
-  bur dubai:
-  - LOC_DUBAI__BUR_DUBAI
-  busan:
-  - LOC_BUSAN
   business:
   - PURPOSE_BUSINESS
-  business bay:
-  - LOC_DUBAI__BUSINESS_BAY
   business travel:
   - PURPOSE_BUSINESS
   bustling:
@@ -281,20 +214,18 @@ synonyms:
   - AMEN_BEACHFRONT
   by the sea:
   - SETTING_COASTAL
-  bãi biển boca raton:
-  - LOC_BOCA_RATON_FL__BAI_BIEN_BOCA_RATON
-  bãi biển clearwater:
-  - LOC_CLEARWATER_FL__BAI_BIEN_CLEARWATER
+  bãi biển bắc mỹ_an:
+  - LMK_BAI_BIEN_BAC_MY_AN
+  bãi biển cà_ná:
+  - LOC_BAI_BIEN_CA_NA
   bãi biển cửa lò:
   - LOC_CUA_LO__BAI_BIEN_CUA_LO
   bãi biển cửa đại:
   - LMK_BAI_BIEN_CUA_DAI
-  bãi biển desaru:
-  - LOC_DESARU__BAI_BIEN_DESARU
-  bãi biển longboat key:
-  - LOC_LONGBOAT_KEY_FL__BAI_BIEN_LONGBOAT_KEY
-  bãi biển naiyang:
-  - LOC_PHUKET__BAI_BIEN_NAIYANG
+  bãi biển hàm_tiến:
+  - LMK_BAI_BIEN_HAM_TIEN
+  bãi biển hồ tràm:
+  - LOC_VUNG_TAU__BAI_BIEN_HO_TRAM
   bãi biển phạm_văn đồng:
   - LMK_BAI_BIEN_PHAM_VAN_DONG
   bãi biển quy_nhơn:
@@ -302,10 +233,8 @@ synonyms:
   bãi biển riêng:
   - AMEN_BEACHFRONT
   bãi biển sầm sơn:
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON__BAI_BIEN_SAM_SON
-  bãi biển độc_lập:
-  - LOC_SIHANOUKVILLE__BAI_BIEN_DOC_LAP
+  - LOC_BAI_BIEN_SAM_SON
+  - LOC_BAI_BIEN_SAM_SON__BAI_BIEN_SAM_SON
   bãi cháy:
   - LMK_BAI_CHAY
   bãi dài:
@@ -314,6 +243,8 @@ synonyms:
   - LOC_PHU_QUOC__BAI_KHEM
   bãi sao:
   - LMK_BAI_SAO
+  bãi sau:
+  - LMK_BAI_SAU
   bãi_tắm hoàng_hậu:
   - LMK_BAI_TAM_HOANG_HAU
   bình thạnh:
@@ -322,18 +253,34 @@ synonyms:
   - PRICE_BUDGET
   bình_dương:
   - LOC_BINH_DUONG
-  bạng phụ:
-  - LOC_BANG_PHU
+  bình_định:
+  - LOC_BINH_DINH_TINH
+  bạc liêu:
+  - LOC_BAC_LIEU
+  bảo_tàng bình_định:
+  - LMK_BAO_TANG_BINH_DINH
+  bảo_tàng côn_đảo:
+  - LMK_BAO_TANG_CON_DAO
   bảo_tàng hải_dương_học quốc_gia việt_nam:
   - LMK_BAO_TANG_HAI_DUONG_HOC_QUOC_GIA_VIET_NAM
-  bắc kinh:
-  - LOC_BAC_KINH
+  bảo_tàng lâm_đồng:
+  - LMK_BAO_TANG_LAM_DONG
+  bảo_tàng ninh_thuận:
+  - LMK_BAO_TANG_NINH_THUAN
+  bảo_tàng phú_yên:
+  - LMK_BAO_TANG_PHU_YEN
+  bắc giang:
+  - LOC_BAC_GIANG
+  bắc kạn:
+  - LOC_BAC_KAN
   bắc ninh:
   - LOC_BAC_NINH
+  bến cảng rạch giá:
+  - LMK_BEN_CANG_RACH_GIA
   bến ninh_kiều:
   - LOC_CAN_THO__BEN_NINH_KIEU
-  bến thượng_hải & khu phía bắc:
-  - LOC_THUONG_HAI__BEN_THUONG_HAI_KHU_PHIA_BAC
+  bến tre:
+  - LOC_BEN_TRE
   bến tàu du_lịch bãi cháy:
   - LMK_BEN_TAU_DU_LICH_BAI_CHAY
   bể bơi:
@@ -350,18 +297,12 @@ synonyms:
   - AMEN_INFINITY_POOL
   bữa sáng:
   - ASPECT_FOOD
-  cabezas:
-  - LOC_FAJARDO__CABEZAS
-  cac tieu vuong quoc a rap thong nhat:
-  - LOC_UAE
-  cac tieu vuong quoc a rap thong_nhat:
-  - LOC_UAE
+  ca mau:
+  - LOC_CA_MAU
   cafe:
   - AMEN_RESTAURANT
   cai khe:
   - LOC_CAN_THO__CAI_KHE
-  calangute:
-  - LOC_GOA__CALANGUTE
   calm:
   - STYLE_QUIET
   cam an:
@@ -372,36 +313,22 @@ synonyms:
   - LOC_HOI_AN__CAM_HA
   cam hai dong:
   - LOC_NHA_TRANG__CAM_HAI_DONG
+  cam pho:
+  - LOC_HOI_AN__CAM_PHO
   cam thanh:
   - LOC_HOI_AN__CAM_THANH
-  cam tu tang:
-  - LOC_CAM_TU_TANG
-  cam tu_tang:
-  - LOC_CAM_TU_TANG
-  cam tư_tạng:
-  - LOC_CAM_TU_TANG
   cam_an:
   - LOC_HOI_AN__CAM_AN
   cam_hải đông:
   - LOC_NHA_TRANG__CAM_HAI_DONG
   cam_thanh:
   - LOC_HOI_AN__CAM_THANH
-  campana:
-  - LOC_CAMPANA
-  campuchia:
-  - LOC_CAMBODIA
   can ho:
   - OBJ_APARTMENT
   can ho dich vu:
   - OBJ_APARTMENT
   can tho:
   - LOC_CAN_THO
-  canada:
-  - LOC_CANADA
-  cancun:
-  - LOC_CANCUN
-  candolim:
-  - LOC_GOA__CANDOLIM
   cang an thoi:
   - LMK_CANG_AN_THOI
   cang an_thoi:
@@ -410,58 +337,46 @@ synonyms:
   - LOC_HAI_PHONG__VEN_SONG_SONG_CAM_CANG_CU
   cang hon gai:
   - LOC_HA_LONG__CANG_HON_GAI
-  cang shan district:
-  - LOC_PHUC_CHAU__CANG_SHAN_DISTRICT
   cang_hon gai:
   - LOC_HA_LONG__CANG_HON_GAI
-  cangshan shangye buxingjie:
-  - LMK_CANGSHAN_SHANGYE_BUXINGJIE
+  cao bang:
+  - LOC_CAO_BANG
+  cao bằng:
+  - LOC_CAO_BANG
   cao cap:
   - PRICE_UPSCALE
   cao_cấp:
   - PRICE_UPSCALE
   cap doi:
   - PURPOSE_ROMANTIC
-  cararatas:
-  - LOC_FOZ_DO_IGUACU__CARARATAS
-  carefree:
-  - LOC_PHOENIX_AZ__CAREFREE
   cat ba:
   - LOC_QUAN_DAO_CAT_BA__CAT_BA
+  cau:
+  - LMK_CAU
   cau giay:
   - LOC_HA_NOI__CAU_GIAY
-  cau lac bo gon heatherwood:
-  - LMK_CAU_LAC_BO_GON_HEATHERWOOD
   cau lac bo tre em:
   - AMEN_KIDS_CLUB
-  cau lac bo_gon heatherwood:
-  - LMK_CAU_LAC_BO_GON_HEATHERWOOD
-  cavelossim:
-  - LOC_GOA__CAVELOSSIM
+  cau ngam bien:
+  - LMK_CAU_NGAM_BIEN
   cay xanh:
   - SETTING_NATURE
-  cebu:
-  - LOC_CEBU
   central:
   - SETTING_CITY_CENTER
-  central scottsdale:
-  - LOC_PHOENIX_AZ__CENTRAL_SCOTTSDALE
-  cha-am:
-  - LOC_HUA_HIN_CHA_AM
+  central park:
+  - LMK_CENTRAL_PARK
   cham soc khach:
   - ASPECT_SERVICE
   cham soc suc khoe:
   - PURPOSE_WELLNESS
-  champagne-mouton:
-  - LOC_CHAMPAGNE_MOUTON
+  cham ta lao:
+  - LOC_CHAM_TA_LAO
   chat luong phong:
   - ASPECT_ROOM
-  chau hai:
-  - LOC_CHAU_HAI
+  chau doc:
+  - LOC_CHAU_DOC
   cheap:
   - PRICE_BUDGET
-  chicago:
-  - LOC_CHICAGO
   children club:
   - AMEN_KIDS_CLUB
   children pool:
@@ -474,20 +389,26 @@ synonyms:
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
   choi golf:
   - AMEN_GOLF
-  chonburi:
-  - LOC_CHONBURI
-  chowkit:
-  - LOC_KUALA_LUMPUR__CHOWKIT_PUTRA_WTC
-  chowkit / putra wtc:
-  - LOC_KUALA_LUMPUR__CHOWKIT_PUTRA_WTC
+  chua ho quoc:
+  - LMK_CHUA_HO_QUOC
+  chua long khanh:
+  - LMK_CHUA_LONG_KHANH
   chua sung duc:
   - LMK_CHUA_SUNG_DUC
+  chua thien vuong co sat:
+  - LMK_CHUA_THIEN_VUONG_CO_SAT
   chua_sung duc:
   - LMK_CHUA_SUNG_DUC
-  châu_hải:
-  - LOC_CHAU_HAI
+  châu_đốc:
+  - LOC_CHAU_DOC
+  chùa hộ_quốc:
+  - LMK_CHUA_HO_QUOC
+  chùa long_khánh:
+  - LMK_CHUA_LONG_KHANH
   chùa sùng_đức:
   - LMK_CHUA_SUNG_DUC
+  chùa thiên_vương cổ_sát:
+  - LMK_CHUA_THIEN_VUONG_CO_SAT
   chăm_sóc khách:
   - ASPECT_SERVICE
   chăm_sóc sức khỏe:
@@ -500,12 +421,12 @@ synonyms:
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
   city center:
   - SETTING_CITY_CENTER
-  clb the thao ngoai troi & san gon stonebridge:
-  - LMK_CLB_THE_THAO_NGOAI_TROI_SAN_GON_STONEBRIDGE
-  clb the_thao ngoai troi & san gon stonebridge:
-  - LMK_CLB_THE_THAO_NGOAI_TROI_SAN_GON_STONEBRIDGE
-  clb thể_thao ngoài_trời & sân gôn stonebridge:
-  - LMK_CLB_THE_THAO_NGOAI_TROI_SAN_GON_STONEBRIDGE
+  clb the thao khong quan:
+  - LMK_CLB_THE_THAO_KHONG_QUAN
+  clb the thao_khong quan:
+  - LMK_CLB_THE_THAO_KHONG_QUAN
+  clb thể_thao không_quân:
+  - LMK_CLB_THE_THAO_KHONG_QUAN
   clb tre em:
   - AMEN_KIDS_CLUB
   clb trẻ_em:
@@ -514,55 +435,72 @@ synonyms:
   - ASPECT_CLEANLINESS
   cleanliness:
   - ASPECT_CLEANLINESS
-  clearwater:
-  - LOC_CLEARWATER_FL
-  clearwater ( fl ):
-  - LOC_CLEARWATER_FL
-  co an:
-  - LOC_LANG_PHUONG__CO_AN_GU_AN
-  co an ( gu'an ):
-  - LOC_LANG_PHUONG__CO_AN_GU_AN
   co so vat chat:
   - ASPECT_FACILITIES
-  co_an ( gu'an ):
-  - LOC_LANG_PHUONG__CO_AN_GU_AN
   coastal:
   - SETTING_COASTAL
-  commack:
-  - LOC_COMMACK_NY
-  - LOC_COMMACK_NY__COMMACK
-  commack ( ny ):
-  - LOC_COMMACK_NY
+  con dao:
+  - LOC_CON_DAO
   cong tac:
   - PURPOSE_BUSINESS
+  cong ty du lich mekong:
+  - LMK_CONG_TY_DU_LICH_MEKONG
+  cong vien 16:
+  - LMK_CONG_VIEN_16_4
+  cong vien 16/4:
+  - LMK_CONG_VIEN_16_4
+  cong vien 31 thang 3:
+  - LMK_CONG_VIEN_31_THANG_3
   cong vien bien dong:
   - LMK_CONG_VIEN_BIEN_DONG
   cong vien giai tri vinpearl land:
   - LMK_CONG_VIEN_GIAI_TRI_VINPEARL_LAND
   cong vien giai_tri vinpearl land:
   - LMK_CONG_VIEN_GIAI_TRI_VINPEARL_LAND
+  cong vien hoang lam:
+  - LMK_CONG_VIEN_HOANG_LAM
+  cong vien hoang_lam:
+  - LMK_CONG_VIEN_HOANG_LAM
   cong vien hon trong mai:
   - LMK_CONG_VIEN_HON_TRONG_MAI
+  cong vien hung vuong:
+  - LMK_CONG_VIEN_HUNG_VUONG
+  cong vien nguyen trung truc:
+  - LMK_CONG_VIEN_NGUYEN_TRUNG_TRUC
+  cong vien nguyen trung_truc:
+  - LMK_CONG_VIEN_NGUYEN_TRUNG_TRUC
+  cong vien nuoc phu dong:
+  - LMK_CONG_VIEN_NUOC_PHU_DONG
+  cong vien nuoc_phu dong:
+  - LMK_CONG_VIEN_NUOC_PHU_DONG
   cong vien rong:
   - LMK_CONG_VIEN_RONG
   cong vien thieu nhi:
   - LMK_CONG_VIEN_THIEU_NHI
+  cong vien tho trang vung tau:
+  - LMK_CONG_VIEN_THO_TRANG_VUNG_TAU
+  cong vien tho_trang vung tau:
+  - LMK_CONG_VIEN_THO_TRANG_VUNG_TAU
   cong vien trung tam sam son:
   - LMK_CONG_VIEN_TRUNG_TAM_SAM_SON
   cong vien trung_tam sam_son:
   - LMK_CONG_VIEN_TRUNG_TAM_SAM_SON
+  cong vien tuong dai:
+  - LMK_CONG_VIEN_TUONG_DAI
+  cong vien ven song khu 16 hecta:
+  - LMK_CONG_VIEN_VEN_SONG_KHU_16_HECTA
   cong vien_hon trong mai:
   - LMK_CONG_VIEN_HON_TRONG_MAI
   cong vu:
   - PURPOSE_BUSINESS
+  cong_ty du_lich mekong:
+  - LMK_CONG_TY_DU_LICH_MEKONG
   contemporary:
   - STYLE_MODERN
-  cordelia junction:
-  - LOC_FAIRFIELD_CA__CORDELIA_JUNCTION
-  cotai:
-  - LOC_MA_CAO__COTAI
   couple:
   - PURPOSE_ROMANTIC
+  cu lao cham:
+  - LMK_CU_LAO_CHAM
   cua dai:
   - LOC_CUA_DAI
   cua duong:
@@ -575,36 +513,58 @@ synonyms:
   - LMK_CUNG_VAN_HOA_HUU_NGHI
   cung_văn_hóa hữu_nghị:
   - LMK_CUNG_VAN_HOA_HUU_NGHI
-  cupertino:
-  - LOC_SAN_JOSE_CA__CUPERTINO
-  các tiểu_vương_quốc ả_rập thống_nhất:
-  - LOC_UAE
+  cà_mau:
+  - LOC_CA_MAU
   cái khế:
   - LOC_CAN_THO__CAI_KHE
   cát bà:
   - LOC_QUAN_DAO_CAT_BA__CAT_BA
-  câu_lạc_bộ gôn heatherwood:
-  - LMK_CAU_LAC_BO_GON_HEATHERWOOD
   câu_lạc_bộ trẻ_em:
   - AMEN_KIDS_CLUB
   cây_xanh:
   - SETTING_NATURE
+  côn_đảo:
+  - LOC_CON_DAO
+  công_ty du_lịch mekong:
+  - LMK_CONG_TY_DU_LICH_MEKONG
   công_tác:
   - PURPOSE_BUSINESS
+  công_viên 16:
+  - LMK_CONG_VIEN_16_4
+  công_viên 16/4:
+  - LMK_CONG_VIEN_16_4
+  công_viên 31 tháng 3:
+  - LMK_CONG_VIEN_31_THANG_3
   công_viên biển đông:
   - LMK_CONG_VIEN_BIEN_DONG
   công_viên giải_trí vinpearl land:
   - LMK_CONG_VIEN_GIAI_TRI_VINPEARL_LAND
+  công_viên hoàng_lam:
+  - LMK_CONG_VIEN_HOANG_LAM
   công_viên hòn trống mái:
   - LMK_CONG_VIEN_HON_TRONG_MAI
+  công_viên hùng_vương:
+  - LMK_CONG_VIEN_HUNG_VUONG
+  công_viên nguyễn_trung_trực:
+  - LMK_CONG_VIEN_NGUYEN_TRUNG_TRUC
   công_viên rồng:
   - LMK_CONG_VIEN_RONG
   công_viên thiếu_nhi:
   - LMK_CONG_VIEN_THIEU_NHI
+  công_viên thỏ trắng vũng tàu:
+  - LMK_CONG_VIEN_THO_TRANG_VUNG_TAU
   công_viên trung_tâm sầm sơn:
   - LMK_CONG_VIEN_TRUNG_TAM_SAM_SON
+  công_viên tượng_đài:
+  - LMK_CONG_VIEN_TUONG_DAI
+  công_viên ven sông khu 16 hecta:
+  - LMK_CONG_VIEN_VEN_SONG_KHU_16_HECTA
+  công_viên_nước phù_đổng:
+  - LMK_CONG_VIEN_NUOC_PHU_DONG
   công_vụ:
   - PURPOSE_BUSINESS
+  cù_lao chàm:
+  - LMK_CU_LAO_CHAM
   căn_hộ:
   - OBJ_APARTMENT
   căn_hộ dịch_vụ:
@@ -619,8 +579,14 @@ synonyms:
   - LOC_HA_LONG__CANG_HON_GAI
   cần thơ:
   - LOC_CAN_THO
+  cầu:
+  - LMK_CAU
   cầu giấy:
   - LOC_HA_NOI__CAU_GIAY
+  cầu ngắm biển:
+  - LMK_CAU_NGAM_BIEN
+  cẩm phô:
+  - LOC_HOI_AN__CAM_PHO
   cẩm_an:
   - LOC_HOI_AN__CAM_AN
   cẩm_châu:
@@ -631,16 +597,14 @@ synonyms:
   - LOC_HOI_AN__CAM_THANH
   cặp đôi:
   - PURPOSE_ROMANTIC
-  cố an:
-  - LOC_LANG_PHUONG__CO_AN_GU_AN
-  cố an ( gu'an ):
-  - LOC_LANG_PHUONG__CO_AN_GU_AN
   cửa dương:
   - LOC_PHU_QUOC__CUA_DUONG
   cửa lò:
   - LOC_CUA_LO
   cửa đại:
   - LOC_CUA_DAI
+  da chong:
+  - LMK_DA_CHONG
   da lat:
   - LOC_DA_LAT
   da nang:
@@ -649,34 +613,10 @@ synonyms:
   - LOC_GIA_LAM__DA_TON
   da_nang:
   - LOC_DA_NANG
-  dacheng hall of fenghuang:
-  - LMK_DACHENG_HALL_OF_FENGHUANG
-  dai bac:
-  - LOC_DAI_BAC
-  dai las vegas:
-  - LOC_LAS_VEGAS_NV__DAI_LAS_VEGAS
-  dai loan:
-  - LOC_TAIWAN
-  dai xuong:
-  - LOC_LANG_PHUONG__DAI_XUONG_DACHANG
-  dai xuong ( dachang ):
-  - LOC_LANG_PHUONG__DAI_XUONG_DACHANG
-  dai_bac:
-  - LOC_DAI_BAC
-  dai_las vegas:
-  - LOC_LAS_VEGAS_NV__DAI_LAS_VEGAS
-  dai_loan:
-  - LOC_TAIWAN
-  dai_xuong:
-  - LOC_LANG_PHUONG__DAI_XUONG_DACHANG
-  dai_xuong ( dachang ):
-  - LOC_LANG_PHUONG__DAI_XUONG_DACHANG
-  dallas:
-  - LOC_DALLAS_TX
-  dallas ( tx ):
-  - LOC_DALLAS_TX
-  damai laut:
-  - LOC_LUMUT__DAMAI_LAUT
+  dai tuong niem liet si:
+  - LMK_DAI_TUONG_NIEM_LIET_SI
+  dai_tuong niem liet si:
+  - LMK_DAI_TUONG_NIEM_LIET_SI
   dang cap:
   - PRICE_LUXURY
   - STYLE_LUXURY
@@ -686,56 +626,32 @@ synonyms:
   - ASPECT_VALUE
   dao castaway island:
   - LMK_DAO_CASTAWAY_ISLAND
-  dao denarau:
-  - LOC_NADI__DAO_DENARAU
-  dao gulangyu:
-  - LOC_HA_MON__DAO_GULANGYU
-  dao koh si chang:
-  - LOC_CHONBURI__DAO_KOH_SI_CHANG
-  dao koh si_chang:
-  - LOC_CHONBURI__DAO_KOH_SI_CHANG
-  dao mactan:
-  - LOC_CEBU__DAO_MACTAN
-  dao mamanuca:
-  - LOC_DAO_MAMANUCA
-  dao panglao:
-  - LOC_BOHOL__DAO_PANGLAO
   dao phu quoc:
   - LOC_PHU_QUOC
   dao rieng:
   - SETTING_ISLAND
-  dao saadiyat:
-  - LOC_ABU_DHABI__DAO_SAADIYAT
-  dao sonaisali:
-  - LOC_NADI__DAO_SONAISALI
-  dao thanh:
-  - LOC_CAM_TU_TANG__DAO_THANH_DAOCHENG
-  dao thanh ( daocheng ):
-  - LOC_CAM_TU_TANG__DAO_THANH_DAOCHENG
   dao_phu quoc:
   - LOC_PHU_QUOC
-  dao_thanh ( daocheng ):
-  - LOC_CAM_TU_TANG__DAO_THANH_DAOCHENG
+  dat 513 m:
+  - LMK_DAT_513M
   de chiu:
   - STYLE_RELAXING
-  deira:
-  - LOC_DUBAI__DEIRA
+  den ba chua xu:
+  - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
   den doc cuoc:
   - LMK_DEN_DOC_CUOC
-  desaru:
-  - LOC_DESARU
-  detroit:
-  - LOC_DETROIT_MI
-  detroit ( mi ):
-  - LOC_DETROIT_MI
-  dhulikhel:
-  - LOC_KATHMANDU__DHULIKHEL
   di doan:
   - PURPOSE_GROUP
   di mot minh:
   - PURPOSE_SOLO
   di theo nhom:
   - PURPOSE_GROUP
+  di tich doc cay cam:
+  - LMK_DI_TICH_DOC_CAY_CAM
+  di_tich doc cay cam:
+  - LMK_DI_TICH_DOC_CAY_CAM
+  di_tích dốc cây cám:
+  - LMK_DI_TICH_DOC_CAY_CAM
   dia diem:
   - ASPECT_LOCATION
   dich vu:
@@ -746,14 +662,30 @@ synonyms:
   - AMEN_RESTAURANT
   diem ngam canh:
   - LMK_DIEM_NGAM_CANH
+  dien bien phu:
+  - LOC_DIEN_BIEN_PHU
+  dien bien_phu:
+  - LOC_DIEN_BIEN_PHU
+  dien duong:
+  - LOC_HOI_AN__DIEN_DUONG
   dinh bao dai:
   - LMK_DINH_BAO_DAI
   dinh bảo đại:
   - LMK_DINH_BAO_DAI
+  dinh chau phu:
+  - LMK_DINH_CHAU_PHU
+  dinh chau_phu:
+  - LMK_DINH_CHAU_PHU
+  dinh ho son co tu:
+  - LMK_DINH_HO_SON_CO_TU
+  dinh ho_son_co tu:
+  - LMK_DINH_HO_SON_CO_TU
   dinh than nguyen trung truc:
   - LMK_DINH_THAN_NGUYEN_TRUNG_TRUC
   dinh than nguyen trung_truc:
   - LMK_DINH_THAN_NGUYEN_TRUNG_TRUC
+  dinh thang tam:
+  - LMK_DINH_THANG_TAM
   dining:
   - AMEN_RESTAURANT
   - ASPECT_FOOD
@@ -763,58 +695,40 @@ synonyms:
   - ASPECT_CLEANLINESS
   do thoai mai cua phong:
   - ASPECT_ROOM
-  doha:
-  - LOC_DOHA
+  doc let:
+  - LOC_NHA_TRANG__DOC_LET
   doi:
   - PURPOSE_ROMANTIC
-  doi ho va khu giai tri to chau:
-  - LOC_TO_CHAU__DOI_HO_VA_KHU_GIAI_TRI_TO_CHAU
-  doi ho_va khu giai_tri to chau:
-  - LOC_TO_CHAU__DOI_HO_VA_KHU_GIAI_TRI_TO_CHAU
+  doi con heo:
+  - LMK_DOI_CON_HEO
   doi nui:
   - SETTING_MOUNTAIN
-  don xuong:
-  - LOC_DON_XUONG
   dong da:
   - LOC_HA_NOI__DONG_DA
   dong hoi:
-  - LOC_QUANG_BINH
-  - LOC_QUANG_BINH__DONG_HOI
-  dong hoi ( quang binh ):
-  - LOC_QUANG_BINH
-  dong the strip:
-  - LOC_LAS_VEGAS_NV__DONG_THE_STRIP
+  - LOC_DONG_HOI
+  - LOC_DONG_HOI__DONG_HOI
+  dong nai:
+  - LOC_DONG_NAI_TINH
+  dong tam coc - bich dong:
+  - LOC_NINH_BINH__DONG_TAM_COC_BICH_DONG
+  dong tam_coc - bich dong:
+  - LOC_NINH_BINH__DONG_TAM_COC_BICH_DONG
   dong_hoi:
-  - LOC_QUANG_BINH
-  - LOC_QUANG_BINH__DONG_HOI
-  dong_hoi ( quang_binh ):
-  - LOC_QUANG_BINH
+  - LOC_DONG_HOI
+  - LOC_DONG_HOI__DONG_HOI
   downtown:
   - SETTING_CITY_CENTER
   dua don san bay:
   - AMEN_AIRPORT_SHUTTLE
-  dubai:
-  - LOC_DUBAI
-  duc:
-  - LOC_GERMANY
-  duong beach pattaya:
-  - LOC_PATTAYA__DUONG_BEACH_PATTAYA
   duong dong:
   - LOC_PHU_QUOC__DUONG_DONG
   duong to:
   - LOC_PHU_QUOC__DUONG_TO
-  duy phuong:
-  - LOC_DUY_PHUONG
-  duy phường:
-  - LOC_DUY_PHUONG
-  duy_phuong:
-  - LOC_DUY_PHUONG
   dương tơ:
   - LOC_PHU_QUOC__DUONG_TO
   dương đông:
   - LOC_PHU_QUOC__DUONG_DONG
-  dải las vegas:
-  - LOC_LAS_VEGAS_NV__DAI_LAS_VEGAS
   dễ_chịu:
   - STYLE_RELAXING
   dịch_vụ:
@@ -823,43 +737,18 @@ synonyms:
   - AMEN_RESTAURANT
   dịch_vụ đưa_đón:
   - AMEN_AIRPORT_SHUTTLE
-  east farmingdale:
-  - LOC_EAST_FARMINGDALE_NY
-  - LOC_EAST_FARMINGDALE_NY__EAST_FARMINGDALE
-  east farmingdale ( ny ):
-  - LOC_EAST_FARMINGDALE_NY
-  east gate tower of xiangxi:
-  - LMK_EAST_GATE_TOWER_OF_XIANGXI
+  dốc lết:
+  - LOC_NHA_TRANG__DOC_LET
   eco:
   - STYLE_ECO
   eco-friendly:
   - STYLE_ECO
-  edmundson:
-  - LOC_ST_LOUIS_MO__EDMUNDSON
   entire place:
   - OBJ_APARTMENT
   exclusive:
   - STYLE_LUXURY
   facilities:
   - ASPECT_FACILITIES
-  fairfield:
-  - LOC_FAIRFIELD_CA
-  - LOC_FAIRFIELD_CT
-  - LOC_FAIRFIELD_CT__FAIRFIELD
-  - LOC_FAIRFIELD_NJ
-  - LOC_FAIRFIELD_NJ__FAIRFIELD
-  - LOC_FAIRFIELD_OH
-  - LOC_FAIRFIELD_OH__FAIRFIELD
-  fairfield ( ca ):
-  - LOC_FAIRFIELD_CA
-  fairfield ( ct ):
-  - LOC_FAIRFIELD_CT
-  fairfield ( nj ):
-  - LOC_FAIRFIELD_NJ
-  fairfield ( oh ):
-  - LOC_FAIRFIELD_OH
-  fajardo:
-  - LOC_FAJARDO
   family:
   - PURPOSE_FAMILY
   family with kids:
@@ -868,16 +757,6 @@ synonyms:
   - PURPOSE_FAMILY
   fancy:
   - STYLE_LUXURY
-  farmingville:
-  - LOC_LANG_FARMINGVILLE_NY__FARMINGVILLE
-  fenghuang:
-  - LOC_PHUONG_HOANG__FENGHUANG
-  fenghuang yang's ancestral hall:
-  - LMK_FENGHUANG_YANG_S_ANCESTRAL_HALL
-  fiji:
-  - LOC_FIJI
-  first presbyterian church:
-  - LMK_FIRST_PRESBYTERIAN_CHURCH
   fitness:
   - AMEN_GYM
   fitness center:
@@ -890,56 +769,32 @@ synonyms:
   - LMK_FLC_GOLF_LINKS_SAM_SON
   food:
   - ASPECT_FOOD
-  fort lauderdale:
-  - LOC_FORT_LAUDERDALE_FL
-  fort lauderdale ( fl ):
-  - LOC_FORT_LAUDERDALE_FL
-  foz do iguacu:
-  - LOC_FOZ_DO_IGUACU
   free wifi:
   - AMEN_WIFI
-  french quarter:
-  - LOC_NGOC_LAN_LA__FRENCH_QUARTER
-  fuqing:
-  - LOC_PHUC_CHAU__FUQING
-  fuxin:
-  - LOC_PHU_TAN__FUXIN
   ga da lat:
+  - LMK_GA_DA_LAT
   - LOC_DA_LAT__GA_DA_LAT
-  ga dong:
-  - LOC_QUANG_CHAU__QUAN_THIEN_HA_TEEMALL_GA_DONG
-  ga nara:
-  - LOC_NARA__GA_NARA
   ga đà lạt:
+  - LMK_GA_DA_LAT
   - LOC_DA_LAT__GA_DA_LAT
-  ga đông:
-  - LOC_QUANG_CHAU__QUAN_THIEN_HA_TEEMALL_GA_DONG
   gan bien:
   - AMEN_BEACHFRONT
   gan gui thien nhien:
   - SETTING_NATURE
   gan trung tam:
   - SETTING_CITY_CENTER
-  gangtok:
-  - LOC_GANGTOK
   ganh dau:
   - LOC_GANH_DAU
-  gaomi:
-  - LOC_DUY_PHUONG__GAOMI
   garden view:
   - SETTING_NATURE
-  gardens:
-  - LOC_MUI_HAO_VONG__GARDENS
-  geuzenveld:
-  - LOC_AMSTERDAM__GEUZENVELD_SLOTERMEER
-  geuzenveld / slotermeer:
-  - LOC_AMSTERDAM__GEUZENVELD_SLOTERMEER
   gia dinh:
   - PURPOSE_FAMILY
   gia dinh co thanh thieu nien:
   - PURPOSE_FAMILY
   gia dinh co tre nho:
   - PURPOSE_FAMILY
+  gia lai:
+  - LOC_GIA_LAI_TINH
   gia lam:
   - LOC_GIA_LAM
   gia re:
@@ -950,6 +805,8 @@ synonyms:
   - ASPECT_VALUE
   gia vua phai:
   - PRICE_MID
+  gia_lai:
+  - LOC_GIA_LAI_TINH
   gia_lam:
   - LOC_GIA_LAM
   gia_lâm:
@@ -968,97 +825,62 @@ synonyms:
   - PRICE_MID
   giá_trị:
   - ASPECT_VALUE
-  goa:
-  - LOC_GOA
-  gold coast:
-  - LOC_GOLD_COAST
+  go vap:
+  - LOC_HO_CHI_MINH__GO_VAP
   golf:
   - AMEN_GOLF
   golf course:
   - AMEN_GOLF
-  gongju-si:
-  - LOC_GONGJU_SI
-  gorbio:
-  - LOC_MENTON__GORBIO
   green:
   - STYLE_ECO
-  grogan's mill:
-  - LOC_THE_WOODLANDS_TX__GROGAN_S_MILL
   group:
   - PURPOSE_GROUP
   group travel:
   - PURPOSE_GROUP
-  gu lou district:
-  - LOC_PHUC_CHAU__GU_LOU_DISTRICT
-  guam:
-  - LOC_GUAM
   gym:
   - AMEN_GYM
   gành dầu:
   - LOC_GANH_DAU
+  gò vấp:
+  - LOC_HO_CHI_MINH__GO_VAP
   gần biển:
   - AMEN_BEACHFRONT
   gần trung_tâm:
   - SETTING_CITY_CENTER
   gần_gũi thiên_nhiên:
   - SETTING_NATURE
+  ha dong:
+  - LOC_HA_NOI__HA_DONG
   ha giang:
   - LOC_HA_GIANG
-  ha lan:
-  - LOC_NETHERLANDS
   ha long:
   - LOC_HA_LONG
-  ha mon:
-  - LOC_HA_MON
   ha nam:
-  - LOC_HA_NAM
   - LOC_HA_NAM_TINH
   ha noi:
   - LOC_HA_NOI
+  ha tien:
+  - LOC_HA_TIEN
   ha tinh:
   - LOC_HA_TINH
-  haeundae-gu:
-  - LOC_BUSAN__HAEUNDAE_GU
   hai chau:
   - LOC_DA_NANG__HAI_CHAU
-  hai khau:
-  - LOC_HAI_KHAU
   hai nguoi:
   - PURPOSE_ROMANTIC
   hai người:
   - PURPOSE_ROMANTIC
   hai phong:
   - LOC_HAI_PHONG
-  hakone:
-  - LOC_HAKONE
-  hallandale beach:
-  - LOC_HALLANDALE_BEACH_FL
-  - LOC_HALLANDALE_BEACH_FL__HALLANDALE_BEACH
-  hallandale beach ( fl ):
-  - LOC_HALLANDALE_BEACH_FL
-  hamburg:
-  - LOC_HAMBURG
-  hampton:
-  - LOC_HAMPTON_VA
-  hampton ( va ):
-  - LOC_HAMPTON_VA
-  hampton air power park & museum:
-  - LMK_HAMPTON_AIR_POWER_PARK_MUSEUM
-  han quoc:
-  - LOC_SOUTH_KOREA
   hang sang:
   - PRICE_UPSCALE
+  hang son doong:
+  - LMK_HANG_SON_DOONG
+  hang son_doong:
+  - LMK_HANG_SON_DOONG
+  hang sơn đoòng:
+  - LMK_HANG_SON_DOONG
   hang trung:
   - PRICE_MID
-  harlem:
-  - LOC_NEW_YORK_NY__HARLEM
-  hauppauge:
-  - LOC_HAUPPAUGE_NY
-  - LOC_HAUPPAUGE_NY__HAUPPAUGE
-  hauppauge ( ny ):
-  - LOC_HAUPPAUGE_NY
-  heping lijing shangyejie:
-  - LMK_HEPING_LIJING_SHANGYEJIE
   hien dai:
   - STYLE_MODERN
   high-end:
@@ -1067,8 +889,6 @@ synonyms:
   - SETTING_MOUNTAIN
   hiện_đại:
   - STYLE_MODERN
-  ho ashi:
-  - LOC_HAKONE__HO_ASHI
   ho boi:
   - AMEN_POOL
   ho boi ngoai troi:
@@ -1081,8 +901,10 @@ synonyms:
   - AMEN_PRIVATE_POOL
   ho boi vo cuc:
   - AMEN_INFINITY_POOL
-  ho bryan:
-  - LOC_ORLANDO_FL__HO_BRYAN
+  ho cai dam:
+  - LMK_HO_CAI_DAM
+  ho cai_dam:
+  - LMK_HO_CAI_DAM
   ho chi minh:
   - LOC_HO_CHI_MINH
   ho chi_minh:
@@ -1097,18 +919,10 @@ synonyms:
   - LOC_HOA_BINH
   hoa hai:
   - LOC_DA_NANG__HOA_HAI
-  hoa ky:
-  - LOC_USA
-  hoa kỳ:
-  - LOC_USA
   hoa ninh:
   - LOC_DA_NANG__HOA_NINH
   hoa_binh:
   - LOC_HOA_BINH
-  hoai vien:
-  - LOC_BANG_PHU__HOAI_VIEN_HUAIYUAN
-  hoai vien ( huaiyuan ):
-  - LOC_BANG_PHU__HOAI_VIEN_HUAIYUAN
   hoi an:
   - LOC_HOI_AN
   homestay:
@@ -1117,61 +931,44 @@ synonyms:
   - SETTING_ISLAND
   hon mong tay:
   - LMK_HON_MONG_TAY
+  hon tai:
+  - LMK_HON_TAI
+  hon thom:
+  - LMK_HON_THOM
   hon tre:
   - LOC_HON_TRE
   honeymoon:
   - PURPOSE_ROMANTIC
-  hong kong:
-  - LOC_HONG_KONG
-  hong kong airport:
-  - LOC_HONG_KONG__HONG_KONG_AIRPORT
-  honolulu:
-  - LOC_HONOLULU_HI
-  honolulu ( hi ):
-  - LOC_HONOLULU_HI
   hotel:
   - OBJ_HOTEL
-  hotel zone:
-  - LOC_CANCUN__HOTEL_ZONE
-  houston:
-  - LOC_HOUSTON_TX
-  houston ( tx ):
-  - LOC_HOUSTON_TX
-  hoài viễn:
-  - LOC_BANG_PHU__HOAI_VIEN_HUAIYUAN
-  hoài viễn ( huaiyuan ):
-  - LOC_BANG_PHU__HOAI_VIEN_HUAIYUAN
-  hua hin:
-  - LOC_HUA_HIN_CHA_AM
-  hua hin / cha-am:
-  - LOC_HUA_HIN_CHA_AM
   hue:
   - LOC_HUE
   huong bien:
   - AMEN_SEA_VIEW
   huong dai duong:
   - AMEN_SEA_VIEW
-  huong ha:
-  - LOC_LANG_PHUONG__HUONG_HA
   huong nui:
   - SETTING_MOUNTAIN
   huong vuon:
   - SETTING_NATURE
+  huyen cu chi:
+  - LOC_HO_CHI_MINH__HUYEN_CU_CHI
+  huyện củ_chi:
+  - LOC_HO_CHI_MINH__HUYEN_CU_CHI
   huế:
   - LOC_HUE
-  hà lan:
-  - LOC_NETHERLANDS
   hà nam:
-  - LOC_HA_NAM
   - LOC_HA_NAM_TINH
+  hà đông:
+  - LOC_HA_NOI__HA_DONG
   hà_giang:
   - LOC_HA_GIANG
   hà_nội:
   - LOC_HA_NOI
+  hà_tiên:
+  - LOC_HA_TIEN
   hà_tĩnh:
   - LOC_HA_TINH
-  hàn_quốc:
-  - LOC_SOUTH_KOREA
   hòa bình:
   - LOC_HOA_BINH
   hòa hải:
@@ -1180,12 +977,14 @@ synonyms:
   - LOC_DA_NANG__HOA_NINH
   hòn móng tay:
   - LMK_HON_MONG_TAY
+  hòn tai:
+  - LMK_HON_TAI
+  hòn thơm:
+  - LMK_HON_THOM
   hòn tre:
   - LOC_HON_TRE
   hòn đảo:
   - SETTING_ISLAND
-  hương hà:
-  - LOC_LANG_PHUONG__HUONG_HA
   hướng biển:
   - AMEN_SEA_VIEW
   hướng núi:
@@ -1196,22 +995,14 @@ synonyms:
   - AMEN_SEA_VIEW
   hạ long:
   - LOC_HA_LONG
-  hạ môn:
-  - LOC_HA_MON
   hạng sang:
   - PRICE_UPSCALE
   hạng trung:
   - PRICE_MID
   hải_châu:
   - LOC_DA_NANG__HAI_CHAU
-  hải_khẩu:
-  - LOC_HAI_KHAU
   hải_phòng:
   - LOC_HAI_PHONG
-  hồ ashi:
-  - LOC_HAKONE__HO_ASHI
-  hồ bryan:
-  - LOC_ORLANDO_FL__HO_BRYAN
   hồ bơi:
   - AMEN_POOL
   hồ bơi ngoài_trời:
@@ -1226,156 +1017,86 @@ synonyms:
   - AMEN_INFINITY_POOL
   hồ chí_minh:
   - LOC_HO_CHI_MINH
+  hồ cái dăm:
+  - LMK_HO_CAI_DAM
   hồ hùng_thắng:
   - LMK_HO_HUNG_THANG
   hồ xuân hương:
   - LOC_DA_LAT__HO_XUAN_HUONG
-  hồng kông:
-  - LOC_HONG_KONG
   hội an:
   - LOC_HOI_AN
   im ang:
   - STYLE_QUIET
   im_ắng:
   - STYLE_QUIET
-  indonesia:
-  - LOC_INDONESIA
   infinity pool:
   - AMEN_INFINITY_POOL
   internet:
   - AMEN_WIFI
   intimate:
   - STYLE_ROMANTIC
-  ipanema:
-  - LOC_RIO_DE_JANEIRO__IPANEMA
-  ipoh:
-  - LOC_IPOH
   island:
   - SETTING_ISLAND
-  itaim bibi:
-  - LOC_SAO_PAULO__ITAIM_BIBI
-  jakarta:
-  - LOC_JAKARTA
-  jeju:
-  - LOC_JEJU
-  jin an district:
-  - LOC_PHUC_CHAU__JIN_AN_DISTRICT
-  jin an_district:
-  - LOC_PHUC_CHAU__JIN_AN_DISTRICT
-  jiutian leisure valley:
-  - LMK_JIUTIAN_LEISURE_VALLEY
-  johor bahru:
-  - LOC_JOHOR_BAHRU
-  jonker:
-  - LOC_MALACCA__JONKER
-  kathmandu:
-  - LOC_KATHMANDU
-  kazakhstan:
-  - LOC_KAZAKHSTAN
-  key west:
-  - LOC_KEY_WEST_FL
-  key west ( fl ):
-  - LOC_KEY_WEST_FL
   khach di cong tac:
   - PURPOSE_BUSINESS
   khach du lich mot minh:
   - PURPOSE_SOLO
   khach san:
   - OBJ_HOTEL
-  khanh hoa:
-  - LOC_KHANH_HOA
-  khao lak:
-  - LOC_KHAO_LAK
-  khao yai:
-  - LOC_KHAO_YAI
   khong gian lang man:
   - STYLE_ROMANTIC
   khong on ao:
   - STYLE_QUIET
-  khu bai bien cha am:
-  - LOC_HUA_HIN_CHA_AM__KHU_BAI_BIEN_CHA_AM
-  khu bai bien hua hin:
-  - LOC_HUA_HIN_CHA_AM__KHU_BAI_BIEN_HUA_HIN
-  khu bãi biển cha am:
-  - LOC_HUA_HIN_CHA_AM__KHU_BAI_BIEN_CHA_AM
-  khu bãi biển hua hin:
-  - LOC_HUA_HIN_CHA_AM__KHU_BAI_BIEN_HUA_HIN
-  khu du lich nghi mat q'te thuong hai va disneyland:
-  - LOC_THUONG_HAI__KHU_DU_LICH_NGHI_MAT_Q_TE_THUONG_HAI_VA_DISNEYLAND
-  khu du_lich nghi_mat q'te thuong hai va disneyland:
-  - LOC_THUONG_HAI__KHU_DU_LICH_NGHI_MAT_Q_TE_THUONG_HAI_VA_DISNEYLAND
-  khu du_lịch nghỉ_mát q'tế thượng_hải và disneyland:
-  - LOC_THUONG_HAI__KHU_DU_LICH_NGHI_MAT_Q_TE_THUONG_HAI_VA_DISNEYLAND
+  khu du lich bien dong:
+  - LMK_KHU_DU_LICH_BIEN_DONG
+  khu du lich gio bien:
+  - LMK_KHU_DU_LICH_GIO_BIEN
+  khu du_lich bien dong:
+  - LMK_KHU_DU_LICH_BIEN_DONG
+  khu du_lich gio bien:
+  - LMK_KHU_DU_LICH_GIO_BIEN
+  khu du_lịch biển đông:
+  - LMK_KHU_DU_LICH_BIEN_DONG
+  khu du_lịch gió biển:
+  - LMK_KHU_DU_LICH_GIO_BIEN
   khu nghi duong:
   - OBJ_RESORT
+  khu nghi duong hoan cau:
+  - LMK_KHU_NGHI_DUONG_HOAN_CAU
+  khu nghi_duong hoan_cau:
+  - LMK_KHU_NGHI_DUONG_HOAN_CAU
   khu nghỉ_dưỡng:
   - OBJ_RESORT
-  khu trung tam disney ho buena vista:
-  - LOC_ORLANDO_FL__KHU_TRUNG_TAM_DISNEY_HO_BUENA_VISTA
-  khu trung tam jeju:
-  - LOC_JEJU__KHU_TRUNG_TAM_JEJU
-  khu trung tam melbourne:
-  - LOC_MELBOURNE__KHU_TRUNG_TAM_MELBOURNE
-  khu trung tam thuong mai:
-  - LOC_NGOC_LAN_LA__KHU_TRUNG_TAM_THUONG_MAI
-  khu trung_tam disney_ho buena vista:
-  - LOC_ORLANDO_FL__KHU_TRUNG_TAM_DISNEY_HO_BUENA_VISTA
-  khu trung_tam jeju:
-  - LOC_JEJU__KHU_TRUNG_TAM_JEJU
-  khu trung_tam melbourne:
-  - LOC_MELBOURNE__KHU_TRUNG_TAM_MELBOURNE
-  khu trung_tam thuong_mai:
-  - LOC_NGOC_LAN_LA__KHU_TRUNG_TAM_THUONG_MAI
-  khu trung_tâm disney hồ buena vista:
-  - LOC_ORLANDO_FL__KHU_TRUNG_TAM_DISNEY_HO_BUENA_VISTA
-  khu trung_tâm jeju:
-  - LOC_JEJU__KHU_TRUNG_TAM_JEJU
-  khu trung_tâm melbourne:
-  - LOC_MELBOURNE__KHU_TRUNG_TAM_MELBOURNE
-  khu trung_tâm thương_mại:
-  - LOC_NGOC_LAN_LA__KHU_TRUNG_TAM_THUONG_MAI
-  khu vuc san bay:
-  - LOC_MYRTLE_BEACH_SC__KHU_VUC_SAN_BAY
-  khu vuc san bay doha:
-  - LOC_DOHA__KHU_VUC_SAN_BAY_DOHA
-  khu vuc waterfront:
-  - LOC_PALERMO__KHU_VUC_WATERFRONT
+  khu nghỉ_dưỡng hoàn_cầu:
+  - LMK_KHU_NGHI_DUONG_HOAN_CAU
+  khu pho phap:
+  - LMK_KHU_PHO_PHAP
+  khu vui choi:
+  - LMK_KHU_VUI_CHOI
   khu vui choi giai tri sun world ha long:
   - LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
   khu vui choi tre em:
   - AMEN_KIDS_CLUB
   khu vui_choi giai_tri sun world ha long:
   - LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
+  khu vui_chơi:
+  - LMK_KHU_VUI_CHOI
   khu vui_chơi giải_trí sun world_hạ long:
   - LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
   khu vui_chơi trẻ_em:
   - AMEN_KIDS_CLUB
-  khu_vực sân_bay:
-  - LOC_MYRTLE_BEACH_SC__KHU_VUC_SAN_BAY
-  khu_vực sân_bay doha:
-  - LOC_DOHA__KHU_VUC_SAN_BAY_DOHA
-  khu_vực waterfront:
-  - LOC_PALERMO__KHU_VUC_WATERFRONT
-  khue van:
-  - LOC_DUY_PHUONG__KHUE_VAN_KUIWEN
-  khue van ( kuiwen ):
-  - LOC_DUY_PHUONG__KHUE_VAN_KUIWEN
+  khu_phố pháp:
+  - LMK_KHU_PHO_PHAP
   khung canh thien nhien:
   - SETTING_NATURE
   khung_cảnh thiên_nhiên:
   - SETTING_NATURE
-  khuê văn:
-  - LOC_DUY_PHUONG__KHUE_VAN_KUIWEN
-  khuê_văn ( kuiwen ):
-  - LOC_DUY_PHUONG__KHUE_VAN_KUIWEN
   khách du_lịch một_mình:
   - PURPOSE_SOLO
   khách đi công_tác:
   - PURPOSE_BUSINESS
   khách_sạn:
   - OBJ_HOTEL
-  khánh hòa:
-  - LOC_KHANH_HOA
   không ồn_ào:
   - STYLE_QUIET
   không_gian lãng_mạn:
@@ -1387,91 +1108,42 @@ synonyms:
   kids pool:
   - AMEN_KIDS_POOL
   kien giang:
-  - LOC_KIEN_GIANG
+  - LOC_KIEN_GIANG_TINH
   kiên_giang:
-  - LOC_KIEN_GIANG
-  klaeng:
-  - LOC_RAYONG__KLAENG
-  klong muang:
-  - LOC_KRABI__KLONG_MUANG
-  kobe:
-  - LOC_KOBE
-  koh lanta:
-  - LOC_KOH_LANTA
-  koh samui:
-  - LOC_KOH_SAMUI
-  kota kinabalu:
-  - LOC_KOTA_KINABALU
-  krabi:
-  - LOC_KRABI
+  - LOC_KIEN_GIANG_TINH
   ks:
   - OBJ_HOTEL
-  kuala lumpur:
-  - LOC_KUALA_LUMPUR
-  kuningan:
-  - LOC_JAKARTA__KUNINGAN
-  kuta:
-  - LOC_BALI__KUTA
   kích_thước phòng:
   - ASPECT_ROOM
-  la quinta:
-  - LOC_LA_QUINTA_CA
-  - LOC_LA_QUINTA_CA__LA_QUINTA
-  la quinta ( ca ):
-  - LOC_LA_QUINTA_CA
-  laguardia airport:
-  - LOC_NEW_YORK_NY__LAGUARDIA_AIRPORT
-  lam xuyen:
-  - LOC_PHU_CHAU_GIANG_TAY__LAM_XUYEN_LINCHUAN
-  lam xuyen ( linchuan ):
-  - LOC_PHU_CHAU_GIANG_TAY__LAM_XUYEN_LINCHUAN
-  lam_xuyen ( linchuan ):
-  - LOC_PHU_CHAU_GIANG_TAY__LAM_XUYEN_LINCHUAN
-  lamai:
-  - LOC_KOH_SAMUI__LAMAI
   lang chai man thai:
   - LMK_LANG_CHAI_MAN_THAI
   lang chai_man thai:
   - LMK_LANG_CHAI_MAN_THAI
-  lang farmingville:
-  - LOC_LANG_FARMINGVILLE_NY
-  lang farmingville ( ny ):
-  - LOC_LANG_FARMINGVILLE_NY
+  lang co:
+  - LOC_DA_NANG__LANG_CO
   lang man:
   - PURPOSE_ROMANTIC
   - STYLE_ROMANTIC
   lang man rieng tu:
   - STYLE_ROMANTIC
-  lang phuong:
-  - LOC_LANG_PHUONG
-  lang phường:
-  - LOC_LANG_PHUONG
+  lang mo mac cuu:
+  - LMK_LANG_MO_MAC_CUU
   lang son:
   - LOC_LANG_SON
-  lang_farmingville ( ny ):
-  - LOC_LANG_FARMINGVILLE_NY
+  lang xq:
+  - LMK_LANG_XQ
+  lang_mo mac cuu:
+  - LMK_LANG_MO_MAC_CUU
   lang_son:
   - LOC_LANG_SON
-  langfang century square:
-  - LMK_LANGFANG_CENTURY_SQUARE
-  langfang children's paradise:
-  - LMK_LANGFANG_CHILDREN_S_PARADISE
-  langfang shiqu xiagang zhigong zaijiuye yitiao jie:
-  - LMK_LANGFANG_SHIQU_XIAGANG_ZHIGONG_ZAIJIUYE_YITIAO_JIE
-  las vegas:
-  - LOC_LAS_VEGAS_NV
-  las vegas ( nv ):
-  - LOC_LAS_VEGAS_NV
-  lax - san bay quoc te los angeles:
-  - LOC_LOS_ANGELES_CA__LAX_SAN_BAY_QUOC_TE_LOS_ANGELES
-  lax - sân_bay quốc_tế los angeles:
-  - LOC_LOS_ANGELES_CA__LAX_SAN_BAY_QUOC_TE_LOS_ANGELES
-  lescar:
-  - LOC_LESCAR
-  leura:
-  - LOC_BLUE_MOUNTAINS__LEURA
-  licheng:
-  - LOC_PHU_DIEN__LICHENG
+  lao cai:
+  - LOC_LAO_CAI
+  linh son co tu:
+  - LMK_LINH_SON_CO_TU
+  linh_son co_tu:
+  - LMK_LINH_SON_CO_TU
+  linh_sơn cổ tự:
+  - LMK_LINH_SON_CO_TU
   lively:
   - STYLE_LIVELY
   loc tho:
@@ -1482,203 +1154,113 @@ synonyms:
   - AMEN_BEACHFRONT
   long beach:
   - LMK_LONG_BEACH
-  - LOC_LOS_ANGELES_CA__LONG_BEACH
-  long nham:
-  - LOC_LONG_NHAM
-  longboat key:
-  - LOC_LONGBOAT_KEY_FL
-  longboat key ( fl ):
-  - LOC_LONGBOAT_KEY_FL
-  longhua:
-  - LOC_HAI_KHAU__LONGHUA
-  loop:
-  - LOC_CHICAGO__LOOP
+  long xuyen:
+  - LOC_LONG_XUYEN
+  long xuyên:
+  - LOC_LONG_XUYEN
+  lop hoc nau an lanterns:
+  - LMK_LOP_HOC_NAU_AN_LANTERNS
   lop hoc nau an thuan tinh:
   - LMK_LOP_HOC_NAU_AN_THUAN_TINH
+  lop hoc nau an_lanterns:
+  - LMK_LOP_HOC_NAU_AN_LANTERNS
   lop hoc nau an_thuan tinh:
   - LMK_LOP_HOC_NAU_AN_THUAN_TINH
-  los angeles:
-  - LOC_LOS_ANGELES_CA
-  los angeles ( ca ):
-  - LOC_LOS_ANGELES_CA
-  lujiazui va trung tam trien lam q'te moi pho dong:
-  - LOC_THUONG_HAI__LUJIAZUI_VA_TRUNG_TAM_TRIEN_LAM_Q_TE_MOI_PHO_DONG
-  lujiazui va trung_tam trien_lam q'te_moi pho dong:
-  - LOC_THUONG_HAI__LUJIAZUI_VA_TRUNG_TAM_TRIEN_LAM_Q_TE_MOI_PHO_DONG
-  lujiazui và trung_tâm triển_lãm q'tế mới phố đông:
-  - LOC_THUONG_HAI__LUJIAZUI_VA_TRUNG_TAM_TRIEN_LAM_Q_TE_MOI_PHO_DONG
-  lumut:
-  - LOC_LUMUT
   luxurious:
   - STYLE_LUXURY
   luxury:
   - PRICE_LUXURY
+  ly son:
+  - LOC_LY_SON
   làng chài mân_thái:
   - LMK_LANG_CHAI_MAN_THAI
-  làng farmingville:
-  - LOC_LANG_FARMINGVILLE_NY
-  làng farmingville ( ny ):
-  - LOC_LANG_FARMINGVILLE_NY
-  lâm xuyên:
-  - LOC_PHU_CHAU_GIANG_TAY__LAM_XUYEN_LINCHUAN
-  lâm xuyên ( linchuan ):
-  - LOC_PHU_CHAU_GIANG_TAY__LAM_XUYEN_LINCHUAN
+  làng xq:
+  - LMK_LANG_XQ
+  lào_cai:
+  - LOC_LAO_CAI
   lãng_mạn:
   - PURPOSE_ROMANTIC
   - STYLE_ROMANTIC
   lãng_mạn riêng tư:
   - STYLE_ROMANTIC
+  lăng cô:
+  - LOC_DA_NANG__LANG_CO
+  lăng mộ_mạc cửu:
+  - LMK_LANG_MO_MAC_CUU
   lạng sơn:
   - LOC_LANG_SON
   lối ra bãi biển:
   - AMEN_BEACHFRONT
   lộc thọ:
   - LOC_NHA_TRANG__LOC_THO
+  lớp_học nấu_ăn lanterns:
+  - LMK_LOP_HOC_NAU_AN_LANTERNS
   lớp_học nấu_ăn thuận_tính:
   - LMK_LOP_HOC_NAU_AN_THUAN_TINH
-  ma cao:
-  - LOC_MACAU
-  - LOC_MA_CAO
-  malacca:
-  - LOC_MALACCA
-  malaysia:
-  - LOC_MALAYSIA
   mang:
   - AMEN_WIFI
-  manila:
-  - LOC_MANILA
-  marathahalli:
-  - LOC_BANGALORE__MARATHAHALLI
   massage:
   - AMEN_SPA
   mat-xa:
   - AMEN_SPA
-  mecca:
-  - LOC_MECCA
-  megamendung:
-  - LOC_PUNCAK__MEGAMENDUNG
-  melaka raya:
-  - LOC_MALACCA__MELAKA_RAYA
-  melbourne:
-  - LOC_MELBOURNE
-  menton:
-  - LOC_MENTON
-  mexico:
-  - LOC_MEXICO
   mid-range:
   - PRICE_MID
   midscale:
   - PRICE_MID
-  minamitateishi:
-  - LOC_BEPPU__MINAMITATEISHI
-  minato mirai 21:
-  - LOC_YOKOHAMA__MINATO_MIRAI_21
+  minh an:
+  - LOC_HOI_AN__MINH_AN
   minh khai:
-  - LOC_HA_NAM__MINH_KHAI
-  miri:
-  - LOC_MIRI
-  mitte:
-  - LOC_BERLIN__MITTE
+  - LOC_PHU_LY__MINH_KHAI
+  moc chau:
+  - LOC_MOC_CHAU
   modern:
   - STYLE_MODERN
   mon an:
   - ASPECT_FOOD
-  moorea island:
-  - LOC_MOOREA_ISLAND
   mountain:
   - SETTING_MOUNTAIN
   mountain view:
   - SETTING_MOUNTAIN
   mui ganh dau:
   - LMK_MUI_GANH_DAU
-  mui hao vong:
-  - LOC_MUI_HAO_VONG
-  mui hao_vong:
-  - LOC_MUI_HAO_VONG
   mui ne:
   - LOC_PHAN_THIET__MUI_NE
-  mui panwa:
-  - LOC_PHUKET__MUI_PANWA
-  muscat:
-  - LOC_MUSCAT
   my dinh:
   - LOC_HA_NOI__MY_DINH
-  myeong-dong:
-  - LOC_SEOUL__MYEONG_DONG
-  myrtle beach:
-  - LOC_MYRTLE_BEACH_SC
-  myrtle beach ( sc ):
-  - LOC_MYRTLE_BEACH_SC
+  my tho:
+  - LOC_MY_THO
+  - LOC_MY_THO__MY_THO
   mát-xa:
   - AMEN_SPA
   món ăn:
   - ASPECT_FOOD
   mũi gành dầu:
   - LMK_MUI_GANH_DAU
-  mũi hảo_vọng:
-  - LOC_MUI_HAO_VONG
   mũi né:
   - LOC_PHAN_THIET__MUI_NE
-  mũi panwa:
-  - LOC_PHUKET__MUI_PANWA
   mạng:
   - AMEN_WIFI
+  mộc châu:
+  - LOC_MOC_CHAU
+  mỹ_tho:
+  - LOC_MY_THO
+  - LOC_MY_THO__MY_THO
   mỹ_đình:
   - LOC_HA_NOI__MY_DINH
-  na jomtien:
-  - LOC_PATTAYA__NA_JOMTIEN
-  nadi:
-  - LOC_NADI
-  nadi town:
-  - LOC_NADI__NADI_TOWN
-  nagahama:
-  - LOC_NAGAHAMA
-  naha:
-  - LOC_OKINAWA_MAIN_ISLAND__NAHA
   nam dinh:
   - LOC_NAM_INH
   - LOC_NAM_INH__NAM_DINH
-  nam phi:
-  - LOC_SOUTH_AFRICA
   nam đinh:
   - LOC_NAM_INH
   nam định:
   - LOC_NAM_INH
   - LOC_NAM_INH__NAM_DINH
-  nam-gu:
-  - LOC_POHANG_SI__NAM_GU
-  nam-myeon:
-  - LOC_THANH_PHO_SEJONG__NAM_MYEON
-  namba:
-  - LOC_OSAKA__NAMBA
   nao nhiet:
   - STYLE_LIVELY
-  napa:
-  - LOC_NAPA_CA
-  napa ( ca ):
-  - LOC_NAPA_CA
-  nara:
-  - LOC_NARA
-  narita:
-  - LOC_NARITA
-  nashville:
-  - LOC_NASHVILLE_TN
-  nashville ( tn ):
-  - LOC_NASHVILLE_TN
   natural surroundings:
   - SETTING_NATURE
   nature:
   - SETTING_NATURE
-  nepal:
-  - LOC_NEPAL
-  new center:
-  - LOC_DETROIT_MI__NEW_CENTER
-  new delhi:
-  - LOC_NEW_DELHI
-  new york:
-  - LOC_NEW_YORK_NY
-  new york ( ny ):
-  - LOC_NEW_YORK_NY
   ngay bai bien:
   - AMEN_BEACHFRONT
   ngay bãi biển:
@@ -1687,24 +1269,26 @@ synonyms:
   - PURPOSE_WELLNESS
   nghỉ dưỡng:
   - PURPOSE_WELLNESS
-  ngoc lan:
-  - LOC_NGOC_LAN_LA
-  ngoc lan ( la ):
-  - LOC_NGOC_LAN_LA
   ngoc thanh:
   - LOC_PHUC_YEN__NGOC_THANH
-  ngọc lân:
-  - LOC_NGOC_LAN_LA
-  ngọc lân ( la ):
-  - LOC_NGOC_LAN_LA
   ngọc thanh:
   - LOC_PHUC_YEN__NGOC_THANH
-  nha ga jing'an va sha:
-  - LOC_THUONG_HAI__NHA_GA_JING_AN_VA_SHA
+  nha cong tu bac lieu:
+  - LMK_NHA_CONG_TU_BAC_LIEU
   nha hang:
   - AMEN_RESTAURANT
   nha nghi tai gia:
   - OBJ_HOMESTAY
+  nha thi dau:
+  - LMK_NHA_THI_DAU
+  nha tho chinh toa long xuyen:
+  - LMK_NHA_THO_CHINH_TOA_LONG_XUYEN
+  nha tho con ga:
+  - LMK_NHA_THO_CON_GA
+  nha tho nhon:
+  - LMK_NHA_THO_NHON
+  nha tho tin lanh:
+  - LMK_NHA_THO_TIN_LANH
   nha trang:
   - LOC_NHA_TRANG
   nha tu phu quoc:
@@ -1713,8 +1297,6 @@ synonyms:
   - LMK_NHA_TU_PHU_QUOC
   nhan vien:
   - ASPECT_SERVICE
-  nhat ban:
-  - LOC_JAPAN
   nhin ra bien:
   - AMEN_SEA_VIEW
   nhom:
@@ -1722,15 +1304,25 @@ synonyms:
   nhom du khach:
   - PURPOSE_GROUP
   nhon ly:
-  - LOC_QUY_NHON_BINH_DINH__NHON_LY
+  - LOC_QUY_NHON__NHON_LY
   nhon nhip:
   - STYLE_LIVELY
-  nhà_ga jing'an và sha:
-  - LOC_THUONG_HAI__NHA_GA_JING_AN_VA_SHA
+  nhà công_tử bạc_liêu:
+  - LMK_NHA_CONG_TU_BAC_LIEU
   nhà_hàng:
   - AMEN_RESTAURANT
   nhà_nghỉ tại gia:
   - OBJ_HOMESTAY
+  nhà_thi_đấu:
+  - LMK_NHA_THI_DAU
+  nhà_thờ chính tòa long xuyên:
+  - LMK_NHA_THO_CHINH_TOA_LONG_XUYEN
+  nhà_thờ con gà:
+  - LMK_NHA_THO_CON_GA
+  nhà_thờ nhọn:
+  - LMK_NHA_THO_NHON
+  nhà_thờ tin lành:
+  - LMK_NHA_THO_TIN_LANH
   nhà_tù phú_quốc:
   - LMK_NHA_TU_PHU_QUOC
   nhân_viên:
@@ -1742,142 +1334,86 @@ synonyms:
   nhóm du_khách:
   - PURPOSE_GROUP
   nhơn_lý:
-  - LOC_QUY_NHON_BINH_DINH__NHON_LY
-  nhật_bản:
-  - LOC_JAPAN
+  - LOC_QUY_NHON__NHON_LY
   nhộn_nhịp:
   - STYLE_LIVELY
-  niagara falls:
-  - LOC_NIAGARA_FALLS_ON
-  niagara falls ( on ):
-  - LOC_NIAGARA_FALLS_ON
+  ninh binh:
+  - LOC_NINH_BINH
+  ninh bình:
+  - LOC_NINH_BINH
+  ninh thuan:
+  - LOC_NINH_THUAN_TINH
+  ninh thuận:
+  - LOC_NINH_THUAN_TINH
+  ninh_binh:
+  - LOC_NINH_BINH
   noi thanh:
   - SETTING_CITY_CENTER
-  noida:
-  - LOC_NOIDA
-  north fairfield:
-  - LOC_FAIRFIELD_CA__NORTH_FAIRFIELD
-  northampton:
-  - LOC_HAMPTON_VA__NORTHAMPTON
   nui bai chay:
   - LMK_NUI_BAI_CHAY
+  nui giua:
+  - LMK_NUI_GIUA
+  nui kho:
+  - LMK_NUI_KHO
+  nui le:
+  - LMK_NUI_LE
+  nui mo ong:
+  - LMK_NUI_MO_ONG
+  nui sam:
+  - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
+  nui sam / den ba chua xu:
+  - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
   nui truong le:
   - LMK_NUI_TRUONG_LE
   nui truong_le:
   - LMK_NUI_TRUONG_LE
-  nusa dua:
-  - LOC_BALI__NUSA_DUA
   náo nhiệt:
   - STYLE_LIVELY
   núi bãi cháy:
   - LMK_NUI_BAI_CHAY
+  núi giữa:
+  - LMK_NUI_GIUA
+  núi kho:
+  - LMK_NUI_KHO
+  núi lê:
+  - LMK_NUI_LE
+  núi mộ ông:
+  - LMK_NUI_MO_ONG
+  núi sam:
+  - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
+  núi sam / đền bà_chúa xứ:
+  - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
   núi trường_lệ:
   - LMK_NUI_TRUONG_LE
   nội_thành:
   - SETTING_CITY_CENTER
   ocean view:
   - AMEN_SEA_VIEW
-  okinawa main island:
-  - LOC_OKINAWA_MAIN_ISLAND
-  oman:
-  - LOC_OMAN
-  onna:
-  - LOC_OKINAWA_MAIN_ISLAND__ONNA
-  oost:
-  - LOC_AMSTERDAM__OOST_WATERGRAAFSMEER
-  oost / watergraafsmeer:
-  - LOC_AMSTERDAM__OOST_WATERGRAAFSMEER
-  opera:
-  - LOC_PARIS__OPERA
   opulent:
   - STYLE_LUXURY
-  oranjestad:
-  - LOC_ORANJESTAD
-  oranjestad-west:
-  - LOC_ORANJESTAD__ORANJESTAD_WEST
-  orlando:
-  - LOC_ORLANDO_FL
-  orlando ( fl ):
-  - LOC_ORLANDO_FL
-  ornago:
-  - LOC_ORNAGO
-  oro valley:
-  - LOC_ORO_VALLEY_AZ
-  - LOC_ORO_VALLEY_AZ__ORO_VALLEY
-  oro valley ( az ):
-  - LOC_ORO_VALLEY_AZ
-  osaka:
-  - LOC_OSAKA
   outdoor pool:
   - AMEN_POOL
-  padang cermin:
-  - LOC_PESAWARAN_REGENCY__PADANG_CERMIN
-  palermo:
-  - LOC_PALERMO
-  palm jumeirah:
-  - LOC_DUBAI__PALM_JUMEIRAH
-  palm springs:
-  - LOC_PALM_SPRINGS_CA
-  palm springs ( ca ):
-  - LOC_PALM_SPRINGS_CA
-  panaji:
-  - LOC_GOA__PANAJI
-  panama:
-  - LOC_PANAMA
-  paranaque:
-  - LOC_MANILA__PARANAQUE
-  parañaque:
-  - LOC_MANILA__PARANAQUE
-  paris:
-  - LOC_PARIS
-  parque isla verde:
-  - LOC_SAN_JUAN__PARQUE_ISLA_VERDE
-  pasay:
-  - LOC_MANILA__PASAY
-  patong:
-  - LOC_PHUKET__PATONG
-  pattaya:
-  - LOC_PATTAYA
-  pau:
-  - LOC_PAU
   peaceful:
   - STYLE_QUIET
-  pedeutour:
-  - LOC_PAU__PEDEUTOUR
-  penang:
-  - LOC_PENANG
-  pesawaran regency:
-  - LOC_PESAWARAN_REGENCY
-  petaling jaya:
-  - LOC_KUALA_LUMPUR__PETALING_JAYA
+  phan rang - thap cham:
+  - LOC_PHAN_RANG_THAP_CHAM
+  - LOC_PHAN_RANG_THAP_CHAM__PHAN_RANG_THAP_CHAM
   phan thiet:
   - LOC_PHAN_THIET
+  phan_rang - thap cham:
+  - LOC_PHAN_RANG_THAP_CHAM
+  - LOC_PHAN_RANG_THAP_CHAM__PHAN_RANG_THAP_CHAM
+  phan_rang - tháp chàm:
+  - LOC_PHAN_RANG_THAP_CHAM
+  - LOC_PHAN_RANG_THAP_CHAM__PHAN_RANG_THAP_CHAM
   phan_thiet:
   - LOC_PHAN_THIET
   phan_thiết:
   - LOC_PHAN_THIET
-  phap:
-  - LOC_FRANCE
-  philippines:
-  - LOC_PHILIPPINES
+  phao dai:
+  - LOC_HA_TIEN__PHAO_DAI
   pho co:
   - LOC_HA_NOI__PHO_CO
-  pho co scottsdale:
-  - LOC_PHOENIX_AZ__PHO_CO_SCOTTSDALE
-  pho portage:
-  - LOC_NIAGARA_FALLS_ON__PHO_PORTAGE
-  pho tai chinh:
-  - LOC_BAC_KINH__PHO_TAI_CHINH
-  pho tai_chinh:
-  - LOC_BAC_KINH__PHO_TAI_CHINH
-  pho vuong phu tinh & tu cam thanh:
-  - LOC_BAC_KINH__PHO_VUONG_PHU_TINH_TU_CAM_THANH
-  pho vuong phu_tinh & tu cam_thanh:
-  - LOC_BAC_KINH__PHO_VUONG_PHU_TINH_TU_CAM_THANH
-  phoenix:
-  - LOC_PHOENIX_AZ
-  phoenix ( az ):
-  - LOC_PHOENIX_AZ
   phong:
   - ASPECT_ROOM
   phong gym:
@@ -1888,36 +1424,25 @@ synonyms:
   - AMEN_GYM
   phong xong uot:
   - AMEN_SPA
-  phu chau:
-  - LOC_PHU_CHAU_GIANG_TAY
-  phu chau ( giang tay ):
-  - LOC_PHU_CHAU_GIANG_TAY
-  phu dien:
-  - LOC_PHU_DIEN
-  phu duong:
-  - LOC_PHU_DUONG
+  phu khuong:
+  - LOC_BEN_TRE__PHU_KHUONG
   phu ly:
-  - LOC_HA_NAM
-  phu ly ( ha nam ):
-  - LOC_HA_NAM
+  - LOC_PHU_LY
   phu nhuan:
   - LOC_HO_CHI_MINH__PHU_NHUAN
   phu quoc:
   - LOC_PHU_QUOC
-  phu tan:
-  - LOC_PHU_TAN
-  phu_chau ( giang_tay ):
-  - LOC_PHU_CHAU_GIANG_TAY
-  phu_ly ( ha nam ):
-  - LOC_HA_NAM
-  phuc chau:
-  - LOC_PHUC_CHAU
-  phuc chau plaza:
-  - LMK_PHUC_CHAU_PLAZA
+  phu tho:
+  - LOC_PHU_THO
+  - LOC_PHU_THO_TINH
+  phu thuy:
+  - LOC_PHAN_THIET__PHU_THUY
+  phu yen:
+  - LOC_PHU_YEN_TINH
   phuc yen:
   - LOC_PHUC_YEN
-  phuket:
-  - LOC_PHUKET
+  phuoc long:
+  - LOC_NHA_TRANG__PHUOC_LONG
   phuoc my:
   - LOC_DA_NANG__PHUOC_MY
   phuong 1:
@@ -1926,10 +1451,18 @@ synonyms:
   - LOC_DA_LAT__PHUONG_11
   phuong 2:
   - LOC_VUNG_TAU__PHUONG_2
-  phuong hoang:
-  - LOC_PHUONG_HOANG
-  pháp:
-  - LOC_FRANCE
+  phuong 3:
+  - LOC_BEN_TRE__PHUONG_3
+  phuong 5:
+  - LOC_VUNG_TAU__PHUONG_5
+  phuong 6:
+  - LOC_BEN_TRE__PHUONG_6
+  phuong 7:
+  - LOC_BEN_TRE__PHUONG_7
+  phuong 8:
+  - LOC_VUNG_TAU__PHUONG_8
+  pháo đài:
+  - LOC_HA_TIEN__PHAO_DAI
   phòng:
   - ASPECT_ROOM
   phòng gym:
@@ -1940,16 +1473,23 @@ synonyms:
   - AMEN_GYM
   phòng xông ướt:
   - AMEN_SPA
+  phú khương:
+  - LOC_BEN_TRE__PHU_KHUONG
+  phú thủy:
+  - LOC_PHAN_THIET__PHU_THUY
+  phú yên:
+  - LOC_PHU_YEN_TINH
   phú_nhuận:
   - LOC_HO_CHI_MINH__PHU_NHUAN
   phú_quốc:
   - LOC_PHU_QUOC
-  phúc châu:
-  - LOC_PHUC_CHAU
-  phúc châu_plaza:
-  - LMK_PHUC_CHAU_PLAZA
+  phú_thọ:
+  - LOC_PHU_THO
+  - LOC_PHU_THO_TINH
   phúc yên:
   - LOC_PHUC_YEN
+  phước long:
+  - LOC_NHA_TRANG__PHUOC_LONG
   phước mỹ:
   - LOC_DA_NANG__PHUOC_MY
   phường 1:
@@ -1958,45 +1498,25 @@ synonyms:
   - LOC_DA_LAT__PHUONG_11
   phường 2:
   - LOC_VUNG_TAU__PHUONG_2
-  phượng hoàng:
-  - LOC_PHUONG_HOANG
+  phường 3:
+  - LOC_BEN_TRE__PHUONG_3
+  phường 5:
+  - LOC_VUNG_TAU__PHUONG_5
+  phường 6:
+  - LOC_BEN_TRE__PHUONG_6
+  phường 7:
+  - LOC_BEN_TRE__PHUONG_7
+  phường 8:
+  - LOC_VUNG_TAU__PHUONG_8
   phố cổ:
   - LOC_HA_NOI__PHO_CO
-  phố cổ scottsdale:
-  - LOC_PHOENIX_AZ__PHO_CO_SCOTTSDALE
-  phố portage:
-  - LOC_NIAGARA_FALLS_ON__PHO_PORTAGE
-  phố tài_chính:
-  - LOC_BAC_KINH__PHO_TAI_CHINH
-  phố vương_phủ tỉnh & tử cấm thành:
-  - LOC_BAC_KINH__PHO_VUONG_PHU_TINH_TU_CAM_THANH
-  phụ_dương:
-  - LOC_PHU_DUONG
-  phụ_tân:
-  - LOC_PHU_TAN
-  phủ châu:
-  - LOC_PHU_CHAU_GIANG_TAY
-  phủ châu ( giang_tây ):
-  - LOC_PHU_CHAU_GIANG_TAY
-  phủ điền:
-  - LOC_PHU_DIEN
   phủ_lý:
-  - LOC_HA_NAM
-  phủ_lý ( hà_nam ):
-  - LOC_HA_NAM
-  pinheiros:
-  - LOC_SAO_PAULO__PINHEIROS
-  playa del carmen:
-  - LOC_PLAYA_DEL_CARMEN
-  - LOC_PLAYA_DEL_CARMEN__PLAYA_DEL_CARMEN
+  - LOC_PHU_LY
   playground:
   - AMEN_KIDS_CLUB
-  pohang-si:
-  - LOC_POHANG_SI
-  polynesia thuoc phap:
-  - LOC_FRENCH_POLYNESIA
-  polynesia thuộc pháp:
-  - LOC_FRENCH_POLYNESIA
+  pleiku:
+  - LOC_PLEIKU
+  - LOC_PLEIKU__PLEIKU
   pool:
   - AMEN_POOL
   pool bar:
@@ -2009,27 +1529,10 @@ synonyms:
   - SETTING_ISLAND
   private pool:
   - AMEN_PRIVATE_POOL
-  puchong:
-  - LOC_KUALA_LUMPUR__PUCHONG
-  puerto rico:
-  - LOC_PUERTO_RICO
-  pullman:
-  - LOC_PULLMAN_WA
-  - LOC_PULLMAN_WA__PULLMAN
-  pullman ( wa ):
-  - LOC_PULLMAN_WA
-  puncak:
-  - LOC_PUNCAK
-  pune:
-  - LOC_PUNE
-  putra wtc:
-  - LOC_KUALA_LUMPUR__CHOWKIT_PUTRA_WTC
-  putrajaya:
-  - LOC_KUALA_LUMPUR__PUTRAJAYA
-  qatar:
-  - LOC_QATAR
   quan 1:
   - LOC_HO_CHI_MINH__QUAN_1
+  quan 10:
+  - LOC_HO_CHI_MINH__QUAN_10
   quan 2:
   - LOC_HO_CHI_MINH__QUAN_2
   quan 3:
@@ -2044,8 +1547,6 @@ synonyms:
   - AMEN_BAR
   quan ca phe:
   - AMEN_RESTAURANT
-  quan chengxiang:
-  - LOC_PHU_DIEN__QUAN_CHENGXIANG
   quan dao cat ba:
   - LOC_QUAN_DAO_CAT_BA
   quan dao_cat ba:
@@ -2060,64 +1561,30 @@ synonyms:
   - LOC_HA_NOI__QUAN_HOANG_MAI
   quan hoang_mai:
   - LOC_HA_NOI__QUAN_HOANG_MAI
-  quan long hoa:
-  - LOC_THAM_QUYEN__QUAN_LONG_HOA
-  quan nangang:
-  - LOC_DAI_BAC__QUAN_NANGANG
-  quan tai chinh:
-  - LOC_NEW_YORK_NY__QUAN_TAI_CHINH
-  quan tai_chinh:
-  - LOC_NEW_YORK_NY__QUAN_TAI_CHINH
   quan tay ho:
   - LOC_HA_NOI__QUAN_TAY_HO
-  quan thien ha - teemall:
-  - LOC_QUANG_CHAU__QUAN_THIEN_HA_TEEMALL_GA_DONG
-  quan thien ha - teemall / ga dong:
-  - LOC_QUANG_CHAU__QUAN_THIEN_HA_TEEMALL_GA_DONG
-  quan tin nghia:
-  - LOC_DAI_BAC__QUAN_TIN_NGHIA
   quan toan:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
   quang binh:
-  - LOC_QUANG_BINH
   - LOC_QUANG_BINH_TINH
-  quang chau:
-  - LOC_QUANG_CHAU
-  quang duong:
-  - LOC_LANG_PHUONG__QUANG_DUONG_GUANGYANG
-  quang duong ( guangyang ):
-  - LOC_LANG_PHUONG__QUANG_DUONG_GUANGYANG
+  quang nam:
+  - LOC_QUANG_NAM_TINH
   quang truong 2:
   - LMK_QUANG_TRUONG_2_4
   quang truong 2/4:
   - LMK_QUANG_TRUONG_2_4
   quang truong mat troi:
   - LMK_QUANG_TRUONG_MAT_TROI
-  quang truong nhan dan & phia nam ben thuong hai:
-  - LOC_THUONG_HAI__QUANG_TRUONG_NHAN_DAN_PHIA_NAM_BEN_THUONG_HAI
-  quang truong nhan_dan & phia nam ben thuong hai:
-  - LOC_THUONG_HAI__QUANG_TRUONG_NHAN_DAN_PHIA_NAM_BEN_THUONG_HAI
-  quang truong thoi dai:
-  - LOC_NEW_YORK_NY__QUANG_TRUONG_THOI_DAI
   quang_binh:
-  - LOC_QUANG_BINH
   - LOC_QUANG_BINH_TINH
-  que lam:
-  - LOC_QUE_LAM
   quiet:
   - STYLE_QUIET
   quy nhon:
-  - LOC_QUY_NHON_BINH_DINH
-  quy nhon ( binh dinh ):
-  - LOC_QUY_NHON_BINH_DINH
+  - LOC_QUY_NHON
   quy_nhon:
-  - LOC_QUY_NHON_BINH_DINH
-  quy_nhon ( binh_dinh ):
-  - LOC_QUY_NHON_BINH_DINH
+  - LOC_QUY_NHON
   quy_nhơn:
-  - LOC_QUY_NHON_BINH_DINH
-  quy_nhơn ( bình_định ):
-  - LOC_QUY_NHON_BINH_DINH
+  - LOC_QUY_NHON
   quán bar:
   - AMEN_BAR
   quán bar cạnh bể bơi:
@@ -2127,28 +1594,21 @@ synonyms:
   quán toan:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
   quảng_bình:
-  - LOC_QUANG_BINH
   - LOC_QUANG_BINH_TINH
-  quảng_châu:
-  - LOC_QUANG_CHAU
-  quảng_dương:
-  - LOC_LANG_PHUONG__QUANG_DUONG_GUANGYANG
-  quảng_dương ( guangyang ):
-  - LOC_LANG_PHUONG__QUANG_DUONG_GUANGYANG
+  quảng_nam:
+  - LOC_QUANG_NAM_TINH
   quảng_trường 2:
   - LMK_QUANG_TRUONG_2_4
   quảng_trường 2/4:
   - LMK_QUANG_TRUONG_2_4
   quảng_trường mặt_trời:
   - LMK_QUANG_TRUONG_MAT_TROI
-  quảng_trường nhân_dân & phía nam bến thượng_hải:
-  - LOC_THUONG_HAI__QUANG_TRUONG_NHAN_DAN_PHIA_NAM_BEN_THUONG_HAI
-  quảng_trường thời_đại:
-  - LOC_NEW_YORK_NY__QUANG_TRUONG_THOI_DAI
   quần_đảo cát bà:
   - LOC_QUAN_DAO_CAT_BA
   quận 1:
   - LOC_HO_CHI_MINH__QUAN_1
+  quận 10:
+  - LOC_HO_CHI_MINH__QUAN_10
   quận 2:
   - LOC_HO_CHI_MINH__QUAN_2
   quận 3:
@@ -2157,42 +1617,17 @@ synonyms:
   - LOC_HO_CHI_MINH__QUAN_4
   quận 7:
   - LOC_HO_CHI_MINH__QUAN_7
-  quận chengxiang:
-  - LOC_PHU_DIEN__QUAN_CHENGXIANG
   quận hai bà trưng:
   - LOC_HA_NOI__QUAN_HAI_BA_TRUNG
   quận hoàn_kiếm:
   - LOC_HA_NOI__QUAN_HOAN_KIEM
   quận hoàng_mai:
   - LOC_HA_NOI__QUAN_HOANG_MAI
-  quận long hoa:
-  - LOC_THAM_QUYEN__QUAN_LONG_HOA
-  quận nangang:
-  - LOC_DAI_BAC__QUAN_NANGANG
-  quận thiên_hà - teemall:
-  - LOC_QUANG_CHAU__QUAN_THIEN_HA_TEEMALL_GA_DONG
-  quận thiên_hà - teemall / ga đông:
-  - LOC_QUANG_CHAU__QUAN_THIEN_HA_TEEMALL_GA_DONG
-  quận tài_chính:
-  - LOC_NEW_YORK_NY__QUAN_TAI_CHINH
   quận tây hồ:
   - LOC_HA_NOI__QUAN_TAY_HO
-  quận tín_nghĩa:
-  - LOC_DAI_BAC__QUAN_TIN_NGHIA
-  quế lâm:
-  - LOC_QUE_LAM
-  ras al khaimah:
-  - LOC_RAS_AL_KHAIMAH
-  ratchaburi:
-  - LOC_RATCHABURI
-  ratchaburi city center:
-  - LOC_RATCHABURI__RATCHABURI_CITY_CENTER
-  rayong:
-  - LOC_RAYONG
-  rayong city center:
-  - LOC_RAYONG__RAYONG_CITY_CENTER
-  reed flute cave:
-  - LOC_QUE_LAM__REED_FLUTE_CAVE
+  rach gia:
+  - LOC_RACH_GIA
+  - LOC_RACH_GIA__RACH_GIA
   relaxation:
   - PURPOSE_WELLNESS
   relaxing:
@@ -2205,17 +1640,11 @@ synonyms:
   - STYLE_RELAXING
   retreat:
   - PURPOSE_WELLNESS
-  rio de janeiro:
-  - LOC_RIO_DE_JANEIRO
-  river north:
-  - LOC_CHICAGO__RIVER_NORTH
-  rokko island:
-  - LOC_KOBE__ROKKO_ISLAND
+  river viewpoint:
+  - LMK_RIVER_VIEWPOINT
   romantic:
   - PURPOSE_ROMANTIC
   - STYLE_ROMANTIC
-  rome:
-  - LOC_ROME
   room:
   - ASPECT_ROOM
   room comfort:
@@ -2224,63 +1653,77 @@ synonyms:
   - ASPECT_ROOM
   rung dua nuoc:
   - LMK_RUNG_DUA_NUOC
+  rạch giá:
+  - LOC_RACH_GIA
+  - LOC_RACH_GIA__RACH_GIA
   rừng dừa_nước:
   - LMK_RUNG_DUA_NUOC
   sach:
   - ASPECT_CLEANLINESS
   sach se:
   - ASPECT_CLEANLINESS
-  san bay fiumicino:
-  - LOC_ROME__SAN_BAY_FIUMICINO
-  san bay laguardia:
-  - LMK_SAN_BAY_LAGUARDIA
-  san bay long island macarthur:
-  - LMK_SAN_BAY_LONG_ISLAND_MACARTHUR
-  san bay pune:
-  - LOC_PUNE__SAN_BAY_PUNE
+  san bay ca mau:
+  - LMK_SAN_BAY_CA_MAU
+  san bay chu lai:
+  - LMK_SAN_BAY_CHU_LAI
+  san bay chu_lai:
+  - LMK_SAN_BAY_CHU_LAI
+  san bay co ong:
+  - LMK_SAN_BAY_CO_ONG
+  san bay dien bien phu:
+  - LMK_SAN_BAY_DIEN_BIEN_PHU
+  san bay dien bien_phu:
+  - LMK_SAN_BAY_DIEN_BIEN_PHU
+  san bay phu cat:
+  - LMK_SAN_BAY_PHU_CAT
+  san bay pleiku:
+  - LMK_SAN_BAY_PLEIKU
+  san bay quoc te cam ranh:
+  - LMK_SAN_BAY_QUOC_TE_CAM_RANH
+  san bay quoc te cam_ranh:
+  - LMK_SAN_BAY_QUOC_TE_CAM_RANH
+  san bay quoc te can tho:
+  - LMK_SAN_BAY_QUOC_TE_CAN_THO
+  san bay quoc te can_tho:
+  - LMK_SAN_BAY_QUOC_TE_CAN_THO
   san bay quoc te cat bi:
   - LMK_SAN_BAY_QUOC_TE_CAT_BI
-  san bay quoc te indira gandhi:
-  - LMK_SAN_BAY_QUOC_TE_INDIRA_GANDHI
-  - LOC_NEW_DELHI__SAN_BAY_QUOC_TE_INDIRA_GANDHI
-  san bay quoc te john f . kennedy:
-  - LMK_SAN_BAY_QUOC_TE_JOHN_F_KENNEDY
-  - LOC_NEW_YORK_NY__SAN_BAY_QUOC_TE_JOHN_F_KENNEDY
-  san bay quoc te john_f . kennedy:
-  - LMK_SAN_BAY_QUOC_TE_JOHN_F_KENNEDY
-  - LOC_NEW_YORK_NY__SAN_BAY_QUOC_TE_JOHN_F_KENNEDY
-  san bay quoc te narita:
-  - LOC_NARITA__SAN_BAY_QUOC_TE_NARITA
-  san bay quoc te newark liberty:
-  - LMK_SAN_BAY_QUOC_TE_NEWARK_LIBERTY
+  san bay quoc te da nang:
+  - LMK_SAN_BAY_QUOC_TE_DA_NANG
   san bay quoc te noi bai:
   - LMK_SAN_BAY_QUOC_TE_NOI_BAI
-  san bay quoc te san francisco:
-  - LOC_SAN_FRANCISCO_CA__SAN_BAY_QUOC_TE_SAN_FRANCISCO
+  san bay quoc te phu bai:
+  - LMK_SAN_BAY_QUOC_TE_PHU_BAI
+  san bay quoc te phu quoc:
+  - LMK_SAN_BAY_QUOC_TE_PHU_QUOC
+  san bay quoc te sihanouk:
+  - LMK_SAN_BAY_QUOC_TE_SIHANOUK
+  san bay quoc te tan son nhat:
+  - LMK_SAN_BAY_QUOC_TE_TAN_SON_NHAT
+  san bay quoc te tan son_nhat:
+  - LMK_SAN_BAY_QUOC_TE_TAN_SON_NHAT
+  san bay quoc te_phu bai:
+  - LMK_SAN_BAY_QUOC_TE_PHU_BAI
+  san bay quoc te_phu quoc:
+  - LMK_SAN_BAY_QUOC_TE_PHU_QUOC
+  san bay quoc_te da_nang:
+  - LMK_SAN_BAY_QUOC_TE_DA_NANG
+  san bay rach gia:
+  - LMK_SAN_BAY_RACH_GIA
+  san bay rach_gia:
+  - LMK_SAN_BAY_RACH_GIA
   san bay sam neua:
   - LMK_SAN_BAY_SAM_NEUA
-  san bay teterboro:
-  - LMK_SAN_BAY_TETERBORO
   san bay tho xuan:
   - LMK_SAN_BAY_THO_XUAN
-  san bay tinh westchester:
-  - LMK_SAN_BAY_TINH_WESTCHESTER
-  san bay tinh_westchester:
-  - LMK_SAN_BAY_TINH_WESTCHESTER
+  san bay_phu cat:
+  - LMK_SAN_BAY_PHU_CAT
   san choi:
   - AMEN_KIDS_CLUB
   san choi cam thanh:
   - LMK_SAN_CHOI_CAM_THANH
   san choi cam_thanh:
   - LMK_SAN_CHOI_CAM_THANH
-  san diego:
-  - LOC_SAN_DIEGO_CA
-  san diego ( ca ):
-  - LOC_SAN_DIEGO_CA
-  san francisco:
-  - LOC_SAN_FRANCISCO_CA
-  san francisco ( ca ):
-  - LOC_SAN_FRANCISCO_CA
   san golf:
   - AMEN_GOLF
   - LMK_SAN_GOLF
@@ -2288,12 +1731,12 @@ synonyms:
   - LMK_SAN_GOLF_VINPEARL
   san gon:
   - AMEN_GOLF
-  san jose:
-  - LOC_SAN_JOSE_CA
-  san jose ( ca ):
-  - LOC_SAN_JOSE_CA
-  san juan:
-  - LOC_SAN_JUAN
+  san van dong quy nhon:
+  - LMK_SAN_VAN_DONG_QUY_NHON
+  san van_dong quy_nhon:
+  - LMK_SAN_VAN_DONG_QUY_NHON
+  san_bay co_ong:
+  - LMK_SAN_BAY_CO_ONG
   sang chanh:
   - PRICE_LUXURY
   sang chảnh:
@@ -2304,14 +1747,8 @@ synonyms:
   sang_trọng:
   - PRICE_LUXURY
   - STYLE_LUXURY
-  sanur:
-  - LOC_BALI__SANUR
-  sao paulo:
-  - LOC_SAO_PAULO
   sapa:
   - LOC_SAPA
-  sasang-gu:
-  - LOC_BUSAN__SASANG_GU
   sat bien:
   - AMEN_BEACHFRONT
   - SETTING_COASTAL
@@ -2323,40 +1760,16 @@ synonyms:
   - AMEN_SEA_VIEW
   seaside:
   - SETTING_COASTAL
-  seminyak:
-  - LOC_BALI__SEMINYAK
-  seongnam-si:
-  - LOC_SEONGNAM_SI
-  seoul:
-  - LOC_SEOUL
   service:
   - ASPECT_SERVICE
   serviced apartment:
   - OBJ_APARTMENT
-  setia alam:
-  - LOC_SHAH_ALAM__SETIA_ALAM
-  shah alam:
-  - LOC_SHAH_ALAM
-  shinkwan-dong:
-  - LOC_GONGJU_SI__SHINKWAN_DONG
-  shuangqiao:
-  - LOC_THUA_DUC__SHUANGQIAO
-  siam:
-  - LOC_BANGKOK__SIAM
-  sihanoukville:
-  - LOC_SIHANOUKVILLE
-  silom:
-  - LOC_BANGKOK__SILOM
-  singapore:
-  - LOC_SINGAPORE
   sinh thai:
   - STYLE_ECO
   sinh_thái:
   - STYLE_ECO
-  sit ' n ' sip inn:
-  - LMK_SIT_N_SIP_INN
-  slotermeer:
-  - LOC_AMSTERDAM__GEUZENVELD_SLOTERMEER
+  soc trang:
+  - LOC_SOC_TRANG
   soi dong:
   - STYLE_LIVELY
   solo:
@@ -2373,36 +1786,26 @@ synonyms:
   - LOC_HUE__SONG_HUONG
   soothing:
   - STYLE_RELAXING
-  south pattaya:
-  - LOC_PATTAYA__SOUTH_PATTAYA
   spa:
   - AMEN_SPA
-  st . george:
-  - LOC_ST_GEORGE
-  st . louis:
-  - LOC_ST_LOUIS_MO
-  st . louis ( mo ):
-  - LOC_ST_LOUIS_MO
   staff:
   - ASPECT_SERVICE
-  sukaraja:
-  - LOC_BOGOR__SUKARAJA
-  sukhumvit:
-  - LOC_BANGKOK__SUKHUMVIT
+  story beach & pool:
+  - LMK_STORY_BEACH_POOL
   sun world ha long complex:
   - LMK_SUN_WORLD_HA_LONG_COMPLEX
   sunworld hon thom phu quoc:
   - LMK_SUNWORLD_HON_THOM_PHU_QUOC
   sunworld_hon thom_phu quoc:
   - LMK_SUNWORLD_HON_THOM_PHU_QUOC
-  surfers paradise:
-  - LOC_GOLD_COAST__SURFERS_PARADISE
+  suoi tien:
+  - LMK_SUOI_TIEN
   sustainable:
   - STYLE_ECO
+  suối tiên:
+  - LMK_SUOI_TIEN
   swimming pool:
   - AMEN_POOL
-  szklarska poreba:
-  - LOC_SZKLARSKA_POREBA
   sát biển:
   - AMEN_BEACHFRONT
   - SETTING_COASTAL
@@ -2413,46 +1816,52 @@ synonyms:
   - LMK_SAN_GOLF_VINPEARL
   sân gôn:
   - AMEN_GOLF
-  sân_bay fiumicino:
-  - LOC_ROME__SAN_BAY_FIUMICINO
-  sân_bay laguardia:
-  - LMK_SAN_BAY_LAGUARDIA
-  sân_bay long island macarthur:
-  - LMK_SAN_BAY_LONG_ISLAND_MACARTHUR
-  sân_bay pune:
-  - LOC_PUNE__SAN_BAY_PUNE
+  sân_bay chu_lai:
+  - LMK_SAN_BAY_CHU_LAI
+  sân_bay cà_mau:
+  - LMK_SAN_BAY_CA_MAU
+  sân_bay cỏ ống:
+  - LMK_SAN_BAY_CO_ONG
+  sân_bay phù_cát:
+  - LMK_SAN_BAY_PHU_CAT
+  sân_bay pleiku:
+  - LMK_SAN_BAY_PLEIKU
+  sân_bay quốc_tế cam_ranh:
+  - LMK_SAN_BAY_QUOC_TE_CAM_RANH
   sân_bay quốc_tế cát bi:
   - LMK_SAN_BAY_QUOC_TE_CAT_BI
-  sân_bay quốc_tế indira gandhi:
-  - LMK_SAN_BAY_QUOC_TE_INDIRA_GANDHI
-  - LOC_NEW_DELHI__SAN_BAY_QUOC_TE_INDIRA_GANDHI
-  sân_bay quốc_tế john_f . kennedy:
-  - LMK_SAN_BAY_QUOC_TE_JOHN_F_KENNEDY
-  - LOC_NEW_YORK_NY__SAN_BAY_QUOC_TE_JOHN_F_KENNEDY
-  sân_bay quốc_tế narita:
-  - LOC_NARITA__SAN_BAY_QUOC_TE_NARITA
-  sân_bay quốc_tế newark liberty:
-  - LMK_SAN_BAY_QUOC_TE_NEWARK_LIBERTY
+  sân_bay quốc_tế cần thơ:
+  - LMK_SAN_BAY_QUOC_TE_CAN_THO
   sân_bay quốc_tế nội_bài:
   - LMK_SAN_BAY_QUOC_TE_NOI_BAI
-  sân_bay quốc_tế san_francisco:
-  - LOC_SAN_FRANCISCO_CA__SAN_BAY_QUOC_TE_SAN_FRANCISCO
+  sân_bay quốc_tế phú_quốc:
+  - LMK_SAN_BAY_QUOC_TE_PHU_QUOC
+  sân_bay quốc_tế sihanouk:
+  - LMK_SAN_BAY_QUOC_TE_SIHANOUK
+  sân_bay quốc_tế tân_sơn nhất:
+  - LMK_SAN_BAY_QUOC_TE_TAN_SON_NHAT
+  sân_bay quốc_tế đà_nẵng:
+  - LMK_SAN_BAY_QUOC_TE_DA_NANG
+  sân_bay quốc_tế_phú bài:
+  - LMK_SAN_BAY_QUOC_TE_PHU_BAI
+  sân_bay rạch giá:
+  - LMK_SAN_BAY_RACH_GIA
   sân_bay sam neua:
   - LMK_SAN_BAY_SAM_NEUA
-  sân_bay teterboro:
-  - LMK_SAN_BAY_TETERBORO
   sân_bay thọ xuân:
   - LMK_SAN_BAY_THO_XUAN
-  sân_bay tỉnh westchester:
-  - LMK_SAN_BAY_TINH_WESTCHESTER
+  sân_bay điện_biên_phủ:
+  - LMK_SAN_BAY_DIEN_BIEN_PHU
   sân_chơi:
   - AMEN_KIDS_CLUB
   sân_chơi cẩm_thanh:
   - LMK_SAN_CHOI_CAM_THANH
-  são paulo:
-  - LOC_SAO_PAULO
+  sân_vận_động quy_nhơn:
+  - LMK_SAN_VAN_DONG_QUY_NHON
   sòng bài corona:
   - LMK_SONG_BAI_CORONA
+  sóc trăng:
+  - LOC_SOC_TRANG
   sôi_động:
   - STYLE_LIVELY
   sông hương:
@@ -2463,44 +1872,48 @@ synonyms:
   - ASPECT_CLEANLINESS
   sạch_sẽ:
   - ASPECT_CLEANLINESS
-  tai jiang district:
-  - LOC_PHUC_CHAU__TAI_JIANG_DISTRICT
-  tam ha:
-  - LOC_LANG_PHUONG__TAM_HA_SANHE
-  tam ha ( sanhe ):
-  - LOC_LANG_PHUONG__TAM_HA_SANHE
+  tam dao:
+  - LOC_TAM_DAO
+  - LOC_TAM_DAO__TAM_DAO
+  tam hiep:
+  - LOC_TAN_HIEP__TAM_HIEP
+  tam ky:
+  - LOC_TAM_KY
+  - LOC_TAM_KY__TAM_KY
   tam nhin ra bien:
   - AMEN_SEA_VIEW
   tam trung:
   - PRICE_MID
-  tam_hà:
-  - LOC_LANG_PHUONG__TAM_HA_SANHE
-  tam_hà ( sanhe ):
-  - LOC_LANG_PHUONG__TAM_HA_SANHE
+  tam_dao:
+  - LOC_TAM_DAO
+  - LOC_TAM_DAO__TAM_DAO
+  tam_hiệp:
+  - LOC_TAN_HIEP__TAM_HIEP
+  tam_ky:
+  - LOC_TAM_KY
+  - LOC_TAM_KY__TAM_KY
+  tam_kỳ:
+  - LOC_TAM_KY
+  - LOC_TAM_KY__TAM_KY
+  tam_đảo:
+  - LOC_TAM_DAO
+  - LOC_TAM_DAO__TAM_DAO
   tan binh:
   - LOC_HO_CHI_MINH__TAN_BINH
-  tan hung:
-  - LOC_VAN_PHU__TAN_HUNG_XINXING
-  tan hung ( xinxing ):
-  - LOC_VAN_PHU__TAN_HUNG_XINXING
+  tan hiep:
+  - LOC_TAN_HIEP
+  tan thach:
+  - LOC_BEN_TRE__TAN_THACH
   tan_binh:
   - LOC_HO_CHI_MINH__TAN_BINH
-  tay key:
-  - LOC_KEY_WEST_FL__TAY_KEY
   tay ninh:
   - LOC_TAY_NINH
-  temae:
-  - LOC_MOOREA_ISLAND__TEMAE
+  techo international airport:
+  - LMK_TECHO_INTERNATIONAL_AIRPORT
   thai do phuc vu:
   - ASPECT_SERVICE
-  thai lan:
-  - LOC_THAILAND
   thai nguyen:
   - LOC_THAI_NGUYEN
-  tham quyen:
-  - LOC_THAM_QUYEN
-  tham_quyen:
-  - LOC_THAM_QUYEN
   than thien moi truong:
   - STYLE_ECO
   thang binh:
@@ -2513,94 +1926,75 @@ synonyms:
   - STYLE_QUIET
   thanh bình:
   - STYLE_QUIET
+  thanh ha:
+  - LOC_HOI_AN__THANH_HA
   thanh hoa:
   - LOC_THANH_HOA
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON
-  thanh hoa / bai bien sam son:
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON
+  - LOC_THANH_HOA_TINH
   thanh hóa:
   - LOC_THANH_HOA
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON
-  thanh hóa / bãi biển sầm sơn:
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON
-  thanh pho an khau:
-  - LOC_DUY_PHUONG__THANH_PHO_AN_KHAU_ANQIU
-  thanh pho an khau ( anqiu ):
-  - LOC_DUY_PHUONG__THANH_PHO_AN_KHAU_ANQIU
-  thanh pho an_khau:
-  - LOC_DUY_PHUONG__THANH_PHO_AN_KHAU_ANQIU
-  thanh pho an_khau ( anqiu ):
-  - LOC_DUY_PHUONG__THANH_PHO_AN_KHAU_ANQIU
+  - LOC_THANH_HOA_TINH
   thanh pho bien:
-  - LOC_QUY_NHON_BINH_DINH__THANH_PHO_BIEN
+  - LOC_QUY_NHON__THANH_PHO_BIEN
   - SETTING_COASTAL
   thanh pho hue:
   - LOC_HUE__THANH_PHO_HUE
-  thanh pho ipoh:
-  - LOC_IPOH__THANH_PHO_IPOH
-  thanh pho macau:
-  - LOC_MA_CAO__THANH_PHO_MACAU
-  thanh pho panama:
-  - LOC_THANH_PHO_PANAMA
-  thanh pho sejong:
-  - LOC_THANH_PHO_SEJONG
-  thanh pho thanh chau:
-  - LOC_DUY_PHUONG__THANH_PHO_THANH_CHAU_QINGZHOU
-  thanh pho thanh chau ( qingzhou ):
-  - LOC_DUY_PHUONG__THANH_PHO_THANH_CHAU_QINGZHOU
-  thanh pho thanh_chau:
-  - LOC_DUY_PHUONG__THANH_PHO_THANH_CHAU_QINGZHOU
-  thanh pho thanh_chau ( qingzhou ):
-  - LOC_DUY_PHUONG__THANH_PHO_THANH_CHAU_QINGZHOU
-  thanh pho truong nhac:
-  - LOC_PHUC_CHAU__THANH_PHO_TRUONG_NHAC_CHANGLE
-  thanh pho truong nhac ( changle ):
-  - LOC_PHUC_CHAU__THANH_PHO_TRUONG_NHAC_CHANGLE
+  thanh pho ninh binh:
+  - LOC_NINH_BINH__THANH_PHO_NINH_BINH
+  thanh pho ninh_binh:
+  - LOC_NINH_BINH__THANH_PHO_NINH_BINH
   thanh pho vinh:
   - LOC_VINH__THANH_PHO_VINH
+  thanh thuy:
+  - LOC_PHU_THO__THANH_THUY
+  thanh thủy:
+  - LOC_PHU_THO__THANH_THUY
+  thanh_hà:
+  - LOC_HOI_AN__THANH_HA
   thap cuu ho:
   - LMK_THAP_CUU_HO
   thap quan sat:
   - LMK_THAP_QUAN_SAT
-  the caleb smith house:
-  - LMK_THE_CALEB_SMITH_HOUSE
-  the former residence of shen congwen:
-  - LMK_THE_FORMER_RESIDENCE_OF_SHEN_CONGWEN
-  the former residence of_shen congwen:
-  - LMK_THE_FORMER_RESIDENCE_OF_SHEN_CONGWEN
-  the woodlands:
-  - LOC_THE_WOODLANDS_TX
-  the woodlands ( tx ):
-  - LOC_THE_WOODLANDS_TX
+  the shack:
+  - LMK_THE_SHACK
   thien nhien:
   - SETTING_NATURE
+  thien vien truc lam:
+  - LMK_THIEN_VIEN_TRUC_LAM
+  thien vien truc_lam:
+  - LMK_THIEN_VIEN_TRUC_LAM
   thiet ke hien dai:
   - STYLE_MODERN
   thiên_nhiên:
   - SETTING_NATURE
   thiết_kế hiện_đại:
   - STYLE_MODERN
+  thiền viện trúc_lâm:
+  - LMK_THIEN_VIEN_TRUC_LAM
   thoai mai:
   - STYLE_RELAXING
+  thong nhat:
+  - LOC_BIEN_HOA__THONG_NHAT
   thoải_mái:
   - STYLE_RELAXING
+  thu dau mot:
+  - LOC_BINH_DUONG__THU_DAU_MOT
+  thu duc:
+  - LOC_HO_CHI_MINH__THU_DUC
   thu gian:
   - PURPOSE_WELLNESS
   - STYLE_RELAXING
   thu thai:
   - STYLE_RELAXING
-  thua duc:
-  - LOC_THUA_DUC
   thuan an:
   - LOC_BINH_DUONG__THUAN_AN
+  - LOC_THUAN_AN
   thung lung tinh yeu:
   - LOC_DA_LAT__THUNG_LUNG_TINH_YEU
   thung lung_tinh yeu:
   - LOC_DA_LAT__THUNG_LUNG_TINH_YEU
   thung_lũng tình_yêu:
   - LOC_DA_LAT__THUNG_LUNG_TINH_YEU
-  thuong hai:
-  - LOC_THUONG_HAI
   thuong ly:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
   thuong ly / quan toan:
@@ -2609,37 +2003,18 @@ synonyms:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
   thuận an:
   - LOC_BINH_DUONG__THUAN_AN
-  thành_phố an khâu:
-  - LOC_DUY_PHUONG__THANH_PHO_AN_KHAU_ANQIU
-  thành_phố an_khâu ( anqiu ):
-  - LOC_DUY_PHUONG__THANH_PHO_AN_KHAU_ANQIU
+  - LOC_THUAN_AN
   thành_phố biển:
-  - LOC_QUY_NHON_BINH_DINH__THANH_PHO_BIEN
+  - LOC_QUY_NHON__THANH_PHO_BIEN
   - SETTING_COASTAL
   thành_phố huế:
   - LOC_HUE__THANH_PHO_HUE
-  thành_phố ipoh:
-  - LOC_IPOH__THANH_PHO_IPOH
-  thành_phố macau:
-  - LOC_MA_CAO__THANH_PHO_MACAU
-  thành_phố panama:
-  - LOC_THANH_PHO_PANAMA
-  thành_phố sejong:
-  - LOC_THANH_PHO_SEJONG
-  thành_phố thanh_châu:
-  - LOC_DUY_PHUONG__THANH_PHO_THANH_CHAU_QINGZHOU
-  thành_phố thanh_châu ( qingzhou ):
-  - LOC_DUY_PHUONG__THANH_PHO_THANH_CHAU_QINGZHOU
-  thành_phố trường nhạc:
-  - LOC_PHUC_CHAU__THANH_PHO_TRUONG_NHAC_CHANGLE
-  thành_phố trường_nhạc ( changle ):
-  - LOC_PHUC_CHAU__THANH_PHO_TRUONG_NHAC_CHANGLE
+  thành_phố ninh_bình:
+  - LOC_NINH_BINH__THANH_PHO_NINH_BINH
   thành_phố vinh:
   - LOC_VINH__THANH_PHO_VINH
   thái nguyên:
   - LOC_THAI_NGUYEN
-  thái_lan:
-  - LOC_THAILAND
   thái_độ phục_vụ:
   - ASPECT_SERVICE
   tháp cứu_hộ:
@@ -2655,26 +2030,20 @@ synonyms:
   - STYLE_RELAXING
   thư_thái:
   - STYLE_RELAXING
-  thượng_hải:
-  - LOC_THUONG_HAI
   thượng_lý:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
   thượng_lý / quán toan:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
-  thẩm_quyến:
-  - LOC_THAM_QUYEN
   thắng tam:
   - LOC_VUNG_TAU__THANG_TAM
-  thừa đức:
-  - LOC_THUA_DUC
-  tiem sa chuy:
-  - LOC_HONG_KONG__TIEM_SA_CHUY
-  tiem sa_chuy:
-  - LOC_HONG_KONG__TIEM_SA_CHUY
-  tien du:
-  - LOC_PHU_DIEN__TIEN_DU_XIANYOU
-  tien du ( xianyou ):
-  - LOC_PHU_DIEN__TIEN_DU_XIANYOU
+  thống_nhất:
+  - LOC_BIEN_HOA__THONG_NHAT
+  thủ_dầu một:
+  - LOC_BINH_DUONG__THU_DAU_MOT
+  thủ_đức:
+  - LOC_HO_CHI_MINH__THU_DUC
+  tien giang:
+  - LOC_TIEN_GIANG_TINH
   tien ich:
   - ASPECT_FACILITIES
   tien nghi co so luu tru:
@@ -2683,26 +2052,18 @@ synonyms:
   - STYLE_MODERN
   tien nghi phong:
   - ASPECT_ROOM
+  tien thanh:
+  - LOC_PHAN_THIET__TIEN_THANH
   tiet kiem:
   - PRICE_BUDGET
-  tinh binh dan:
-  - LOC_PHUC_CHAU__TINH_BINH_DAN_PINGTAN
-  tinh binh dan ( pingtan ):
-  - LOC_PHUC_CHAU__TINH_BINH_DAN_PINGTAN
   tinh lang:
   - STYLE_QUIET
-  tinh_binh dan:
-  - LOC_PHUC_CHAU__TINH_BINH_DAN_PINGTAN
-  tinh_binh_dan ( pingtan ):
-  - LOC_PHUC_CHAU__TINH_BINH_DAN_PINGTAN
-  tiêm sa_chủy:
-  - LOC_HONG_KONG__TIEM_SA_CHUY
-  tiên_du:
-  - LOC_PHU_DIEN__TIEN_DU_XIANYOU
-  tiên_du ( xianyou ):
-  - LOC_PHU_DIEN__TIEN_DU_XIANYOU
+  tiến thành:
+  - LOC_PHAN_THIET__TIEN_THANH
   tiết_kiệm:
   - PRICE_BUDGET
+  tiền giang:
+  - LOC_TIEN_GIANG_TINH
   tiện_nghi cơ_sở lưu_trú:
   - ASPECT_FACILITIES
   tiện_nghi hiện_đại:
@@ -2711,20 +2072,22 @@ synonyms:
   - ASPECT_ROOM
   tiện_ích:
   - ASPECT_FACILITIES
-  to chau:
-  - LOC_TO_CHAU
   toan bo can nha:
   - OBJ_APARTMENT
-  tokoriki:
-  - LOC_DAO_MAMANUCA__TOKORIKI
-  tokyo:
-  - LOC_TOKYO
+  tour du lich le khang:
+  - LMK_TOUR_DU_LICH_LE_KHANG
+  tour du_lich le khang:
+  - LMK_TOUR_DU_LICH_LE_KHANG
+  tour du_lịch lê_khang:
+  - LMK_TOUR_DU_LICH_LE_KHANG
   toàn_bộ căn nhà:
   - OBJ_APARTMENT
-  tp . long island:
-  - LOC_NEW_YORK_NY__TP_LONG_ISLAND
-  traiding golf course:
-  - LMK_TRAIDING_GOLF_COURSE
+  tra vinh:
+  - LOC_TRA_VINH
+  trai ca sau blue sky:
+  - LMK_TRAI_CA_SAU_BLUE_SKY
+  tram khi tuong hai van con dao:
+  - LMK_TRAM_KHI_TUONG_HAI_VAN_CON_DAO
   trang mat:
   - PURPOSE_ROMANTIC
   tre em:
@@ -2733,38 +2096,24 @@ synonyms:
   - SETTING_ISLAND
   tren nui:
   - SETTING_MOUNTAIN
-  trionfale:
-  - LOC_ROME__TRIONFALE
   trong noi thanh:
   - SETTING_CITY_CENTER
   trong nội_thành:
   - SETTING_CITY_CENTER
   trung hoa nhan chinh:
   - LOC_HA_NOI__TRUNG_HOA_NHAN_CHINH
-  trung quoc:
-  - LOC_CHINA
   trung tam:
   - SETTING_CITY_CENTER
-  trung tam los angeles:
-  - LOC_LOS_ANGELES_CA__TRUNG_TAM_LOS_ANGELES
-  trung tam malacca:
-  - LOC_MALACCA__TRUNG_TAM_MALACCA
-  trung tam mercury:
-  - LOC_HAMPTON_VA__TRUNG_TAM_MERCURY
-  trung tam saint louis:
-  - LOC_ST_LOUIS_MO__TRUNG_TAM_SAINT_LOUIS
+  trung tam lan bien vietnam explore:
+  - LMK_TRUNG_TAM_LAN_BIEN_VIETNAM_EXPLORE
   trung tam sapa:
   - LOC_SAPA__TRUNG_TAM_SAPA
-  trung tam szklarska poreba:
-  - LOC_SZKLARSKA_POREBA__TRUNG_TAM_SZKLARSKA_POREBA
   trung tam thanh pho:
-  - LOC_ABU_DHABI__TRUNG_TAM_THANH_PHO
+  - LOC_CHAU_DOC__TRUNG_TAM_THANH_PHO
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
   - SETTING_CITY_CENTER
   trung tam thanh pho / cho sat:
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
-  trung tam thanh pho austin:
-  - LOC_AUSTIN_TX__TRUNG_TAM_THANH_PHO_AUSTIN
   trung tam thanh pho bac ninh:
   - LOC_BAC_NINH__TRUNG_TAM_THANH_PHO_BAC_NINH
   trung tam thanh pho buon ma thuot:
@@ -2773,58 +2122,26 @@ synonyms:
   - LOC_CAN_THO__TRUNG_TAM_THANH_PHO_CAN_THO
   trung tam thanh pho da lat:
   - LOC_DA_LAT__TRUNG_TAM_THANH_PHO_DA_LAT
-  trung tam thanh pho dallas:
-  - LOC_DALLAS_TX__TRUNG_TAM_THANH_PHO_DALLAS
-  trung tam thanh pho fort lauderdale:
-  - LOC_FORT_LAUDERDALE_FL__TRUNG_TAM_THANH_PHO_FORT_LAUDERDALE
-  trung tam thanh pho hamburg:
-  - LOC_HAMBURG__TRUNG_TAM_THANH_PHO_HAMBURG
-  trung tam thanh pho kuala lumpur:
-  - LOC_KUALA_LUMPUR__TRUNG_TAM_THANH_PHO_KUALA_LUMPUR
-  trung tam thanh pho napa:
-  - LOC_NAPA_CA__TRUNG_TAM_THANH_PHO_NAPA
-  trung tam thanh pho nashville:
-  - LOC_NASHVILLE_TN__TRUNG_TAM_THANH_PHO_NASHVILLE
-  trung tam thanh pho palm springs:
-  - LOC_PALM_SPRINGS_CA__TRUNG_TAM_THANH_PHO_PALM_SPRINGS
-  trung tam thanh pho san diego:
-  - LOC_SAN_DIEGO_CA__TRUNG_TAM_THANH_PHO_SAN_DIEGO
+  trung tam thanh pho quy nhon:
+  - LOC_QUY_NHON__TRUNG_TAM_THANH_PHO_QUY_NHON
   trung tam thanh pho tay ninh:
   - LOC_TAY_NINH__TRUNG_TAM_THANH_PHO_TAY_NINH
-  trung tam thuong mai:
-  - LOC_MIRI__TRUNG_TAM_THUONG_MAI
-  trung tam tp . johor bahru:
-  - LOC_JOHOR_BAHRU__TRUNG_TAM_TP_JOHOR_BAHRU
   trung tam tp.thanh hoa:
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
+  - LOC_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
   - LOC_THANH_HOA__TRUNG_TAM_TP_THANH_HOA
   trung_hoa nhan_chinh:
   - LOC_HA_NOI__TRUNG_HOA_NHAN_CHINH
   trung_hòa nhân chính:
   - LOC_HA_NOI__TRUNG_HOA_NHAN_CHINH
-  trung_quoc:
-  - LOC_CHINA
-  trung_quốc:
-  - LOC_CHINA
-  trung_tam los_angeles:
-  - LOC_LOS_ANGELES_CA__TRUNG_TAM_LOS_ANGELES
-  trung_tam malacca:
-  - LOC_MALACCA__TRUNG_TAM_MALACCA
-  trung_tam mercury:
-  - LOC_HAMPTON_VA__TRUNG_TAM_MERCURY
-  trung_tam saint_louis:
-  - LOC_ST_LOUIS_MO__TRUNG_TAM_SAINT_LOUIS
+  trung_tam lan_bien vietnam explore:
+  - LMK_TRUNG_TAM_LAN_BIEN_VIETNAM_EXPLORE
   trung_tam sapa:
   - LOC_SAPA__TRUNG_TAM_SAPA
-  trung_tam szklarska_poreba:
-  - LOC_SZKLARSKA_POREBA__TRUNG_TAM_SZKLARSKA_POREBA
   trung_tam thanh_pho:
-  - LOC_ABU_DHABI__TRUNG_TAM_THANH_PHO
+  - LOC_CHAU_DOC__TRUNG_TAM_THANH_PHO
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
   trung_tam thanh_pho / cho sat:
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
-  trung_tam thanh_pho austin:
-  - LOC_AUSTIN_TX__TRUNG_TAM_THANH_PHO_AUSTIN
   trung_tam thanh_pho bac_ninh:
   - LOC_BAC_NINH__TRUNG_TAM_THANH_PHO_BAC_NINH
   trung_tam thanh_pho buon ma thuot:
@@ -2833,174 +2150,112 @@ synonyms:
   - LOC_CAN_THO__TRUNG_TAM_THANH_PHO_CAN_THO
   trung_tam thanh_pho da lat:
   - LOC_DA_LAT__TRUNG_TAM_THANH_PHO_DA_LAT
-  trung_tam thanh_pho dallas:
-  - LOC_DALLAS_TX__TRUNG_TAM_THANH_PHO_DALLAS
-  trung_tam thanh_pho fort lauderdale:
-  - LOC_FORT_LAUDERDALE_FL__TRUNG_TAM_THANH_PHO_FORT_LAUDERDALE
-  trung_tam thanh_pho hamburg:
-  - LOC_HAMBURG__TRUNG_TAM_THANH_PHO_HAMBURG
-  trung_tam thanh_pho kuala lumpur:
-  - LOC_KUALA_LUMPUR__TRUNG_TAM_THANH_PHO_KUALA_LUMPUR
-  trung_tam thanh_pho napa:
-  - LOC_NAPA_CA__TRUNG_TAM_THANH_PHO_NAPA
-  trung_tam thanh_pho nashville:
-  - LOC_NASHVILLE_TN__TRUNG_TAM_THANH_PHO_NASHVILLE
-  trung_tam thanh_pho palm springs:
-  - LOC_PALM_SPRINGS_CA__TRUNG_TAM_THANH_PHO_PALM_SPRINGS
-  trung_tam thanh_pho san diego:
-  - LOC_SAN_DIEGO_CA__TRUNG_TAM_THANH_PHO_SAN_DIEGO
+  trung_tam thanh_pho quy_nhon:
+  - LOC_QUY_NHON__TRUNG_TAM_THANH_PHO_QUY_NHON
   trung_tam thanh_pho tay ninh:
   - LOC_TAY_NINH__TRUNG_TAM_THANH_PHO_TAY_NINH
-  trung_tam thuong_mai:
-  - LOC_MIRI__TRUNG_TAM_THUONG_MAI
-  trung_tam tp . johor bahru:
-  - LOC_JOHOR_BAHRU__TRUNG_TAM_TP_JOHOR_BAHRU
   trung_tam tp.thanh hoa:
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
+  - LOC_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
   - LOC_THANH_HOA__TRUNG_TAM_TP_THANH_HOA
   trung_tâm:
   - SETTING_CITY_CENTER
-  trung_tâm los angeles:
-  - LOC_LOS_ANGELES_CA__TRUNG_TAM_LOS_ANGELES
-  trung_tâm malacca:
-  - LOC_MALACCA__TRUNG_TAM_MALACCA
-  trung_tâm mercury:
-  - LOC_HAMPTON_VA__TRUNG_TAM_MERCURY
-  trung_tâm saint louis:
-  - LOC_ST_LOUIS_MO__TRUNG_TAM_SAINT_LOUIS
+  trung_tâm lặn biển vietnam explore:
+  - LMK_TRUNG_TAM_LAN_BIEN_VIETNAM_EXPLORE
   trung_tâm sapa:
   - LOC_SAPA__TRUNG_TAM_SAPA
-  trung_tâm szklarska poreba:
-  - LOC_SZKLARSKA_POREBA__TRUNG_TAM_SZKLARSKA_POREBA
   trung_tâm thành_phố:
-  - LOC_ABU_DHABI__TRUNG_TAM_THANH_PHO
+  - LOC_CHAU_DOC__TRUNG_TAM_THANH_PHO
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
   - SETTING_CITY_CENTER
   trung_tâm thành_phố / chợ sắt:
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
-  trung_tâm thành_phố austin:
-  - LOC_AUSTIN_TX__TRUNG_TAM_THANH_PHO_AUSTIN
   trung_tâm thành_phố buôn_ma thuột:
   - LOC_BUON_MA_THUOT__TRUNG_TAM_THANH_PHO_BUON_MA_THUOT
   trung_tâm thành_phố bắc ninh:
   - LOC_BAC_NINH__TRUNG_TAM_THANH_PHO_BAC_NINH
   trung_tâm thành_phố cần thơ:
   - LOC_CAN_THO__TRUNG_TAM_THANH_PHO_CAN_THO
-  trung_tâm thành_phố dallas:
-  - LOC_DALLAS_TX__TRUNG_TAM_THANH_PHO_DALLAS
-  trung_tâm thành_phố fort lauderdale:
-  - LOC_FORT_LAUDERDALE_FL__TRUNG_TAM_THANH_PHO_FORT_LAUDERDALE
-  trung_tâm thành_phố hamburg:
-  - LOC_HAMBURG__TRUNG_TAM_THANH_PHO_HAMBURG
-  trung_tâm thành_phố kuala lumpur:
-  - LOC_KUALA_LUMPUR__TRUNG_TAM_THANH_PHO_KUALA_LUMPUR
-  trung_tâm thành_phố napa:
-  - LOC_NAPA_CA__TRUNG_TAM_THANH_PHO_NAPA
-  trung_tâm thành_phố nashville:
-  - LOC_NASHVILLE_TN__TRUNG_TAM_THANH_PHO_NASHVILLE
-  trung_tâm thành_phố palm springs:
-  - LOC_PALM_SPRINGS_CA__TRUNG_TAM_THANH_PHO_PALM_SPRINGS
-  trung_tâm thành_phố san_diego:
-  - LOC_SAN_DIEGO_CA__TRUNG_TAM_THANH_PHO_SAN_DIEGO
+  trung_tâm thành_phố quy_nhơn:
+  - LOC_QUY_NHON__TRUNG_TAM_THANH_PHO_QUY_NHON
   trung_tâm thành_phố tây_ninh:
   - LOC_TAY_NINH__TRUNG_TAM_THANH_PHO_TAY_NINH
   trung_tâm thành_phố đà lạt:
   - LOC_DA_LAT__TRUNG_TAM_THANH_PHO_DA_LAT
-  trung_tâm thương_mại:
-  - LOC_MIRI__TRUNG_TAM_THUONG_MAI
-  trung_tâm tp . johor bahru:
-  - LOC_JOHOR_BAHRU__TRUNG_TAM_TP_JOHOR_BAHRU
   trung_tâm tp.thanh hóa:
-  - LOC_THANH_HOA_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
+  - LOC_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
   - LOC_THANH_HOA__TRUNG_TAM_TP_THANH_HOA
+  trà vinh:
+  - LOC_TRA_VINH
   trên núi:
   - SETTING_MOUNTAIN
   trên đảo:
   - SETTING_ISLAND
   trăng_mật:
   - PURPOSE_ROMANTIC
+  trại cá_sấu blue sky:
+  - LMK_TRAI_CA_SAU_BLUE_SKY
+  trạm khí_tượng hải_văn côn_đảo:
+  - LMK_TRAM_KHI_TUONG_HAI_VAN_CON_DAO
   trẻ_em:
   - PURPOSE_FAMILY
-  tu tu:
-  - LOC_PHU_DIEN__TU_TU_XIUYU
-  tu tu ( xiuyu ):
-  - LOC_PHU_DIEN__TU_TU_XIUYU
-  tu_tu ( xiuyu ):
-  - LOC_PHU_DIEN__TU_TU_XIUYU
-  tuojiang ancient street:
-  - LMK_TUOJIANG_ANCIENT_STREET
+  tt mua sam imperial plaza:
+  - LMK_TT_MUA_SAM_IMPERIAL_PLAZA
+  tt mua_sắm imperial plaza:
+  - LMK_TT_MUA_SAM_IMPERIAL_PLAZA
+  tuong chua kito vua:
+  - LMK_TUONG_CHUA_KITO_VUA
+  tuong chua_kito vua:
+  - LMK_TUONG_CHUA_KITO_VUA
+  tuong dai chien thang:
+  - LMK_TUONG_DAI_CHIEN_THANG
+  tuong dai_chien thang:
+  - LMK_TUONG_DAI_CHIEN_THANG
+  tuong ton duc thang:
+  - LMK_TUONG_TON_DUC_THANG
   tuy hoa:
-  - LOC_TUY_HOA_PHU_YEN
-  tuy hoa ( phu yen ):
-  - LOC_TUY_HOA_PHU_YEN
-  tuy hoa ( phu_yen ):
-  - LOC_TUY_HOA_PHU_YEN
+  - LOC_TUY_HOA
   tuy hòa:
-  - LOC_TUY_HOA_PHU_YEN
-  tuy hòa ( phú_yên ):
-  - LOC_TUY_HOA_PHU_YEN
+  - LOC_TUY_HOA
+  tuy phong:
+  - LOC_TUY_PHONG
   tuyen quang:
   - LOC_TUYEN_QUANG
   tuyên_quang:
   - LOC_TUYEN_QUANG
   tân bình:
   - LOC_HO_CHI_MINH__TAN_BINH
-  tân_hưng:
-  - LOC_VAN_PHU__TAN_HUNG_XINXING
-  tân_hưng ( xinxing ):
-  - LOC_VAN_PHU__TAN_HUNG_XINXING
-  tây key:
-  - LOC_KEY_WEST_FL__TAY_KEY
+  tân hiệp:
+  - LOC_TAN_HIEP
+  tân thạch:
+  - LOC_BEN_TRE__TAN_THACH
   tây ninh:
   - LOC_TAY_NINH
-  tô châu:
-  - LOC_TO_CHAU
-  tú tự:
-  - LOC_PHU_DIEN__TU_TU_XIUYU
-  tú tự ( xiuyu ):
-  - LOC_PHU_DIEN__TU_TU_XIUYU
   tĩnh_lặng:
   - STYLE_QUIET
+  tượng chúa kitô vua:
+  - LMK_TUONG_CHUA_KITO_VUA
+  tượng tôn_đức thắng:
+  - LMK_TUONG_TON_DUC_THANG
+  tượng_đài chiến_thắng:
+  - LMK_TUONG_DAI_CHIEN_THANG
   tầm nhìn ra biển:
   - AMEN_SEA_VIEW
   tầm trung:
   - PRICE_MID
-  tỉnh bình đạn:
-  - LOC_PHUC_CHAU__TINH_BINH_DAN_PINGTAN
-  tỉnh bình_đạn ( pingtan ):
-  - LOC_PHUC_CHAU__TINH_BINH_DAN_PINGTAN
-  ubud:
-  - LOC_BALI__UBUD
-  uc:
-  - LOC_AUSTRALIA
   ultra luxury:
   - PRICE_LUXURY
-  uluwatu:
-  - LOC_BALI__ULUWATU
-  umeda:
-  - LOC_OSAKA__UMEDA
   upscale:
   - PRICE_UPSCALE
   value:
   - ASPECT_VALUE
   value for money:
   - ASPECT_VALUE
+  van don:
+  - LOC_HA_LONG__VAN_DON
   van don international airport:
   - LMK_VAN_DON_INTERNATIONAL_AIRPORT
   van don_international airport:
   - LMK_VAN_DON_INTERNATIONAL_AIRPORT
-  van ninh:
-  - LOC_VAN_NINH
-  - LOC_VAN_NINH__VAN_NINH_WANNING
-  van ninh ( wanning ):
-  - LOC_VAN_NINH__VAN_NINH_WANNING
-  van phu:
-  - LOC_VAN_PHU
-  van_ninh:
-  - LOC_VAN_NINH
-  - LOC_VAN_NINH__VAN_NINH_WANNING
-  van_ninh ( wanning ):
-  - LOC_VAN_NINH__VAN_NINH_WANNING
   ve sinh:
   - ASPECT_CLEANLINESS
   ven bien:
@@ -3028,36 +2283,39 @@ synonyms:
   viet nam:
   - LOC_VIETNAM
   viet tri:
-  - LOC_VIET_TRI_PHU_THO
-  - LOC_VIET_TRI_PHU_THO__VIET_TRI
-  viet tri ( phu tho ):
-  - LOC_VIET_TRI_PHU_THO
-  viet_tri ( phu_tho ):
-  - LOC_VIET_TRI_PHU_THO
+  - LOC_VIET_TRI
+  - LOC_VIET_TRI__VIET_TRI
   view bien:
   - AMEN_SEA_VIEW
   view biển:
   - AMEN_SEA_VIEW
   view pool:
   - AMEN_INFINITY_POOL
+  view tower:
+  - LMK_VIEW_TOWER
   villa:
   - OBJ_VILLA
   vinh:
   - LOC_VINH
+  vinh hai:
+  - LOC_PHAN_RANG_THAP_CHAM__VINH_HAI
   vinh hoa:
   - LOC_NHA_TRANG__VINH_HOA
-  vinh manila:
-  - LOC_MANILA__VINH_MANILA
-  vinh marina:
-  - LOC_SINGAPORE__VINH_MARINA
+  vinh long:
+  - LOC_VINH_LONG
+  vinh phu:
+  - LOC_THUAN_AN__VINH_PHU
   vinh phuc:
   - LOC_VINH_PHUC
+  - LOC_VINH_PHUC_TINH
   vinh phuoc:
   - LOC_NHA_TRANG__VINH_PHUOC
   vinh truong:
   - LOC_NHA_TRANG__VINH_TRUONG
-  vinh tumon:
-  - LOC_GUAM__VINH_TUMON
+  vinh_phu:
+  - LOC_THUAN_AN__VINH_PHU
+  vinh_phú:
+  - LOC_THUAN_AN__VINH_PHU
   vinpearl grand world phu quoc:
   - LMK_GRAND_WORLD_PHU_QUOC
   vinpearl grand world_phu quoc:
@@ -3083,10 +2341,8 @@ synonyms:
   việt_nam:
   - LOC_VIETNAM
   việt_trì:
-  - LOC_VIET_TRI_PHU_THO
-  - LOC_VIET_TRI_PHU_THO__VIET_TRI
-  việt_trì ( phú_thọ ):
-  - LOC_VIET_TRI_PHU_THO
+  - LOC_VIET_TRI
+  - LOC_VIET_TRI__VIET_TRI
   vui nhon:
   - STYLE_LIVELY
   vui nhộn:
@@ -3101,20 +2357,21 @@ synonyms:
   - SETTING_NATURE
   vuon be canh:
   - LMK_VUON_BE_CANH
-  vuon quoc gia khao yai:
-  - LOC_KHAO_YAI__VUON_QUOC_GIA_KHAO_YAI
-  vuon quoc_gia khao_yai:
-  - LOC_KHAO_YAI__VUON_QUOC_GIA_KHAO_YAI
-  vân phù:
-  - LOC_VAN_PHU
+  vân đồn:
+  - LOC_HA_LONG__VAN_DON
   vùng núi:
   - SETTING_MOUNTAIN
   vùng_biển:
   - SETTING_COASTAL
+  vĩnh long:
+  - LOC_VINH_LONG
   vĩnh_hòa:
   - LOC_NHA_TRANG__VINH_HOA
+  vĩnh_hải:
+  - LOC_PHAN_RANG_THAP_CHAM__VINH_HAI
   vĩnh_phúc:
   - LOC_VINH_PHUC
+  - LOC_VINH_PHUC_TINH
   vĩnh_phước:
   - LOC_NHA_TRANG__VINH_PHUOC
   vĩnh_trường:
@@ -3125,50 +2382,16 @@ synonyms:
   - SETTING_NATURE
   vườn bể cảnh:
   - LMK_VUON_BE_CANH
-  vườn_quốc_gia khao_yai:
-  - LOC_KHAO_YAI__VUON_QUOC_GIA_KHAO_YAI
-  vạn ninh:
-  - LOC_VAN_NINH
-  - LOC_VAN_NINH__VAN_NINH_WANNING
-  vạn ninh ( wanning ):
-  - LOC_VAN_NINH__VAN_NINH_WANNING
   vệ_sinh:
   - ASPECT_CLEANLINESS
   vị_trí:
   - ASPECT_LOCATION
   vị_trí thuận_tiện:
   - ASPECT_LOCATION
-  vịnh manila:
-  - LOC_MANILA__VINH_MANILA
-  vịnh marina:
-  - LOC_SINGAPORE__VINH_MARINA
-  vịnh tumon:
-  - LOC_GUAM__VINH_TUMON
-  waikiki:
-  - LOC_HONOLULU_HI__WAIKIKI
-  wailea:
-  - LOC_WAILEA_HI
-  - LOC_WAILEA_HI__WAILEA
-  wailea ( hi ):
-  - LOC_WAILEA_HI
-  wanchai:
-  - LOC_HONG_KONG__WANCHAI
-  wanzai:
-  - LOC_CHAU_HAI__WANZAI
-  watergraafsmeer:
-  - LOC_AMSTERDAM__OOST_WATERGRAAFSMEER
-  weicheng:
-  - LOC_DUY_PHUONG__WEICHENG
   wellness:
   - PURPOSE_WELLNESS
-  west bloomington:
-  - LOC_BLOOMINGTON_MN__WEST_BLOOMINGTON
-  west fairfield:
-  - LOC_FAIRFIELD_CA__WEST_FAIRFIELD
-  west hollywood:
-  - LOC_LOS_ANGELES_CA__WEST_HOLLYWOOD
-  westchase:
-  - LOC_HOUSTON_TX__WESTCHASE
+  wenshan puzhehei airport:
+  - LMK_WENSHAN_PUZHEHEI_AIRPORT
   wi-fi:
   - AMEN_WIFI
   wifi:
@@ -3177,8 +2400,6 @@ synonyms:
   - AMEN_WIFI
   wifi miễn_phí:
   - AMEN_WIFI
-  willow street:
-  - LOC_WILLOW_STREET
   worth:
   - ASPECT_VALUE
   xa hoa:
@@ -3190,14 +2411,8 @@ synonyms:
   - AMEN_AIRPORT_SHUTTLE
   xe đưa_đón:
   - AMEN_AIRPORT_SHUTTLE
-  xiangbi mountain of fenghuang:
-  - LMK_XIANGBI_MOUNTAIN_OF_FENGHUANG
   xin:
   - PRICE_LUXURY
-  xina € ™ ao art boulevard:
-  - LMK_XIN_AO_ART_BOULEVARD
-  xinâ € ™ ao art boulevard:
-  - LMK_XIN_AO_ART_BOULEVARD
   xong hoi:
   - AMEN_SPA
   xong kho:
@@ -3220,44 +2435,10 @@ synonyms:
   - PRICE_LUXURY
   xứng_đáng:
   - ASPECT_VALUE
-  y:
-  - LOC_ITALY
-  y xuan:
-  - LOC_Y_XUAN_HAC_LONG_GIANG
-  y xuan ( hac long giang ):
-  - LOC_Y_XUAN_HAC_LONG_GIANG
-  y xuân:
-  - LOC_Y_XUAN_HAC_LONG_GIANG
-  y_xuan ( hac long_giang ):
-  - LOC_Y_XUAN_HAC_LONG_GIANG
-  y_xuân ( hắc long_giang ):
-  - LOC_Y_XUAN_HAC_LONG_GIANG
   yen tinh:
   - STYLE_QUIET
-  yeouido:
-  - LOC_SEOUL__YEOUIDO
-  yichun:
-  - LOC_Y_XUAN_HAC_LONG_GIANG__YICHUN
-  yingzhou:
-  - LOC_PHU_DUONG__YINGZHOU
-  yokohama:
-  - LOC_YOKOHAMA
-  yomitan:
-  - LOC_OKINAWA_MAIN_ISLAND__YOMITAN
-  yongding:
-  - LOC_LONG_NHAM__YONGDING
-  yunan:
-  - LOC_VAN_PHU__YUNAN
   yên_tĩnh:
   - STYLE_QUIET
-  zhunti temple of fenghuang old city:
-  - LMK_ZHUNTI_TEMPLE_OF_FENGHUANG_OLD_CITY
-  zhunti temple of_fenghuang old city:
-  - LMK_ZHUNTI_TEMPLE_OF_FENGHUANG_OLD_CITY
-  úc:
-  - LOC_AUSTRALIA
-  ý:
-  - LOC_ITALY
   ăn_uống:
   - ASPECT_FOOD
   đa tốn:
@@ -3270,61 +2451,47 @@ synonyms:
   - PURPOSE_GROUP
   điểm ngắm cảnh:
   - LMK_DIEM_NGAM_CANH
+  điện biên_phủ:
+  - LOC_DIEN_BIEN_PHU
+  điện dương:
+  - LOC_HOI_AN__DIEN_DUONG
   đà lạt:
   - LOC_DA_LAT
   đà_nẵng:
   - LOC_DA_NANG
-  đài bắc:
-  - LOC_DAI_BAC
-  đài loan:
-  - LOC_TAIWAN
+  đài tưởng_niệm liệt_sĩ:
+  - LMK_DAI_TUONG_NIEM_LIET_SI
+  đá chồng:
+  - LMK_DA_CHONG
   đáng tiền:
   - ASPECT_VALUE
   đáng_giá:
   - ASPECT_VALUE
+  đình châu_phú:
+  - LMK_DINH_CHAU_PHU
+  đình hồ sơn_cổ tự:
+  - LMK_DINH_HO_SON_CO_TU
+  đình thắng tam:
+  - LMK_DINH_THANG_TAM
   đình_thần nguyễn_trung_trực:
   - LMK_DINH_THAN_NGUYEN_TRUNG_TRUC
   đôi:
   - PURPOSE_ROMANTIC
-  đông the strip:
-  - LOC_LAS_VEGAS_NV__DONG_THE_STRIP
   đưa_đón sân_bay:
   - AMEN_AIRPORT_SHUTTLE
-  đường beach pattaya:
-  - LOC_PATTAYA__DUONG_BEACH_PATTAYA
-  đại_xưởng:
-  - LOC_LANG_PHUONG__DAI_XUONG_DACHANG
-  đại_xưởng ( dachang ):
-  - LOC_LANG_PHUONG__DAI_XUONG_DACHANG
-  đạo thành:
-  - LOC_CAM_TU_TANG__DAO_THANH_DAOCHENG
-  đạo thành ( daocheng ):
-  - LOC_CAM_TU_TANG__DAO_THANH_DAOCHENG
   đảo castaway island:
   - LMK_DAO_CASTAWAY_ISLAND
-  đảo denarau:
-  - LOC_NADI__DAO_DENARAU
-  đảo gulangyu:
-  - LOC_HA_MON__DAO_GULANGYU
-  đảo koh si_chang:
-  - LOC_CHONBURI__DAO_KOH_SI_CHANG
-  đảo mactan:
-  - LOC_CEBU__DAO_MACTAN
-  đảo mamanuca:
-  - LOC_DAO_MAMANUCA
-  đảo panglao:
-  - LOC_BOHOL__DAO_PANGLAO
   đảo phú_quốc:
   - LOC_PHU_QUOC
   đảo riêng:
   - SETTING_ISLAND
-  đảo saadiyat:
-  - LOC_ABU_DHABI__DAO_SAADIYAT
-  đảo sonaisali:
-  - LOC_NADI__DAO_SONAISALI
+  đất 513 m:
+  - LMK_DAT_513M
   đẳng_cấp:
   - PRICE_LUXURY
   - STYLE_LUXURY
+  đền bà_chúa xứ:
+  - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
   đền độc_cước:
   - LMK_DEN_DOC_CUOC
   địa_điểm:
@@ -3333,27 +2500,21 @@ synonyms:
   - LOC_HA_NOI__DONG_DA
   đồ_ăn:
   - ASPECT_FOOD
-  đồi hổ và khu giải_trí tô_châu:
-  - LOC_TO_CHAU__DOI_HO_VA_KHU_GIAI_TRI_TO_CHAU
+  đồi con heo:
+  - LMK_DOI_CON_HEO
   đồi_núi:
   - SETTING_MOUNTAIN
-  đồn xương:
-  - LOC_DON_XUONG
   đồng hới:
-  - LOC_QUANG_BINH
-  - LOC_QUANG_BINH__DONG_HOI
-  đồng hới ( quảng_bình ):
-  - LOC_QUANG_BINH
+  - LOC_DONG_HOI
+  - LOC_DONG_HOI__DONG_HOI
+  đồng nai:
+  - LOC_DONG_NAI_TINH
   độ sạch_sẽ:
   - ASPECT_CLEANLINESS
   độ thoải_mái của phòng:
   - ASPECT_ROOM
-  đức:
-  - LOC_GERMANY
-  ả rập xê_út:
-  - LOC_SAUDI_ARABIA
-  ấn độ:
-  - LOC_INDIA
+  động tam_cốc - bích_động:
+  - LOC_NINH_BINH__DONG_TAM_COC_BICH_DONG
   ẩm_thực:
   - AMEN_RESTAURANT
   - ASPECT_FOOD

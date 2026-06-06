@@ -1,9 +1,16 @@
-# Va chạm ID location — curated (Sprint 1) vs generated (toàn cầu)
+# Va chạm ID location — curated (Sprint 1) vs generated
 
-> **Bối cảnh:** corpus 51 → 555 hotel / 39 nước. Đã viết `build_locations.py` (Lớp A) tự sinh
-> `location.generated.yaml` (country>city>area) từ data. Vấn đề: `location.yaml` (gõ tay Sprint 1,
-> 19 tỉnh VN) chồng lấn với generated. File này liệt kê **toàn bộ va chạm** để chốt cách gộp.
-> **CHƯA xóa/sửa location.yaml** — chờ quyết định.
+> ✅ **ĐÃ GIẢI QUYẾT (lịch sử).** File này ghi lại phân tích va chạm ID đã dẫn tới quyết định
+> **Phương án 1**: generated làm nguồn duy nhất cho place/landmark, location.yaml rỗng, ID quen
+> giữ qua override (CITY_OVERRIDE/AREA_OVERRIDE/LMK_ID_OVERRIDE) trong build_locations.py.
+>
+> **CẬP NHẬT PHẠM VI (chốt cuối): CHỈ VIỆT NAM.** Corpus thu từ 555 (39 nước) về **520 hotel VN**.
+> Cây giờ country>province>city>area; tỉnh tách TỰ ĐỘNG từ tên "City (Tỉnh)". location.generated.yaml:
+> 1 country / 14 province / 69 city / 126 area / 153 landmark. Các con số "39 nước / toàn cầu"
+> bên dưới là BỐI CẢNH CŨ — giữ làm lịch sử quyết định, không còn phản ánh trạng thái hiện tại.
+>
+> **Bối cảnh gốc (đã qua):** corpus 51 → 555 hotel / 39 nước. Viết `build_locations.py` tự sinh
+> location.generated.yaml; location.yaml gõ tay Sprint 1 chồng lấn → phân tích va chạm để chốt cách gộp.
 
 ---
 

@@ -35,39 +35,14 @@ facets:
     da09_slot: destination
     metadata_field: core_metadata.city               # + area, country (cây địa danh)
     description: >
-      Địa danh hành chính (country>city>area) + landmark. Toàn cầu, TỰ SINH từ data:
-      xem ontology/core/location.generated.yaml (build_locations.py, Lớp A). location.yaml giữ
-      landmark LMK_* + alias curated. Corpus: 39 country / 202 city / 333 area (555 hotel).
-    hierarchy: [country, city, area]   # 3 tầng thực: Agoda crawl province==city, district==area -> đã gộp
-    # values phân theo kind (xem ontology/core/location.yaml). Place dùng để FILTER destination;
-    # landmark (LMK_*) chủ yếu dùng cho quan hệ near ở ontology.yaml.
-    values_places:
-      - LOC_KHANH_HOA          # province
-      - LOC_NHA_TRANG          #   city (parent: LOC_KHANH_HOA)
-      - LOC_HON_TRE            #     area (parent: LOC_NHA_TRANG)
-      - LOC_PHU_QUOC
-      - LOC_GANH_DAU           #     area (parent: LOC_PHU_QUOC)
-      - LOC_HOI_AN
-      - LOC_CUA_DAI            #     area (parent: LOC_HOI_AN)
-      - LOC_HO_CHI_MINH
-      - LOC_HA_TINH
-      - LOC_HA_LONG
-      - LOC_DA_NANG
-      - LOC_HUE
-      - LOC_CUA_LO
-      - LOC_QUANG_BINH
-      - LOC_THANH_HOA
-      - LOC_HA_NAM
-      - LOC_TAY_NINH
-      - LOC_BAC_NINH
-      - LOC_HAI_PHONG
-    values_landmarks:
-      - LMK_VINWONDERS_NHA_TRANG
-      - LMK_VINWONDERS_PHU_QUOC
-      - LMK_GRAND_WORLD_PHU_QUOC
-      - LMK_BAI_DAI
-      - LMK_VIEN_HAI_DUONG_HOC
-      - LMK_DINH_BAO_DAI
+      Địa danh hành chính (country>province>city>area) + landmark. PHẠM VI VIỆT NAM. TỰ SINH từ
+      data: xem ontology/core/location.generated.yaml (build_locations.py, Lớp A). Corpus VN:
+      1 country / 14 province (tách tự động) / 69 city / 126 area / 153 landmark (520 hotel).
+    hierarchy: [country, province, city, area]   # tỉnh tách tự động từ tên "City (Tỉnh)" trong data
+    # values KHÔNG liệt kê tay nữa (đã tự sinh, ~360 concept). Tra trực tiếp trong
+    # ontology/core/location.generated.yaml. Place (kind=country/place/area) -> FILTER destination;
+    # landmark (LMK_*, kind=landmark) -> quan hệ near (ontology.yaml + relations_near.generated.yaml).
+    values_source: ontology/core/location.generated.yaml
 
   amenity:
     cardinality: many

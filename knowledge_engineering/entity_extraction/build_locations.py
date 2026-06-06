@@ -1,18 +1,20 @@
-"""build_locations.py — TỰ SINH location ontology toàn cầu từ data. Lớp A (Task 1.5 mở rộng).
+"""build_locations.py — TỰ SINH location ontology (Việt Nam) từ data. Lớp A (Task 1.5 mở rộng).
 
 Owner: Trương Anh Long (Knowledge Engineering, DA10).
 
-VÌ SAO TỰ SINH: corpus đã 555 hotel / 39 quốc gia / 205 thành phố (target VOTA: VN trước,
-scale ra nước ngoài theo từng đất nước — chỉ đạo mentor Phạm Văn Toàn). Gõ tay từng địa danh
-như mốc 51 hotel không còn khả thi và dễ sai. Script quét field địa lý THẬT trong data/cleaned
-rồi sinh concept LOC_* có phân cấp country > city > area.
+PHẠM VI: CHỈ VIỆT NAM (chốt cuối: VOTA target VN; data đã lọc bỏ hotel nước ngoài, còn 520 hotel
+VN). Script quét field địa lý THẬT trong data/cleaned rồi sinh concept LOC_* phân cấp
+country > province > city > area. Cây country vẫn giữ (chỉ LOC_VIETNAM) để sau này muốn thêm
+nước thì không phải đập cấu trúc; cơ chế auto-slug country lạ (Mức 3) cũng giữ để an toàn.
 
-CÂY 3 TẦNG (thực dụng — KHÔNG 4 tầng):
-    country  (kind: country)  <- field `country`
-      city   (kind: place)    <- field `city`   (gộp `province`, vì Agoda crawl province==city)
-        area (kind: area)     <- field `area`   (gộp `district`, vì area==district)
-Lý do gộp: trong data này province trùng city và district trùng area gần như 100% -> nếu sinh
-đủ 4 tầng sẽ tạo concept trùng lặp. Giữ 3 tầng đúng với độ phân giải thật của dữ liệu.
+CÂY (độ phân giải theo data Agoda):
+    country  (kind: country)  <- field `country`        (luôn = LOC_VIETNAM)
+      province (kind: place)  <- TÁCH từ "City (Tỉnh)"  (vd "Quy Nhơn (Bình Định)" -> Bình Định)
+        city   (kind: place)  <- field `city`           (gộp `province` field vì Agoda lẫn lộn)
+          area (kind: area)   <- field `area`           (gộp `district`, vì area==district)
+Tầng tỉnh CHỈ sinh khi tên city có tỉnh trong ngoặc (hoặc trước dấu '/') — tách tự động, không
+đoán. City không có tỉnh -> parent thẳng LOC_VIETNAM. Lý do gộp province-field/district: Agoda
+crawl province==city và district==area gần 100% -> sinh đủ sẽ trùng; giữ đúng độ phân giải thật.
 
 LANDMARK (LMK_*): cũng TỰ SINH từ field `nearby_places[].name/type/distance_km`. Lọc theo
     LMK_TYPE_KEEP (chỉ loại có giá trị du lịch/định vị: bãi biển, theme park, bảo tàng, sân bay...)
@@ -42,59 +44,25 @@ HOTELS_GLOB = "data/cleaned/hotel_*.json"
 OUT_YAML = "ontology/core/location.generated.yaml"
 CANDIDATES_YAML = "ontology/candidate/location_candidates.yaml"  # MỨC 3: country lạ chờ duyệt
 
-# Map tên country (tiếng Việt trong data) -> slug ID en chuẩn quốc tế. Đây là phần CURATED
-# nhỏ duy nhất (39 nước, ổn định) — tên quốc gia en là định danh chuẩn, không slug máy móc từ vi.
+# Map tên country (tiếng Việt trong data) -> slug ID en. PHẠM VI VN: chỉ cần Việt Nam.
+# Giữ dạng bảng (thay vì hardcode) + cơ chế auto-slug (country_slug) để nếu data lỡ có nước lạ
+# thì KHÔNG kẹt (Mức 3): tự sinh + log location_candidates. Mặc định corpus thuần VN -> 1 nước.
 COUNTRY_SLUG = {
     "Việt Nam": "VIETNAM",
-    "Hoa Kỳ": "USA",
-    "Trung Quốc": "CHINA",
-    "Thái Lan": "THAILAND",
-    "Malaysia": "MALAYSIA",
-    "Indonesia": "INDONESIA",
-    "Nhật Bản": "JAPAN",
-    "Các Tiểu Vương Quốc Ả Rập Thống nhất": "UAE",
-    "Ấn Độ": "INDIA",
-    "Hàn Quốc": "SOUTH_KOREA",
-    "Philippines": "PHILIPPINES",
-    "Pháp": "FRANCE",
-    "Brazil": "BRAZIL",
-    "Fiji": "FIJI",
-    "Hồng Kông": "HONG_KONG",
-    "Ý": "ITALY",
-    "Úc": "AUSTRALIA",
-    "Ma Cao": "MACAU",
-    "Mexico": "MEXICO",
-    "Hà Lan": "NETHERLANDS",
-    "Đài Loan": "TAIWAN",
-    "Ả Rập Xê Út": "SAUDI_ARABIA",
-    "Puerto Rico": "PUERTO_RICO",
-    "Đức": "GERMANY",
-    "Singapore": "SINGAPORE",
-    "Oman": "OMAN",
-    "Polynesia thuộc Pháp": "FRENCH_POLYNESIA",
-    "Argentina": "ARGENTINA",
-    "Bermuda": "BERMUDA",
-    "Canada": "CANADA",
-    "Aruba": "ARUBA",
-    "Panama": "PANAMA",
-    "Ba Lan": "POLAND",
-    "Guam": "GUAM",
-    "Campuchia": "CAMBODIA",
-    "Kazakhstan": "KAZAKHSTAN",
-    "Nam Phi": "SOUTH_AFRICA",
-    "Nepal": "NEPAL",
-    "Qatar": "QATAR",
 }
 
-# PROVINCE override (CURATED) — data Agoda KHÔNG có tầng tỉnh (province==city). Khi muốn
-# city VN nằm dưới một tỉnh, khai báo ở đây: city_slug (từ data) -> (province_id, label_vi).
-# city có trong bảng -> parent = tỉnh; tỉnh -> parent = LOC_VIETNAM. city KHÔNG có -> parent thẳng VN.
-VN_PROVINCE = {
-    "DAO_PHU_QUOC": ("LOC_KIEN_GIANG", "Kiên Giang"),   # Phú Quốc thuộc Kiên Giang
-    "DONG_HOI_QUANG_BINH": ("LOC_QUANG_BINH_TINH", "Quảng Bình"),
-    "PHU_LY_HA_NAM": ("LOC_HA_NAM_TINH", "Hà Nam"),
-    # Nha Trang -> Khánh Hòa: xử lý qua CITY_OVERRIDE bên dưới (vì city cũng đổi ID)
-}
+# TÁCH TỈNH tự động từ tên city: "Quy Nhơn (Bình Định)" -> tỉnh "Bình Định"; "Thanh Hoá / Bãi
+# biển Sầm Sơn" -> tỉnh "Thanh Hoá" (phần trước '/'). City KHÔNG có tỉnh -> parent thẳng VN.
+# Trả về (province_label, city_label_thuần) hoặc (None, city gốc) nếu không tách được.
+def split_province(city: str):
+    c = to_nfc(city).strip()
+    m = re.search(r"^(.*?)\s*\((.+?)\)\s*$", c)        # "City (Tỉnh)"
+    if m:
+        return m.group(2).strip(), m.group(1).strip()
+    if "/" in c:                                        # "Thanh Hoá / Bãi biển Sầm Sơn"
+        head, tail = c.split("/", 1)
+        return head.strip(), tail.strip()
+    return None, c
 
 # ── OVERRIDE ID + QUAN HỆ (Phương án 1) ─────────────────────────────────────────
 # generated slug theo tên data (Agoda kèm "Đảo/Biển/Đồng Hới") -> ID dài, lệch ID quen Sprint 1.
@@ -102,14 +70,14 @@ VN_PROVINCE = {
 #   (a) 1 ID duy nhất / nơi (location.yaml KHÔNG còn place — chỉ landmark),
 #   (b) KHÔNG phải sửa tham chiếu ở ontology.yaml / facets.yaml / query_expansion / golden.
 #
-# CITY_OVERRIDE: city_slug (từ data) -> {id, related?, parent?}. parent ưu tiên hơn VN_PROVINCE.
-# extra: cách gõ bổ sung (tên data có tiền tố "Đảo/Biển" hoặc tỉnh trong ngoặc -> thêm tên trần).
+# CITY_OVERRIDE: city_slug (từ data, KHÔNG kèm tỉnh) -> {id?, related?, extra?}.
+#   - id:      ép ID quen Sprint 1 (Phú Quốc, Cửa Lò...) thay vì slug mặc định.
+#   - related: gắn quan hệ ngữ nghĩa (Phú Quốc -> đảo, Cửa Lò -> ven biển).
+#   - extra:   cách gõ bổ sung (tên data có tiền tố "Đảo/Biển" -> thêm tên trần).
+# parent (tỉnh) KHÔNG khai ở đây nữa — nay TÁCH TỰ ĐỘNG từ tên city qua split_province().
 CITY_OVERRIDE = {
-    "DAO_PHU_QUOC":          {"id": "LOC_PHU_QUOC",   "related": ["SETTING_ISLAND"], "parent": "LOC_KIEN_GIANG", "extra": ["phú quốc", "đảo phú quốc"]},
-    "BIEN_CUA_LO":           {"id": "LOC_CUA_LO",     "related": ["SETTING_COASTAL"], "extra": ["cửa lò", "biển cửa lò"]},
-    "DONG_HOI_QUANG_BINH":   {"id": "LOC_QUANG_BINH", "parent": "LOC_QUANG_BINH_TINH", "extra": ["quảng bình", "đồng hới"]},
-    "PHU_LY_HA_NAM":         {"id": "LOC_HA_NAM",     "parent": "LOC_HA_NAM_TINH", "extra": ["hà nam", "phủ lý"]},
-    "NHA_TRANG":             {"id": "LOC_NHA_TRANG",  "parent": "LOC_KHANH_HOA"},
+    "DAO_PHU_QUOC":  {"id": "LOC_PHU_QUOC", "related": ["SETTING_ISLAND"],  "extra": ["phú quốc", "đảo phú quốc"]},
+    "BIEN_CUA_LO":   {"id": "LOC_CUA_LO",   "related": ["SETTING_COASTAL"], "extra": ["cửa lò", "biển cửa lò"]},
 }
 
 # AREA_OVERRIDE: (city_slug, area_slug từ data) -> {id, related?}. parent = id của city (đã override).
@@ -120,13 +88,10 @@ AREA_OVERRIDE = {
     ("HOI_AN", "CUA_DAI"):        {"id": "LOC_CUA_DAI",  "related": ["SETTING_COASTAL"]},
 }
 
-# Tỉnh curated cần label (cho VN_PROVINCE + parent override). province_id -> label_vi.
-PROVINCE_LABEL = {
-    "LOC_KHANH_HOA": "Khánh Hòa",
-    "LOC_KIEN_GIANG": "Kiên Giang",
-    "LOC_QUANG_BINH_TINH": "Quảng Bình",
-    "LOC_HA_NAM_TINH": "Hà Nam",
-}
+
+def province_id(prov_label: str) -> str:
+    """ID tỉnh: LOC_<slug>_TINH — hậu tố _TINH để KHÔNG bao giờ đụng ID city cùng tên."""
+    return f"LOC_{slug(prov_label)}_TINH"
 
 # ── LANDMARK (LMK_*) tự sinh từ nearby_places ───────────────────────────────────
 LMK_MIN_HOTELS = 4          # chỉ sinh landmark xuất hiện ở >= 4 hotel (lọc nhiễu)
@@ -173,14 +138,9 @@ LMK_ID_OVERRIDE = {
     "dinh bảo đại": "LMK_DINH_BAO_DAI",
 }
 
+# label EN cho country. Phạm vi VN -> chỉ cần Việt Nam. Country auto-slug (nếu có) dùng tên gốc.
 COUNTRY_LABEL_EN = {
-    "Việt Nam": "Vietnam", "Hoa Kỳ": "United States", "Trung Quốc": "China",
-    "Thái Lan": "Thailand", "Nhật Bản": "Japan", "Hàn Quốc": "South Korea",
-    "Các Tiểu Vương Quốc Ả Rập Thống nhất": "United Arab Emirates", "Ấn Độ": "India",
-    "Pháp": "France", "Hồng Kông": "Hong Kong", "Ý": "Italy", "Úc": "Australia",
-    "Ma Cao": "Macau", "Hà Lan": "Netherlands", "Đài Loan": "Taiwan",
-    "Ả Rập Xê Út": "Saudi Arabia", "Đức": "Germany", "Polynesia thuộc Pháp": "French Polynesia",
-    "Ba Lan": "Poland", "Campuchia": "Cambodia", "Nam Phi": "South Africa",
+    "Việt Nam": "Vietnam",
 }
 
 
@@ -322,42 +282,57 @@ def yq(s: str) -> str:
 def build(hotels_glob: str = HOTELS_GLOB) -> str:
     country_n, city_n, area_n, unknown, landmarks = scan(hotels_glob)
 
-    # CITY-STATE: city trùng slug với chính country của nó (Singapore, Hong Kong, Macau, Guam...)
-    # -> KHÔNG sinh city concept (sẽ đè key country trong YAML). Hotel gắn thẳng vào country.
-    country_slugs = {f"LOC_{country_slug(co)}" for co in country_n}
-    city_state = {(co, ci) for (co, ci) in city_n if f"LOC_{slug(ci)}" == f"LOC_{country_slug(co)}"}
+    # Tách tỉnh từ tên city (split_province). city_clean = label city thuần (bỏ phần tỉnh).
+    # prov_of[(co,ci)] = (province_id, province_label) hoặc None.
+    prov_of = {}
+    city_clean = {}
+    for (co, ci) in city_n:
+        plabel, cclean = split_province(ci)
+        city_clean[(co, ci)] = cclean
+        prov_of[(co, ci)] = (province_id(plabel), plabel) if (co == "Việt Nam" and plabel) else None
 
-    # ID city: ưu tiên CITY_OVERRIDE (ép ID quen); rồi tránh trùng giữa 2 nước + đụng country slug.
+    # CITY-STATE: city trùng slug với chính country (Singapore/HK...) -> gắn thẳng country.
+    country_slugs = {f"LOC_{country_slug(co)}" for co in country_n}
+    city_state = {(co, ci) for (co, ci) in city_n
+                  if f"LOC_{slug(city_clean[(co, ci)])}" == f"LOC_{country_slug(co)}"}
+
+    # ID city: ưu tiên CITY_OVERRIDE (ép ID quen); rồi tránh trùng + đụng country slug. Dùng city_clean.
     city_id = {}
     seen_city_slug = Counter()
     for (co, ci), n in sorted(city_n.items(), key=lambda x: (-x[1], x[0])):
         if (co, ci) in city_state:
-            city_id[(co, ci)] = f"LOC_{country_slug(co)}"   # trỏ thẳng về country
+            city_id[(co, ci)] = f"LOC_{country_slug(co)}"
             continue
-        if slug(ci) in CITY_OVERRIDE:
-            city_id[(co, ci)] = CITY_OVERRIDE[slug(ci)]["id"]
+        cc = city_clean[(co, ci)]
+        if slug(cc) in CITY_OVERRIDE:
+            city_id[(co, ci)] = CITY_OVERRIDE[slug(cc)]["id"]
             continue
-        base = slug(ci)
+        base = slug(cc)
         cand = f"LOC_{base}"
         seen_city_slug[base] += 1
         if seen_city_slug[base] > 1 or cand in country_slugs:
             cand = f"LOC_{country_slug(co)}_{base}"
         city_id[(co, ci)] = cand
 
+    def city_parent(co, ci):
+        """parent city = tỉnh (nếu tách được từ tên) > country."""
+        p = prov_of[(co, ci)]
+        return p[0] if p else f"LOC_{country_slug(co)}"
+
     out = []
     out.append("# ontology/core/location.generated.yaml — TỰ SINH bởi build_locations.py (Lớp A).")
-    out.append("# KHÔNG sửa tay. Nguồn: data/cleaned/*.json (field country/city/area).")
-    out.append("# Cây: country > city > area. Landmark (LMK_*) + alias curated nằm ở location.yaml.")
+    out.append("# KHÔNG sửa tay. Nguồn: data/cleaned/*.json (field country/city/area). PHẠM VI: Việt Nam.")
+    out.append("# Cây: country > province > city > area. Landmark (LMK_*) cũng sinh ở đây.")
     out.append(f"# Thống kê: {sum(country_n.values())} hotel / {len(country_n)} country / "
                f"{len(city_n)} city / {len(area_n)} area.")
     if unknown:
-        out.append(f"# ⚠ Country CHƯA map slug (bỏ qua, cần bổ sung COUNTRY_SLUG): {sorted(unknown)}")
+        out.append(f"# ⚠ Country auto-slug (ngoài VN, chờ duyệt -> location_candidates): {sorted(unknown)}")
     out.append("")
     out.append("concepts:")
     out.append("")
 
     # 1) COUNTRY
-    out.append("  # ===== COUNTRY (kind: country) — nhánh điểm đến theo từng đất nước =====")
+    out.append("  # ===== COUNTRY (kind: country) =====")
     for co, n in sorted(country_n.items(), key=lambda x: (-x[1], x[0])):
         cid = f"LOC_{country_slug(co)}"
         label_en = COUNTRY_LABEL_EN.get(co, co)
@@ -365,44 +340,35 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
                                  surface_forms(co), f"{co} ({n} hotel trong corpus)"))
         out.append("")
 
-    # 2) PROVINCE node (curated override) — sinh tỉnh nào có city tham chiếu (qua VN_PROVINCE hoặc
-    #    CITY_OVERRIDE.parent). parent của city ưu tiên CITY_OVERRIDE > VN_PROVINCE > country.
-    def city_parent(co, ci):
-        ov = CITY_OVERRIDE.get(slug(ci))
-        if ov and ov.get("parent"):
-            return ov["parent"]
-        if co == "Việt Nam" and slug(ci) in VN_PROVINCE:
-            return VN_PROVINCE[slug(ci)][0]
-        return f"LOC_{country_slug(co)}"
-
-    used_provinces = {}   # province_id -> label_vi
+    # 2) PROVINCE — tách TỰ ĐỘNG từ tên city "City (Tỉnh)". parent = country.
+    used_provinces = {}   # province_id -> (label, country)
     for (co, ci) in city_n:
         if (co, ci) in city_state:
             continue
-        p = city_parent(co, ci)
-        if p in PROVINCE_LABEL:
-            used_provinces[p] = PROVINCE_LABEL[p]
+        p = prov_of[(co, ci)]
+        if p:
+            used_provinces[p[0]] = (p[1], co)
     if used_provinces:
-        out.append("  # ===== PROVINCE (kind: place) — tầng tỉnh VN curated (data không có; override) =====")
-        for pid, plabel in sorted(used_provinces.items()):
-            out.append(concept_block(pid, "place", plabel, plabel, "LOC_VIETNAM",
-                                     surface_forms(plabel), f"Tỉnh {plabel}, Việt Nam (tầng curated)"))
+        out.append("  # ===== PROVINCE (kind: place) — TÁCH tự động từ 'City (Tỉnh)' trong data =====")
+        for pid, (plabel, co) in sorted(used_provinces.items()):
+            out.append(concept_block(pid, "place", plabel, plabel, f"LOC_{country_slug(co)}",
+                                     surface_forms(plabel), f"Tỉnh {plabel}, {co}"))
             out.append("")
 
-    # 3) CITY (parent = province/country). ID + related có thể bị CITY_OVERRIDE ép.
-    out.append("  # ===== CITY (kind: place) — gộp province (province==city trong data) =====")
-    out.append("  # (city-state như Singapore/Hong Kong: hotel gắn thẳng country, không sinh city riêng)")
-    out.append("  # (ID/related vài nơi ép theo CITY_OVERRIDE để khớp ID quen Sprint 1: Phú Quốc, Cửa Lò...)")
+    # 3) CITY (parent = province/country). ID + related có thể bị CITY_OVERRIDE ép. label = city thuần.
+    out.append("  # ===== CITY (kind: place) =====")
+    out.append("  # (ID/related vài nơi ép theo CITY_OVERRIDE để khớp ID quen: Phú Quốc, Cửa Lò...)")
     for (co, ci), n in sorted(city_n.items(), key=lambda x: (-x[1], x[0])):
         if (co, ci) in city_state:
             continue
         cid = city_id[(co, ci)]
-        ov = CITY_OVERRIDE.get(slug(ci), {})
-        sf = surface_forms(ci)
+        cc = city_clean[(co, ci)]
+        ov = CITY_OVERRIDE.get(slug(cc), {})
+        sf = surface_forms(cc)
         for ex in ov.get("extra", []):                    # thêm cách gõ trần (bỏ tiền tố Đảo/Biển)
             sf += [s for s in surface_forms(ex) if s not in sf]
-        out.append(concept_block(cid, "place", ci, ci, city_parent(co, ci),
-                                 sf, f"{ci}, {co} ({n} hotel)", related=ov.get("related")))
+        out.append(concept_block(cid, "place", cc, cc, city_parent(co, ci),
+                                 sf, f"{cc}, {co} ({n} hotel)", related=ov.get("related")))
         out.append("")
 
     # 4) AREA (parent = city). ID + related có thể bị AREA_OVERRIDE ép (sub-area Sprint 1).
@@ -410,7 +376,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     out.append("  # (ID vài sub-area ép theo AREA_OVERRIDE để khớp ID quen: Hòn Tre, Gành Dầu, Cửa Đại)")
     for (co, ci, ar), n in sorted(area_n.items(), key=lambda x: (-x[1], x[0])):
         parent = city_id[(co, ci)]
-        ov = AREA_OVERRIDE.get((slug(ci), slug(ar)))
+        ov = AREA_OVERRIDE.get((slug(city_clean[(co, ci)]), slug(ar)))
         if ov:
             cid = ov["id"]
             related = ov.get("related")

@@ -17,29 +17,21 @@
 version: "2.0.0"
 
 # -----------------------------------------------------------------------------
-# ENTITIES — landmark (điểm tham quan). Place (LOC_*) đã định nghĩa ở core/location.yaml.
-# Ở đây nêu lại landmark kèm located_in để đồ thị tra cứu "landmark này ở đâu".
-# (Nguồn: ontology/core/location.yaml, kind=landmark + located_in.)
+# ENTITIES — landmark (điểm tham quan). GIỜ KHÔNG liệt kê tay ở đây nữa.
+# Toàn bộ landmark (153 cái, kind=landmark + landmark_type + located_in) đã TỰ SINH trong
+# ontology/core/location.generated.yaml (build_locations.py, từ nearby_places). Tra ở đó.
 # -----------------------------------------------------------------------------
-entities:
-  LMK_VINWONDERS_NHA_TRANG:  {type: landmark, landmark_type: amusement_park, located_in: LOC_HON_TRE}
-  LMK_VINWONDERS_PHU_QUOC:   {type: landmark, landmark_type: amusement_park, located_in: LOC_GANH_DAU}
-  LMK_GRAND_WORLD_PHU_QUOC:  {type: landmark, landmark_type: entertainment,  located_in: LOC_GANH_DAU}
-  LMK_BAI_DAI:               {type: landmark, landmark_type: beach,          located_in: LOC_PHU_QUOC}
-  LMK_VIEN_HAI_DUONG_HOC:    {type: landmark, landmark_type: museum,         located_in: LOC_NHA_TRANG}
-  LMK_DINH_BAO_DAI:          {type: landmark, landmark_type: historic,       located_in: LOC_NHA_TRANG}
+entities: {}
 
 # -----------------------------------------------------------------------------
 # RELATIONS — quan hệ KG.
 #
-# (1) located_in: place con thuộc place cha (cây hành chính). Khớp parent ở core/location.yaml.
+# (1) located_in (cây hành chính place con -> cha): GIỜ KHÔNG khai tay ở đây nữa.
+#     Cây country > province > city > area đã nằm trong field `parent` của từng concept ở
+#     core/location.generated.yaml (tự sinh). Tỉnh tách tự động từ tên "City (Tỉnh)".
+#     (Nha Trang/Phú Quốc parent thẳng LOC_VIETNAM vì data Agoda không ghi tỉnh trong tên.)
 # -----------------------------------------------------------------------------
-relations:
-  located_in:
-    - {from: LOC_NHA_TRANG, to: LOC_KHANH_HOA}    # city thuộc province
-    - {from: LOC_HON_TRE,   to: LOC_NHA_TRANG}     # area (đảo) thuộc city
-    - {from: LOC_GANH_DAU,  to: LOC_PHU_QUOC}      # area thuộc đảo/city
-    - {from: LOC_CUA_DAI,   to: LOC_HOI_AN}        # area thuộc city
+relations: {}
 
 # (2) near: hotel <-> landmark + distance_km. SINH TỰ ĐỘNG, xem file:
 near_relations_file: relations_near.generated.yaml

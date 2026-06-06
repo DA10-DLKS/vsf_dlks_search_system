@@ -1,27 +1,27 @@
 # Domain Analysis — DA10 Knowledge Engineering
 
 > **Task 1.1 (Sprint 1).** Owner: Trương Anh Long.
-> **Nguồn dữ liệu phân tích:** **555 hotel** thật crawl từ Agoda (`data/raw/hotels/*.json`).
+> **Nguồn dữ liệu phân tích:** **520 hotel** thật crawl từ Agoda (`data/raw/hotels/*.json`).
 > **Trạng thái:** Bước 1, 3, 4 hoàn thành trên data thật. **Bước 2 (facet suy từ golden query)** dùng golden set KE [`golden_query_concepts.md`](golden_query_concepts.md).
-> **Cập nhật:** corpus mở rộng 27 → 51 → **555 hotel** (regenerate Lớp A, 2026-06-05).
-> ⚠ **Phạm vi đang chờ chốt:** 188/555 hotel ở nước ngoài (Bali, KL, New York...). Nếu hệ thống chỉ phục vụ VN, corpus làm việc sẽ co lại ~367; các số dưới đây tính trên TOÀN BỘ 555 hiện có.
+> **Cập nhật:** corpus 27 → 51 → 555 → **520 hotel** (chốt cuối: CHỈ VIỆT NAM — đã lọc bỏ hotel nước ngoài; regenerate Lớp A).
+> ✅ **Phạm vi đã chốt:** 100% Việt Nam (520 hotel). Location ontology toàn cầu cũ đã thu về VN: 1 country / 14 province / 69 city / 126 area / 153 landmark.
 
 ---
 
-## 0. Phạm vi corpus thật (thống kê khách quan, 555 hotel)
+## 0. Phạm vi corpus thật (thống kê khách quan, 520 hotel VN)
 
 > Bảng dưới TỰ SINH bởi `build_domain_stats.py` (Lớp A). Chạy lại khi corpus đổi.
 
 <!-- AUTO-STATS:corpus:START -->
 | Chiều | Giá trị nguồn (Agoda) → số hotel |
 |---|---|
-| `accommodation_type` | Khách sạn (467), Resort (36), Căn hộ (22), Căn hộ dịch vụ (10), Toàn bộ căn nhà (6), Nhà dân (3), Nhà khách / Nhà nghỉ B&B (3), Nhà nghỉ (2), Ryokan (2), Nhà nghỉ ven đường (2), Biệt thự nghỉ dưỡng (1), Biệt thự (1) |
-| `property_type` | Hotel (523), NonHotel (20), SingleRoom (12) |
-| `star_rating` | 5.0 (206), 4.0 (153), 3.0 (90), 0.0 (31), 2.0 (31), 4.5 (21), 2.5 (14), 3.5 (7), 1.0 (2) |
-| `city` (205 nơi) | Hà Nội (36), Đà Nẵng (35), Nha Trang (23), Hồ Chí Minh (21), Phúc Châu (15), Hội An (15), Hạ Long (14), Đảo Phú Quốc (14), + 136 tỉnh/thành mỗi nơi 1 |
+| `accommodation_type` | Khách sạn (393), Resort (43), Căn hộ (37), Căn hộ dịch vụ (17), Nhà dân (10), Toàn bộ căn nhà (5), Nhà khách / Nhà nghỉ B&B (5), Nhà nghỉ (3), Biệt thự nghỉ dưỡng (2), Bungalow (2), Biệt thự (1), Nhà nghỉ ven đường (1), Giường và Bữa sáng (1) |
+| `property_type` | Hotel (465), NonHotel (46), SingleRoom (9) |
+| `star_rating` | 5.0 (149), 3.0 (131), 4.0 (124), 2.0 (39), 0.0 (32), 4.5 (19), 3.5 (10), 1.0 (9), 2.5 (7) |
+| `city` (69 nơi) | Hà Nội (60), Hồ Chí Minh (49), Đà Nẵng (48), Nha Trang (39), Đảo Phú Quốc (28), Hội An (25), Đà Lạt (23), Hạ Long (22), + 26 tỉnh/thành mỗi nơi 1 |
 <!-- AUTO-STATS:corpus:END -->
 
-> ⚠ Với 555 hotel, phân bố đã rộng hơn nhiều mốc 51: **5 sao 206 / 4 sao 153 / 3 sao 90** + phân khúc thấp (2 sao 31, 0 sao 31) đã có mẫu thật để calibrate. Loại hình thêm **Căn hộ dịch vụ (10), Toàn bộ căn nhà (6), Ryokan, B&B, Nhà dân** — xuất hiện loại CHƯA có concept (xem mục Gap). Địa danh **205 nơi**, trong đó nhiều tỉnh/thành VN lớn (Hà Nội 36, Đà Lạt 10, Quy Nhơn 12) và 54 thành phố nước ngoài CHƯA có concept location — cần quyết định phạm vi + mở rộng ontology (Lớp B/C).
+> ⚠ Với 520 hotel VN, phân bố (xem AUTO-STATS trên): **5 sao 149 / 4 sao 124 / 3 sao 131** + phân khúc thấp (2 sao 39, 0 sao 32) đã có mẫu thật để calibrate. Loại hình thêm **Căn hộ dịch vụ (17), Toàn bộ căn nhà (5), Nhà dân (10), B&B, Bungalow** — xuất hiện loại CHƯA có concept (xem mục Gap → candidate_queue, Lớp B). Địa danh **69 thành phố VN** (Hà Nội 60, HCM 49, Đà Nẵng 48...) — toàn bộ đã có concept location tự sinh (location.generated.yaml).
 
 ---
 
@@ -32,13 +32,13 @@ Suy ra từ các trường ngữ nghĩa thật của Agoda (`tags`, `suitable_fo
 ### Nhóm OBJECT_TYPE (loại hình lưu trú)
 | # | Concept ứng viên | Bằng chứng nguồn (Agoda) |
 |---|---|---|
-| O1 | hotel | accommodation_type "Khách sạn" (467) |
-| O2 | resort | accommodation_type "Resort" (36) |
-| O3 | villa | accommodation_type "Biệt thự nghỉ dưỡng" (1), "Biệt thự" (1) |
-| O4 | apartment / entire place | accommodation_type "Căn hộ" (22), "Căn hộ dịch vụ" (10), "Toàn bộ căn nhà" (6) |
-| O5 | homestay | *vẫn không có "Homestay" thuần trong corpus 555*; nhưng XUẤT HIỆN loại gần kề CHƯA có concept: "Nhà dân" (3), "Nhà khách / Nhà nghỉ B&B" (3), "Nhà nghỉ" (2), "Nhà nghỉ ven đường" (2), "Ryokan" (2) — xem mục Gap |
+| O1 | hotel | accommodation_type "Khách sạn" (393) |
+| O2 | resort | accommodation_type "Resort" (43) |
+| O3 | villa | accommodation_type "Biệt thự nghỉ dưỡng" (2), "Biệt thự" (1) |
+| O4 | apartment / entire place | accommodation_type "Căn hộ" (37), "Căn hộ dịch vụ" (17), "Toàn bộ căn nhà" (5) |
+| O5 | homestay | *vẫn không có "Homestay" thuần trong corpus 520 VN*; nhưng XUẤT HIỆN loại gần kề CHƯA có concept: "Nhà dân" (10), "Nhà khách / Nhà nghỉ B&B" (5), "Nhà nghỉ" (3), "Bungalow" (2), "Nhà nghỉ ven đường" (1), "Giường và Bữa sáng" (1) — xem mục Gap |
 
-> Nhóm này map 1-1 với facet `object_type` (`OBJ_HOTEL/RESORT/VILLA/APARTMENT/HOMESTAY`). Với 555 hotel, **apartment có 38 mẫu** (Căn hộ 22 + Căn hộ dịch vụ 10 + Toàn bộ căn nhà 6) — `OBJ_APARTMENT` được củng cố mạnh. **Loại hình mới chưa có concept:** Ryokan, B&B, Nhà dân, Nhà nghỉ ven đường → cần đưa vào `candidate_queue.yaml` (Lớp B). `OBJ_HOMESTAY` vẫn không có mẫu "Homestay" thuần.
+> Nhóm này map 1-1 với facet `object_type` (`OBJ_HOTEL/RESORT/VILLA/APARTMENT/HOMESTAY`). Với 520 hotel VN, **apartment có 59 mẫu** (Căn hộ 37 + Căn hộ dịch vụ 17 + Toàn bộ căn nhà 5) — `OBJ_APARTMENT` được củng cố mạnh. **Loại hình mới chưa có concept:** Nhà dân, B&B, Nhà nghỉ, Bungalow → cần đưa vào `candidate_queue.yaml` (Lớp B). `OBJ_HOMESTAY` vẫn không có mẫu "Homestay" thuần.
 
 ### Nhóm AMENITY (tiện ích — sự thật/presence)
 
@@ -119,12 +119,12 @@ Vocabulary **đúng như Agoda ghi** (đếm trên 51 hotel). Đây là đầu v
 
 ### 4.1 `suitable_for` (6 giá trị — phủ gần hết corpus)
 <!-- AUTO-STATS:suitable_for:START -->
-- Nhóm du khách (495) · Cặp đôi (493) · Khách du lịch một mình (492) · Gia đình có trẻ nhỏ (481) · Gia đình có thanh thiếu niên (440) · Khách đi công tác (435)
+- Khách du lịch một mình (501) · Cặp đôi (499) · Nhóm du khách (499) · Gia đình có trẻ nhỏ (489) · Khách đi công tác (451) · Gia đình có thanh thiếu niên (451)
 <!-- AUTO-STATS:suitable_for:END -->
 
 ### 4.2 `view_types` (18 giá trị)
 <!-- AUTO-STATS:view_types:START -->
-- Hướng Thành phố (257) · Hướng Vườn (117) · Hướng Ngoài trời (107) · Hướng Biển (106) · Hướng Đại dương (81) · Hướng Bể bơi (73) · Hướng Núi (50) · Hướng Sông (37) · Hướng Sân trong (31) · Hướng Bãi biển (24) · Hướng Đường phố (22) · Hướng biển (hướng một phần) (21)
+- Hướng Thành phố (286) · Hướng Ngoài trời (122) · Hướng Vườn (115) · Hướng Biển (107) · Hướng Đại dương (97) · Hướng Núi (63) · Hướng Đường phố (47) · Hướng Sông (44) · Hướng Không có cửa sổ (39) · Hướng biển (hướng một phần) (36) · Hướng Bể bơi (35) · Hướng Bãi biển (30)
 <!-- AUTO-STATS:view_types:END -->
 
 ### 4.3 `tags` top-level (132 unique — trộn purpose + amenity + landmark + style)
@@ -139,14 +139,14 @@ Nhóm theo loại (giá trị tiêu biểu, số ≥ 5):
 
 ### 4.4 `reviews_detail.tags` — aspect vocabulary (43 unique, dùng cho ABSA Sprint 2)
 <!-- AUTO-STATS:review_tags:START -->
-- Dịch vụ (426) · Địa điểm (424) · Độ sạch sẽ (421) · Độ thoải mái của phòng (395) · Kích thước phòng (378) · Đáng tiền (372) · Bữa sáng (363) · Nhận phòng (351) · Bể bơi (289) · Nhiều lựa chọn nhà hàng (289) · Tiện ích tại cơ sở lưu trú (282) · Hướng nhìn từ phòng (276) · Phòng tắm (275) · Không khí (257) · Bộ đồ giường (244) · Tiện nghi trong phòng (220) · Gia đình (218) · Thiết kế phòng (186) · Trả phòng (186) · Điều hòa (164)
+- Dịch vụ (475) · Độ sạch sẽ (473) · Địa điểm (466) · Độ thoải mái của phòng (451) · Đáng tiền (443) · Kích thước phòng (438) · Nhận phòng (407) · Bữa sáng (347) · Hướng nhìn từ phòng (337) · Phòng tắm (332) · Tiện nghi trong phòng (330) · Bộ đồ giường (294) · Thiết kế phòng (291) · Nhiều lựa chọn nhà hàng (288) · Tiện ích tại cơ sở lưu trú (282) · Bể bơi (269) · Điều hòa (267) · Không khí (259) · Gia đình (221) · Cách âm (219)
 <!-- AUTO-STATS:review_tags:END -->
 
 > Các aspect này khớp 6 trục ABSA dự kiến (room, staff/service, location, food, cleanliness, value) + phát sinh thêm (pool, beach, check-in/out, atmosphere) → đã mở rộng facet `aspect` lên 7 concept ở Task 1.4 (thêm `ASPECT_FACILITIES`).
 
 ### 4.5 `nearby_places.type` — phân loại landmark (43 type)
 <!-- AUTO-STATS:nearby_type:START -->
-Nhiều nhất: Bệnh Viện và Cơ Sở Y Tế (682), Trung Tâm và Khu Mua Sắm (515), Siêu Thị (408), Đài Kỷ Niệm và Di Tích Lịch Sử (378), Công Viên Công Cộng (283), Sân Bay (260), Viện Bảo Tàng và Phòng Trưng Bày Nghệ Thuật (177), Bãi Biển (173), Địa điểm giải trí (168), Quán Rượu (147)...
+Nhiều nhất: Bệnh Viện và Cơ Sở Y Tế (830), Siêu Thị (616), Trung Tâm và Khu Mua Sắm (406), Sân Bay (380), Công Viên Công Cộng (309), Địa điểm giải trí (205), Bãi Biển (160), Nơi Thờ Cúng (135), Đài Kỷ Niệm và Di Tích Lịch Sử (131), Quán Rượu (124)...
 → Mỗi `nearby_places` có `distance_km` → chuẩn hóa thẳng vào quan hệ `near` (Task 1.5).
 <!-- AUTO-STATS:nearby_type:END -->
 
