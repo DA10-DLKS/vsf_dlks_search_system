@@ -105,6 +105,18 @@ def reviews_done_ids() -> set:
     return ids
 
 
+def hotel_file_done_ids() -> set:
+    """hotel_id da co file detail rieng trong data/raw/hotels."""
+    if not os.path.isdir(HOTELS_DIR):
+        return set()
+    ids = set()
+    for f in os.listdir(HOTELS_DIR):
+        m = re.match(r"hotel_(\d+)(?:_|\.json)", f)
+        if m:
+            ids.add(int(m.group(1)))
+    return ids
+
+
 # ---------------------------------------------------------------------------
 # Checkpoint cho nhanh batch (gop tat ca record vao 1 file de resume)
 # ---------------------------------------------------------------------------

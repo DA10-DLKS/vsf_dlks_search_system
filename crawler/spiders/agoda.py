@@ -6,6 +6,7 @@ class, doc tham so tu configs/agoda.yaml thay vi hardcode.
 import json
 import random
 import time
+import unicodedata
 from datetime import datetime, timedelta
 from urllib.parse import urlparse, parse_qs
 
@@ -16,13 +17,41 @@ from .base import BaseSpider
 class AgodaSpider(BaseSpider):
     site = "agoda"
 
+    @staticmethod
+    def _norm_text(value) -> str:
+        """Normalize text for country comparison."""
+        if value is None:
+            return ""
+        text = str(value).strip().lower()
+        text = unicodedata.normalize("NFD", text)
+        text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
+        return " ".join(text.replace("_", " ").replace("-", " ").split())
+
+    def _allowed_country_keys(self) -> set:
+        configured = self.cfg.get("allowed_countries") or ["Việt Nam", "Vietnam", "Viet Nam", "VN"]
+        keys = {self._norm_text(c) for c in configured}
+        keys.update({"viet nam", "vietnam", "vn"})
+        return keys
+
+    def _is_allowed_country(self, country) -> bool:
+        return self._norm_text(country) in self._allowed_country_keys()
+
     # =====================================================================
     # TANG 1: tu khoa -> danh sach hotel (autocomplete API)
     # =====================================================================
     def _build_keywords(self, keyword: str) -> list:
-        """Tu 1 tu khoa goc -> goc + cac bien the 'goc + vung' (tu config)."""
+        """Tu 1 tu khoa goc -> bien the co dia diem/quoc gia Viet Nam."""
         keyword = keyword.strip()
-        variants = [keyword] + [f"{keyword} {h}" for h in self.cfg.get("region_hints", [])]
+        base_variants = [keyword]
+        if self.cfg.get("expand_region_hints", False):
+            base_variants += [f"{keyword} {h}" for h in self.cfg.get("region_hints", [])]
+        suffixes = self.cfg.get("country_search_suffixes", [])
+        variants = list(base_variants)
+        for base in base_variants:
+            for suffix in suffixes:
+                suffix = str(suffix).strip()
+                if suffix and self._norm_text(suffix) not in self._norm_text(base):
+                    variants.append(f"{base} {suffix}")
         seen, out = set(), []
         for v in variants:
             k = v.lower()
@@ -64,11 +93,21 @@ class AgodaSpider(BaseSpider):
                     continue
 
                 found = 0
+                hotel_ids = {
+                    str(v.get("ObjectId"))
+                    for v in (data.get("ViewModelList") or [])
+                    if v.get("IsHotel") and v.get("ObjectId") is not None
+                }
                 for s in (data.get("SuggestionList") or []):
                     name = s.get("Name") or ""
                     hid = s.get("ObjectID")
-                    if hid and needle in name.lower() and hid not in hotels:
-                        hotels[hid] = {
+                    hid_key = str(hid) if hid is not None else ""
+                    if hotel_ids and hid_key not in hotel_ids:
+                        continue
+                    name_matches = needle in name.lower()
+                    is_hotel_suggestion = bool(hotel_ids and hid_key in hotel_ids)
+                    if hid and (is_hotel_suggestion or name_matches) and hid_key not in hotels:
+                        hotels[hid_key] = {
                             "hotel_id": hid,
                             "name": name,
                             "object_type_id": s.get("ObjectTypeID"),
@@ -76,8 +115,9 @@ class AgodaSpider(BaseSpider):
                         }
                         found += 1
                 for v in (data.get("ViewModelList") or []):
-                    if v.get("IsHotel") and v.get("ObjectId") in hotels:
-                        hotels[v["ObjectId"]]["city_id"] = v.get("CityId")
+                    hid_key = str(v.get("ObjectId"))
+                    if v.get("IsHotel") and hid_key in hotels:
+                        hotels[hid_key]["city_id"] = v.get("CityId")
                 print(f"  [+] '{kw}': them {found} moi (tong {len(hotels)})")
                 page.wait_for_timeout(int(delay * 1000))
 
@@ -94,7 +134,7 @@ class AgodaSpider(BaseSpider):
                 info = (obj.get("content") or {}).get("informationSummary") or {}
                 page = (info.get("propertyLinks") or {}).get("propertyPage")
                 if page:
-                    mapping[obj["propertyId"]] = page
+                    mapping[str(obj["propertyId"])] = page
             for v in obj.values():
                 AgodaSpider._collect_pages(v, mapping)
         elif isinstance(obj, list):
@@ -160,7 +200,7 @@ class AgodaSpider(BaseSpider):
                 time.sleep(delay)
 
         for h in hotels:
-            h["property_page"] = slug_map.get(h["hotel_id"])
+            h["property_page"] = slug_map.get(str(h["hotel_id"]))
         return hotels
 
     # =====================================================================
@@ -293,6 +333,10 @@ class AgodaSpider(BaseSpider):
             hotel["hotel_id"] = record["hotel_id"]
         if not record.get("hotel_id"):
             return None, "khong xac dinh duoc hotel_id (propertyId rong)"
+
+        country = record.get("country")
+        if not self._is_allowed_country(country):
+            return None, f"filtered_country:{country or 'missing'}"
 
         # Danh gia day du / thieu that / thieu do loi crawl
         self._annotate_completeness(record, store)
