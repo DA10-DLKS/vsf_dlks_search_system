@@ -14,11 +14,17 @@ CÂY 3 TẦNG (thực dụng — KHÔNG 4 tầng):
 Lý do gộp: trong data này province trùng city và district trùng area gần như 100% -> nếu sinh
 đủ 4 tầng sẽ tạo concept trùng lặp. Giữ 3 tầng đúng với độ phân giải thật của dữ liệu.
 
-OUTPUT: ontology/core/location.generated.yaml (TỰ SINH — không sửa tay; chạy lại khi corpus đổi).
-    Tách khỏi location.yaml (curated: landmark LMK_* + alias tinh chỉnh tay) để 2 phần không đè nhau.
+LANDMARK (LMK_*): cũng TỰ SINH từ field `nearby_places[].name/type/distance_km`. Lọc theo
+    LMK_TYPE_KEEP (chỉ loại có giá trị du lịch/định vị: bãi biển, theme park, bảo tàng, sân bay...)
+    + ngưỡng LMK_MIN_HOTELS (>=4 hotel). located_in = city xuất hiện nhiều nhất trong các hotel
+    chứa landmark đó (data không có vị trí landmark trực tiếp -> suy gián tiếp, không đoán).
+    Quan hệ near (hotel<->landmark+km) vẫn ở relations_near.generated.yaml (build_relations).
 
-Mỗi concept có: facet, fact_type=hard, tier=core, kind, parent, label{vi,en}, surface_forms{vi}
-(tên gốc + bản không dấu để build_synonym_index nhận diện query địa danh), description (đếm hotel).
+OUTPUT: ontology/core/location.generated.yaml (TỰ SINH — không sửa tay; chạy lại khi corpus đổi).
+    location.yaml chỉ còn alias tinh chỉnh tay (nếu cần) — landmark giờ do file này sinh hết.
+
+Mỗi concept có: facet, fact_type=hard, tier=core, kind, parent/located_in, label{vi,en},
+surface_forms{vi} (tên gốc + bản không dấu để build_synonym_index nhận query), description (đếm hotel).
 
 Chạy:  .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.entity_extraction.build_locations
 """
@@ -28,10 +34,13 @@ import json
 import re
 from collections import Counter, defaultdict
 
+import yaml
+
 from knowledge_engineering.common.normalize import strip_diacritics, to_nfc
 
 HOTELS_GLOB = "data/cleaned/hotel_*.json"
 OUT_YAML = "ontology/core/location.generated.yaml"
+CANDIDATES_YAML = "ontology/candidate/location_candidates.yaml"  # MỨC 3: country lạ chờ duyệt
 
 # Map tên country (tiếng Việt trong data) -> slug ID en chuẩn quốc tế. Đây là phần CURATED
 # nhỏ duy nhất (39 nước, ổn định) — tên quốc gia en là định danh chuẩn, không slug máy móc từ vi.
@@ -119,6 +128,51 @@ PROVINCE_LABEL = {
     "LOC_HA_NAM_TINH": "Hà Nam",
 }
 
+# ── LANDMARK (LMK_*) tự sinh từ nearby_places ───────────────────────────────────
+LMK_MIN_HOTELS = 4          # chỉ sinh landmark xuất hiện ở >= 4 hotel (lọc nhiễu)
+
+# Lọc theo `type` (Agoda, tiếng Việt) -> landmark_type (en). CHỈ giữ loại có giá trị du lịch/
+# định vị; BỎ tiện ích đời thường (bệnh viện, ngân hàng, siêu thị, bãi đỗ xe, đại sứ quán...).
+LMK_TYPE_KEEP = {
+    "Bãi Biển": "beach",
+    "Đảo": "island",
+    "Vịnh": "bay",
+    "Công Viên Giải Trí": "amusement_park",
+    "Địa điểm giải trí": "entertainment",
+    "Điểm Tham Quan": "attraction",
+    "Đài Kỷ Niệm và Di Tích Lịch Sử": "historic",
+    "Tòa Nhà Lịch Sử": "historic",
+    "Tòa Nhà Nổi Tiếng": "landmark_building",
+    "Viện Bảo Tàng và Phòng Trưng Bày Nghệ Thuật": "museum",
+    "Nơi Thờ Cúng": "temple",
+    "Công Viên Quốc Gia": "national_park",
+    "Công Viên Công Cộng": "park",
+    "Núi, đồi và hang động": "mountain",
+    "Sông và Hồ": "lake",
+    "Suối nước nóng và thác nước tự nhiên": "natural",
+    "Vườn Bách Thảo và Vườn Thú": "zoo",
+    "Phố Nổi Tiếng": "street",
+    "Sân Gôn": "golf",
+    "Sân Bay": "airport",
+    "Bến Cảng và Bến Đò": "harbor",
+    "Bến Du Thuyền": "marina",
+    "Sòng Bạc": "casino",
+    "Khu Nghỉ Trượt Tuyết": "ski_resort",
+    "Nhà hát": "theater",
+    "Nơi Biểu Diễn Văn Nghệ": "theater",
+}
+
+# Override ID cho landmark đã có ID quen (sinh phiên trước, được ontology.yaml/golden tham chiếu).
+# tên data (chuẩn hóa lower) -> LMK id. Giữ để không vỡ located_in/near references.
+LMK_ID_OVERRIDE = {
+    "vinwonders nha trang": "LMK_VINWONDERS_NHA_TRANG",
+    "vinwonders phú quốc": "LMK_VINWONDERS_PHU_QUOC",
+    "vinpearl grand world phú quốc": "LMK_GRAND_WORLD_PHU_QUOC",
+    "bãi dài": "LMK_BAI_DAI",
+    "viện hải dương học": "LMK_VIEN_HAI_DUONG_HOC",
+    "dinh bảo đại": "LMK_DINH_BAO_DAI",
+}
+
 COUNTRY_LABEL_EN = {
     "Việt Nam": "Vietnam", "Hoa Kỳ": "United States", "Trung Quốc": "China",
     "Thái Lan": "Thailand", "Nhật Bản": "Japan", "Hàn Quốc": "South Korea",
@@ -130,11 +184,25 @@ COUNTRY_LABEL_EN = {
 }
 
 
+def clean_text(s: str) -> str:
+    """Sửa mojibake phổ biến trong data Agoda (UTF-8 đọc nhầm latin-1) trước khi đưa vào label."""
+    repl = {"â€™": "'", "â€œ": '"', "â€\x9d": '"', "â€“": "-", "â€”": "-", "Â": ""}
+    for a, b in repl.items():
+        s = s.replace(a, b)
+    return s.strip()
+
+
 def slug(name: str) -> str:
     """Tên địa danh (có dấu) -> hậu tố ID: bỏ dấu, in hoa, _ thay khoảng trắng/ký tự lạ."""
-    s = strip_diacritics(to_nfc(name)).upper()
+    s = strip_diacritics(to_nfc(clean_text(name))).upper()
     s = re.sub(r"[^A-Z0-9]+", "_", s).strip("_")
     return s
+
+
+def country_slug(co: str) -> str:
+    """Slug ID của country: ưu tiên COUNTRY_SLUG (curated, ID đẹp); nếu nước lạ -> auto-slug từ tên.
+    Auto-slug giúp production KHÔNG kẹt khi gặp nước mới (được log ra location_candidates để duyệt)."""
+    return COUNTRY_SLUG.get(co) or slug(co)
 
 
 def surface_forms(name: str) -> list[str]:
@@ -162,11 +230,14 @@ def surface_forms(name: str) -> list[str]:
 
 
 def scan(hotels_glob: str = HOTELS_GLOB):
-    """Quét data -> đếm hotel ở mỗi (country, city, area) + ghi quan hệ cha-con."""
+    """Quét data -> đếm hotel ở mỗi (country, city, area) + thu landmark từ nearby_places."""
     country_n = Counter()
     city_n = Counter()                       # key: (country, city)
     area_n = Counter()                       # key: (country, city, area)
     unknown_country = set()
+    lmk_hotels = Counter()                   # landmark name -> số hotel (distinct)
+    lmk_type = defaultdict(Counter)          # name -> Counter(type)
+    lmk_city = defaultdict(Counter)          # name -> Counter(city hotel) để suy located_in
     for f in sorted(glob.glob(hotels_glob)):
         d = json.load(open(f, encoding="utf-8"))
         co = (d.get("country") or "").strip()
@@ -175,14 +246,28 @@ def scan(hotels_glob: str = HOTELS_GLOB):
         if not co:
             continue
         if co not in COUNTRY_SLUG:
+            # MỨC 3: country lạ KHÔNG bị bỏ. Auto-slug tạm để hotel vào được NGAY, đồng thời
+            # ghi nhận để log ra location_candidates.yaml cho người duyệt ID/label sau.
             unknown_country.add(co)
-            continue
         country_n[co] += 1
         if ci:
             city_n[(co, ci)] += 1
             if ar and ar != ci:              # bỏ area trùng tên city (vô nghĩa)
                 area_n[(co, ci, ar)] += 1
-    return country_n, city_n, area_n, unknown_country
+        # landmark: gom theo tên, đếm distinct hotel + type + city của hotel chứa nó
+        seen = set()
+        for p in (d.get("nearby_places") or []):
+            nm = (p.get("name") or "").strip()
+            ty = (p.get("type") or "").strip()
+            if not nm or ty not in LMK_TYPE_KEEP or nm in seen:
+                continue
+            seen.add(nm)
+            lmk_hotels[nm] += 1
+            lmk_type[nm][ty] += 1
+            if ci:
+                lmk_city[nm][ci] += 1
+    landmarks = (lmk_hotels, lmk_type, lmk_city)
+    return country_n, city_n, area_n, unknown_country, landmarks
 
 
 def concept_block(cid, kind, label_vi, label_en, parent, sf, desc, related=None) -> str:
@@ -206,6 +291,28 @@ def concept_block(cid, kind, label_vi, label_en, parent, sf, desc, related=None)
     return "\n".join(lines)
 
 
+def landmark_block(cid, label, located_in, landmark_type, sf, desc) -> str:
+    """Block YAML cho landmark (kind=landmark, located_in + landmark_type)."""
+    lines = [
+        f"  {cid}:",
+        f"    facet: location",
+        f"    fact_type: hard",
+        f"    tier: core",
+        f"    kind: landmark",
+        f"    landmark_type: {landmark_type}",
+        f"    provenance: [agoda]",
+    ]
+    if located_in:
+        lines.append(f"    located_in: {located_in}")
+    lines += [
+        f"    label: {{vi: {yq(label)}, en: {yq(label)}}}",
+        f"    surface_forms:",
+        f"      vi: [{', '.join(yq(s) for s in sf)}]",
+        f"    description: {{vi: {yq(desc)}, en: {yq(desc)}}}",
+    ]
+    return "\n".join(lines)
+
+
 def yq(s: str) -> str:
     """Quote YAML an toàn cho chuỗi có dấu/ký tự đặc biệt."""
     s = str(s).replace('"', "'")
@@ -213,19 +320,19 @@ def yq(s: str) -> str:
 
 
 def build(hotels_glob: str = HOTELS_GLOB) -> str:
-    country_n, city_n, area_n, unknown = scan(hotels_glob)
+    country_n, city_n, area_n, unknown, landmarks = scan(hotels_glob)
 
     # CITY-STATE: city trùng slug với chính country của nó (Singapore, Hong Kong, Macau, Guam...)
     # -> KHÔNG sinh city concept (sẽ đè key country trong YAML). Hotel gắn thẳng vào country.
-    country_slugs = {f"LOC_{COUNTRY_SLUG[co]}" for co in country_n}
-    city_state = {(co, ci) for (co, ci) in city_n if f"LOC_{slug(ci)}" == f"LOC_{COUNTRY_SLUG[co]}"}
+    country_slugs = {f"LOC_{country_slug(co)}" for co in country_n}
+    city_state = {(co, ci) for (co, ci) in city_n if f"LOC_{slug(ci)}" == f"LOC_{country_slug(co)}"}
 
     # ID city: ưu tiên CITY_OVERRIDE (ép ID quen); rồi tránh trùng giữa 2 nước + đụng country slug.
     city_id = {}
     seen_city_slug = Counter()
     for (co, ci), n in sorted(city_n.items(), key=lambda x: (-x[1], x[0])):
         if (co, ci) in city_state:
-            city_id[(co, ci)] = f"LOC_{COUNTRY_SLUG[co]}"   # trỏ thẳng về country
+            city_id[(co, ci)] = f"LOC_{country_slug(co)}"   # trỏ thẳng về country
             continue
         if slug(ci) in CITY_OVERRIDE:
             city_id[(co, ci)] = CITY_OVERRIDE[slug(ci)]["id"]
@@ -234,7 +341,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
         cand = f"LOC_{base}"
         seen_city_slug[base] += 1
         if seen_city_slug[base] > 1 or cand in country_slugs:
-            cand = f"LOC_{COUNTRY_SLUG[co]}_{base}"
+            cand = f"LOC_{country_slug(co)}_{base}"
         city_id[(co, ci)] = cand
 
     out = []
@@ -252,7 +359,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     # 1) COUNTRY
     out.append("  # ===== COUNTRY (kind: country) — nhánh điểm đến theo từng đất nước =====")
     for co, n in sorted(country_n.items(), key=lambda x: (-x[1], x[0])):
-        cid = f"LOC_{COUNTRY_SLUG[co]}"
+        cid = f"LOC_{country_slug(co)}"
         label_en = COUNTRY_LABEL_EN.get(co, co)
         out.append(concept_block(cid, "country", co, label_en, None,
                                  surface_forms(co), f"{co} ({n} hotel trong corpus)"))
@@ -266,7 +373,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
             return ov["parent"]
         if co == "Việt Nam" and slug(ci) in VN_PROVINCE:
             return VN_PROVINCE[slug(ci)][0]
-        return f"LOC_{COUNTRY_SLUG[co]}"
+        return f"LOC_{country_slug(co)}"
 
     used_provinces = {}   # province_id -> label_vi
     for (co, ci) in city_n:
@@ -314,20 +421,91 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
                                  surface_forms(ar), f"{ar} (thuộc {ci}, {co}; {n} hotel)", related=related))
         out.append("")
 
+    # 5) LANDMARK (kind: landmark) — tự sinh từ nearby_places. located_in = city nhiều nhất.
+    lmk_hotels, lmk_type, lmk_city = landmarks
+    out.append("  # ===== LANDMARK (kind: landmark) — TỰ SINH từ nearby_places (>=%d hotel) =====" % LMK_MIN_HOTELS)
+    out.append("  # located_in = city xuất hiện nhiều nhất; landmark_type map từ `type` Agoda.")
+    out.append("  # ID vài landmark ép theo LMK_ID_OVERRIDE để khớp ID quen (VinWonders, Bãi Dài...).")
+    seen_lmk_id = {}      # id -> name (chống trùng ID)
+    lmk_list = sorted(
+        ((nm, c) for nm, c in lmk_hotels.items() if c >= LMK_MIN_HOTELS),
+        key=lambda x: (-x[1], x[0]),
+    )
+    for nm, n in lmk_list:
+        low = to_nfc(nm).lower().strip()
+        # located_in = city có nhiều hotel chứa landmark nhất -> city_id của nó
+        top_city = lmk_city[nm].most_common(1)[0][0] if lmk_city[nm] else None
+        loc_in = None
+        for (co, ci), cidv in city_id.items():
+            if ci == top_city:
+                loc_in = cidv
+                break
+        # ID: override nếu có; ngược lại LMK_<slug>; nếu đụng -> thêm slug city
+        if low in LMK_ID_OVERRIDE:
+            cid = LMK_ID_OVERRIDE[low]
+        else:
+            cid = f"LMK_{slug(nm)}"
+            if cid in seen_lmk_id:
+                cid = f"LMK_{slug(nm)}_{slug(top_city or '')}".rstrip("_")
+        if cid in seen_lmk_id:        # vẫn đụng (cùng tên+city) -> bỏ qua bản sau
+            continue
+        seen_lmk_id[cid] = nm
+        ltype = LMK_TYPE_KEEP[lmk_type[nm].most_common(1)[0][0]]
+        # sân bay phục vụ cả VÙNG (xuất hiện rải nhiều tỉnh) -> "city max" vô nghĩa, BỎ located_in.
+        # Quan hệ near (hotel<->sân bay+km) vẫn ở relations_near là đủ cho "gần sân bay".
+        if ltype == "airport":
+            loc_in = None
+        label = clean_text(nm)
+        out.append(landmark_block(cid, label, loc_in, ltype, surface_forms(nm),
+                                  f"{label} ({n} hotel có trong nearby)"))
+        out.append("")
+
     return "\n".join(out).rstrip() + "\n"
+
+
+def write_candidates(country_n, unknown, out_yaml: str = CANDIDATES_YAML) -> int:
+    """MỨC 3: ghi country lạ (auto-slug) ra hàng đợi duyệt. Hotel của chúng ĐÃ vào ontology
+    (auto-slug), đây chỉ là việc CHỜ NGƯỜI xác nhận/đặt ID-label đẹp, KHÔNG chặn luồng.
+    File luôn được ghi (kể cả rỗng) để trạng thái rõ ràng. Trả số candidate."""
+    items = []
+    for co in sorted(unknown):
+        items.append({
+            "country_name": co,                          # tên thô trong data
+            "auto_id": f"LOC_{slug(co)}",                # ID tạm script đã sinh (đang dùng thật)
+            "hotel_count": country_n.get(co, 0),
+            "status": "pending",                         # pending -> approved (thêm vào COUNTRY_SLUG)
+            "action": "Xác nhận/sửa slug ID + label EN rồi thêm vào COUNTRY_SLUG/COUNTRY_LABEL_EN trong build_locations.py",
+        })
+    header = (
+        "# ontology/candidate/location_candidates.yaml — AUTO-GENERATED bởi build_locations.py.\n"
+        "# MỨC 3 (production-safe): country MỚI chưa có trong COUNTRY_SLUG được auto-slug để hotel\n"
+        "# vào ontology NGAY (không chặn luồng nạp dữ liệu). Mục dưới CHỜ NGƯỜI duyệt: xác nhận/đổi\n"
+        "# slug ID đẹp + label EN, rồi thêm vào COUNTRY_SLUG trong build_locations.py và chạy lại.\n"
+        "# Đây KHÁC candidate_queue.yaml (concept ngữ nghĩa từ review). Location = data-driven, auto-OK.\n"
+        "# status: pending | approved.\n"
+    )
+    with open(out_yaml, "w", encoding="utf-8") as fh:
+        fh.write(header)
+        yaml.safe_dump({"location_candidates": items}, fh, allow_unicode=True, sort_keys=False)
+    return len(items)
 
 
 def main():
     text = build()
     with open(OUT_YAML, "w", encoding="utf-8") as fh:
         fh.write(text)
-    # tóm tắt ra stdout
-    country_n, city_n, area_n, unknown = scan()
+    country_n, city_n, area_n, unknown, landmarks = scan()
+    n_cand = write_candidates(country_n, unknown)
+    n_lmk = sum(1 for c in landmarks[0].values() if c >= LMK_MIN_HOTELS)
     print(f"Đã ghi {OUT_YAML}")
     print(f"  country={len(country_n)}  city={len(city_n)}  area={len(area_n)}  "
-          f"(hotel có country hợp lệ={sum(country_n.values())})")
+          f"landmark={n_lmk} (>={LMK_MIN_HOTELS} hotel)  "
+          f"(hotel có country={sum(country_n.values())})")
     if unknown:
-        print(f"  ⚠ country chưa map slug: {sorted(unknown)}")
+        print(f"  ⚠ {len(unknown)} country auto-slug (đã vào ontology, chờ duyệt ID đẹp) "
+              f"-> {CANDIDATES_YAML}: {sorted(unknown)}")
+    else:
+        print(f"  ✓ mọi country đã có trong COUNTRY_SLUG (0 candidate) -> {CANDIDATES_YAML}")
 
 
 if __name__ == "__main__":

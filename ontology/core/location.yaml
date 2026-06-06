@@ -1,102 +1,15 @@
-# core/location.yaml — facet: location (HARD fact). CHỈ CÒN LANDMARK (curated).
-# tier: core. Provenance: data Agoda (nearby_places) + domain_knowledge.
+# core/location.yaml — facet: location (HARD fact).
 #
-# ⚠ THAY ĐỔI (corpus 51 -> 555, toàn cầu): toàn bộ PLACE (country/city/area) nay TỰ SINH ở
-#   ontology/core/location.generated.yaml bởi build_locations.py (Lớp A). File này KHÔNG còn place
-#   để tránh 2 ID cho cùng một nơi. Các ID place quen (LOC_PHU_QUOC, LOC_NHA_TRANG, LOC_HON_TRE,
-#   LOC_KHANH_HOA...) vẫn tồn tại — do generated sinh (ép qua CITY_OVERRIDE/AREA_OVERRIDE/VN_PROVINCE
-#   trong script), nên tham chiếu ở ontology.yaml/facets.yaml/query_expansion vẫn hợp lệ.
+# ⚠ FILE NÀY GIỜ TRỐNG (concepts: {}). Toàn bộ địa danh — country/city/area VÀ landmark (LMK_*) —
+# đã chuyển sang TỰ SINH ở ontology/core/location.generated.yaml bởi build_locations.py (Lớp A).
 #
-# Ở đây chỉ giữ LANDMARK (LMK_*) — điểm tham quan, KHÔNG tự sinh được. Dùng cho quan hệ `near`
-# (ontology.yaml Task 1.5). Mỗi landmark có located_in trỏ tới một place sống ở generated.
-# Schema: xem ontology/_meta.yaml.
-concepts:
-
-  # ===========================================================================
-  # LANDMARKS — điểm tham quan (từ nearby_places + tags). Dùng cho quan hệ `near`.
-  # located_in trỏ place (LOC_*) trong location.generated.yaml.
-  # ===========================================================================
-  LMK_VINWONDERS_NHA_TRANG:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: landmark
-    landmark_type: amusement_park
-    provenance: [agoda]
-    located_in: LOC_HON_TRE
-    label: {vi: VinWonders Nha Trang, en: VinWonders Nha Trang}
-    surface_forms:
-      vi: [vinpearl land nha trang]
-      en: [vinwonders nha trang]
-    description: {vi: Công viên giải trí VinWonders Nha Trang, en: VinWonders Nha Trang amusement park}
-
-  LMK_VINWONDERS_PHU_QUOC:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: landmark
-    landmark_type: amusement_park
-    provenance: [agoda]
-    located_in: LOC_GANH_DAU
-    label: {vi: VinWonders Phú Quốc, en: VinWonders Phu Quoc}
-    surface_forms:
-      vi: [vinwonders phú quốc]
-      en: [vinwonders phu quoc]
-    description: {vi: Công viên giải trí VinWonders Phú Quốc, en: VinWonders Phu Quoc amusement park}
-
-  LMK_GRAND_WORLD_PHU_QUOC:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: landmark
-    landmark_type: entertainment
-    provenance: [agoda]
-    located_in: LOC_GANH_DAU
-    label: {vi: Vinpearl Grand World Phú Quốc, en: Vinpearl Grand World Phu Quoc}
-    surface_forms:
-      vi: [grand world phú quốc, vinpearl grand world]
-      en: [grand world phu quoc]
-    description: {vi: Khu giải trí Grand World Phú Quốc, en: Grand World Phu Quoc entertainment complex}
-
-  LMK_BAI_DAI:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: landmark
-    landmark_type: beach
-    provenance: [agoda]
-    located_in: LOC_PHU_QUOC
-    label: {vi: Bãi Dài, en: Bai Dai}
-    surface_forms:
-      vi: [bãi dài]
-      en: [bai dai, long beach]
-    description: {vi: Bãi Dài, Phú Quốc, en: Bai Dai beach, Phu Quoc}
-    related: [SETTING_COASTAL]
-
-  LMK_VIEN_HAI_DUONG_HOC:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: landmark
-    landmark_type: museum
-    provenance: [agoda]
-    located_in: LOC_NHA_TRANG
-    label: {vi: Viện Hải Dương Học, en: National Oceanographic Museum}
-    surface_forms:
-      vi: [viện hải dương học, bảo tàng hải dương học]
-      en: [national oceanographic museum]
-    description: {vi: Viện Hải Dương Học Nha Trang, en: National Oceanographic Museum of Vietnam, Nha Trang}
-
-  LMK_DINH_BAO_DAI:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: landmark
-    landmark_type: historic
-    provenance: [agoda]
-    located_in: LOC_NHA_TRANG
-    label: {vi: Dinh Bảo Đại, en: Bao Dai Palace}
-    surface_forms:
-      vi: [dinh bảo đại, lầu bảo đại]
-      en: [bao dai palace]
-    description: {vi: Dinh Bảo Đại, Nha Trang, en: Bao Dai Palace, Nha Trang}
+# Lý do: ở mốc 51 hotel mọi thứ gõ tay nên để chung 1 file. Ở 555 hotel / 39 nước, gõ tay không
+# còn khả thi; landmark cũng suy được từ field nearby_places (>=4 hotel, lọc theo type du lịch).
+# Giữ file rỗng (không xóa) để các comment/loader tham chiếu core/*.yaml không gãy.
+#
+# Khi cần ALIAS / quan hệ TINH CHỈNH TAY mà script không suy được (vd located_in mức xã/phường
+# chính xác), thêm concept vào ĐÂY — nó sẽ override/bổ sung cho bản generated (cùng prefix LOC_/LMK_,
+# cùng facet location). Hiện chưa có nhu cầu nào -> để trống.
+#
+# Schema 1 concept: xem ontology/_meta.yaml.
+concepts: {}

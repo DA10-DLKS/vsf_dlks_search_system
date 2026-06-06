@@ -6334,3 +6334,1190 @@ concepts:
     surface_forms:
       vi: ["san bay pune", "sân bay pune"]
     description: {vi: "Sân bay Pune (thuộc Pune, Ấn Độ; 1 hotel)", en: "Sân bay Pune (thuộc Pune, Ấn Độ; 1 hotel)"}
+
+  # ===== LANDMARK (kind: landmark) — TỰ SINH từ nearby_places (>=4 hotel) =====
+  # located_in = city xuất hiện nhiều nhất; landmark_type map từ `type` Agoda.
+  # ID vài landmark ép theo LMK_ID_OVERRIDE để khớp ID quen (VinWonders, Bãi Dài...).
+  LMK_BIEN_MY_KHE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_DA_NANG
+    label: {vi: "Biển Mỹ Khê", en: "Biển Mỹ Khê"}
+    surface_forms:
+      vi: ["bien my khe", "biển mỹ khê"]
+    description: {vi: "Biển Mỹ Khê (12 hotel có trong nearby)", en: "Biển Mỹ Khê (12 hotel có trong nearby)"}
+
+  LMK_CONG_VIEN_BIEN_DONG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_DA_NANG
+    label: {vi: "Công viên Biển Đông", en: "Công viên Biển Đông"}
+    surface_forms:
+      vi: ["cong vien bien dong", "công viên biển đông"]
+    description: {vi: "Công viên Biển Đông (11 hotel có trong nearby)", en: "Công viên Biển Đông (11 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_QUOC_TE_CAT_BI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Quốc tế Cát Bi", en: "Sân bay Quốc tế Cát Bi"}
+    surface_forms:
+      vi: ["san bay quoc te cat bi", "sân bay quốc tế cát bi"]
+    description: {vi: "Sân bay Quốc tế Cát Bi (11 hotel có trong nearby)", en: "Sân bay Quốc tế Cát Bi (11 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_QUOC_TE_NOI_BAI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Quốc tế Nội Bài", en: "Sân bay Quốc tế Nội Bài"}
+    surface_forms:
+      vi: ["san bay quoc te noi bai", "sân bay quốc tế nội bài"]
+    description: {vi: "Sân bay Quốc tế Nội Bài (11 hotel có trong nearby)", en: "Sân bay Quốc tế Nội Bài (11 hotel có trong nearby)"}
+
+  LMK_DIEM_NGAM_CANH:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: entertainment
+    provenance: [agoda]
+    located_in: LOC_QUY_NHON_BINH_DINH
+    label: {vi: "Điểm ngắm cảnh", en: "Điểm ngắm cảnh"}
+    surface_forms:
+      vi: ["diem ngam canh", "điểm ngắm cảnh"]
+    description: {vi: "Điểm ngắm cảnh (11 hotel có trong nearby)", en: "Điểm ngắm cảnh (11 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_QUOC_TE_JOHN_F_KENNEDY:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Quốc tế John F. Kennedy", en: "Sân bay Quốc tế John F. Kennedy"}
+    surface_forms:
+      vi: ["san bay quoc te john f. kennedy", "sân bay quốc tế john f. kennedy"]
+    description: {vi: "Sân bay Quốc tế John F. Kennedy (10 hotel có trong nearby)", en: "Sân bay Quốc tế John F. Kennedy (10 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_SAM_NEUA:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Sam Neua", en: "Sân bay Sam Neua"}
+    surface_forms:
+      vi: ["san bay sam neua", "sân bay sam neua"]
+    description: {vi: "Sân bay Sam Neua (10 hotel có trong nearby)", en: "Sân bay Sam Neua (10 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_THO_XUAN:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Thọ Xuân", en: "Sân bay Thọ Xuân"}
+    surface_forms:
+      vi: ["san bay tho xuan", "sân bay thọ xuân"]
+    description: {vi: "Sân bay Thọ Xuân (10 hotel có trong nearby)", en: "Sân bay Thọ Xuân (10 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_TINH_WESTCHESTER:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Tỉnh Westchester", en: "Sân bay Tỉnh Westchester"}
+    surface_forms:
+      vi: ["san bay tinh westchester", "sân bay tỉnh westchester"]
+    description: {vi: "Sân bay Tỉnh Westchester (10 hotel có trong nearby)", en: "Sân bay Tỉnh Westchester (10 hotel có trong nearby)"}
+
+  LMK_BAI_CHAY:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Bãi Cháy", en: "Bãi Cháy"}
+    surface_forms:
+      vi: ["bai chay", "bãi cháy"]
+    description: {vi: "Bãi Cháy (9 hotel có trong nearby)", en: "Bãi Cháy (9 hotel có trong nearby)"}
+
+  LMK_BAI_BIEN_QUY_NHON:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_QUY_NHON_BINH_DINH
+    label: {vi: "Bãi biển Quy Nhơn", en: "Bãi biển Quy Nhơn"}
+    surface_forms:
+      vi: ["bai bien quy nhon", "bãi biển quy nhơn"]
+    description: {vi: "Bãi biển Quy Nhơn (9 hotel có trong nearby)", en: "Bãi biển Quy Nhơn (9 hotel có trong nearby)"}
+
+  LMK_BAI_TAM_HOANG_HAU:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: entertainment
+    provenance: [agoda]
+    located_in: LOC_QUY_NHON_BINH_DINH
+    label: {vi: "Bãi tắm Hoàng Hậu", en: "Bãi tắm Hoàng Hậu"}
+    surface_forms:
+      vi: ["bai tam hoang hau", "bãi tắm hoàng hậu"]
+    description: {vi: "Bãi tắm Hoàng Hậu (9 hotel có trong nearby)", en: "Bãi tắm Hoàng Hậu (9 hotel có trong nearby)"}
+
+  LMK_CONG_VIEN_THIEU_NHI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_QUY_NHON_BINH_DINH
+    label: {vi: "Công viên Thiếu Nhi", en: "Công viên Thiếu Nhi"}
+    surface_forms:
+      vi: ["cong vien thieu nhi", "công viên thiếu nhi"]
+    description: {vi: "Công viên Thiếu Nhi (9 hotel có trong nearby)", en: "Công viên Thiếu Nhi (9 hotel có trong nearby)"}
+
+  LMK_BAI_DAI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Bãi Dài", en: "Bãi Dài"}
+    surface_forms:
+      vi: ["bai dai", "bãi dài"]
+    description: {vi: "Bãi Dài (8 hotel có trong nearby)", en: "Bãi Dài (8 hotel có trong nearby)"}
+
+  LMK_CONG_VIEN_RONG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: amusement_park
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Công viên Rồng", en: "Công viên Rồng"}
+    surface_forms:
+      vi: ["cong vien rong", "công viên rồng"]
+    description: {vi: "Công viên Rồng (8 hotel có trong nearby)", en: "Công viên Rồng (8 hotel có trong nearby)"}
+
+  LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Khu vui chơi giải trí Sun World Hạ Long", en: "Khu vui chơi giải trí Sun World Hạ Long"}
+    surface_forms:
+      vi: ["khu vui choi giai tri sun world ha long", "khu vui chơi giải trí sun world hạ long"]
+    description: {vi: "Khu vui chơi giải trí Sun World Hạ Long (8 hotel có trong nearby)", en: "Khu vui chơi giải trí Sun World Hạ Long (8 hotel có trong nearby)"}
+
+  LMK_SUN_WORLD_HA_LONG_COMPLEX:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: amusement_park
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Sun World Ha Long Complex", en: "Sun World Ha Long Complex"}
+    surface_forms:
+      vi: ["sun world ha long complex"]
+    description: {vi: "Sun World Ha Long Complex (8 hotel có trong nearby)", en: "Sun World Ha Long Complex (8 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_LONG_ISLAND_MACARTHUR:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Long Island MacArthur", en: "Sân bay Long Island MacArthur"}
+    surface_forms:
+      vi: ["san bay long island macarthur", "sân bay long island macarthur"]
+    description: {vi: "Sân bay Long Island MacArthur (8 hotel có trong nearby)", en: "Sân bay Long Island MacArthur (8 hotel có trong nearby)"}
+
+  LMK_THAP_CUU_HO:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: entertainment
+    provenance: [agoda]
+    located_in: LOC_DA_NANG
+    label: {vi: "Tháp cứu hộ", en: "Tháp cứu hộ"}
+    surface_forms:
+      vi: ["thap cuu ho", "tháp cứu hộ"]
+    description: {vi: "Tháp cứu hộ (8 hotel có trong nearby)", en: "Tháp cứu hộ (8 hotel có trong nearby)"}
+
+  LMK_BAI_BIEN_PHAM_VAN_DONG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_DA_NANG
+    label: {vi: "Bãi biển Phạm Văn Đồng", en: "Bãi biển Phạm Văn Đồng"}
+    surface_forms:
+      vi: ["bai bien pham van dong", "bãi biển phạm văn đồng"]
+    description: {vi: "Bãi biển Phạm Văn Đồng (7 hotel có trong nearby)", en: "Bãi biển Phạm Văn Đồng (7 hotel có trong nearby)"}
+
+  LMK_SAN_GOLF:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: golf
+    provenance: [agoda]
+    located_in: LOC_THANH_HOA_BAI_BIEN_SAM_SON
+    label: {vi: "Sân golf", en: "Sân golf"}
+    surface_forms:
+      vi: ["san golf", "sân golf"]
+    description: {vi: "Sân golf (7 hotel có trong nearby)", en: "Sân golf (7 hotel có trong nearby)"}
+
+  LMK_THAP_QUAN_SAT:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: entertainment
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Tháp quan sát", en: "Tháp quan sát"}
+    surface_forms:
+      vi: ["thap quan sat", "tháp quan sát"]
+    description: {vi: "Tháp quan sát (7 hotel có trong nearby)", en: "Tháp quan sát (7 hotel có trong nearby)"}
+
+  LMK_VAN_DON_INTERNATIONAL_AIRPORT:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Van Don International Airport", en: "Van Don International Airport"}
+    surface_forms:
+      vi: ["van don international airport"]
+    description: {vi: "Van Don International Airport (7 hotel có trong nearby)", en: "Van Don International Airport (7 hotel có trong nearby)"}
+
+  LMK_CONG_VIEN_HON_TRONG_MAI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_THANH_HOA_BAI_BIEN_SAM_SON
+    label: {vi: "Công viên Hòn Trống Mái", en: "Công viên Hòn Trống Mái"}
+    surface_forms:
+      vi: ["cong vien hon trong mai", "công viên hòn trống mái"]
+    description: {vi: "Công viên Hòn Trống Mái (6 hotel có trong nearby)", en: "Công viên Hòn Trống Mái (6 hotel có trong nearby)"}
+
+  LMK_CONG_VIEN_TRUNG_TAM_SAM_SON:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_THANH_HOA_BAI_BIEN_SAM_SON
+    label: {vi: "Công viên Trung tâm Sầm Sơn", en: "Công viên Trung tâm Sầm Sơn"}
+    surface_forms:
+      vi: ["cong vien trung tam sam son", "công viên trung tâm sầm sơn"]
+    description: {vi: "Công viên Trung tâm Sầm Sơn (6 hotel có trong nearby)", en: "Công viên Trung tâm Sầm Sơn (6 hotel có trong nearby)"}
+
+  LMK_FLC_GOLF_LINKS_SAM_SON:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: golf
+    provenance: [agoda]
+    located_in: LOC_THANH_HOA_BAI_BIEN_SAM_SON
+    label: {vi: "FLC Golf Links Sầm Sơn", en: "FLC Golf Links Sầm Sơn"}
+    surface_forms:
+      vi: ["flc golf links sam son", "flc golf links sầm sơn"]
+    description: {vi: "FLC Golf Links Sầm Sơn (6 hotel có trong nearby)", en: "FLC Golf Links Sầm Sơn (6 hotel có trong nearby)"}
+
+  LMK_LONG_BEACH:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Long Beach", en: "Long Beach"}
+    surface_forms:
+      vi: ["long beach"]
+    description: {vi: "Long Beach (6 hotel có trong nearby)", en: "Long Beach (6 hotel có trong nearby)"}
+
+  LMK_LOP_HOC_NAU_AN_THUAN_TINH:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: entertainment
+    provenance: [agoda]
+    located_in: LOC_HOI_AN
+    label: {vi: "Lớp học nấu ăn Thuận Tính", en: "Lớp học nấu ăn Thuận Tính"}
+    surface_forms:
+      vi: ["lop hoc nau an thuan tinh", "lớp học nấu ăn thuận tính"]
+    description: {vi: "Lớp học nấu ăn Thuận Tính (6 hotel có trong nearby)", en: "Lớp học nấu ăn Thuận Tính (6 hotel có trong nearby)"}
+
+  LMK_NUI_BAI_CHAY:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: mountain
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Núi Bãi Cháy", en: "Núi Bãi Cháy"}
+    surface_forms:
+      vi: ["nui bai chay", "núi bãi cháy"]
+    description: {vi: "Núi Bãi Cháy (6 hotel có trong nearby)", en: "Núi Bãi Cháy (6 hotel có trong nearby)"}
+
+  LMK_NUI_TRUONG_LE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: mountain
+    provenance: [agoda]
+    located_in: LOC_THANH_HOA_BAI_BIEN_SAM_SON
+    label: {vi: "Núi Trường Lệ", en: "Núi Trường Lệ"}
+    surface_forms:
+      vi: ["nui truong le", "núi trường lệ"]
+    description: {vi: "Núi Trường Lệ (6 hotel có trong nearby)", en: "Núi Trường Lệ (6 hotel có trong nearby)"}
+
+  LMK_XIN_AO_ART_BOULEVARD:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_LANG_PHUONG
+    label: {vi: "Xin'ao Art Boulevard", en: "Xin'ao Art Boulevard"}
+    surface_forms:
+      vi: ["xina€™ao art boulevard", "xinâ€™ao art boulevard"]
+    description: {vi: "Xin'ao Art Boulevard (6 hotel có trong nearby)", en: "Xin'ao Art Boulevard (6 hotel có trong nearby)"}
+
+  LMK_DAO_CASTAWAY_ISLAND:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: island
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Đảo Castaway Island", en: "Đảo Castaway Island"}
+    surface_forms:
+      vi: ["dao castaway island", "đảo castaway island"]
+    description: {vi: "Đảo Castaway Island (6 hotel có trong nearby)", en: "Đảo Castaway Island (6 hotel có trong nearby)"}
+
+  LMK_DEN_DOC_CUOC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_THANH_HOA_BAI_BIEN_SAM_SON
+    label: {vi: "Đền Độc Cước", en: "Đền Độc Cước"}
+    surface_forms:
+      vi: ["den doc cuoc", "đền độc cước"]
+    description: {vi: "Đền Độc Cước (6 hotel có trong nearby)", en: "Đền Độc Cước (6 hotel có trong nearby)"}
+
+  LMK_AIR_POWER_PARK:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: museum
+    provenance: [agoda]
+    located_in: LOC_HAMPTON_VA
+    label: {vi: "Air Power Park", en: "Air Power Park"}
+    surface_forms:
+      vi: ["air power park"]
+    description: {vi: "Air Power Park (5 hotel có trong nearby)", en: "Air Power Park (5 hotel có trong nearby)"}
+
+  LMK_BEACH_HOTEL_PARK:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_DA_NANG
+    label: {vi: "Beach Hotel Park", en: "Beach Hotel Park"}
+    surface_forms:
+      vi: ["beach hotel park"]
+    description: {vi: "Beach Hotel Park (5 hotel có trong nearby)", en: "Beach Hotel Park (5 hotel có trong nearby)"}
+
+  LMK_BIEN_NHA_TRANG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_NHA_TRANG
+    label: {vi: "Biển Nha Trang", en: "Biển Nha Trang"}
+    surface_forms:
+      vi: ["bien nha trang", "biển nha trang"]
+    description: {vi: "Biển Nha Trang (5 hotel có trong nearby)", en: "Biển Nha Trang (5 hotel có trong nearby)"}
+
+  LMK_BLUEBIRD_GAP_FARM:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_HAMPTON_VA
+    label: {vi: "Bluebird Gap Farm", en: "Bluebird Gap Farm"}
+    surface_forms:
+      vi: ["bluebird gap farm"]
+    description: {vi: "Bluebird Gap Farm (5 hotel có trong nearby)", en: "Bluebird Gap Farm (5 hotel có trong nearby)"}
+
+  LMK_BLYDENBURGH_PARK:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: national_park
+    provenance: [agoda]
+    located_in: LOC_HAUPPAUGE_NY
+    label: {vi: "Blydenburgh Park", en: "Blydenburgh Park"}
+    surface_forms:
+      vi: ["blydenburgh park"]
+    description: {vi: "Blydenburgh Park (5 hotel có trong nearby)", en: "Blydenburgh Park (5 hotel có trong nearby)"}
+
+  LMK_BAI_BIEN_CUA_DAI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_HOI_AN
+    label: {vi: "Bãi biển Cửa Đại", en: "Bãi biển Cửa Đại"}
+    surface_forms:
+      vi: ["bai bien cua dai", "bãi biển cửa đại"]
+    description: {vi: "Bãi biển Cửa Đại (5 hotel có trong nearby)", en: "Bãi biển Cửa Đại (5 hotel có trong nearby)"}
+
+  LMK_BEN_TAU_DU_LICH_BAI_CHAY:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: harbor
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Bến tàu du lịch Bãi Cháy", en: "Bến tàu du lịch Bãi Cháy"}
+    surface_forms:
+      vi: ["ben tau du lich bai chay", "bến tàu du lịch bãi cháy"]
+    description: {vi: "Bến tàu du lịch Bãi Cháy (5 hotel có trong nearby)", en: "Bến tàu du lịch Bãi Cháy (5 hotel có trong nearby)"}
+
+  LMK_CLB_THE_THAO_NGOAI_TROI_SAN_GON_STONEBRIDGE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: golf
+    provenance: [agoda]
+    located_in: LOC_HAUPPAUGE_NY
+    label: {vi: "Clb thể thao ngoài trời & sân gôn Stonebridge", en: "Clb thể thao ngoài trời & sân gôn Stonebridge"}
+    surface_forms:
+      vi: ["clb the thao ngoai troi & san gon stonebridge", "clb thể thao ngoài trời & sân gôn stonebridge"]
+    description: {vi: "Clb thể thao ngoài trời & sân gôn Stonebridge (5 hotel có trong nearby)", en: "Clb thể thao ngoài trời & sân gôn Stonebridge (5 hotel có trong nearby)"}
+
+  LMK_CAU_LAC_BO_GON_HEATHERWOOD:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: golf
+    provenance: [agoda]
+    located_in: LOC_HAUPPAUGE_NY
+    label: {vi: "Câu lạc bộ gôn Heatherwood", en: "Câu lạc bộ gôn Heatherwood"}
+    surface_forms:
+      vi: ["cau lac bo gon heatherwood", "câu lạc bộ gôn heatherwood"]
+    description: {vi: "Câu lạc bộ gôn Heatherwood (5 hotel có trong nearby)", en: "Câu lạc bộ gôn Heatherwood (5 hotel có trong nearby)"}
+
+  LMK_FIRST_PRESBYTERIAN_CHURCH:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: temple
+    provenance: [agoda]
+    located_in: LOC_HAUPPAUGE_NY
+    label: {vi: "First Presbyterian Church", en: "First Presbyterian Church"}
+    surface_forms:
+      vi: ["first presbyterian church"]
+    description: {vi: "First Presbyterian Church (5 hotel có trong nearby)", en: "First Presbyterian Church (5 hotel có trong nearby)"}
+
+  LMK_HAMPTON_AIR_POWER_PARK_MUSEUM:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: museum
+    provenance: [agoda]
+    located_in: LOC_HAMPTON_VA
+    label: {vi: "Hampton Air Power Park & Museum", en: "Hampton Air Power Park & Museum"}
+    surface_forms:
+      vi: ["hampton air power park & museum"]
+    description: {vi: "Hampton Air Power Park & Museum (5 hotel có trong nearby)", en: "Hampton Air Power Park & Museum (5 hotel có trong nearby)"}
+
+  LMK_HEPING_LIJING_SHANGYEJIE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_LANG_PHUONG
+    label: {vi: "HePing LiJing ShangYeJie", en: "HePing LiJing ShangYeJie"}
+    surface_forms:
+      vi: ["heping lijing shangyejie"]
+    description: {vi: "HePing LiJing ShangYeJie (5 hotel có trong nearby)", en: "HePing LiJing ShangYeJie (5 hotel có trong nearby)"}
+
+  LMK_HON_MONG_TAY:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: lake
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Hòn Móng Tay", en: "Hòn Móng Tay"}
+    surface_forms:
+      vi: ["hon mong tay", "hòn móng tay"]
+    description: {vi: "Hòn Móng Tay (5 hotel có trong nearby)", en: "Hòn Móng Tay (5 hotel có trong nearby)"}
+
+  LMK_MUI_GANH_DAU:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Mũi Gành Dầu", en: "Mũi Gành Dầu"}
+    surface_forms:
+      vi: ["mui ganh dau", "mũi gành dầu"]
+    description: {vi: "Mũi Gành Dầu (5 hotel có trong nearby)", en: "Mũi Gành Dầu (5 hotel có trong nearby)"}
+
+  LMK_RUNG_DUA_NUOC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: entertainment
+    provenance: [agoda]
+    located_in: LOC_HOI_AN
+    label: {vi: "Rừng dừa nước", en: "Rừng dừa nước"}
+    surface_forms:
+      vi: ["rung dua nuoc", "rừng dừa nước"]
+    description: {vi: "Rừng dừa nước (5 hotel có trong nearby)", en: "Rừng dừa nước (5 hotel có trong nearby)"}
+
+  LMK_SIT_N_SIP_INN:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: theater
+    provenance: [agoda]
+    located_in: LOC_HAUPPAUGE_NY
+    label: {vi: "Sit 'N' Sip Inn", en: "Sit 'N' Sip Inn"}
+    surface_forms:
+      vi: ["sit 'n' sip inn"]
+    description: {vi: "Sit 'N' Sip Inn (5 hotel có trong nearby)", en: "Sit 'N' Sip Inn (5 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_LAGUARDIA:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay LaGuardia", en: "Sân bay LaGuardia"}
+    surface_forms:
+      vi: ["san bay laguardia", "sân bay laguardia"]
+    description: {vi: "Sân bay LaGuardia (5 hotel có trong nearby)", en: "Sân bay LaGuardia (5 hotel có trong nearby)"}
+
+  LMK_SONG_BAI_CORONA:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: casino
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Sòng bài Corona", en: "Sòng bài Corona"}
+    surface_forms:
+      vi: ["song bai corona", "sòng bài corona"]
+    description: {vi: "Sòng bài Corona (5 hotel có trong nearby)", en: "Sòng bài Corona (5 hotel có trong nearby)"}
+
+  LMK_THE_CALEB_SMITH_HOUSE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_HAUPPAUGE_NY
+    label: {vi: "The Caleb Smith House", en: "The Caleb Smith House"}
+    surface_forms:
+      vi: ["the caleb smith house"]
+    description: {vi: "The Caleb Smith House (5 hotel có trong nearby)", en: "The Caleb Smith House (5 hotel có trong nearby)"}
+
+  LMK_VINWONDERS_PHU_QUOC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: amusement_park
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "VinWonders Phú Quốc", en: "VinWonders Phú Quốc"}
+    surface_forms:
+      vi: ["vinwonders phu quoc", "vinwonders phú quốc"]
+    description: {vi: "VinWonders Phú Quốc (5 hotel có trong nearby)", en: "VinWonders Phú Quốc (5 hotel có trong nearby)"}
+
+  LMK_GRAND_WORLD_PHU_QUOC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: amusement_park
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Vinpearl Grand World Phú Quốc", en: "Vinpearl Grand World Phú Quốc"}
+    surface_forms:
+      vi: ["vinpearl grand world phu quoc", "vinpearl grand world phú quốc"]
+    description: {vi: "Vinpearl Grand World Phú Quốc (5 hotel có trong nearby)", en: "Vinpearl Grand World Phú Quốc (5 hotel có trong nearby)"}
+
+  LMK_VINPEARL_SAFARI_PHU_QUOC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: zoo
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Vinpearl Safari Phú Quốc", en: "Vinpearl Safari Phú Quốc"}
+    surface_forms:
+      vi: ["vinpearl safari phu quoc", "vinpearl safari phú quốc"]
+    description: {vi: "Vinpearl Safari Phú Quốc (5 hotel có trong nearby)", en: "Vinpearl Safari Phú Quốc (5 hotel có trong nearby)"}
+
+  LMK_DINH_THAN_NGUYEN_TRUNG_TRUC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: temple
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Đình Thần Nguyễn Trung Trực", en: "Đình Thần Nguyễn Trung Trực"}
+    surface_forms:
+      vi: ["dinh than nguyen trung truc", "đình thần nguyễn trung trực"]
+    description: {vi: "Đình Thần Nguyễn Trung Trực (5 hotel có trong nearby)", en: "Đình Thần Nguyễn Trung Trực (5 hotel có trong nearby)"}
+
+  LMK_BEIJING_NVREN_JIE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_LANG_PHUONG
+    label: {vi: "BeiJing NvRen Jie", en: "BeiJing NvRen Jie"}
+    surface_forms:
+      vi: ["beijing nvren jie"]
+    description: {vi: "BeiJing NvRen Jie (4 hotel có trong nearby)", en: "BeiJing NvRen Jie (4 hotel có trong nearby)"}
+
+  LMK_BAI_SAO:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: beach
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Bãi Sao", en: "Bãi Sao"}
+    surface_forms:
+      vi: ["bai sao", "bãi sao"]
+    description: {vi: "Bãi Sao (4 hotel có trong nearby)", en: "Bãi Sao (4 hotel có trong nearby)"}
+
+  LMK_BAO_TANG_HAI_DUONG_HOC_QUOC_GIA_VIET_NAM:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: museum
+    provenance: [agoda]
+    located_in: LOC_NHA_TRANG
+    label: {vi: "Bảo tàng Hải dương học quốc gia Việt Nam", en: "Bảo tàng Hải dương học quốc gia Việt Nam"}
+    surface_forms:
+      vi: ["bao tang hai duong hoc quoc gia viet nam", "bảo tàng hải dương học quốc gia việt nam"]
+    description: {vi: "Bảo tàng Hải dương học quốc gia Việt Nam (4 hotel có trong nearby)", en: "Bảo tàng Hải dương học quốc gia Việt Nam (4 hotel có trong nearby)"}
+
+  LMK_CANGSHAN_SHANGYE_BUXINGJIE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_PHUC_CHAU
+    label: {vi: "CangShan ShangYe BuXingJie", en: "CangShan ShangYe BuXingJie"}
+    surface_forms:
+      vi: ["cangshan shangye buxingjie"]
+    description: {vi: "CangShan ShangYe BuXingJie (4 hotel có trong nearby)", en: "CangShan ShangYe BuXingJie (4 hotel có trong nearby)"}
+
+  LMK_CHUA_SUNG_DUC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: temple
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Chùa Sùng Đức", en: "Chùa Sùng Đức"}
+    surface_forms:
+      vi: ["chua sung duc", "chùa sùng đức"]
+    description: {vi: "Chùa Sùng Đức (4 hotel có trong nearby)", en: "Chùa Sùng Đức (4 hotel có trong nearby)"}
+
+  LMK_CUNG_VAN_HOA_HUU_NGHI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_HA_NOI
+    label: {vi: "Cung văn hoá Hữu Nghị", en: "Cung văn hoá Hữu Nghị"}
+    surface_forms:
+      vi: ["cung van hoa huu nghi", "cung văn hoá hữu nghị"]
+    description: {vi: "Cung văn hoá Hữu Nghị (4 hotel có trong nearby)", en: "Cung văn hoá Hữu Nghị (4 hotel có trong nearby)"}
+
+  LMK_CONG_VIEN_GIAI_TRI_VINPEARL_LAND:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: amusement_park
+    provenance: [agoda]
+    located_in: LOC_NHA_TRANG
+    label: {vi: "Công viên giải trí Vinpearl Land", en: "Công viên giải trí Vinpearl Land"}
+    surface_forms:
+      vi: ["cong vien giai tri vinpearl land", "công viên giải trí vinpearl land"]
+    description: {vi: "Công viên giải trí Vinpearl Land (4 hotel có trong nearby)", en: "Công viên giải trí Vinpearl Land (4 hotel có trong nearby)"}
+
+  LMK_CANG_AN_THOI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: harbor
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Cảng An Thới", en: "Cảng An Thới"}
+    surface_forms:
+      vi: ["cang an thoi", "cảng an thới"]
+    description: {vi: "Cảng An Thới (4 hotel có trong nearby)", en: "Cảng An Thới (4 hotel có trong nearby)"}
+
+  LMK_DACHENG_HALL_OF_FENGHUANG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_PHUONG_HOANG
+    label: {vi: "Dacheng Hall of Fenghuang", en: "Dacheng Hall of Fenghuang"}
+    surface_forms:
+      vi: ["dacheng hall of fenghuang"]
+    description: {vi: "Dacheng Hall of Fenghuang (4 hotel có trong nearby)", en: "Dacheng Hall of Fenghuang (4 hotel có trong nearby)"}
+
+  LMK_DINH_BAO_DAI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_NHA_TRANG
+    label: {vi: "Dinh Bảo Đại", en: "Dinh Bảo Đại"}
+    surface_forms:
+      vi: ["dinh bao dai", "dinh bảo đại"]
+    description: {vi: "Dinh Bảo Đại (4 hotel có trong nearby)", en: "Dinh Bảo Đại (4 hotel có trong nearby)"}
+
+  LMK_EAST_GATE_TOWER_OF_XIANGXI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_PHUONG_HOANG
+    label: {vi: "East Gate Tower of Xiangxi", en: "East Gate Tower of Xiangxi"}
+    surface_forms:
+      vi: ["east gate tower of xiangxi"]
+    description: {vi: "East Gate Tower of Xiangxi (4 hotel có trong nearby)", en: "East Gate Tower of Xiangxi (4 hotel có trong nearby)"}
+
+  LMK_FENGHUANG_YANG_S_ANCESTRAL_HALL:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_PHUONG_HOANG
+    label: {vi: "Fenghuang Yang's Ancestral Hall", en: "Fenghuang Yang's Ancestral Hall"}
+    surface_forms:
+      vi: ["fenghuang yang's ancestral hall"]
+    description: {vi: "Fenghuang Yang's Ancestral Hall (4 hotel có trong nearby)", en: "Fenghuang Yang's Ancestral Hall (4 hotel có trong nearby)"}
+
+  LMK_HO_HUNG_THANG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: lake
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Hồ Hùng Thắng", en: "Hồ Hùng Thắng"}
+    surface_forms:
+      vi: ["ho hung thang", "hồ hùng thắng"]
+    description: {vi: "Hồ Hùng Thắng (4 hotel có trong nearby)", en: "Hồ Hùng Thắng (4 hotel có trong nearby)"}
+
+  LMK_JIUTIAN_LEISURE_VALLEY:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: mountain
+    provenance: [agoda]
+    located_in: LOC_LANG_PHUONG
+    label: {vi: "Jiutian Leisure Valley", en: "Jiutian Leisure Valley"}
+    surface_forms:
+      vi: ["jiutian leisure valley"]
+    description: {vi: "Jiutian Leisure Valley (4 hotel có trong nearby)", en: "Jiutian Leisure Valley (4 hotel có trong nearby)"}
+
+  LMK_LANGFANG_SHIQU_XIAGANG_ZHIGONG_ZAIJIUYE_YITIAO_JIE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_LANG_PHUONG
+    label: {vi: "LangFang ShiQu XiaGang ZhiGong ZaiJiuYe YiTiao Jie", en: "LangFang ShiQu XiaGang ZhiGong ZaiJiuYe YiTiao Jie"}
+    surface_forms:
+      vi: ["langfang shiqu xiagang zhigong zaijiuye yitiao jie"]
+    description: {vi: "LangFang ShiQu XiaGang ZhiGong ZaiJiuYe YiTiao Jie (4 hotel có trong nearby)", en: "LangFang ShiQu XiaGang ZhiGong ZaiJiuYe YiTiao Jie (4 hotel có trong nearby)"}
+
+  LMK_LANGFANG_CENTURY_SQUARE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: street
+    provenance: [agoda]
+    located_in: LOC_LANG_PHUONG
+    label: {vi: "Langfang Century Square", en: "Langfang Century Square"}
+    surface_forms:
+      vi: ["langfang century square"]
+    description: {vi: "Langfang Century Square (4 hotel có trong nearby)", en: "Langfang Century Square (4 hotel có trong nearby)"}
+
+  LMK_LANGFANG_CHILDREN_S_PARADISE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: amusement_park
+    provenance: [agoda]
+    located_in: LOC_LANG_PHUONG
+    label: {vi: "Langfang Children's Paradise", en: "Langfang Children's Paradise"}
+    surface_forms:
+      vi: ["langfang children's paradise"]
+    description: {vi: "Langfang Children's Paradise (4 hotel có trong nearby)", en: "Langfang Children's Paradise (4 hotel có trong nearby)"}
+
+  LMK_LANG_CHAI_MAN_THAI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: marina
+    provenance: [agoda]
+    located_in: LOC_DA_NANG
+    label: {vi: "Làng chài Mân Thái", en: "Làng chài Mân Thái"}
+    surface_forms:
+      vi: ["lang chai man thai", "làng chài mân thái"]
+    description: {vi: "Làng chài Mân Thái (4 hotel có trong nearby)", en: "Làng chài Mân Thái (4 hotel có trong nearby)"}
+
+  LMK_NHA_TU_PHU_QUOC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Nhà tù Phú Quốc", en: "Nhà tù Phú Quốc"}
+    surface_forms:
+      vi: ["nha tu phu quoc", "nhà tù phú quốc"]
+    description: {vi: "Nhà tù Phú Quốc (4 hotel có trong nearby)", en: "Nhà tù Phú Quốc (4 hotel có trong nearby)"}
+
+  LMK_PHUC_CHAU_PLAZA:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_PHUC_CHAU
+    label: {vi: "Phúc Châu Plaza", en: "Phúc Châu Plaza"}
+    surface_forms:
+      vi: ["phuc chau plaza", "phúc châu plaza"]
+    description: {vi: "Phúc Châu Plaza (4 hotel có trong nearby)", en: "Phúc Châu Plaza (4 hotel có trong nearby)"}
+
+  LMK_QUANG_TRUONG_2_4:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: landmark_building
+    provenance: [agoda]
+    located_in: LOC_NHA_TRANG
+    label: {vi: "Quảng trường 2/4", en: "Quảng trường 2/4"}
+    surface_forms:
+      vi: ["4", "quang truong 2", "quang truong 2/4", "quảng trường 2", "quảng trường 2/4"]
+    description: {vi: "Quảng trường 2/4 (4 hotel có trong nearby)", en: "Quảng trường 2/4 (4 hotel có trong nearby)"}
+
+  LMK_QUANG_TRUONG_MAT_TROI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_HA_LONG
+    label: {vi: "Quảng trường Mặt Trời", en: "Quảng trường Mặt Trời"}
+    surface_forms:
+      vi: ["quang truong mat troi", "quảng trường mặt trời"]
+    description: {vi: "Quảng trường Mặt Trời (4 hotel có trong nearby)", en: "Quảng trường Mặt Trời (4 hotel có trong nearby)"}
+
+  LMK_SUNWORLD_HON_THOM_PHU_QUOC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: amusement_park
+    provenance: [agoda]
+    located_in: LOC_PHU_QUOC
+    label: {vi: "Sunworld Hon Thom Phu Quoc", en: "Sunworld Hon Thom Phu Quoc"}
+    surface_forms:
+      vi: ["sunworld hon thom phu quoc"]
+    description: {vi: "Sunworld Hon Thom Phu Quoc (4 hotel có trong nearby)", en: "Sunworld Hon Thom Phu Quoc (4 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_QUOC_TE_INDIRA_GANDHI:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Quốc tế Indira Gandhi", en: "Sân bay Quốc tế Indira Gandhi"}
+    surface_forms:
+      vi: ["san bay quoc te indira gandhi", "sân bay quốc tế indira gandhi"]
+    description: {vi: "Sân bay Quốc tế Indira Gandhi (4 hotel có trong nearby)", en: "Sân bay Quốc tế Indira Gandhi (4 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_QUOC_TE_NEWARK_LIBERTY:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Quốc tế Newark Liberty", en: "Sân bay Quốc tế Newark Liberty"}
+    surface_forms:
+      vi: ["san bay quoc te newark liberty", "sân bay quốc tế newark liberty"]
+    description: {vi: "Sân bay Quốc tế Newark Liberty (4 hotel có trong nearby)", en: "Sân bay Quốc tế Newark Liberty (4 hotel có trong nearby)"}
+
+  LMK_SAN_BAY_TETERBORO:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: airport
+    provenance: [agoda]
+    label: {vi: "Sân bay Teterboro", en: "Sân bay Teterboro"}
+    surface_forms:
+      vi: ["san bay teterboro", "sân bay teterboro"]
+    description: {vi: "Sân bay Teterboro (4 hotel có trong nearby)", en: "Sân bay Teterboro (4 hotel có trong nearby)"}
+
+  LMK_SAN_CHOI_CAM_THANH:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_HOI_AN
+    label: {vi: "Sân chơi Cẩm Thanh", en: "Sân chơi Cẩm Thanh"}
+    surface_forms:
+      vi: ["san choi cam thanh", "sân chơi cẩm thanh"]
+    description: {vi: "Sân chơi Cẩm Thanh (4 hotel có trong nearby)", en: "Sân chơi Cẩm Thanh (4 hotel có trong nearby)"}
+
+  LMK_SAN_GOLF_VINPEARL:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: golf
+    provenance: [agoda]
+    located_in: LOC_NHA_TRANG
+    label: {vi: "Sân golf Vinpearl", en: "Sân golf Vinpearl"}
+    surface_forms:
+      vi: ["san golf vinpearl", "sân golf vinpearl"]
+    description: {vi: "Sân golf Vinpearl (4 hotel có trong nearby)", en: "Sân golf Vinpearl (4 hotel có trong nearby)"}
+
+  LMK_THE_FORMER_RESIDENCE_OF_SHEN_CONGWEN:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_PHUONG_HOANG
+    label: {vi: "The Former Residence of Shen Congwen", en: "The Former Residence of Shen Congwen"}
+    surface_forms:
+      vi: ["the former residence of shen congwen"]
+    description: {vi: "The Former Residence of Shen Congwen (4 hotel có trong nearby)", en: "The Former Residence of Shen Congwen (4 hotel có trong nearby)"}
+
+  LMK_TRAIDING_GOLF_COURSE:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: golf
+    provenance: [agoda]
+    located_in: LOC_HAMPTON_VA
+    label: {vi: "Traiding Golf Course", en: "Traiding Golf Course"}
+    surface_forms:
+      vi: ["traiding golf course"]
+    description: {vi: "Traiding Golf Course (4 hotel có trong nearby)", en: "Traiding Golf Course (4 hotel có trong nearby)"}
+
+  LMK_TUOJIANG_ANCIENT_STREET:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: historic
+    provenance: [agoda]
+    located_in: LOC_PHUONG_HOANG
+    label: {vi: "Tuojiang Ancient Street", en: "Tuojiang Ancient Street"}
+    surface_forms:
+      vi: ["tuojiang ancient street"]
+    description: {vi: "Tuojiang Ancient Street (4 hotel có trong nearby)", en: "Tuojiang Ancient Street (4 hotel có trong nearby)"}
+
+  LMK_VINWONDERS_NHA_TRANG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: amusement_park
+    provenance: [agoda]
+    located_in: LOC_NHA_TRANG
+    label: {vi: "VinWonders Nha Trang", en: "VinWonders Nha Trang"}
+    surface_forms:
+      vi: ["vinwonders nha trang"]
+    description: {vi: "VinWonders Nha Trang (4 hotel có trong nearby)", en: "VinWonders Nha Trang (4 hotel có trong nearby)"}
+
+  LMK_VIEN_HAI_DUONG_HOC:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: museum
+    provenance: [agoda]
+    located_in: LOC_NHA_TRANG
+    label: {vi: "Viện Hải Dương Học", en: "Viện Hải Dương Học"}
+    surface_forms:
+      vi: ["vien hai duong hoc", "viện hải dương học"]
+    description: {vi: "Viện Hải Dương Học (4 hotel có trong nearby)", en: "Viện Hải Dương Học (4 hotel có trong nearby)"}
+
+  LMK_VUON_BE_CANH:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: park
+    provenance: [agoda]
+    located_in: LOC_HA_NOI
+    label: {vi: "Vườn Bể Cảnh", en: "Vườn Bể Cảnh"}
+    surface_forms:
+      vi: ["vuon be canh", "vườn bể cảnh"]
+    description: {vi: "Vườn Bể Cảnh (4 hotel có trong nearby)", en: "Vườn Bể Cảnh (4 hotel có trong nearby)"}
+
+  LMK_XIANGBI_MOUNTAIN_OF_FENGHUANG:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: mountain
+    provenance: [agoda]
+    located_in: LOC_PHUONG_HOANG
+    label: {vi: "Xiangbi Mountain of Fenghuang", en: "Xiangbi Mountain of Fenghuang"}
+    surface_forms:
+      vi: ["xiangbi mountain of fenghuang"]
+    description: {vi: "Xiangbi Mountain of Fenghuang (4 hotel có trong nearby)", en: "Xiangbi Mountain of Fenghuang (4 hotel có trong nearby)"}
+
+  LMK_ZHUNTI_TEMPLE_OF_FENGHUANG_OLD_CITY:
+    facet: location
+    fact_type: hard
+    tier: core
+    kind: landmark
+    landmark_type: temple
+    provenance: [agoda]
+    located_in: LOC_PHUONG_HOANG
+    label: {vi: "Zhunti Temple of Fenghuang Old City", en: "Zhunti Temple of Fenghuang Old City"}
+    surface_forms:
+      vi: ["zhunti temple of fenghuang old city"]
+    description: {vi: "Zhunti Temple of Fenghuang Old City (4 hotel có trong nearby)", en: "Zhunti Temple of Fenghuang Old City (4 hotel có trong nearby)"}

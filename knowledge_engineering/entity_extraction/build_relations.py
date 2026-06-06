@@ -5,7 +5,8 @@ script này, KHÔNG gõ tay quan hệ near. Đầu vào: nearby_places (có dist
 Đầu ra: dict relations để ghép vào ontology.yaml.
 
 Cách hoạt động:
-  - Đọc các landmark LMK_* trong ontology/core/location.yaml (label + surface_forms).
+  - Đọc các landmark LMK_* trong ontology/core/location.generated.yaml (tự sinh) + location.yaml
+    (curated, nếu có) — label + surface_forms.
   - Với mỗi nearby_places.name của từng hotel, khớp THEO CỤM TỪ (word-boundary, độ dài >= 5)
     để tránh false match kiểu "Ao" ⊂ "Bảo Đại".
   - Một hotel có thể trùng nhiều tên cho cùng landmark -> giữ distance_km NHỎ NHẤT.
@@ -20,27 +21,30 @@ import re
 import yaml
 
 HOTELS_GLOB = "data/raw/hotels/*.json"
-LOCATION_YAML = "ontology/core/location.yaml"
+# Landmark giờ tự sinh ở location.generated.yaml; location.yaml chỉ còn alias curated (nếu có).
+LOCATION_YAMLS = ["ontology/core/location.generated.yaml", "ontology/core/location.yaml"]
 OUT_YAML = "ontology/relations_near.generated.yaml"  # LỚP A: file generated, regenerate an toàn
 MIN_FORM_LEN = 5  # cụm match tối thiểu, tránh khớp từ ngắn mơ hồ
 
 
-def load_landmark_forms(location_yaml: str = LOCATION_YAML) -> dict:
-    """LMK concept_id -> list các cụm (label + surface_forms, lowercase), dài trước."""
-    loc = yaml.safe_load(open(location_yaml, encoding="utf-8"))["concepts"]
+def load_landmark_forms(location_yamls: list = LOCATION_YAMLS) -> dict:
+    """LMK concept_id -> list các cụm (label + surface_forms, lowercase), dài trước.
+    Gộp từ nhiều file (generated + curated); curated override generated nếu trùng id."""
     out = {}
-    for cid, v in loc.items():
-        if v.get("kind") != "landmark":
-            continue
-        forms = set()
-        lb = v.get("label", {})
-        for x in (lb.get("vi"), lb.get("en")):
-            if x:
-                forms.add(x.lower())
-        for lang in ("vi", "en"):
-            for s in v.get("surface_forms", {}).get(lang, []) or []:
-                forms.add(s.lower())
-        out[cid] = sorted(forms, key=len, reverse=True)
+    for path in location_yamls:
+        loc = (yaml.safe_load(open(path, encoding="utf-8")) or {}).get("concepts") or {}
+        for cid, v in loc.items():
+            if v.get("kind") != "landmark":
+                continue
+            forms = set()
+            lb = v.get("label", {})
+            for x in (lb.get("vi"), lb.get("en")):
+                if x:
+                    forms.add(x.lower())
+            for lang in ("vi", "en"):
+                for s in v.get("surface_forms", {}).get(lang, []) or []:
+                    forms.add(s.lower())
+            out[cid] = sorted(forms, key=len, reverse=True)
     return out
 
 

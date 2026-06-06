@@ -4,6 +4,12 @@
 > **Owner:** Trương Anh Long — vai trò **Knowledge Engineering** trong team DA10.
 > **Mục tiêu tài liệu:** Một bản duy nhất, đủ chi tiết để bạn làm từ đầu đến cuối qua **4 sprint KE** mà không phải sửa lại. Mỗi đầu việc có: *mục đích → đầu vào → các bước → công nghệ → đầu ra → tiêu chí hoàn thành → cạm bẫy*, kèm rõ **cái gì bạn sở hữu / cái gì bạn bàn giao / cái gì bạn nhận từ người khác**.
 
+## Tổng quan luồng làm việc (từ đầu đến cuối)
+
+![Luồng làm việc Knowledge Engineering DA10 — từ đầu vào DA09, qua 4 sprint KE, bàn giao cho team, đến vòng đánh giá golden set](ontology_architecture_diagram.png)
+
+> Sơ đồ trên tóm tắt toàn bộ tài liệu này: **đầu vào từ DA09** → các Sprint KE (Foundation → Enrichment → Knowledge Object → Evaluation) → **bàn giao** cho từng thành viên team → **vòng đánh giá** bằng golden set bao quanh tất cả. Đọc sơ đồ trước để nắm bức tranh tổng thể, rồi theo phần thân để đi vào chi tiết từng Task.
+
 ---
 
 ## ⚙ CẬP NHẬT THỰC TẾ (sau Sprint 1) — đọc trước khi theo phần thân
