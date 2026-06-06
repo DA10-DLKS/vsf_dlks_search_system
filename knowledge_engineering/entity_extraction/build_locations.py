@@ -43,6 +43,7 @@ from knowledge_engineering.common.normalize import strip_diacritics, to_nfc
 HOTELS_GLOB = "data/cleaned/hotel_*.json"
 OUT_YAML = "ontology/core/location.generated.yaml"
 CANDIDATES_YAML = "ontology/candidate/location_candidates.yaml"  # MỨC 3: country lạ chờ duyệt
+REGISTRY_YAML = "ontology/core/location_id_registry.yaml"  # #2: ID danh tính cố định (append-only)
 
 # Map tên country (tiếng Việt trong data) -> slug ID en. PHẠM VI VN: chỉ cần Việt Nam.
 # Giữ dạng bảng (thay vì hardcode) + cơ chế auto-slug (country_slug) để nếu data lỡ có nước lạ
@@ -198,6 +199,7 @@ def scan(hotels_glob: str = HOTELS_GLOB):
     lmk_hotels = Counter()                   # landmark name -> số hotel (distinct)
     lmk_type = defaultdict(Counter)          # name -> Counter(type)
     lmk_city = defaultdict(Counter)          # name -> Counter(city hotel) để suy located_in
+    city_ext = {}                            # (country, city) -> "agoda:<city_id>" (external_id ổn định)
     for f in sorted(glob.glob(hotels_glob)):
         d = json.load(open(f, encoding="utf-8"))
         co = (d.get("country") or "").strip()
@@ -212,6 +214,9 @@ def scan(hotels_glob: str = HOTELS_GLOB):
         country_n[co] += 1
         if ci:
             city_n[(co, ci)] += 1
+            cid_agoda = d.get("city_id")
+            if cid_agoda is not None and (co, ci) not in city_ext:
+                city_ext[(co, ci)] = f"agoda:{cid_agoda}"   # external_id (#2 ID ổn định)
             if ar and ar != ci:              # bỏ area trùng tên city (vô nghĩa)
                 area_n[(co, ci, ar)] += 1
         # landmark: gom theo tên, đếm distinct hotel + type + city của hotel chứa nó
@@ -227,7 +232,7 @@ def scan(hotels_glob: str = HOTELS_GLOB):
             if ci:
                 lmk_city[nm][ci] += 1
     landmarks = (lmk_hotels, lmk_type, lmk_city)
-    return country_n, city_n, area_n, unknown_country, landmarks
+    return country_n, city_n, area_n, unknown_country, landmarks, city_ext
 
 
 def concept_block(cid, kind, label_vi, label_en, parent, sf, desc, related=None) -> str:
@@ -279,8 +284,79 @@ def yq(s: str) -> str:
     return f'"{s}"'
 
 
+class IdRegistry:
+    """#2 ID ổn định — danh tính LOC_* CỐ ĐỊNH, độc lập text Agoda. APPEND-ONLY.
+
+    resolve() 3 tầng (theo mô hình hybrid đã chốt):
+      1. external_id (Agoda city_id)  -> ID đã gắn external đó (bền nhất; dù text đổi).
+      2. alias/slug (tên chuẩn hóa)   -> ID đã từng thấy tên này.
+      3. không khớp -> CẤP ID mới (proposed_id) + ghi registry + đánh dấu 'new' để log review.
+    Mỗi lần thấy 1 concept, bổ sung alias/external mới vào entry (registry giàu dần, không mất ID).
+    """
+
+    def __init__(self, path: str = REGISTRY_YAML):
+        self.path = path
+        try:
+            data = yaml.safe_load(open(path, encoding="utf-8")) or {}
+            self.reg = data.get("registry", {}) or {}
+        except FileNotFoundError:
+            self.reg = {}
+        # index ngược: external_id -> cid ; (kind, alias) -> cid. Alias PHẢI theo kind để
+        # "thuận an" (area) KHÔNG resolve nhầm sang city LOC_THUAN_AN cùng tên khác kind.
+        self.ext_index = {}
+        self.alias_index = {}
+        for cid, e in self.reg.items():
+            k = e.get("kind")
+            ctx = e.get("context", "")     # parent id (phân biệt area/landmark trùng tên giữa nơi)
+            for x in e.get("external_ids", []) or []:
+                self.ext_index[x] = cid
+            for a in e.get("aliases", []) or []:
+                self.alias_index[(k, ctx, a)] = cid
+        self.newly_assigned = []   # [(cid, label)] để log
+
+    def resolve(self, kind: str, label: str, proposed_id: str, external_id=None, context="") -> str:
+        # context = parent id; đưa vào khóa để "Trung tâm thành phố" ở 2 city KHÁC không gộp nhầm.
+        alias = to_nfc(label).lower().strip()
+        cid = None
+        if external_id and external_id in self.ext_index:        # tầng 1
+            cid = self.ext_index[external_id]
+        elif (kind, context, alias) in self.alias_index:         # tầng 2 (alias theo kind + ngữ cảnh cha)
+            cid = self.alias_index[(kind, context, alias)]
+        if cid is None:                                          # tầng 3: cấp mới
+            cid = proposed_id
+            self.newly_assigned.append((cid, label))
+        # cập nhật entry (giàu dần) — không bao giờ đổi cid
+        e = self.reg.setdefault(cid, {"kind": kind, "aliases": []})
+        if context and not e.get("context"):
+            e["context"] = context
+        if alias not in e.get("aliases", []):
+            e.setdefault("aliases", []).append(alias)
+            e["aliases"] = sorted(e["aliases"])
+            self.alias_index[(kind, context, alias)] = cid
+        if external_id:
+            exs = e.setdefault("external_ids", [])
+            if external_id not in exs:
+                exs.append(external_id)
+                exs.sort()
+                self.ext_index[external_id] = cid
+        return cid
+
+    def save(self):
+        header = (
+            "# ontology/core/location_id_registry.yaml — REGISTRY DANH TÍNH ID location (#2 ID ổn định).\n"
+            "# ID nội bộ (LOC_*) CỐ ĐỊNH, KHÔNG đổi dù Agoda đổi text. resolve 3 tầng:\n"
+            "#   (1) external_id (Agoda city_id) -> (2) alias/slug -> (3) cấp mới + log review.\n"
+            "# APPEND-ONLY: ID đã cấp không xóa/đổi. Thêm alias TAY khi tên nguồn đổi hoàn toàn.\n"
+            "# external_ids KHÔNG dùng làm ontology ID (tránh phụ thuộc nguồn; hỗ trợ đa nguồn sau).\n"
+        )
+        with open(self.path, "w", encoding="utf-8") as fh:
+            fh.write(header)
+            yaml.safe_dump({"registry": self.reg}, fh, allow_unicode=True, sort_keys=True)
+
+
 def build(hotels_glob: str = HOTELS_GLOB) -> str:
-    country_n, city_n, area_n, unknown, landmarks = scan(hotels_glob)
+    country_n, city_n, area_n, unknown, landmarks, city_ext = scan(hotels_glob)
+    reg = IdRegistry()
 
     # Tách tỉnh từ tên city (split_province). city_clean = label city thuần (bỏ phần tỉnh).
     # prov_of[(co,ci)] = (province_id, province_label) hoặc None.
@@ -296,7 +372,8 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     city_state = {(co, ci) for (co, ci) in city_n
                   if f"LOC_{slug(city_clean[(co, ci)])}" == f"LOC_{country_slug(co)}"}
 
-    # ID city: ưu tiên CITY_OVERRIDE (ép ID quen); rồi tránh trùng + đụng country slug. Dùng city_clean.
+    # ID city: proposed = CITY_OVERRIDE (ID quen) > slug (tránh trùng). Sau đó qua REGISTRY resolve
+    # (external_id Agoda city_id -> alias -> proposed) để ID CỐ ĐỊNH dù Agoda đổi text tên.
     city_id = {}
     seen_city_slug = Counter()
     for (co, ci), n in sorted(city_n.items(), key=lambda x: (-x[1], x[0])):
@@ -305,14 +382,14 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
             continue
         cc = city_clean[(co, ci)]
         if slug(cc) in CITY_OVERRIDE:
-            city_id[(co, ci)] = CITY_OVERRIDE[slug(cc)]["id"]
-            continue
-        base = slug(cc)
-        cand = f"LOC_{base}"
-        seen_city_slug[base] += 1
-        if seen_city_slug[base] > 1 or cand in country_slugs:
-            cand = f"LOC_{country_slug(co)}_{base}"
-        city_id[(co, ci)] = cand
+            proposed = CITY_OVERRIDE[slug(cc)]["id"]
+        else:
+            base = slug(cc)
+            proposed = f"LOC_{base}"
+            seen_city_slug[base] += 1
+            if seen_city_slug[base] > 1 or proposed in country_slugs:
+                proposed = f"LOC_{country_slug(co)}_{base}"
+        city_id[(co, ci)] = reg.resolve("place", cc, proposed, external_id=city_ext.get((co, ci)))
 
     def city_parent(co, ci):
         """parent city = tỉnh (nếu tách được từ tên) > country."""
@@ -334,7 +411,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     # 1) COUNTRY
     out.append("  # ===== COUNTRY (kind: country) =====")
     for co, n in sorted(country_n.items(), key=lambda x: (-x[1], x[0])):
-        cid = f"LOC_{country_slug(co)}"
+        cid = reg.resolve("country", co, f"LOC_{country_slug(co)}")
         label_en = COUNTRY_LABEL_EN.get(co, co)
         out.append(concept_block(cid, "country", co, label_en, None,
                                  surface_forms(co), f"{co} ({n} hotel trong corpus)"))
@@ -351,7 +428,8 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     if used_provinces:
         out.append("  # ===== PROVINCE (kind: place) — TÁCH tự động từ 'City (Tỉnh)' trong data =====")
         for pid, (plabel, co) in sorted(used_provinces.items()):
-            out.append(concept_block(pid, "place", plabel, plabel, f"LOC_{country_slug(co)}",
+            rid = reg.resolve("place", plabel, pid)
+            out.append(concept_block(rid, "place", plabel, plabel, f"LOC_{country_slug(co)}",
                                      surface_forms(plabel), f"Tỉnh {plabel}, {co}"))
             out.append("")
 
@@ -378,11 +456,12 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
         parent = city_id[(co, ci)]
         ov = AREA_OVERRIDE.get((slug(city_clean[(co, ci)]), slug(ar)))
         if ov:
-            cid = ov["id"]
+            proposed = ov["id"]
             related = ov.get("related")
         else:
-            cid = f"{parent}__{slug(ar)}"     # area id = <city_id>__<area_slug> tránh trùng toàn cục
+            proposed = f"{parent}__{slug(ar)}"   # area id = <city_id>__<area_slug> tránh trùng toàn cục
             related = None
+        cid = reg.resolve("area", ar, proposed, context=parent)   # context=city -> area trùng tên khác city không gộp
         out.append(concept_block(cid, "area", ar, ar, parent,
                                  surface_forms(ar), f"{ar} (thuộc {ci}, {co}; {n} hotel)", related=related))
         out.append("")
@@ -406,14 +485,15 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
             if ci == top_city:
                 loc_in = cidv
                 break
-        # ID: override nếu có; ngược lại LMK_<slug>; nếu đụng -> thêm slug city
+        # proposed ID: override > LMK_<slug>; đụng -> thêm slug city. Rồi qua REGISTRY (alias) để cố định.
         if low in LMK_ID_OVERRIDE:
-            cid = LMK_ID_OVERRIDE[low]
+            proposed = LMK_ID_OVERRIDE[low]
         else:
-            cid = f"LMK_{slug(nm)}"
-            if cid in seen_lmk_id:
-                cid = f"LMK_{slug(nm)}_{slug(top_city or '')}".rstrip("_")
-        if cid in seen_lmk_id:        # vẫn đụng (cùng tên+city) -> bỏ qua bản sau
+            proposed = f"LMK_{slug(nm)}"
+            if proposed in seen_lmk_id:
+                proposed = f"LMK_{slug(nm)}_{slug(top_city or '')}".rstrip("_")
+        cid = reg.resolve("landmark", nm, proposed, context=(loc_in or ""))
+        if cid in seen_lmk_id:        # vẫn đụng (cùng tên) -> bỏ qua bản sau
             continue
         seen_lmk_id[cid] = nm
         ltype = LMK_TYPE_KEEP[lmk_type[nm].most_common(1)[0][0]]
@@ -426,6 +506,8 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
                                   f"{label} ({n} hotel có trong nearby)"))
         out.append("")
 
+    reg.save()                       # lưu registry (append-only, đã giàu thêm alias/external mới)
+    build.last_registry = reg        # để main() đọc số liệu (new assigned)
     return "\n".join(out).rstrip() + "\n"
 
 
@@ -460,18 +542,22 @@ def main():
     text = build()
     with open(OUT_YAML, "w", encoding="utf-8") as fh:
         fh.write(text)
-    country_n, city_n, area_n, unknown, landmarks = scan()
+    country_n, city_n, area_n, unknown, landmarks, _ = scan()
     n_cand = write_candidates(country_n, unknown)
     n_lmk = sum(1 for c in landmarks[0].values() if c >= LMK_MIN_HOTELS)
+    reg = getattr(build, "last_registry", None)
     print(f"Đã ghi {OUT_YAML}")
     print(f"  country={len(country_n)}  city={len(city_n)}  area={len(area_n)}  "
           f"landmark={n_lmk} (>={LMK_MIN_HOTELS} hotel)  "
           f"(hotel có country={sum(country_n.values())})")
+    if reg is not None:
+        new = reg.newly_assigned
+        print(f"  registry: {len(reg.reg)} ID cố định -> {REGISTRY_YAML}"
+              + (f"  | {len(new)} ID MỚI cấp: {[c for c, _ in new][:8]}" if new else "  | 0 ID mới (khớp hết)"))
     if unknown:
-        print(f"  ⚠ {len(unknown)} country auto-slug (đã vào ontology, chờ duyệt ID đẹp) "
-              f"-> {CANDIDATES_YAML}: {sorted(unknown)}")
+        print(f"  ⚠ {len(unknown)} country auto-slug (chờ duyệt ID đẹp) -> {CANDIDATES_YAML}: {sorted(unknown)}")
     else:
-        print(f"  ✓ mọi country đã có trong COUNTRY_SLUG (0 candidate) -> {CANDIDATES_YAML}")
+        print(f"  ✓ mọi country đã có trong COUNTRY_SLUG (0 candidate)")
 
 
 if __name__ == "__main__":
