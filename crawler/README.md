@@ -14,6 +14,7 @@ python -m crawler.main "https://www.agoda.com/.../hotel.html?hotel=65153&..."
 # 2) Từ TỪ KHÓA           -> search hàng loạt -> nhiều file json
 python -m crawler.main "Vinpearl"
 python -m crawler.main "Muong Thanh" --limit 5 --headful --site agoda
+python -m crawler.main --keys "Vinpearl,Muong Thanh,Fusion" --limit 10 --site agoda
 ```
 
 `main.py` tự nhận diện: bắt đầu bằng `http(s)://` → **nhánh link**; còn lại → **nhánh
@@ -25,6 +26,11 @@ từ khóa**. Nhánh link tự chọn spider theo domain; nhánh từ khóa dùn
 | `--site <tên>` | Site cho nhánh từ khóa (mặc định `agoda`) |
 | `--limit N` | Giới hạn số khách sạn (nhánh từ khóa) |
 | `--headful` | Hiện trình duyệt (mặc định chạy ẩn) |
+| `--keys`, `--keywords` | Crawl nhiều từ khóa, phân tách bằng dấu phẩy |
+
+Agoda spider chỉ lưu record có `country` thuộc `allowed_countries` trong
+`crawler/configs/agoda.yaml`. Khách sạn nước ngoài vẫn có thể xuất hiện ở
+autocomplete, nhưng sẽ bị skip ở tầng detail trước khi ghi vào dataset.
 
 ## Crawl REVIEW chi tiết (tool riêng)
 

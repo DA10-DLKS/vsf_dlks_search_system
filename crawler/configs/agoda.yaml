@@ -13,8 +13,29 @@ user_agent: >-
 
 # --- Tang 1: autocomplete (keyword -> danh sach hotel) ---
 autocomplete_api: /api/cronos/search/GetUnifiedSuggestResult/3/24/24/0/vi-vn/
-# Cac hau to dia diem de gom du KS cua 1 chuoi o nhieu noi
-# (autocomplete chi tra ~6 ket qua/luot).
+# Chi crawl khach san co vi tri tai Viet Nam. Tang detail se kiem tra
+# `country` sau khi parse record; neu khong khop thi bo qua va khong luu.
+allowed_countries:
+  - Việt Nam
+  - Vietnam
+  - Viet Nam
+  - VN
+
+# Hau to quoc gia de autocomplete uu tien ket qua Viet Nam khi search brand
+# hoac keyword chung.
+country_search_suffixes:
+  - Việt Nam
+  - Vietnam
+
+# Mac dinh khong tu dong ghep moi keyword voi tat ca region_hints vi voi
+# keyword dia danh se tao truy van nhieu va de bi Agoda tra HTTP 502.
+# Khi can crawl brand theo vung, hay truyen keyword ro rang qua --keys
+# vi du: "Vinpearl Nha Trang,Vinpearl Phu Quoc".
+expand_region_hints: false
+
+# Cac hau to dia diem Viet Nam de gom du KS cua 1 chuoi o nhieu noi
+# (autocomplete chi tra ~6 ket qua/luot). Tranh dung hau to chung nhu
+# "Resort"/"Hotel" vi de keo nham khach san nuoc ngoai cung brand.
 region_hints:
   - Nha Trang
   - Phu Quoc
@@ -22,9 +43,6 @@ region_hints:
   - Ha Long
   - Hoi An
   - Nam Hoi An
-  - Resort
-  - Hotel
-  - Condotel
   - Ha Noi
   - Sai Gon
   - Da Lat

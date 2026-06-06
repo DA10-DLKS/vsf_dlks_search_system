@@ -10,6 +10,8 @@ trong `spiders/` không hardcode gì. Thêm site mới = thêm `<site>.yaml` ở
 |------|---------|
 | `base_url`, `locale`, `user_agent` | URL gốc, ngôn ngữ, user-agent trình duyệt |
 | `autocomplete_api` | Endpoint API search (keyword → danh sách hotel) |
+| `allowed_countries` | Danh sách country hợp lệ. Agoda spider chỉ lưu record có `country` thuộc danh sách này. |
+| `country_search_suffixes` | Hậu tố quốc gia thêm vào keyword để autocomplete ưu tiên kết quả Việt Nam. |
 | `region_hints` | Các hậu tố địa điểm để gom đủ KS một chuỗi ở nhiều nơi |
 | `detail_query`, `checkin_offset_days`, `los_nights` | Tham số URL trang chi tiết (tiền tệ, ngày check-in/out…) |
 | `capture_endpoints` | Các nguồn cần **bắt** ở trang detail: `tên_nội_bộ → chuỗi nhận diện trong URL` |
