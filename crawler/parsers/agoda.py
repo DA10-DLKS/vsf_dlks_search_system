@@ -385,6 +385,33 @@ def parse_reviews(body: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# 3b) Review CHI TIET (tool crawl_reviews) — map 1 comment Agoda -> review sach
+# ---------------------------------------------------------------------------
+def parse_review_comment(c: dict) -> dict:
+    """1 comment tho tu commentList.comments -> review sach theo schema da chot.
+
+    Giu review_id THAT (hotelReviewId — Task 2.4d can) + response cua KS.
+    Tai dung dung cac field nhu parse_reviews."""
+    info = c.get("reviewerInfo") or {}
+    return {
+        "review_id": c.get("hotelReviewId"),
+        "rating": c.get("rating"),
+        "rating_text": c.get("ratingText"),
+        "date": c.get("formattedReviewDate"),
+        "check_in": c.get("checkInDateMonthAndYear"),
+        "title": c.get("reviewTitle"),
+        "text": c.get("reviewComments") or "",
+        "positives": c.get("reviewPositives"),
+        "negatives": c.get("reviewNegatives"),
+        "response": c.get("responseText"),
+        "reviewer_name": info.get("displayMemberName"),
+        "reviewer_type": info.get("reviewGroupName"),
+        "reviewer_country": info.get("countryName"),
+        "room_type": info.get("roomTypeName"),
+    }
+
+
+# ---------------------------------------------------------------------------
 # 4) GetSecondaryData — chinh sach, FAQ, phong (dateless), places
 # ---------------------------------------------------------------------------
 def _strip_html(text):

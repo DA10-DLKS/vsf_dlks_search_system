@@ -1,19 +1,17 @@
 """Dịch văn bản sang tiếng Việt qua Google Translate (deep-translator).
 
 Caching theo text gốc để tránh dịch lại các text giống nhau.
+Hỗ trợ batch + parallel via ThreadPoolExecutor.
 """
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Iterable
 
 from deep_translator import GoogleTranslator
 
-_TRANSLATOR = GoogleTranslator(source="auto", target="vi")
 _TRANSLATION_CACHE: dict[str, str] = {}
-
-# Ký tự tối thiểu để detect ngôn ngữ không phải Việt
-_MIN_LENGTH_FOR_DETECT = 30
 
 # Từ/dấu hiệu nhận biết văn bản đã là tiếng Việt
 _VIETNAMESE_MARKERS = {
@@ -27,7 +25,6 @@ _VIETNAMESE_MARKERS = {
 
 
 def _is_likely_vietnamese(text: str) -> bool:
-    """Heuristic nhanh: nếu text có chứa ký tự tiếng Việt → coi là tiếng Việt."""
     lower = text.lower()
     for char in lower:
         if char in _VIETNAMESE_MARKERS:
@@ -35,8 +32,23 @@ def _is_likely_vietnamese(text: str) -> bool:
     return False
 
 
+_NON_VN_CACHE = set()
+
+
+_EXECUTOR = ThreadPoolExecutor(max_workers=1)
+
+
+def _translate_one(text: str, translator: GoogleTranslator | None = None) -> str:
+    if translator is None:
+        translator = GoogleTranslator(source="auto", target="vi")
+    try:
+        fut = _EXECUTOR.submit(translator.translate, text)
+        return fut.result(timeout=15)
+    except Exception:
+        return text
+
+
 def translate_to_vi(text: str) -> str:
-    """Dịch text sang tiếng Việt nếu có thể detect là không phải tiếng Việt."""
     if not text or not isinstance(text, str):
         return text
 
@@ -44,21 +56,49 @@ def translate_to_vi(text: str) -> str:
     if not stripped:
         return text
 
-    # Nếu text có chứa ký tự tiếng Việt → giữ nguyên
     if _is_likely_vietnamese(stripped):
         return text
 
-    # Kiểm tra cache
     if stripped in _TRANSLATION_CACHE:
         return _TRANSLATION_CACHE[stripped]
 
     try:
-        translated = _TRANSLATOR.translate(stripped)
+        t = GoogleTranslator(source="auto", target="vi")
+        translated = t.translate(stripped)
         _TRANSLATION_CACHE[stripped] = translated
         return translated
     except Exception:
-        # Fail silently, giữ text gốc
         return text
+
+
+def translate_batch_parallel(texts: list[str], max_workers: int = 8) -> list[str]:
+    """Translate multiple texts in parallel using a thread pool.
+
+    Falls back to sequential if any text is Vietnamese or cached.
+    """
+    results: dict[int, str] = {}
+    futures: dict = {}
+
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        for i, text in enumerate(texts):
+            stripped = text.strip() if isinstance(text, str) else ""
+            if not stripped or _is_likely_vietnamese(stripped):
+                results[i] = text
+                continue
+            if stripped in _TRANSLATION_CACHE:
+                results[i] = _TRANSLATION_CACHE[stripped]
+                continue
+            t = GoogleTranslator(source="auto", target="vi")
+            futures[pool.submit(_translate_one, stripped, t)] = i
+
+        for future in as_completed(futures):
+            i = futures[future]
+            translated = future.result()
+            stripped = texts[i].strip()
+            _TRANSLATION_CACHE[stripped] = translated
+            results[i] = translated
+
+    return [results[i] for i in range(len(texts))]
 
 
 def translate_batch(texts: Iterable[str]) -> list[str]:
@@ -68,4 +108,5 @@ def translate_batch(texts: Iterable[str]) -> list[str]:
 __all__ = [
     "translate_to_vi",
     "translate_batch",
+    "translate_batch_parallel",
 ]

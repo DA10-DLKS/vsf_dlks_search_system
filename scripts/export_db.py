@@ -111,14 +111,14 @@ def run(cleaned_dir: Path = DEFAULT_CLEANED_DIR) -> dict[str, int]:
 
         hotels.append({
             "id": hid,
-            "name": doc.get("name"),
-            "accommodation_type": doc.get("accommodation_type"),
+            "name": (doc.get("name") or "")[:255],
+            "accommodation_type": (doc.get("accommodation_type") or "")[:100],
             "star_rating": doc.get("star_rating"),
             "is_luxury": bool(doc.get("is_luxury", False)),
             "review_score": doc.get("review_score"),
             "review_count": doc.get("review_count", 0),
             "address": doc.get("address"),
-            "city": doc.get("city") or doc.get("province"),
+            "city": (doc.get("city") or doc.get("province") or "")[:100],
             "latitude": doc.get("latitude"),
             "longitude": doc.get("longitude"),
             "description": doc.get("description"),
@@ -138,19 +138,21 @@ def run(cleaned_dir: Path = DEFAULT_CLEANED_DIR) -> dict[str, int]:
 
         seen_room = set()
         for room in doc.get("rooms", []):
+            if not room.get("name"):
+                continue
             key = (hid, room.get("room_type_id"))
             if key not in seen_room:
                 seen_room.add(key)
                 rooms.append({
                 "hotel_id": hid,
                 "room_type_id": room.get("room_type_id"),
-                "name": room.get("name"),
+                "name": (room.get("name") or "")[:255],
                 "price_per_night": room.get("price_per_night"),
                 "original_price": room.get("original_price"),
-                "room_size": room.get("room_size"),
+                "room_size": (room.get("room_size") or "")[:50],
                 "max_occupancy": room.get("max_occupancy"),
-                "bed_type": room.get("bed_type"),
-                "room_view": room.get("room_view"),
+                "bed_type": (room.get("bed_type") or "")[:255],
+                "room_view": (room.get("room_view") or "")[:100],
                 "room_amenities": _safe_list(room.get("room_amenities")),
                 "images": _safe_list(room.get("images")),
                 "review_score": room.get("review_score"),
@@ -158,30 +160,48 @@ def run(cleaned_dir: Path = DEFAULT_CLEANED_DIR) -> dict[str, int]:
 
         seen_np = set()
         for np in doc.get("nearby_places", []):
+            if not np.get("name"):
+                continue
             key = (hid, np.get("name"))
             if key not in seen_np:
                 seen_np.add(key)
                 nearby_places.append({
                     "hotel_id": hid,
-                    "name": np.get("name"),
-                    "type": np.get("type"),
+                    "name": (np.get("name") or "")[:255],
+                    "type": (np.get("type") or "")[:100],
                     "distance_km": np.get("distance_km"),
                 })
 
         seen_act = set()
         for act in doc.get("activities", []):
+            if not act.get("title"):
+                continue
             key = (hid, act.get("title"))
             if key not in seen_act:
                 seen_act.add(key)
                 activities.append({
                 "hotel_id": hid,
-                "title": act.get("title"),
+                "title": (act.get("title") or "")[:255],
                 "description": act.get("description"),
                 "price_amount": _extract_price_amount(act.get("price"))
                 or _clean_price(act.get("price_amount")),
                 "review_score": act.get("review_score"),
                 "activity_id": act.get("activity_id"),
             })
+
+    # ── Clean null bytes from all strings ──
+    def _strip_null(obj):
+        if isinstance(obj, str):
+            return obj.replace("\u0000", "")
+        if isinstance(obj, dict):
+            return {k: _strip_null(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [_strip_null(i) for i in obj]
+        return obj
+    hotels = _strip_null(hotels)
+    rooms = _strip_null(rooms)
+    nearby_places = _strip_null(nearby_places)
+    activities = _strip_null(activities)
 
     # ── Write PostgreSQL ──
     session = SessionLocal()
