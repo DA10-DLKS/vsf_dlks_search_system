@@ -128,6 +128,17 @@ LMK_TYPE_KEEP = {
     "Nơi Biểu Diễn Văn Nghệ": "theater",
 }
 
+# #5a: BLACKLIST tên landmark GENERIC — tên chung chung (mỗi nơi 1 chỗ khác nhau bị gộp thành 1
+# concept vô nghĩa). KHÔNG sinh landmark nếu tên (chuẩn hóa lower) nằm đây. KHÁC tên ngắn chính danh
+# (Bãi Dài, Hòn Thơm, Núi Lê) — chúng là địa danh CỤ THỂ, vẫn giữ.
+LMK_NAME_BLACKLIST = {
+    "sân golf", "san golf", "nhà thi đấu", "nha thi dau", "khu vui chơi", "khu vui choi",
+    "điểm ngắm cảnh", "diem ngam canh", "điểm tham quan", "diem tham quan",
+    "tháp quan sát", "thap quan sat", "tháp cứu hộ", "thap cuu ho", "cầu", "cau",
+    "công viên", "cong vien", "quảng trường", "quang truong", "sân vận động", "san van dong",
+    "view tower", "river viewpoint", "đất 513m", "dat 513m", "the shack",
+}
+
 # Override ID cho landmark đã có ID quen (sinh phiên trước, được ontology.yaml/golden tham chiếu).
 # tên data (chuẩn hóa lower) -> LMK id. Giữ để không vỡ located_in/near references.
 LMK_ID_OVERRIDE = {
@@ -225,6 +236,8 @@ def scan(hotels_glob: str = HOTELS_GLOB):
             nm = (p.get("name") or "").strip()
             ty = (p.get("type") or "").strip()
             if not nm or ty not in LMK_TYPE_KEEP or nm in seen:
+                continue
+            if to_nfc(nm).lower().strip() in LMK_NAME_BLACKLIST:    # #5a: bỏ tên generic
                 continue
             seen.add(nm)
             lmk_hotels[nm] += 1
@@ -478,8 +491,10 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     )
     for nm, n in lmk_list:
         low = to_nfc(nm).lower().strip()
-        # located_in = city có nhiều hotel chứa landmark nhất -> city_id của nó
-        top_city = lmk_city[nm].most_common(1)[0][0] if lmk_city[nm] else None
+        # located_in = city có NHIỀU hotel chứa landmark nhất. #4: tie-break TẤT ĐỊNH khi bằng điểm
+        # (sort theo (-count, tên city) -> alphabet) để located_in KHÔNG dao động giữa các lần chạy.
+        top_city = (sorted(lmk_city[nm].items(), key=lambda x: (-x[1], x[0]))[0][0]
+                    if lmk_city[nm] else None)
         loc_in = None
         for (co, ci), cidv in city_id.items():
             if ci == top_city:

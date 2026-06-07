@@ -1,14 +1,6 @@
 # AUTO-GENERATED — KHÔNG sửa tay. Sinh bởi knowledge_engineering/entity_extraction/build_relations.py
 # Nguồn: data/raw/hotels/*.json (nearby_places.distance_km). Regenerate khi corpus đổi.
 relations:
-- from: acc_10961
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.32
-- from: acc_11002
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 0.54
 - from: acc_11013
   rel: near
   to: LMK_LONG_BEACH
@@ -31,7 +23,7 @@ relations:
   distance_km: 3.46
 - from: acc_65153
   rel: near
-  to: LMK_SAN_GOLF
+  to: LMK_SAN_GOLF_VINPEARL
   distance_km: 1.64
 - from: acc_65153
   rel: near
@@ -53,10 +45,6 @@ relations:
   rel: near
   to: LMK_KHU_NGHI_DUONG_HOAN_CAU
   distance_km: 0.97
-- from: acc_73279
-  rel: near
-  to: LMK_VIEW_TOWER
-  distance_km: 1.68
 - from: acc_73282
   rel: near
   to: LMK_SAN_BAY_DIEN_BIEN_PHU
@@ -79,20 +67,16 @@ relations:
   distance_km: 0.94
 - from: acc_108286
   rel: near
+  to: LMK_NUI_BAI_CHAY
+  distance_km: 0.75
+- from: acc_108286
+  rel: near
   to: LMK_QUANG_TRUONG_MAT_TROI
   distance_km: 0.38
 - from: acc_108286
   rel: near
   to: LMK_SUN_WORLD_HA_LONG_COMPLEX
   distance_km: 0.88
-- from: acc_108286
-  rel: near
-  to: LMK_THAP_QUAN_SAT
-  distance_km: 1.08
-- from: acc_109119
-  rel: near
-  to: LMK_LONG_BEACH
-  distance_km: 0.31
 - from: acc_109119
   rel: near
   to: LMK_LOP_HOC_NAU_AN_LANTERNS
@@ -163,7 +147,7 @@ relations:
   distance_km: 0.72
 - from: acc_247789
   rel: near
-  to: LMK_BAI_CHAY
+  to: LMK_BEN_TAU_DU_LICH_BAI_CHAY
   distance_km: 1.09
 - from: acc_247789
   rel: near
@@ -177,6 +161,10 @@ relations:
   rel: near
   to: LMK_HO_HUNG_THANG
   distance_km: 0.77
+- from: acc_247789
+  rel: near
+  to: LMK_NUI_BAI_CHAY
+  distance_km: 1.36
 - from: acc_263516
   rel: near
   to: LMK_BAO_TANG_HAI_DUONG_HOC_QUOC_GIA_VIET_NAM
@@ -191,7 +179,7 @@ relations:
   distance_km: 2.95
 - from: acc_263516
   rel: near
-  to: LMK_SAN_GOLF
+  to: LMK_SAN_GOLF_VINPEARL
   distance_km: 1.55
 - from: acc_263516
   rel: near
@@ -201,10 +189,6 @@ relations:
   rel: near
   to: LMK_VINWONDERS_NHA_TRANG
   distance_km: 0.81
-- from: acc_289832
-  rel: near
-  to: LMK_KHU_VUI_CHOI
-  distance_km: 0.59
 - from: acc_292633
   rel: near
   to: LMK_HANG_SON_DOONG
@@ -213,10 +197,6 @@ relations:
   rel: near
   to: LMK_TOUR_DU_LICH_LE_KHANG
   distance_km: 1.39
-- from: acc_296330
-  rel: near
-  to: LMK_LONG_BEACH
-  distance_km: 0.65
 - from: acc_297330
   rel: near
   to: LMK_NHA_THO_CHINH_TOA_LONG_XUYEN
@@ -265,30 +245,14 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_TUONG_DAI
   distance_km: 0.9
-- from: acc_334357
-  rel: near
-  to: LMK_KHU_VUI_CHOI
-  distance_km: 0.77
-- from: acc_334357
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 1.74
 - from: acc_338255
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_PHU_BAI
   distance_km: 27.91
-- from: acc_338255
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 0.56
 - from: acc_344975
   rel: near
   to: LMK_CONG_VIEN_VEN_SONG_KHU_16_HECTA
   distance_km: 0.61
-- from: acc_407839
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.24
 - from: acc_410128
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAT_BI
@@ -305,10 +269,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_THO_XUAN
   distance_km: 163.47
-- from: acc_410128
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 2.33
 - from: acc_410128
   rel: near
   to: LMK_VAN_DON_INTERNATIONAL_AIRPORT
@@ -393,10 +353,6 @@ relations:
   rel: near
   to: LMK_SUOI_TIEN
   distance_km: 0.24
-- from: acc_745965
-  rel: near
-  to: LMK_CONG_VIEN_TUONG_DAI
-  distance_km: 2.78
 - from: acc_766807
   rel: near
   to: LMK_LOP_HOC_NAU_AN_LANTERNS
@@ -423,7 +379,7 @@ relations:
   distance_km: 2.78
 - from: acc_805030
   rel: near
-  to: LMK_SAN_GOLF
+  to: LMK_SAN_GOLF_VINPEARL
   distance_km: 2.7
 - from: acc_805030
   rel: near
@@ -449,18 +405,10 @@ relations:
   rel: near
   to: LMK_SAN_CHOI_CAM_THANH
   distance_km: 1.68
-- from: acc_860887
-  rel: near
-  to: LMK_DAT_513M
-  distance_km: 1.08
 - from: acc_869046
   rel: near
   to: LMK_LOP_HOC_NAU_AN_LANTERNS
   distance_km: 0.2
-- from: acc_926818
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 2.47
 - from: acc_926872
   rel: near
   to: LMK_CU_LAO_CHAM
@@ -499,16 +447,8 @@ relations:
   distance_km: 3.27
 - from: acc_926899
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 1.47
-- from: acc_926899
-  rel: near
   to: LMK_NUI_TRUONG_LE
   distance_km: 2.84
-- from: acc_926899
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 3.5
 - from: acc_926909
   rel: near
   to: LMK_CONG_VIEN_HON_TRONG_MAI
@@ -527,16 +467,8 @@ relations:
   distance_km: 0.95
 - from: acc_926909
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 3.77
-- from: acc_926909
-  rel: near
   to: LMK_NUI_TRUONG_LE
   distance_km: 5.16
-- from: acc_926909
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 1.18
 - from: acc_963857
   rel: near
   to: LMK_CONG_VIEN_HOANG_LAM
@@ -545,14 +477,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_TUONG_DAI
   distance_km: 3.58
-- from: acc_963857
-  rel: near
-  to: LMK_KHU_VUI_CHOI
-  distance_km: 3.52
-- from: acc_963857
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 4.13
 - from: acc_995573
   rel: near
   to: LMK_SAN_BAY_CHU_LAI
@@ -576,6 +500,10 @@ relations:
 - from: acc_1015998
   rel: near
   to: LMK_BAI_CHAY
+  distance_km: 2.05
+- from: acc_1015998
+  rel: near
+  to: LMK_BEN_TAU_DU_LICH_BAI_CHAY
   distance_km: 0.82
 - from: acc_1015998
   rel: near
@@ -585,6 +513,10 @@ relations:
   rel: near
   to: LMK_HO_HUNG_THANG
   distance_km: 2.21
+- from: acc_1015998
+  rel: near
+  to: LMK_NUI_BAI_CHAY
+  distance_km: 1.79
 - from: acc_1015998
   rel: near
   to: LMK_QUANG_TRUONG_MAT_TROI
@@ -667,10 +599,6 @@ relations:
   distance_km: 0.6
 - from: acc_1122450
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.54
-- from: acc_1122450
-  rel: near
   to: LMK_TT_MUA_SAM_IMPERIAL_PLAZA
   distance_km: 0.57
 - from: acc_1155111
@@ -691,16 +619,8 @@ relations:
   distance_km: 1.52
 - from: acc_1160137
   rel: near
-  to: LMK_BAI_CHAY
-  distance_km: 0.63
-- from: acc_1160137
-  rel: near
   to: LMK_CONG_VIEN_RONG
   distance_km: 1.15
-- from: acc_1160137
-  rel: near
-  to: LMK_KHU_VUI_CHOI
-  distance_km: 1.17
 - from: acc_1160137
   rel: near
   to: LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
@@ -763,6 +683,22 @@ relations:
   distance_km: 85.73
 - from: acc_1285662
   rel: near
+  to: LMK_112M
+  distance_km: 3.94
+- from: acc_1285662
+  rel: near
+  to: LMK_151M
+  distance_km: 2.22
+- from: acc_1285662
+  rel: near
+  to: LMK_153M
+  distance_km: 1.86
+- from: acc_1285662
+  rel: near
+  to: LMK_89M
+  distance_km: 1.22
+- from: acc_1285662
+  rel: near
   to: LMK_LANG_MO_MAC_CUU
   distance_km: 0.8
 - from: acc_1285662
@@ -813,14 +749,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_THO_XUAN
   distance_km: 143.33
-- from: acc_1576565
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.66
-- from: acc_1602545
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.66
 - from: acc_1622072
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAT_BI
@@ -855,10 +783,6 @@ relations:
   distance_km: 2.83
 - from: acc_1624474
   rel: near
-  to: LMK_HON_THOM
-  distance_km: 2.44
-- from: acc_1624474
-  rel: near
   to: LMK_LONG_BEACH
   distance_km: 5.07
 - from: acc_1624474
@@ -869,10 +793,6 @@ relations:
   rel: near
   to: LMK_SUNWORLD_HON_THOM_PHU_QUOC
   distance_km: 8.69
-- from: acc_1730434
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.45
 - from: acc_1803429
   rel: near
   to: LMK_LOP_HOC_NAU_AN_THUAN_TINH
@@ -909,10 +829,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_RACH_GIA
   distance_km: 97.89
-- from: acc_1984283
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 0.56
 - from: acc_1985188
   rel: near
   to: LMK_BAI_BIEN_CUA_DAI
@@ -969,14 +885,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAM_RANH
   distance_km: 7.77
-- from: acc_1986410
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 10.55
-- from: acc_1986410
-  rel: near
-  to: LMK_THE_SHACK
-  distance_km: 4.33
 - from: acc_1994212
   rel: near
   to: LMK_BAI_BIEN_CUA_DAI
@@ -1001,10 +909,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_THO_XUAN
   distance_km: 128.25
-- from: acc_1994625
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 2.56
 - from: acc_2114938
   rel: near
   to: LMK_BAI_SAU
@@ -1055,16 +959,8 @@ relations:
   distance_km: 0.75
 - from: acc_2265300
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 3.97
-- from: acc_2265300
-  rel: near
   to: LMK_NUI_TRUONG_LE
   distance_km: 5.36
-- from: acc_2265300
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 0.98
 - from: acc_2402683
   rel: near
   to: LMK_QUANG_TRUONG_2_4
@@ -1089,10 +985,6 @@ relations:
   rel: near
   to: LMK_NHA_THO_TIN_LANH
   distance_km: 1.57
-- from: acc_4128513
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 0.98
 - from: acc_4139218
   rel: near
   to: LMK_BIEN_MY_KHE
@@ -1139,10 +1031,6 @@ relations:
   distance_km: 0.86
 - from: acc_4593719
   rel: near
-  to: LMK_DAT_513M
-  distance_km: 11.53
-- from: acc_4593719
-  rel: near
   to: LMK_LOP_HOC_NAU_AN_THUAN_TINH
   distance_km: 11.3
 - from: acc_4593719
@@ -1173,14 +1061,6 @@ relations:
   rel: near
   to: LMK_NHA_THO_CON_GA
   distance_km: 0.89
-- from: acc_4947690
-  rel: near
-  to: LMK_RIVER_VIEWPOINT
-  distance_km: 0.66
-- from: acc_4973904
-  rel: near
-  to: LMK_BIEN_NHA_TRANG
-  distance_km: 0.75
 - from: acc_4974064
   rel: near
   to: LMK_BAI_BIEN_PHAM_VAN_DONG
@@ -1197,10 +1077,6 @@ relations:
   rel: near
   to: LMK_LANG_CHAI_MAN_THAI
   distance_km: 1.01
-- from: acc_4974064
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 0.57
 - from: acc_5161316
   rel: near
   to: LMK_SAN_BAY_CA_MAU
@@ -1265,10 +1141,6 @@ relations:
   rel: near
   to: LMK_VAN_DON_INTERNATIONAL_AIRPORT
   distance_km: 225.87
-- from: acc_5811241
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.87
 - from: acc_5873574
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAT_BI
@@ -1289,14 +1161,10 @@ relations:
   rel: near
   to: LMK_VAN_DON_INTERNATIONAL_AIRPORT
   distance_km: 168.57
-- from: acc_5877654
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 1.59
 - from: acc_5920941
   rel: near
   to: LMK_BAI_CHAY
-  distance_km: 0.49
+  distance_km: 0.84
 - from: acc_5920941
   rel: near
   to: LMK_CONG_VIEN_RONG
@@ -1309,10 +1177,6 @@ relations:
   rel: near
   to: LMK_SUN_WORLD_HA_LONG_COMPLEX
   distance_km: 0.18
-- from: acc_5920941
-  rel: near
-  to: LMK_THAP_QUAN_SAT
-  distance_km: 0.76
 - from: acc_6163849
   rel: near
   to: LMK_BAO_TANG_PHU_YEN
@@ -1329,10 +1193,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_BIEN_DONG
   distance_km: 0.77
-- from: acc_6185262
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 0.57
 - from: acc_6251087
   rel: near
   to: LMK_BAO_TANG_HAI_DUONG_HOC_QUOC_GIA_VIET_NAM
@@ -1347,7 +1207,7 @@ relations:
   distance_km: 4.29
 - from: acc_6251087
   rel: near
-  to: LMK_SAN_GOLF
+  to: LMK_SAN_GOLF_VINPEARL
   distance_km: 0.78
 - from: acc_6251087
   rel: near
@@ -1425,18 +1285,6 @@ relations:
   rel: near
   to: LMK_DA_CHONG
   distance_km: 0.56
-- from: acc_6492371
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 1.04
-- from: acc_6593570
-  rel: near
-  to: LMK_BAI_CHAY
-  distance_km: 0.62
-- from: acc_6593570
-  rel: near
-  to: LMK_KHU_VUI_CHOI
-  distance_km: 0.64
 - from: acc_6906462
   rel: near
   to: LMK_BIEN_NHA_TRANG
@@ -1499,6 +1347,22 @@ relations:
   distance_km: 189.85
 - from: acc_9065853
   rel: near
+  to: LMK_112M
+  distance_km: 3.32
+- from: acc_9065853
+  rel: near
+  to: LMK_151M
+  distance_km: 1.59
+- from: acc_9065853
+  rel: near
+  to: LMK_153M
+  distance_km: 2.49
+- from: acc_9065853
+  rel: near
+  to: LMK_89M
+  distance_km: 1.81
+- from: acc_9065853
+  rel: near
   to: LMK_LANG_MO_MAC_CUU
   distance_km: 0.78
 - from: acc_9065853
@@ -1537,14 +1401,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_PHU_QUOC
   distance_km: 5.05
-- from: acc_10185656
-  rel: near
-  to: LMK_BAI_CHAY
-  distance_km: 0.44
-- from: acc_10247322
-  rel: near
-  to: LMK_LONG_BEACH
-  distance_km: 0.87
 - from: acc_10670772
   rel: near
   to: LMK_BIEN_NHA_TRANG
@@ -1569,18 +1425,10 @@ relations:
   rel: near
   to: LMK_LANG_XQ
   distance_km: 0.88
-- from: acc_10954459
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 1.0
 - from: acc_11024791
   rel: near
   to: LMK_BAI_SAU
   distance_km: 0.05
-- from: acc_11024791
-  rel: near
-  to: LMK_DAI_TUONG_NIEM_LIET_SI
-  distance_km: 0.69
 - from: acc_11024791
   rel: near
   to: LMK_DINH_THANG_TAM
@@ -1596,7 +1444,7 @@ relations:
 - from: acc_11081745
   rel: near
   to: LMK_BAI_CHAY
-  distance_km: 0.56
+  distance_km: 0.89
 - from: acc_11081745
   rel: near
   to: LMK_CONG_VIEN_RONG
@@ -1625,10 +1473,6 @@ relations:
   rel: near
   to: LMK_CHUA_SUNG_DUC
   distance_km: 3.17
-- from: acc_11081947
-  rel: near
-  to: LMK_HON_THOM
-  distance_km: 2.67
 - from: acc_11081947
   rel: near
   to: LMK_LONG_BEACH
@@ -1665,18 +1509,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_TUONG_DAI
   distance_km: 0.84
-- from: acc_16157788
-  rel: near
-  to: LMK_KHU_VUI_CHOI
-  distance_km: 0.68
-- from: acc_16157788
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 1.72
-- from: acc_16260062
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.46
 - from: acc_16282119
   rel: near
   to: LMK_BAO_TANG_CON_DAO
@@ -1684,7 +1516,7 @@ relations:
 - from: acc_16360312
   rel: near
   to: LMK_BAI_CHAY
-  distance_km: 0.76
+  distance_km: 0.8
 - from: acc_16360312
   rel: near
   to: LMK_CONG_VIEN_RONG
@@ -1697,14 +1529,6 @@ relations:
   rel: near
   to: LMK_SUN_WORLD_HA_LONG_COMPLEX
   distance_km: 0.27
-- from: acc_16360312
-  rel: near
-  to: LMK_THAP_QUAN_SAT
-  distance_km: 0.71
-- from: acc_16375525
-  rel: near
-  to: LMK_DAT_513M
-  distance_km: 7.35
 - from: acc_16375525
   rel: near
   to: LMK_LOP_HOC_NAU_AN_THUAN_TINH
@@ -1841,10 +1665,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.61
-- from: acc_22406185
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.18
 - from: acc_22420717
   rel: near
   to: LMK_BAI_BIEN_QUY_NHON
@@ -1857,10 +1677,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.63
-- from: acc_22420717
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.17
 - from: acc_22642078
   rel: near
   to: LMK_BAI_SAU
@@ -1905,10 +1721,6 @@ relations:
   rel: near
   to: LMK_KHU_NGHI_DUONG_HOAN_CAU
   distance_km: 0.09
-- from: acc_23125329
-  rel: near
-  to: LMK_VIEW_TOWER
-  distance_km: 0.8
 - from: acc_23386003
   rel: near
   to: LMK_BAO_TANG_NINH_THUAN
@@ -1921,10 +1733,6 @@ relations:
   rel: near
   to: LMK_KHU_NGHI_DUONG_HOAN_CAU
   distance_km: 0.69
-- from: acc_23386003
-  rel: near
-  to: LMK_VIEW_TOWER
-  distance_km: 1.19
 - from: acc_23780986
   rel: near
   to: LMK_BAI_BIEN_HAM_TIEN
@@ -1943,7 +1751,7 @@ relations:
   distance_km: 0.66
 - from: acc_24247480
   rel: near
-  to: LMK_BAI_CHAY
+  to: LMK_BEN_TAU_DU_LICH_BAI_CHAY
   distance_km: 1.25
 - from: acc_24247480
   rel: near
@@ -1957,6 +1765,10 @@ relations:
   rel: near
   to: LMK_HO_HUNG_THANG
   distance_km: 0.65
+- from: acc_24247480
+  rel: near
+  to: LMK_NUI_BAI_CHAY
+  distance_km: 1.35
 - from: acc_25133369
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAM_RANH
@@ -1979,16 +1791,8 @@ relations:
   distance_km: 0.97
 - from: acc_25455208
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 3.77
-- from: acc_25455208
-  rel: near
   to: LMK_NUI_TRUONG_LE
   distance_km: 5.17
-- from: acc_25455208
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 1.18
 - from: acc_25688522
   rel: near
   to: LMK_HANG_SON_DOONG
@@ -2013,18 +1817,6 @@ relations:
   rel: near
   to: LMK_NUI_MO_ONG
   distance_km: 5.2
-- from: acc_25773171
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 1.02
-- from: acc_25957597
-  rel: near
-  to: LMK_CONG_VIEN_TUONG_DAI
-  distance_km: 0.61
-- from: acc_27874314
-  rel: near
-  to: LMK_BAI_CHAY
-  distance_km: 1.54
 - from: acc_27874314
   rel: near
   to: LMK_HO_CAI_DAM
@@ -2045,10 +1837,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.62
-- from: acc_28201768
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.16
 - from: acc_28985333
   rel: near
   to: LMK_NHA_THO_CHINH_TOA_LONG_XUYEN
@@ -2225,10 +2013,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAM_RANH
   distance_km: 2.25
-- from: acc_31039863
-  rel: near
-  to: LMK_THE_SHACK
-  distance_km: 9.64
 - from: acc_31127662
   rel: near
   to: LMK_BAO_TANG_NINH_THUAN
@@ -2244,6 +2028,10 @@ relations:
 - from: acc_31461091
   rel: near
   to: LMK_BAI_CHAY
+  distance_km: 0.91
+- from: acc_31461091
+  rel: near
+  to: LMK_BEN_TAU_DU_LICH_BAI_CHAY
   distance_km: 0.65
 - from: acc_31461091
   rel: near
@@ -2259,16 +2047,16 @@ relations:
   distance_km: 1.83
 - from: acc_31461091
   rel: near
+  to: LMK_NUI_BAI_CHAY
+  distance_km: 0.93
+- from: acc_31461091
+  rel: near
   to: LMK_QUANG_TRUONG_MAT_TROI
   distance_km: 0.89
 - from: acc_31461091
   rel: near
   to: LMK_SUN_WORLD_HA_LONG_COMPLEX
   distance_km: 1.78
-- from: acc_31461091
-  rel: near
-  to: LMK_THAP_QUAN_SAT
-  distance_km: 1.9
 - from: acc_31561179
   rel: near
   to: LMK_BAI_BIEN_CUA_DAI
@@ -2319,16 +2107,8 @@ relations:
   distance_km: 1.64
 - from: acc_32260660
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 3.09
-- from: acc_32260660
-  rel: near
   to: LMK_NUI_TRUONG_LE
   distance_km: 4.5
-- from: acc_32260660
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 1.86
 - from: acc_32680041
   rel: near
   to: LMK_BAO_TANG_LAM_DONG
@@ -2356,7 +2136,7 @@ relations:
 - from: acc_32914376
   rel: near
   to: LMK_BAI_CHAY
-  distance_km: 0.65
+  distance_km: 0.75
 - from: acc_32914376
   rel: near
   to: LMK_CONG_VIEN_RONG
@@ -2369,10 +2149,6 @@ relations:
   rel: near
   to: LMK_SUN_WORLD_HA_LONG_COMPLEX
   distance_km: 0.12
-- from: acc_32914376
-  rel: near
-  to: LMK_THAP_QUAN_SAT
-  distance_km: 0.81
 - from: acc_33035367
   rel: near
   to: LMK_SAN_BAY_DIEN_BIEN_PHU
@@ -2425,10 +2201,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAM_RANH
   distance_km: 2.49
-- from: acc_33589745
-  rel: near
-  to: LMK_THE_SHACK
-  distance_km: 9.38
 - from: acc_33941483
   rel: near
   to: LMK_BAI_SAU
@@ -2445,10 +2217,6 @@ relations:
   rel: near
   to: LMK_KHU_DU_LICH_BIEN_DONG
   distance_km: 0.69
-- from: acc_33941483
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.33
 - from: acc_33941483
   rel: near
   to: LMK_TT_MUA_SAM_IMPERIAL_PLAZA
@@ -2497,10 +2265,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.62
-- from: acc_34309695
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.18
 - from: acc_34513919
   rel: near
   to: LMK_BEACH_HOTEL_PARK
@@ -2581,10 +2345,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.65
-- from: acc_35308672
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.13
 - from: acc_35396521
   rel: near
   to: LMK_BEN_CANG_RACH_GIA
@@ -2600,7 +2360,7 @@ relations:
 - from: acc_35444743
   rel: near
   to: LMK_BAI_CHAY
-  distance_km: 0.56
+  distance_km: 0.82
 - from: acc_35444743
   rel: near
   to: LMK_CONG_VIEN_RONG
@@ -2613,10 +2373,6 @@ relations:
   rel: near
   to: LMK_SUN_WORLD_HA_LONG_COMPLEX
   distance_km: 0.18
-- from: acc_35444743
-  rel: near
-  to: LMK_THAP_QUAN_SAT
-  distance_km: 0.72
 - from: acc_35958304
   rel: near
   to: LMK_BAI_DAI
@@ -2672,7 +2428,11 @@ relations:
 - from: acc_36224135
   rel: near
   to: LMK_BAI_CHAY
-  distance_km: 0.64
+  distance_km: 0.82
+- from: acc_36224135
+  rel: near
+  to: LMK_BEN_TAU_DU_LICH_BAI_CHAY
+  distance_km: 0.79
 - from: acc_36224135
   rel: near
   to: LMK_CONG_VIEN_RONG
@@ -2687,16 +2447,16 @@ relations:
   distance_km: 1.54
 - from: acc_36224135
   rel: near
+  to: LMK_NUI_BAI_CHAY
+  distance_km: 0.64
+- from: acc_36224135
+  rel: near
   to: LMK_QUANG_TRUONG_MAT_TROI
   distance_km: 0.69
 - from: acc_36224135
   rel: near
   to: LMK_SUN_WORLD_HA_LONG_COMPLEX
   distance_km: 1.49
-- from: acc_36224135
-  rel: near
-  to: LMK_THAP_QUAN_SAT
-  distance_km: 1.56
 - from: acc_36643921
   rel: near
   to: LMK_BAI_SAU
@@ -2715,10 +2475,6 @@ relations:
   distance_km: 0.69
 - from: acc_36643921
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.33
-- from: acc_36643921
-  rel: near
   to: LMK_TT_MUA_SAM_IMPERIAL_PLAZA
   distance_km: 0.78
 - from: acc_36709877
@@ -2733,10 +2489,6 @@ relations:
   rel: near
   to: LMK_WENSHAN_PUZHEHEI_AIRPORT
   distance_km: 221.07
-- from: acc_36917371
-  rel: near
-  to: LMK_CONG_VIEN_TUONG_DAI
-  distance_km: 2.62
 - from: acc_36919571
   rel: near
   to: LMK_DA_CHONG
@@ -2783,6 +2535,22 @@ relations:
   distance_km: 5.97
 - from: acc_37296684
   rel: near
+  to: LMK_112M
+  distance_km: 4.07
+- from: acc_37296684
+  rel: near
+  to: LMK_151M
+  distance_km: 2.3
+- from: acc_37296684
+  rel: near
+  to: LMK_153M
+  distance_km: 1.79
+- from: acc_37296684
+  rel: near
+  to: LMK_89M
+  distance_km: 1.07
+- from: acc_37296684
+  rel: near
   to: LMK_LANG_MO_MAC_CUU
   distance_km: 0.66
 - from: acc_37296684
@@ -2801,10 +2569,6 @@ relations:
   rel: near
   to: LMK_TECHO_INTERNATIONAL_AIRPORT
   distance_km: 119.54
-- from: acc_37697306
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.82
 - from: acc_37710972
   rel: near
   to: LMK_BAI_BIEN_PHAM_VAN_DONG
@@ -2828,7 +2592,7 @@ relations:
 - from: acc_37712446
   rel: near
   to: LMK_HON_THOM
-  distance_km: 0.48
+  distance_km: 8.82
 - from: acc_37712446
   rel: near
   to: LMK_LONG_BEACH
@@ -2857,14 +2621,6 @@ relations:
   rel: near
   to: LMK_LANG_CHAI_MAN_THAI
   distance_km: 0.72
-- from: acc_37718747
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 0.83
-- from: acc_37719704
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 2.11
 - from: acc_37817493
   rel: near
   to: LMK_CONG_VIEN_HON_TRONG_MAI
@@ -2883,16 +2639,8 @@ relations:
   distance_km: 1.36
 - from: acc_37817493
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 3.4
-- from: acc_37817493
-  rel: near
   to: LMK_NUI_TRUONG_LE
   distance_km: 4.81
-- from: acc_37817493
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 1.57
 - from: acc_37838066
   rel: near
   to: LMK_NHA_THO_CHINH_TOA_LONG_XUYEN
@@ -2975,10 +2723,6 @@ relations:
   distance_km: 0.53
 - from: acc_38684158
   rel: near
-  to: LMK_DAT_513M
-  distance_km: 13.47
-- from: acc_38684158
-  rel: near
   to: LMK_LOP_HOC_NAU_AN_THUAN_TINH
   distance_km: 13.34
 - from: acc_38684158
@@ -2996,6 +2740,10 @@ relations:
 - from: acc_38722254
   rel: near
   to: LMK_BAI_CHAY
+  distance_km: 2.06
+- from: acc_38722254
+  rel: near
+  to: LMK_BEN_TAU_DU_LICH_BAI_CHAY
   distance_km: 0.53
 - from: acc_38722254
   rel: near
@@ -3009,6 +2757,10 @@ relations:
   rel: near
   to: LMK_HO_HUNG_THANG
   distance_km: 1.43
+- from: acc_38722254
+  rel: near
+  to: LMK_NUI_BAI_CHAY
+  distance_km: 1.27
 - from: acc_38722254
   rel: near
   to: LMK_QUANG_TRUONG_MAT_TROI
@@ -3048,7 +2800,7 @@ relations:
 - from: acc_39532985
   rel: near
   to: LMK_HON_THOM
-  distance_km: 0.26
+  distance_km: 8.12
 - from: acc_39532985
   rel: near
   to: LMK_LONG_BEACH
@@ -3077,18 +2829,10 @@ relations:
   rel: near
   to: LMK_NUI_MO_ONG
   distance_km: 4.98
-- from: acc_39665334
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 0.83
 - from: acc_41591306
   rel: near
   to: LMK_BAI_SAU
   distance_km: 0.31
-- from: acc_41591306
-  rel: near
-  to: LMK_DAI_TUONG_NIEM_LIET_SI
-  distance_km: 0.54
 - from: acc_41591306
   rel: near
   to: LMK_DINH_THANG_TAM
@@ -3125,10 +2869,6 @@ relations:
   rel: near
   to: LMK_THIEN_VIEN_TRUC_LAM
   distance_km: 0.53
-- from: acc_42152643
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.39
 - from: acc_43320993
   rel: near
   to: LMK_BAO_TANG_CON_DAO
@@ -3159,10 +2899,6 @@ relations:
   distance_km: 0.68
 - from: acc_44184739
   rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.33
-- from: acc_44184739
-  rel: near
   to: LMK_TT_MUA_SAM_IMPERIAL_PLAZA
   distance_km: 0.77
 - from: acc_44205914
@@ -3177,10 +2913,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.63
-- from: acc_44205914
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.16
 - from: acc_44314482
   rel: near
   to: LMK_BAI_SAO
@@ -3197,10 +2929,6 @@ relations:
   rel: near
   to: LMK_CHUA_SUNG_DUC
   distance_km: 2.53
-- from: acc_44314482
-  rel: near
-  to: LMK_HON_THOM
-  distance_km: 1.18
 - from: acc_44314482
   rel: near
   to: LMK_LONG_BEACH
@@ -3233,10 +2961,6 @@ relations:
   rel: near
   to: LMK_TECHO_INTERNATIONAL_AIRPORT
   distance_km: 223.05
-- from: acc_44777877
-  rel: near
-  to: LMK_DAT_513M
-  distance_km: 1.1
 - from: acc_45912624
   rel: near
   to: LMK_BAO_TANG_NINH_THUAN
@@ -3253,10 +2977,6 @@ relations:
   rel: near
   to: LMK_NHA_THO_TIN_LANH
   distance_km: 3.95
-- from: acc_45912624
-  rel: near
-  to: LMK_VIEW_TOWER
-  distance_km: 0.53
 - from: acc_46045575
   rel: near
   to: LMK_BIEN_MY_KHE
@@ -3273,18 +2993,10 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.63
-- from: acc_46698614
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.16
 - from: acc_46727693
   rel: near
   to: LMK_SUOI_TIEN
   distance_km: 10.05
-- from: acc_46741090
-  rel: near
-  to: LMK_BAI_CHAY
-  distance_km: 2.45
 - from: acc_46741090
   rel: near
   to: LMK_HO_CAI_DAM
@@ -3332,7 +3044,7 @@ relations:
 - from: acc_46992320
   rel: near
   to: LMK_HON_THOM
-  distance_km: 0.2
+  distance_km: 8.58
 - from: acc_46992320
   rel: near
   to: LMK_LONG_BEACH
@@ -3389,10 +3101,6 @@ relations:
   rel: near
   to: LMK_DINH_HO_SON_CO_TU
   distance_km: 0.87
-- from: acc_47817934
-  rel: near
-  to: LMK_RIVER_VIEWPOINT
-  distance_km: 0.85
 - from: acc_48029813
   rel: near
   to: LMK_BIEN_MY_KHE
@@ -3401,10 +3109,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_BIEN_DONG
   distance_km: 0.77
-- from: acc_48029813
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 0.58
 - from: acc_48561897
   rel: near
   to: LMK_CAU_NGAM_BIEN
@@ -3433,22 +3137,10 @@ relations:
   rel: near
   to: LMK_NUI_MO_ONG
   distance_km: 5.53
-- from: acc_48561897
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 5.81
 - from: acc_49385769
   rel: near
   to: LMK_BAO_TANG_LAM_DONG
   distance_km: 1.9
-- from: acc_49385769
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.18
-- from: acc_49385769
-  rel: near
-  to: LMK_DINH_BAO_DAI
-  distance_km: 0.83
 - from: acc_49654047
   rel: near
   to: LMK_NHA_THO_CHINH_TOA_LONG_XUYEN
@@ -3501,10 +3193,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.5
-- from: acc_49682296
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.17
 - from: acc_49684826
   rel: near
   to: LMK_CONG_VIEN_HUNG_VUONG
@@ -3533,10 +3221,6 @@ relations:
   rel: near
   to: LMK_NHA_THO_CON_GA
   distance_km: 0.84
-- from: acc_50138938
-  rel: near
-  to: LMK_DINH_BAO_DAI
-  distance_km: 0.37
 - from: acc_50146107
   rel: near
   to: LMK_VAN_DON_INTERNATIONAL_AIRPORT
@@ -3564,7 +3248,7 @@ relations:
 - from: acc_51060966
   rel: near
   to: LMK_HON_THOM
-  distance_km: 0.39
+  distance_km: 8.71
 - from: acc_51060966
   rel: near
   to: LMK_LONG_BEACH
@@ -3713,10 +3397,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_PHU_BAI
   distance_km: 99.1
-- from: acc_55717853
-  rel: near
-  to: LMK_RIVER_VIEWPOINT
-  distance_km: 0.15
 - from: acc_55913050
   rel: near
   to: LMK_BAO_TANG_NINH_THUAN
@@ -3749,10 +3429,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_THO_XUAN
   distance_km: 137.4
-- from: acc_58354137
-  rel: near
-  to: LMK_CONG_VIEN_RONG
-  distance_km: 0.47
 - from: acc_58866380
   rel: near
   to: LMK_BAI_SAO
@@ -3768,7 +3444,7 @@ relations:
 - from: acc_58866380
   rel: near
   to: LMK_HON_THOM
-  distance_km: 0.47
+  distance_km: 8.81
 - from: acc_58866380
   rel: near
   to: LMK_LONG_BEACH
@@ -3784,7 +3460,7 @@ relations:
 - from: acc_58958232
   rel: near
   to: LMK_BAI_CHAY
-  distance_km: 0.54
+  distance_km: 0.78
 - from: acc_58958232
   rel: near
   to: LMK_CONG_VIEN_RONG
@@ -3801,10 +3477,6 @@ relations:
   rel: near
   to: LMK_BAI_BIEN_HAM_TIEN
   distance_km: 0.05
-- from: acc_59037669
-  rel: near
-  to: LMK_LONG_BEACH
-  distance_km: 0.43
 - from: acc_59790857
   rel: near
   to: LMK_BAI_DAI
@@ -3895,6 +3567,22 @@ relations:
   distance_km: 10.04
 - from: acc_62125264
   rel: near
+  to: LMK_112M
+  distance_km: 3.06
+- from: acc_62125264
+  rel: near
+  to: LMK_151M
+  distance_km: 1.56
+- from: acc_62125264
+  rel: near
+  to: LMK_153M
+  distance_km: 2.77
+- from: acc_62125264
+  rel: near
+  to: LMK_89M
+  distance_km: 2.23
+- from: acc_62125264
+  rel: near
   to: LMK_LANG_MO_MAC_CUU
   distance_km: 1.39
 - from: acc_62125264
@@ -3941,14 +3629,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_THIEU_NHI
   distance_km: 0.63
-- from: acc_63347126
-  rel: near
-  to: LMK_DIEM_NGAM_CANH
-  distance_km: 1.16
-- from: acc_63447487
-  rel: near
-  to: LMK_DINH_BAO_DAI
-  distance_km: 0.6
 - from: acc_63459117
   rel: near
   to: LMK_BAI_BIEN_HAM_TIEN
@@ -3957,14 +3637,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_TUONG_DAI
   distance_km: 0.87
-- from: acc_63942689
-  rel: near
-  to: LMK_KHU_VUI_CHOI
-  distance_km: 1.05
-- from: acc_63942689
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.19
 - from: acc_63991945
   rel: near
   to: LMK_BEN_CANG_RACH_GIA
@@ -4093,10 +3765,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_RACH_GIA
   distance_km: 99.11
-- from: acc_65343180
-  rel: near
-  to: LMK_BAI_CHAY
-  distance_km: 0.73
 - from: acc_65867796
   rel: near
   to: LMK_NHA_CONG_TU_BAC_LIEU
@@ -4217,10 +3885,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAM_RANH
   distance_km: 26.53
-- from: acc_67247416
-  rel: near
-  to: LMK_VIEW_TOWER
-  distance_km: 30.45
 - from: acc_67574309
   rel: near
   to: LMK_SAN_BAY_CA_MAU
@@ -4377,10 +4041,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_DA_NANG
   distance_km: 1.14
-- from: acc_70922994
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 9.12
 - from: acc_71105731
   rel: near
   to: LMK_CLB_THE_THAO_KHONG_QUAN
@@ -4453,10 +4113,6 @@ relations:
   rel: near
   to: LMK_DAI_TUONG_NIEM_LIET_SI
   distance_km: 0.25
-- from: acc_73004500
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 0.59
 - from: acc_73359010
   rel: near
   to: LMK_BAI_BIEN_PHAM_VAN_DONG
@@ -4473,22 +4129,10 @@ relations:
   rel: near
   to: LMK_LANG_CHAI_MAN_THAI
   distance_km: 1.02
-- from: acc_73359010
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 0.58
-- from: acc_73809693
-  rel: near
-  to: LMK_RIVER_VIEWPOINT
-  distance_km: 0.27
 - from: acc_74577726
   rel: near
   to: LMK_BAO_TANG_LAM_DONG
   distance_km: 1.92
-- from: acc_74577726
-  rel: near
-  to: LMK_DINH_BAO_DAI
-  distance_km: 1.03
 - from: acc_74957819
   rel: near
   to: LMK_BAI_BIEN_PHAM_VAN_DONG
@@ -4501,10 +4145,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_BIEN_DONG
   distance_km: 0.25
-- from: acc_74957819
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 0.26
 - from: acc_75690457
   rel: near
   to: LMK_BIEN_NHA_TRANG
@@ -4541,14 +4181,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_TUONG_DAI
   distance_km: 2.2
-- from: acc_75796646
-  rel: near
-  to: LMK_KHU_VUI_CHOI
-  distance_km: 2.3
-- from: acc_75796646
-  rel: near
-  to: LMK_NHA_THI_DAU
-  distance_km: 2.06
 - from: acc_76677098
   rel: near
   to: LMK_BAO_TANG_PHU_YEN
@@ -4621,14 +4253,6 @@ relations:
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAM_RANH
   distance_km: 9.56
-- from: acc_78340310
-  rel: near
-  to: LMK_SAN_GOLF
-  distance_km: 8.68
-- from: acc_78340310
-  rel: near
-  to: LMK_THE_SHACK
-  distance_km: 2.48
 - from: acc_78443659
   rel: near
   to: LMK_SAN_BAY_QUOC_TE_CAT_BI
@@ -4657,18 +4281,10 @@ relations:
   rel: near
   to: LMK_LANG_CHAI_MAN_THAI
   distance_km: 0.59
-- from: acc_82014402
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 1.2
 - from: acc_83464707
   rel: near
   to: LMK_BIEN_NHA_TRANG
   distance_km: 0.4
-- from: acc_83464709
-  rel: near
-  to: LMK_RIVER_VIEWPOINT
-  distance_km: 0.27
 - from: acc_84901473
   rel: near
   to: LMK_BAI_BIEN_BAC_MY_AN
@@ -4709,10 +4325,6 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_BIEN_DONG
   distance_km: 0.4
-- from: acc_85723058
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 0.43
 - from: acc_86363054
   rel: near
   to: LMK_CU_LAO_CHAM
@@ -4761,7 +4373,3 @@ relations:
   rel: near
   to: LMK_CONG_VIEN_BIEN_DONG
   distance_km: 0.4
-- from: acc_87755467
-  rel: near
-  to: LMK_THAP_CUU_HO
-  distance_km: 0.44

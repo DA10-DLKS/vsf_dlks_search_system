@@ -48,27 +48,27 @@ def load_landmark_forms(location_yamls: list = LOCATION_YAMLS) -> dict:
     return out
 
 
-def match_landmark(name: str, landmark_forms: dict) -> str | None:
-    """Khớp tên nearby_place vào LMK concept theo cụm từ đầy đủ. None nếu không khớp."""
-    n = name.lower().strip()
-    for cid, forms in landmark_forms.items():
-        for f in forms:
-            if len(f) >= MIN_FORM_LEN and re.search(
-                r"(^|\s)" + re.escape(f) + r"(\s|$)", n
-            ):
-                return cid
-    return None
+def match_landmark(name: str, exact_index: dict) -> str | None:
+    """#5b: khớp CHẶT — tên nearby (chuẩn hóa) phải BẰNG ĐÚNG một form landmark, KHÔNG nhận cụm con.
+    Tránh false-match 'Bệnh viện Bãi Cháy'->Bãi Cháy, 'Ngọc trai Long Beach'->Long Beach.
+    exact_index: form(lower,strip) -> cid (dựng sẵn từ load_landmark_forms)."""
+    return exact_index.get(name.lower().strip())
 
 
 def build_near_relations(hotels_glob: str = HOTELS_GLOB) -> list[dict]:
     """Trả list relation: {from: acc_<hotel_id>, rel: near, to: LMK_*, distance_km: x}."""
     landmark_forms = load_landmark_forms()
+    # dựng exact_index: form (lower,strip) -> cid. Form dài trước (nếu trùng form thì cid dài giữ sau).
+    exact_index = {}
+    for cid, forms in landmark_forms.items():
+        for f in forms:
+            exact_index[f.strip()] = cid
     near = {}  # (hotel_id, cid) -> min distance_km
     for f in sorted(glob.glob(hotels_glob)):
         d = json.load(open(f, encoding="utf-8"))
         hid = d.get("hotel_id")
         for p in d.get("nearby_places") or []:
-            cid = match_landmark(p.get("name", ""), landmark_forms)
+            cid = match_landmark(p.get("name", ""), exact_index)
             if cid is None:
                 continue
             km = p.get("distance_km")
