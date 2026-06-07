@@ -14,8 +14,16 @@ synonyms:
   - LMK_QUANG_TRUONG_2_4
   89 m:
   - LMK_89M
+  ac:
+  - AMEN_AC
+  accessibility:
+  - AMEN_WHEELCHAIR
   affordable:
   - PRICE_BUDGET
+  air conditioning:
+  - AMEN_AC
+  air-con:
+  - AMEN_AC
   airport shuttle:
   - AMEN_AIRPORT_SHUTTLE
   airport transfer:
@@ -49,6 +57,8 @@ synonyms:
   - LOC_HA_NOI__BA_DINH
   ba đình:
   - LOC_HA_NOI__BA_DINH
+  babysitting:
+  - AMEN_BABYSITTING
   bac giang:
   - LOC_BAC_GIANG
   bac kan:
@@ -84,6 +94,10 @@ synonyms:
   - LMK_BAI_CHAY
   bai dai:
   - LMK_BAI_DAI
+  bai dau xe:
+  - AMEN_PARKING
+  bai do xe:
+  - AMEN_PARKING
   bai khem:
   - LOC_PHU_QUOC__BAI_KHEM
   bai sao:
@@ -94,6 +108,12 @@ synonyms:
   - LMK_BAI_TAM_HOANG_HAU
   bai tam_hoang_hau:
   - LMK_BAI_TAM_HOANG_HAU
+  ban cong san hien:
+  - AMEN_GARDEN
+  ban công sân hiên:
+  - AMEN_GARDEN
+  banquet facilities:
+  - AMEN_MEETING_ROOM
   bao tang binh dinh:
   - LMK_BAO_TANG_BINH_DINH
   bao tang con dao:
@@ -154,6 +174,14 @@ synonyms:
   - LMK_BEN_TAU_DU_LICH_BAI_CHAY
   ben tre:
   - LOC_BEN_TRE
+  bep:
+  - AMEN_KITCHEN
+  bep chung:
+  - AMEN_KITCHEN
+  bep nau:
+  - AMEN_KITCHEN
+  bicycle:
+  - AMEN_BIKE
   bien an hai:
   - LOC_CON_DAO__BIEN_AN_HAI
   bien cua lo:
@@ -174,6 +202,10 @@ synonyms:
   - OBJ_VILLA
   biet thu nghi duong:
   - OBJ_VILLA
+  bike:
+  - AMEN_BIKE
+  bike rental:
+  - AMEN_BIKE
   binh dan:
   - PRICE_BUDGET
   binh dinh:
@@ -257,6 +289,10 @@ synonyms:
   - LMK_BAI_SAO
   bãi sau:
   - LMK_BAI_SAU
+  bãi đậu xe:
+  - AMEN_PARKING
+  bãi đỗ xe:
+  - AMEN_PARKING
   bãi_tắm hoàng_hậu:
   - LMK_BAI_TAM_HOANG_HAU
   bên hồ:
@@ -299,6 +335,12 @@ synonyms:
   - LOC_BEN_TRE
   bến tàu du_lịch bãi cháy:
   - LMK_BEN_TAU_DU_LICH_BAI_CHAY
+  bếp:
+  - AMEN_KITCHEN
+  bếp chung:
+  - AMEN_KITCHEN
+  bếp nấu:
+  - AMEN_KITCHEN
   bể bơi:
   - AMEN_POOL
   bể bơi có tầm nhìn:
@@ -315,8 +357,10 @@ synonyms:
   - ASPECT_FOOD
   ca mau:
   - LOC_CA_MAU
+  ca phe:
+  - AMEN_CAFE
   cafe:
-  - AMEN_RESTAURANT
+  - AMEN_CAFE
   cai khe:
   - LOC_CAN_THO__CAI_KHE
   calm:
@@ -369,6 +413,8 @@ synonyms:
   - PRICE_UPSCALE
   cap doi:
   - PURPOSE_ROMANTIC
+  car park:
+  - AMEN_PARKING
   cat ba:
   - LOC_QUAN_DAO_CAT_BA__CAT_BA
   cau giay:
@@ -395,16 +441,28 @@ synonyms:
   - LOC_CHAU_DOC
   cheap:
   - PRICE_BUDGET
+  child care:
+  - AMEN_BABYSITTING
   children club:
   - AMEN_KIDS_CLUB
   children pool:
   - AMEN_KIDS_POOL
+  cho dau xe:
+  - AMEN_PARKING
   cho gia dinh:
   - PURPOSE_FAMILY
   cho gia_đình:
   - PURPOSE_FAMILY
+  cho phep thu cung:
+  - AMEN_PET_FRIENDLY
   cho sat:
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
+  cho thue xe dap:
+  - AMEN_BIKE
+  cho thuê xe_đạp:
+  - AMEN_BIKE
+  cho_phép thú cưng:
+  - AMEN_PET_FRIENDLY
   choi golf:
   - AMEN_GOLF
   chua ho quoc:
@@ -435,6 +493,8 @@ synonyms:
   - AMEN_GOLF
   chất_lượng phòng:
   - ASPECT_ROOM
+  chỗ đậu xe:
+  - AMEN_PARKING
   chợ sắt:
   - LOC_HAI_PHONG__TRUNG_TAM_THANH_PHO_CHO_SAT
   city center:
@@ -455,10 +515,16 @@ synonyms:
   - ASPECT_CLEANLINESS
   co so vat chat:
   - ASPECT_FACILITIES
+  co so vat chat cho hop mat tiec lon:
+  - AMEN_MEETING_ROOM
   coastal:
   - SETTING_COASTAL
+  coffee shop:
+  - AMEN_CAFE
   con dao:
   - LOC_CON_DAO
+  conference room:
+  - AMEN_MEETING_ROOM
   cong tac:
   - PURPOSE_BUSINESS
   cong ty du lich mekong:
@@ -533,6 +599,8 @@ synonyms:
   - LMK_CUNG_VAN_HOA_HUU_NGHI
   cà_mau:
   - LOC_CA_MAU
+  cà_phê:
+  - AMEN_CAFE
   cái khế:
   - LOC_CAN_THO__CAI_KHE
   cát bà:
@@ -589,6 +657,8 @@ synonyms:
   - OBJ_APARTMENT
   cơ_sở vật_chất:
   - ASPECT_FACILITIES
+  cơ_sở vật_chất cho họp_mặt tiệc lớn:
+  - AMEN_MEETING_ROOM
   cạnh hồ:
   - SETTING_RIVERSIDE
   cạnh sông:
@@ -678,12 +748,18 @@ synonyms:
   - AMEN_AIRPORT_SHUTTLE
   dich vu phong:
   - AMEN_RESTAURANT
+  dich vu trong tre:
+  - AMEN_BABYSITTING
   dien bien phu:
   - LOC_DIEN_BIEN_PHU
   dien bien_phu:
   - LOC_DIEN_BIEN_PHU
   dien duong:
   - LOC_HOI_AN__DIEN_DUONG
+  dieu hoa:
+  - AMEN_AC
+  dieu hoa nhiet do:
+  - AMEN_AC
   dinh bao dai:
   - LMK_DINH_BAO_DAI
   dinh bảo đại:
@@ -705,12 +781,20 @@ synonyms:
   dining:
   - AMEN_RESTAURANT
   - ASPECT_FOOD
+  disabled access:
+  - AMEN_WHEELCHAIR
   do an:
   - ASPECT_FOOD
   do sach se:
   - ASPECT_CLEANLINESS
   do thoai mai cua phong:
   - ASPECT_ROOM
+  do xe:
+  - AMEN_PARKING
+  do xe dap:
+  - AMEN_BIKE
+  do xe mien phi:
+  - AMEN_PARKING
   doc let:
   - LOC_NHA_TRANG__DOC_LET
   doi:
@@ -737,6 +821,8 @@ synonyms:
   - SETTING_CITY_CENTER
   dua don san bay:
   - AMEN_AIRPORT_SHUTTLE
+  duoc phep dua thu nuoi vao:
+  - AMEN_PET_FRIENDLY
   duong dong:
   - LOC_PHU_QUOC__DUONG_DONG
   duong to:
@@ -751,6 +837,8 @@ synonyms:
   - ASPECT_SERVICE
   dịch_vụ phòng:
   - AMEN_RESTAURANT
+  dịch_vụ trông trẻ:
+  - AMEN_BABYSITTING
   dịch_vụ đưa_đón:
   - AMEN_AIRPORT_SHUTTLE
   dốc lết:
@@ -759,6 +847,8 @@ synonyms:
   - STYLE_ECO
   eco-friendly:
   - STYLE_ECO
+  elevator:
+  - AMEN_ELEVATOR
   entire place:
   - OBJ_APARTMENT
   exclusive:
@@ -785,6 +875,8 @@ synonyms:
   - LMK_FLC_GOLF_LINKS_SAM_SON
   food:
   - ASPECT_FOOD
+  free parking:
+  - AMEN_PARKING
   free wifi:
   - AMEN_WIFI
   ga da lat:
@@ -801,6 +893,8 @@ synonyms:
   - SETTING_CITY_CENTER
   ganh dau:
   - LOC_GANH_DAU
+  garden:
+  - AMEN_GARDEN
   garden view:
   - SETTING_NATURE
   gia dinh:
@@ -833,6 +927,8 @@ synonyms:
   - PURPOSE_FAMILY
   gia_đình có trẻ nhỏ:
   - PURPOSE_FAMILY
+  giu tre:
+  - AMEN_BABYSITTING
   giuong va bua sang:
   - OBJ_BNB
   giá rẻ:
@@ -845,6 +941,8 @@ synonyms:
   - ASPECT_VALUE
   giường và bữa sáng:
   - OBJ_BNB
+  giữ trẻ:
+  - AMEN_BABYSITTING
   go vap:
   - LOC_HO_CHI_MINH__GO_VAP
   golf:
@@ -1083,6 +1181,10 @@ synonyms:
   - STYLE_ROMANTIC
   khong on ao:
   - STYLE_QUIET
+  khu bep:
+  - AMEN_KITCHEN
+  khu bếp:
+  - AMEN_KITCHEN
   khu du lich bien dong:
   - LMK_KHU_DU_LICH_BIEN_DONG
   khu du lich gio bien:
@@ -1107,6 +1209,8 @@ synonyms:
   - LMK_KHU_NGHI_DUONG_HOAN_CAU
   khu pho phap:
   - LMK_KHU_PHO_PHAP
+  khu vuc tang thuong:
+  - AMEN_GARDEN
   khu vui choi giai tri sun world ha long:
   - LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
   khu vui choi tre em:
@@ -1119,6 +1223,8 @@ synonyms:
   - AMEN_KIDS_CLUB
   khu_phố pháp:
   - LMK_KHU_PHO_PHAP
+  khu_vực tầng thượng:
+  - AMEN_GARDEN
   khung canh thien nhien:
   - SETTING_NATURE
   khung_cảnh thiên_nhiên:
@@ -1141,6 +1247,10 @@ synonyms:
   - AMEN_KIDS_POOL
   kien giang:
   - LOC_KIEN_GIANG_TINH
+  kitchen:
+  - AMEN_KITCHEN
+  kitchenette:
+  - AMEN_KITCHEN
   kiên_giang:
   - LOC_KIEN_GIANG_TINH
   ks:
@@ -1174,6 +1284,8 @@ synonyms:
   - LOC_LANG_SON
   lao cai:
   - LOC_LAO_CAI
+  lift:
+  - AMEN_ELEVATOR
   linh son co tu:
   - LMK_LINH_SON_CO_TU
   linh_son co_tu:
@@ -1186,6 +1298,8 @@ synonyms:
   - LOC_NHA_TRANG__LOC_THO
   location:
   - ASPECT_LOCATION
+  loi di xe lan:
+  - AMEN_WHEELCHAIR
   loi ra bai bien:
   - AMEN_BEACHFRONT
   long beach:
@@ -1227,6 +1341,8 @@ synonyms:
   - LOC_LANG_SON
   lối ra bãi biển:
   - AMEN_BEACHFRONT
+  lối đi xe_lăn:
+  - AMEN_WHEELCHAIR
   lộc thọ:
   - LOC_NHA_TRANG__LOC_THO
   lớp_học nấu_ăn lanterns:
@@ -1235,10 +1351,18 @@ synonyms:
   - LMK_LOP_HOC_NAU_AN_THUAN_TINH
   mang:
   - AMEN_WIFI
+  mang theo thu cung:
+  - AMEN_PET_FRIENDLY
+  mang theo thú cưng:
+  - AMEN_PET_FRIENDLY
   massage:
   - AMEN_SPA
   mat-xa:
   - AMEN_SPA
+  may lanh:
+  - AMEN_AC
+  meeting room:
+  - AMEN_MEETING_ROOM
   mid-range:
   - PRICE_MID
   midscale:
@@ -1268,6 +1392,8 @@ synonyms:
   - LOC_MY_THO__MY_THO
   mát-xa:
   - AMEN_SPA
+  máy_lạnh:
+  - AMEN_AC
   món ăn:
   - ASPECT_FOOD
   mũi gành dầu:
@@ -1307,12 +1433,20 @@ synonyms:
   - PURPOSE_WELLNESS
   ngoc thanh:
   - LOC_PHUC_YEN__NGOC_THANH
+  nguoi khuyet tat:
+  - AMEN_WHEELCHAIR
+  người khuyết_tật:
+  - AMEN_WHEELCHAIR
   ngọc thanh:
   - LOC_PHUC_YEN__NGOC_THANH
+  nha bep:
+  - AMEN_KITCHEN
   nha cong tu bac lieu:
   - LMK_NHA_CONG_TU_BAC_LIEU
   nha dan:
   - OBJ_HOMESTAY
+  nha de xe:
+  - AMEN_PARKING
   nha go:
   - OBJ_BUNGALOW
   nha hang:
@@ -1367,6 +1501,10 @@ synonyms:
   - OBJ_BNB
   nhà nghỉ b & b:
   - OBJ_BNB
+  nhà để xe:
+  - AMEN_PARKING
+  nhà_bếp:
+  - AMEN_KITCHEN
   nhà_hàng:
   - AMEN_RESTAURANT
   nhà_nghỉ:
@@ -1453,8 +1591,16 @@ synonyms:
   - STYLE_LUXURY
   outdoor pool:
   - AMEN_POOL
+  parking:
+  - AMEN_PARKING
   peaceful:
   - STYLE_QUIET
+  pet:
+  - AMEN_PET_FRIENDLY
+  pet-friendly:
+  - AMEN_PET_FRIENDLY
+  pets allowed:
+  - AMEN_PET_FRIENDLY
   phan rang - thap cham:
   - LOC_PHAN_RANG_THAP_CHAM
   - LOC_PHAN_RANG_THAP_CHAM__PHAN_RANG_THAP_CHAM
@@ -1478,12 +1624,20 @@ synonyms:
   - ASPECT_ROOM
   phong gym:
   - AMEN_GYM
+  phong hoi nghi:
+  - AMEN_MEETING_ROOM
+  phong hoi thao:
+  - AMEN_MEETING_ROOM
+  phong hop:
+  - AMEN_MEETING_ROOM
   phong tap:
   - AMEN_GYM
   phong the duc:
   - AMEN_GYM
   phong xong uot:
   - AMEN_SPA
+  phu hop cho xe lan:
+  - AMEN_WHEELCHAIR
   phu khuong:
   - LOC_BEN_TRE__PHU_KHUONG
   phu ly:
@@ -1527,12 +1681,20 @@ synonyms:
   - ASPECT_ROOM
   phòng gym:
   - AMEN_GYM
+  phòng họp:
+  - AMEN_MEETING_ROOM
+  phòng hội_nghị:
+  - AMEN_MEETING_ROOM
+  phòng hội_thảo:
+  - AMEN_MEETING_ROOM
   phòng thể_dục:
   - AMEN_GYM
   phòng tập:
   - AMEN_GYM
   phòng xông ướt:
   - AMEN_SPA
+  phù_hợp cho xe_lăn:
+  - AMEN_WHEELCHAIR
   phú khương:
   - LOC_BEN_TRE__PHU_KHUONG
   phú thủy:
@@ -1606,7 +1768,7 @@ synonyms:
   quan bar canh be boi:
   - AMEN_BAR
   quan ca phe:
-  - AMEN_RESTAURANT
+  - AMEN_CAFE
   quan dao cat ba:
   - LOC_QUAN_DAO_CAT_BA
   quan dao_cat ba:
@@ -1650,7 +1812,7 @@ synonyms:
   quán bar cạnh bể bơi:
   - AMEN_BAR
   quán cà_phê:
-  - AMEN_RESTAURANT
+  - AMEN_CAFE
   quán toan:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
   quảng_bình:
@@ -1707,6 +1869,8 @@ synonyms:
   romantic:
   - PURPOSE_ROMANTIC
   - STYLE_ROMANTIC
+  rooftop area:
+  - AMEN_GARDEN
   room:
   - ASPECT_ROOM
   room comfort:
@@ -1792,10 +1956,14 @@ synonyms:
   - LMK_SAN_GOLF_VINPEARL
   san gon:
   - AMEN_GOLF
+  san hien:
+  - AMEN_GARDEN
   san van dong quy nhon:
   - LMK_SAN_VAN_DONG_QUY_NHON
   san van_dong quy_nhon:
   - LMK_SAN_VAN_DONG_QUY_NHON
+  san vuon:
+  - AMEN_GARDEN
   san_bay co_ong:
   - LMK_SAN_BAY_CO_ONG
   sang chanh:
@@ -1825,6 +1993,8 @@ synonyms:
   - ASPECT_SERVICE
   serviced apartment:
   - OBJ_APARTMENT
+  shared kitchen:
+  - AMEN_KITCHEN
   sinh thai:
   - STYLE_ECO
   sinh_thái:
@@ -1876,6 +2046,10 @@ synonyms:
   - LMK_SAN_GOLF_VINPEARL
   sân gôn:
   - AMEN_GOLF
+  sân hiên:
+  - AMEN_GARDEN
+  sân vườn:
+  - AMEN_GARDEN
   sân_bay chu_lai:
   - LMK_SAN_BAY_CHU_LAI
   sân_bay cà_mau:
@@ -1970,6 +2144,8 @@ synonyms:
   - LOC_TAY_NINH
   techo international airport:
   - LMK_TECHO_INTERNATIONAL_AIRPORT
+  terrace:
+  - AMEN_GARDEN
   thai do phuc vu:
   - ASPECT_SERVICE
   thai nguyen:
@@ -1978,10 +2154,18 @@ synonyms:
   - STYLE_ECO
   thang binh:
   - LOC_HOI_AN__THANG_BINH
+  thang cuon:
+  - AMEN_ELEVATOR
+  thang cuốn:
+  - AMEN_ELEVATOR
+  thang may:
+  - AMEN_ELEVATOR
   thang tam:
   - LOC_VUNG_TAU__THANG_TAM
   thang_binh:
   - LOC_HOI_AN__THANG_BINH
+  thang_máy:
+  - AMEN_ELEVATOR
   thanh binh:
   - STYLE_QUIET
   thanh bình:
@@ -2031,6 +2215,8 @@ synonyms:
   - LOC_BIEN_HOA__THONG_NHAT
   thoải_mái:
   - STYLE_RELAXING
+  thu cung:
+  - AMEN_PET_FRIENDLY
   thu dau mot:
   - LOC_BINH_DUONG__THU_DAU_MOT
   thu duc:
@@ -2043,6 +2229,8 @@ synonyms:
   thuan an:
   - LOC_BINH_DUONG__THUAN_AN
   - LOC_THUAN_AN
+  thue xe dap:
+  - AMEN_BIKE
   thung lung tinh yeu:
   - LOC_DA_LAT__THUNG_LUNG_TINH_YEU
   thung lung_tinh yeu:
@@ -2055,6 +2243,8 @@ synonyms:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
   thuong ly / quan_toan:
   - LOC_HAI_PHONG__THUONG_LY_QUAN_TOAN
+  thuê xe_đạp:
+  - AMEN_BIKE
   thuận an:
   - LOC_BINH_DUONG__THUAN_AN
   - LOC_THUAN_AN
@@ -2073,6 +2263,8 @@ synonyms:
   - ASPECT_SERVICE
   thân_thiện môi_trường:
   - STYLE_ECO
+  thú cưng:
+  - AMEN_PET_FRIENDLY
   thăng_bình:
   - LOC_HOI_AN__THANG_BINH
   thư giãn:
@@ -2096,6 +2288,8 @@ synonyms:
   - LOC_TIEN_GIANG_TINH
   tien ich:
   - ASPECT_FACILITIES
+  tien nghi cho khach khuyet tat:
+  - AMEN_WHEELCHAIR
   tien nghi co so luu tru:
   - ASPECT_FACILITIES
   tien nghi hien dai:
@@ -2114,6 +2308,8 @@ synonyms:
   - PRICE_BUDGET
   tiền giang:
   - LOC_TIEN_GIANG_TINH
+  tiện_nghi cho khách khuyết_tật:
+  - AMEN_WHEELCHAIR
   tiện_nghi cơ_sở lưu_trú:
   - ASPECT_FACILITIES
   tiện_nghi hiện_đại:
@@ -2150,10 +2346,14 @@ synonyms:
   - SETTING_CITY_CENTER
   trong nội_thành:
   - SETTING_CITY_CENTER
+  trong tre:
+  - AMEN_BABYSITTING
   trung hoa nhan chinh:
   - LOC_HA_NOI__TRUNG_HOA_NHAN_CHINH
   trung tam:
   - SETTING_CITY_CENTER
+  trung tam hoi nghi:
+  - AMEN_MEETING_ROOM
   trung tam lan bien vietnam explore:
   - LMK_TRUNG_TAM_LAN_BIEN_VIETNAM_EXPLORE
   trung tam sapa:
@@ -2209,6 +2409,8 @@ synonyms:
   - LOC_THANH_HOA__TRUNG_TAM_TP_THANH_HOA
   trung_tâm:
   - SETTING_CITY_CENTER
+  trung_tâm hội_nghị:
+  - AMEN_MEETING_ROOM
   trung_tâm lặn biển vietnam explore:
   - LMK_TRUNG_TAM_LAN_BIEN_VIETNAM_EXPLORE
   trung_tâm sapa:
@@ -2240,6 +2442,8 @@ synonyms:
   - SETTING_MOUNTAIN
   trên đảo:
   - SETTING_ISLAND
+  trông trẻ:
+  - AMEN_BABYSITTING
   trăng_mật:
   - PURPOSE_ROMANTIC
   trại cá_sấu blue sky:
@@ -2410,6 +2614,7 @@ synonyms:
   vung tau:
   - LOC_VUNG_TAU
   vuon:
+  - AMEN_GARDEN
   - SETTING_NATURE
   vuon be canh:
   - LMK_VUON_BE_CANH
@@ -2435,6 +2640,7 @@ synonyms:
   vũng tàu:
   - LOC_VUNG_TAU
   vườn:
+  - AMEN_GARDEN
   - SETTING_NATURE
   vườn bể cảnh:
   - LMK_VUON_BE_CANH
@@ -2450,6 +2656,8 @@ synonyms:
   - PURPOSE_WELLNESS
   wenshan puzhehei airport:
   - LMK_WENSHAN_PUZHEHEI_AIRPORT
+  wheelchair accessible:
+  - AMEN_WHEELCHAIR
   wi-fi:
   - AMEN_WIFI
   wifi:
@@ -2465,10 +2673,14 @@ synonyms:
   - STYLE_LUXURY
   xanh:
   - STYLE_ECO
+  xe dap:
+  - AMEN_BIKE
   xe dua don:
   - AMEN_AIRPORT_SHUTTLE
   xe đưa_đón:
   - AMEN_AIRPORT_SHUTTLE
+  xe_đạp:
+  - AMEN_BIKE
   xin:
   - PRICE_LUXURY
   xong hoi:
@@ -2507,6 +2719,10 @@ synonyms:
   - PURPOSE_GROUP
   đi đoàn:
   - PURPOSE_GROUP
+  điều hòa:
+  - AMEN_AC
+  điều hòa nhiệt_độ:
+  - AMEN_AC
   điện biên_phủ:
   - LOC_DIEN_BIEN_PHU
   điện dương:
@@ -2535,6 +2751,8 @@ synonyms:
   - PURPOSE_ROMANTIC
   đưa_đón sân_bay:
   - AMEN_AIRPORT_SHUTTLE
+  được phép đưa thú nuôi vào:
+  - AMEN_PET_FRIENDLY
   đảo castaway island:
   - LMK_DAO_CASTAWAY_ISLAND
   đảo phú_quốc:
@@ -2563,6 +2781,12 @@ synonyms:
   - LOC_DONG_HOI__DONG_HOI
   đồng nai:
   - LOC_DONG_NAI_TINH
+  đỗ xe:
+  - AMEN_PARKING
+  đỗ xe miễn_phí:
+  - AMEN_PARKING
+  đỗ xe_đạp:
+  - AMEN_BIKE
   độ sạch_sẽ:
   - ASPECT_CLEANLINESS
   độ thoải_mái của phòng:

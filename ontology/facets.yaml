@@ -53,10 +53,13 @@ facets:
     values_groups:
       water:   [AMEN_POOL, AMEN_INFINITY_POOL, AMEN_KIDS_POOL, AMEN_PRIVATE_POOL, AMEN_BEACHFRONT, AMEN_SEA_VIEW]
       wellness: [AMEN_SPA, AMEN_GYM]
-      family:  [AMEN_KIDS_CLUB]
-      dining:  [AMEN_BAR, AMEN_RESTAURANT]
-      service: [AMEN_AIRPORT_SHUTTLE, AMEN_WIFI]
-      sport:   [AMEN_GOLF]
+      family:  [AMEN_KIDS_CLUB, AMEN_BABYSITTING]
+      dining:  [AMEN_BAR, AMEN_RESTAURANT, AMEN_CAFE]
+      service: [AMEN_AIRPORT_SHUTTLE, AMEN_WIFI, AMEN_PARKING, AMEN_ELEVATOR, AMEN_MEETING_ROOM]
+      sport:   [AMEN_GOLF, AMEN_BIKE]
+      room:    [AMEN_AC, AMEN_KITCHEN]
+      outdoor: [AMEN_GARDEN]
+      access:  [AMEN_WHEELCHAIR, AMEN_PET_FRIENDLY]
 
   setting:
     cardinality: many

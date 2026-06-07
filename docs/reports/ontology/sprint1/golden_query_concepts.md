@@ -463,13 +463,13 @@ Cho mỗi luật `X -> [Y1, Y2...]` trong `ontology/query_expansion.yaml`:
 
 ## Gap đã ghi nhận (cần Candidate / mở rộng — KHÔNG tự thêm vào Core)
 
-> **Cập nhật (corpus VN 520, location tự sinh):** 3/5 gap địa danh đã TỰ HẾT — Đà Lạt, Sầm Sơn,
-> sân bay Đà Nẵng nay đều có concept trong `location.generated.yaml`. Chỉ còn 2 gap thật (pet, aspect).
+> **Cập nhật (corpus VN 520; location + facet audit):** 4/5 gap đã HẾT — Đà Lạt, Sầm Sơn, sân bay
+> Đà Nẵng (location tự sinh) + thú cưng (AMEN_PET_FRIENDLY đã lên Core). Chỉ còn 1 gap thật (aspect query).
 
 | Gap | Câu | Trạng thái |
 |---|---|---|
 | ~~Concept location `LOC_DA_LAT`~~ | Q1-05, Q6-02 | ✅ ĐÃ CÓ `LOC_DA_LAT` (tự sinh từ 23 hotel Đà Lạt). |
 | ~~Concept Sầm Sơn~~ | Q1-06 | ✅ ĐÃ CÓ `LOC_BAI_BIEN_SAM_SON` (tự sinh). |
 | ~~Concept sân bay Đà Nẵng~~ | Q7-03 | ✅ ĐÃ CÓ `LMK_SAN_BAY_QUOC_TE_DA_NANG` (landmark tự sinh từ nearby_places). |
-| Concept amenity "thú cưng" (pet-friendly) | Q1-05 | ⏳ CÒN: vào `candidate_queue.yaml` → duyệt; thiếu field `pet_policy` trong clean data (báo Data Quality). |
+| ~~Concept amenity "thú cưng"~~ | Q1-05 | ✅ ĐÃ CÓ `AMEN_PET_FRIENDLY` (Core, 144 hotel). LƯU Ý vẫn thiếu field `pet_policy` trong clean data → báo Data Quality. |
 | Facet `aspect` chưa có câu hỏi trực tiếp | (chỉ ngầm Q2-04, Q7-01) | ⏳ CÒN: bổ sung query "khách sạn sạch sẽ / dịch vụ tốt ở X" ở vòng golden tiếp theo. |

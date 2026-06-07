@@ -103,3 +103,61 @@ candidates:
     examples: ["boutique", "nghệ thuật", "độc đáo", "phong cách riêng"]
     source: description
     status: pending
+
+  # ── AMENITY: 11 đáng lọc đã lên Core. Dưới là tiện ích giải trí NGÁCH (ít hotel) + dịch vụ
+  #    vận hành phổ biến nhưng ÍT GIÁ TRỊ LỌC (gần như hotel nào cũng có) -> chờ duyệt. ──
+  - candidate_keyword: "sân tennis / quần vợt"
+    suggested_facet: amenity
+    suggested_concept_id: AMEN_TENNIS
+    frequency: 120
+    examples: ["Sân quần vợt"]
+    source: amenities
+    status: pending
+
+  - candidate_keyword: "phòng yoga"
+    suggested_facet: amenity
+    suggested_concept_id: AMEN_YOGA
+    frequency: 120
+    examples: ["Phòng yoga"]
+    source: amenities
+    status: pending
+
+  - candidate_keyword: "karaoke"
+    suggested_facet: amenity
+    suggested_concept_id: AMEN_KARAOKE
+    frequency: 130
+    examples: ["Karaoke"]
+    source: amenities
+    status: pending
+
+  - candidate_keyword: "bi-a / bida"
+    suggested_facet: amenity
+    suggested_concept_id: AMEN_BILLIARDS
+    frequency: 116
+    examples: ["Bi-a"]
+    source: amenities
+    status: pending
+
+  - candidate_keyword: "thể thao nước (bơi xuồng / lặn / câu cá)"
+    suggested_facet: amenity
+    suggested_concept_id: AMEN_WATERSPORT
+    frequency: 112                              # Bơi xuồng(112)+Lặn(106)+Câu cá(110) — gom
+    examples: ["Bơi xuồng", "Lặn", "Câu cá"]
+    source: amenities
+    status: pending
+
+  - candidate_keyword: "đi bộ đường dài / hiking"
+    suggested_facet: amenity
+    suggested_concept_id: AMEN_HIKING
+    frequency: 130
+    examples: ["Đi bộ đường dài"]
+    source: amenities
+    status: pending
+
+  - candidate_keyword: "đổi ngoại tệ / rút tiền"
+    suggested_facet: amenity
+    suggested_concept_id: AMEN_CURRENCY_EXCHANGE
+    frequency: 514                              # phổ biến nhưng dịch vụ vận hành, ít giá trị lọc
+    examples: ["Đổi ngoại tệ", "Rút tiền mặt"]
+    source: amenities
+    status: pending
