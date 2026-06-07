@@ -19,11 +19,52 @@ candidate_schema:
     suggested_concept_id: "ID đề xuất nếu được duyệt (vd PURPOSE_STAYCATION)"
     frequency:           "số lần xuất hiện"
     examples:            "[câu trích dẫn nguồn]"
-    source:              "review | faq | article | query_log"
+    source:              "review | faq | article | query_log | description (keyword scan)"
     status:              "pending | approved | rejected"
 
-# Ví dụ các purpose/style thường gặp trong review/query log nhưng CHƯA có bằng chứng đủ trong
-# corpus hiện tại (staycation, workation, team building, wedding, anniversary, instagrammable...).
-# -> KHÔNG đưa vào Core cho tới khi có frequency thật + human duyệt + golden set.
+# ⚠ ĐỘ TIN: các ứng viên purpose dưới phát hiện bằng KEYWORD SCAN trên description/faq của 520
+# hotel VN (KHÔNG phải ABSA trên review thật — review chưa crawl). frequency = số hotel có keyword
+# trong description, là GỢI Ý độ phổ biến, CHƯA đủ mạnh để lên Core. Quy trình promote:
+#   chờ review ABSA (Sprint 2) đo tần suất thật -> human duyệt -> golden set không giảm -> merge Core.
+# Đã loại các purpose ĐÃ CÓ Core (wellness/romantic) khỏi danh sách ứng viên.
 
-candidates: []   # rỗng — sẽ điền từ Sprint 2 (review ABSA) và query log DA09
+candidates:
+  - candidate_keyword: "team building / hội nghị / sự kiện (MICE)"
+    suggested_facet: purpose
+    suggested_concept_id: PURPOSE_MICE          # MICE = Meetings, Incentives, Conferences, Events
+    frequency: 107                              # 107/520 hotel (~20%) nhắc trong description/faq
+    examples: ["team building", "hội nghị", "hội thảo", "tổ chức tiệc / gala", "sự kiện"]
+    source: description
+    status: pending
+
+  - candidate_keyword: "tiệc cưới / đám cưới (wedding)"
+    suggested_facet: purpose
+    suggested_concept_id: PURPOSE_WEDDING
+    frequency: 24                               # 24/520 (~4%)
+    examples: ["tiệc cưới", "đám cưới", "wedding"]
+    source: description
+    status: pending
+
+  - candidate_keyword: "workation / làm việc từ xa"
+    suggested_facet: purpose
+    suggested_concept_id: PURPOSE_WORKATION
+    frequency: 10                               # 10/520 (~2%) — tần suất thấp
+    examples: ["workation", "làm việc từ xa", "remote work"]
+    source: description
+    status: pending
+
+  - candidate_keyword: "phượt / backpacker"
+    suggested_facet: purpose
+    suggested_concept_id: PURPOSE_BACKPACKER
+    frequency: 9                                # 9/520 (~2%) — tần suất thấp
+    examples: ["phượt", "đi bụi", "backpacker"]
+    source: description
+    status: pending
+
+  - candidate_keyword: "staycation"
+    suggested_facet: purpose
+    suggested_concept_id: PURPOSE_STAYCATION
+    frequency: 0                                # chưa thấy trong description; thường ở QUERY LOG/review
+    examples: ["staycation", "nghỉ dưỡng tại chỗ"]
+    source: query_log
+    status: pending
