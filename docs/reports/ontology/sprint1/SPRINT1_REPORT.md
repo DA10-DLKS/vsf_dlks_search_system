@@ -2,8 +2,8 @@
 
 > **Người thực hiện:** Trương Anh Long — vai trò Knowledge Engineering, team DA10.
 > **Phạm vi:** Sprint 1 = xây toàn bộ *nền tảng ngữ nghĩa* cho hệ thống tìm kiếm khách sạn.
-> **Dữ liệu:** 51 khách sạn thật crawl từ Agoda (`data/raw/hotels/*.json`).
-> **Ngày chốt báo cáo:** 2026-06-04.
+> **Dữ liệu:** 520 khách sạn Việt Nam thật crawl từ Agoda (`data/cleaned/hotel_*.json`). Mốc: 27 → 51 → 555 (toàn cầu) → **520 (chốt CHỈ VN)**.
+> **Ngày chốt báo cáo:** cập nhật theo corpus 520 VN.
 > **Đối tượng đọc:** cả người trong và ngoài team — đọc xong hiểu *làm gì, tại sao, ra cái gì*.
 
 ---
@@ -62,17 +62,21 @@ Chỉ có `STYLE_QUIET`, `ASPECT_CLEANLINESS`; còn tốt/xấu để ở một 
 Sprint 1 gồm 8 task. Thứ tự có chủ đích: mỗi task là đầu vào của task sau.
 
 ### Task 1.1 — Domain Analysis (Phân tích miền dữ liệu)
-- **Làm gì:** đọc 51 khách sạn thật, thống kê xem dữ liệu Agoda có những trường ngữ nghĩa nào
+- **Làm gì:** đọc 520 khách sạn VN thật, thống kê xem dữ liệu Agoda có những trường ngữ nghĩa nào
   (loại hình, tiện ích, nhóm khách, view, tag đánh giá, địa danh lân cận).
 - **Tại sao:** phải hiểu dữ liệu thật trước khi thiết kế khái niệm — không bịa từ trí tưởng tượng.
-- **Ra cái gì:** `docs/reports/ontology/sprint1/domain_analysis.md` (35 khái niệm ứng viên, đều có bằng chứng nguồn).
+- **Ra cái gì:** `docs/reports/ontology/sprint1/domain_analysis.md` (số liệu TỰ SINH theo 520 hotel).
 
 ### Task 1.2 — Concept Registry (Sổ đăng ký khái niệm)
-- **Làm gì:** biến khái niệm ứng viên thành **73 concept Core** chính thức, song ngữ Việt–Anh,
-  chia 8 nhóm (facet): loại hình, vị trí, tiện ích, bối cảnh, giá, nhóm khách, phong cách, khía cạnh.
+- **Làm gì:** xây **63 concept Core viết tay** (7 facet ngữ nghĩa) + **351 concept location TỰ SINH**
+  từ data (country/city/area/landmark) = **414 concept**. Song ngữ Việt–Anh, 8 facet: loại hình, vị
+  trí, tiện ích, bối cảnh, giá, nhóm khách, phong cách, khía cạnh.
 - **Tại sao:** đây là "nguồn sự thật duy nhất" — mọi file khác sinh ra từ đây.
-- **Ra cái gì:** `ontology/core/*.yaml` (8 file) + `ontology/_meta.yaml` (quy ước chung)
-  + `ontology/candidate/candidate_queue.yaml` (hàng đợi ứng viên, hiện trống).
+- **Ra cái gì:** `ontology/core/*.yaml` (8 file, gồm `location.generated.yaml` tự sinh +
+  `location_id_registry.yaml` neo ID) + `ontology/_meta.yaml` + `candidate/candidate_queue.yaml`
+  (16 ứng viên pending) + `candidate/location_candidates.yaml` (country lạ auto-slug, hiện trống).
+- **Ghi chú audit (sau khi corpus về 520 VN):** đã quét TỪNG facet đối chiếu data, bổ sung concept
+  thiếu (object_type 5→8, amenity 14→25, setting 5→6) — phủ hết loại hình + tiện ích du khách lọc.
 
 ### Task 1.3 — Vietnamese Normalization (Chuẩn hóa tiếng Việt)
 - **Làm gì:** hàm `normalize()` xử lý 3 việc: gộp dấu (NFC) → tách từ ghép ("hồ bơi"→"hồ_bơi")
@@ -88,24 +92,27 @@ Sprint 1 gồm 8 task. Thứ tự có chủ đích: mỗi task là đầu vào c
 - **Ra cái gì:** `ontology/facets.yaml` (8 facet + 4 bộ lọc số: sao, điểm đánh giá, giá, khoảng cách).
 
 ### Task 1.5 — Ontology Relations (Quan hệ / đồ thị tri thức nhẹ)
-- **Làm gì:** dựng quan hệ giữa các thực thể — quan trọng nhất là quan hệ **"gần"** (hotel ↔ địa danh).
-  Tận dụng trường `nearby_places` (đã có sẵn khoảng cách km) trong data.
+- **Làm gì:** dựng quan hệ **"gần"** (hotel ↔ landmark) từ `nearby_places` (có khoảng cách km).
+  Landmark cũng TỰ SINH từ nearby_places (lọc type du lịch, ≥4 hotel) → **142 landmark**.
 - **Tại sao:** để trả lời "gần VinWonders không?" bằng **đồ thị**, không phải so khớp từ khóa.
-- **Ra cái gì:** `ontology/ontology.yaml` (6 địa danh + quan hệ thuộc-về)
-  + `ontology/relations_near.generated.yaml` (**22 quan hệ "gần"**, tự sinh từ data).
+- **Ra cái gì:** `ontology/ontology.yaml` (cây phân cấp nay nằm ở `parent` của location.generated)
+  + `ontology/relations_near.generated.yaml` (**1.093 quan hệ "gần"**, tự sinh; khớp tên CHẶT exact
+  để tránh false-match). Landmark trong `location.generated.yaml`.
 
 ### Task 1.6 — Synonym Dictionary (Từ điển đồng nghĩa)
 - **Làm gì:** tự sinh bản đồ *cách-gõ-bề-mặt → concept_id* từ ontology. Mỗi cách gõ index cả 2 dạng
   (có dấu + không dấu).
 - **Tại sao:** đây là thứ tầng tìm kiếm (Anh Tài) dùng để hiểu câu hỏi người dùng.
-- **Ra cái gì:** `ontology/synonym_dictionary.yaml` (**543 cách gõ**). Bàn giao → Anh Tài.
+- **Ra cái gì:** `ontology/synonym_dictionary.yaml` (**1.365 cách gõ**, gồm địa danh VN tự sinh).
+  Bàn giao → Anh Tài.
 
-### Task 1.7 — Query Expansion (Mở rộng truy vấn) — ⚠ CHƯA HOÀN TẤT
+### Task 1.7 — Query Expansion (Mở rộng truy vấn) — ⚠ CHƯA VERIFY
 - **Làm gì:** luật mở rộng *khái niệm → khái niệm* để tăng độ phủ tìm kiếm
   (vd "gia đình" → kéo thêm "câu lạc bộ trẻ em", "hồ bơi trẻ em").
 - **Tại sao:** người dùng hỏi "gia đình" thường ngầm muốn các tiện ích gia đình.
-- **Ra cái gì:** `ontology/query_expansion.yaml` (**21 luật**) — nhưng **tất cả đánh dấu `unverified`**
-  (xem mục 5: cần bộ test golden mới kiểm được).
+- **Ra cái gì:** `ontology/query_expansion.yaml` (**21 luật**) — **tất cả `unverified`**. Golden set
+  để verify NAY ĐÃ CÓ (`golden_query_concepts.md`, 32 câu có nhãn `expansion_should_help`), nhưng
+  bước A/B đo Recall cần pipeline retrieval Sprint 2 mới chạy được → vẫn để `unverified`.
 
 ### Task 1.8 — Metadata Schema (Hợp đồng dữ liệu) — 1 trong 3 contract chốt cuối Sprint 1
 - **Làm gì:** chốt schema cho "đối tượng tri thức" (knowledge object) mà DA10 bàn giao cho DA09,
@@ -131,7 +138,7 @@ theo tiêu chuẩn search thực tế), đã điều chỉnh các điểm sau ch
 | 6 | **Attribute số (sao, giá, khoảng cách) KHÔNG làm concept** | Chúng là bộ lọc dạng khoảng, không phải khái niệm ngữ nghĩa. Để ở metadata_schema. |
 | 7 | **Synonym: 1 cách gõ → DANH SÁCH concept** (không phải 1-1) | "lãng mạn" thật sự vừa là nhóm khách vừa là phong cách — giữ cả hai, không bỏ sót. |
 | 8 | **Sửa contract `metadata.md`: vocab phẳng → concept_id; bỏ field `near_<landmark>`** | Đồng bộ 1 nguồn từ vựng; field `near_vinwonders` là anti-pattern (mỗi landmark mới phải thêm 1 field → không scale). Thay bằng mô hình `nearby_places[]` (category + khoảng cách). |
-| 9 | **3 script "tự sinh" (Lớp A)** | Khi corpus mở rộng (đã 27→51, sắp 500–1000), chạy lại script thay vì sửa tay. |
+| 9 | **4 script "tự sinh" (Lớp A)** | Khi corpus đổi (27→51→555→520), chạy lại script thay vì sửa tay. Gồm build_locations (location+landmark+registry), build_synonym, build_relations, build_domain_stats. |
 
 ### Khái niệm "3 Lớp" khi dữ liệu mở rộng (quan trọng cho vận hành lâu dài)
 - **Lớp A — tự sinh từ data:** quan hệ "gần", từ điển đồng nghĩa, thống kê domain. → chạy lại script.
@@ -144,12 +151,13 @@ theo tiêu chuẩn search thực tế), đã điều chỉnh các điểm sau ch
 
 | Hạng mục | Trạng thái | Lý do |
 |---|---|---|
-| **Task 1.1 Bước 2** (nhóm golden query theo facet) | Chờ | Cần **golden set** (30–50 query có nhãn) do DA09 cấp — repo chưa có. |
-| **Task 1.7 Query Expansion — kiểm chứng** | 21 luật ở trạng thái `unverified` | DA10 yêu cầu "mỗi luật kiểm trên golden set, không tăng độ phủ thì bỏ". Chưa có golden set nên **không đánh dấu 'đã kiểm'** — giữ trung thực thay vì bịa. |
-| **Verify thật của metadata pipeline** | Mới validate object *mẫu* | Tính đúng thật chỉ kiểm được khi pipeline (Sprint 2) chạy trên 51 hotel. |
+| **Task 1.1 Bước 2** (nhóm golden query theo facet) | ✅ ĐÃ CÓ INPUT | Golden set KE đã tự tạo: `golden_query_concepts.md` (32 câu có nhãn facet/concept_id). Chạm 8/8 facet. |
+| **Task 1.7 Query Expansion — verify** | 21 luật `unverified` | Golden set ĐÃ CÓ (có cột `expansion_should_help`), nhưng bước A/B đo Recall cần **pipeline retrieval (Sprint 2)** mới chạy được → giữ `unverified`, không bịa "đã kiểm". |
+| **candidate_queue chưa duyệt** | 16 ứng viên `pending` | Concept ứng viên từ keyword scan (MICE, vintage, tennis...). Chờ **review ABSA (Sprint 2)** đo tần suất thật + human duyệt mới promote. |
+| **Verify thật metadata pipeline** | Mới validate object *mẫu* | Tính đúng thật chỉ kiểm được khi ontology_mapper (Sprint 2) chạy gắn nhãn cả 520 hotel. |
 
-> **Lộ trình mở khóa:** khi DA09 cấp golden set → hoàn tất Task 1.1 Bước 2 → chạy A/B từng luật
-> expansion → đổi `unverified` thành `verified`/bỏ.
+> **Lộ trình mở khóa (Sprint 2):** pipeline retrieval → chạy A/B từng luật expansion trên golden set
+> → đổi `unverified` thành `verified`/bỏ. ABSA review → duyệt candidate_queue → promote Core.
 
 ---
 
@@ -158,36 +166,46 @@ theo tiêu chuẩn search thực tế), đã điều chỉnh các điểm sau ch
 **Cấu hình ngữ nghĩa** (`ontology/`):
 ```
 _meta.yaml                     quy ước chung + đăng ký 8 facet
-core/{object_type,amenity,location,setting,price_tier,purpose,style,aspect}.yaml   73 concept
-candidate/candidate_queue.yaml hàng đợi khái niệm ứng viên (trống)
+core/<7 facet>.yaml            63 concept viết tay (object_type 8, amenity 25, setting 6,
+                               price_tier 4, purpose 6, style 7, aspect 7)
+core/location.generated.yaml   351 concept location TỰ SINH (1 country/14 tỉnh/69 city/
+                               126 area/142 landmark)            → tổng 414 concept
+core/location.yaml             (rỗng — place/landmark đã chuyển sang generated)
+core/location_id_registry.yaml neo ID location ổn định (append-only, external_id Agoda)
+candidate/candidate_queue.yaml 16 ứng viên pending (chờ ABSA Sprint 2)
+candidate/location_candidates.yaml  country lạ auto-slug (Mức 3, hiện trống — corpus thuần VN)
 facets.yaml                    8 facet + 4 bộ lọc số
-ontology.yaml                  quan hệ (đồ thị tri thức nhẹ)
-relations_near.generated.yaml  22 quan hệ "gần" (TỰ SINH)
-synonym_dictionary.yaml        543 cách gõ → concept (TỰ SINH)   → bàn giao Anh Tài
+ontology.yaml                  quan hệ KG (cây phân cấp ở parent của generated)
+relations_near.generated.yaml  1.093 quan hệ "gần" (TỰ SINH, match exact)
+synonym_dictionary.yaml        1.365 cách gõ → concept (TỰ SINH)  → bàn giao Anh Tài
 query_expansion.yaml           21 luật mở rộng (unverified)       → bàn giao Anh Tài
 metadata_schema.yaml           CONTRACT v1.0                      → bàn giao DA09/Đạt
 ```
 
 **Code** (`knowledge_engineering/`):
 ```
-common/normalize.py                    chuẩn hóa tiếng Việt
-common/build_synonym_index.py          sinh synonym_dictionary
-entity_extraction/build_relations.py   sinh quan hệ "gần"
+common/normalize.py                     chuẩn hóa tiếng Việt
+common/build_synonym_index.py           sinh synonym_dictionary
+entity_extraction/build_locations.py    sinh location + landmark + registry + candidate (Lớp A)
+entity_extraction/build_relations.py    sinh quan hệ "gần"
 entity_extraction/build_domain_stats.py sinh thống kê domain
-metadata_extraction/schema.py          kiểm tra schema (pydantic)
+metadata_extraction/schema.py           kiểm tra schema (pydantic)
 ```
 
 **Báo cáo/đầu ra** (`docs/reports/ontology/sprint1/`):
 ```
-domain_analysis.md   phân tích miền (số liệu tự sinh giữa marker)
-domain_stats.json    thống kê thô (TỰ SINH)
-SPRINT1_REPORT.md    file này
+domain_analysis.md          phân tích miền (số liệu tự sinh giữa marker)
+domain_stats.json           thống kê thô (TỰ SINH, n=520)
+golden_query_concepts.md    golden set KE (32 câu, nhãn facet/concept) — mở khóa Task 1.1 B2 + 1.7
+location_id_collision.md    lịch sử quyết định ID location (curated vs generated)
+SPRINT1_REPORT.md           file này
 ```
 
-**Lệnh chạy lại "Lớp A" khi corpus đổi:**
+**Lệnh chạy lại "Lớp A" khi corpus đổi (chạy build_locations TRƯỚC):**
 ```bash
-.venv/Scripts/python.exe -X utf8 -m knowledge_engineering.entity_extraction.build_relations
+.venv/Scripts/python.exe -X utf8 -m knowledge_engineering.entity_extraction.build_locations
 .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.common.build_synonym_index
+.venv/Scripts/python.exe -X utf8 -m knowledge_engineering.entity_extraction.build_relations
 .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.entity_extraction.build_domain_stats
 ```
 
@@ -195,11 +213,12 @@ SPRINT1_REPORT.md    file này
 
 ## 7. Con số tóm tắt
 
-- **51** khách sạn thật phân tích
-- **73** concept Core (8 facet; 53 hard / 20 soft)
-- **543** cách gõ trong từ điển đồng nghĩa
-- **22** quan hệ "gần" (hotel ↔ landmark)
-- **21** luật mở rộng truy vấn (chờ kiểm chứng)
+- **520** khách sạn Việt Nam thật phân tích
+- **414** concept Core = 63 viết tay (7 facet) + 351 location tự sinh (394 hard / 20 soft)
+- **1.365** cách gõ trong từ điển đồng nghĩa
+- **1.093** quan hệ "gần" (hotel ↔ landmark); **142** landmark tự sinh
+- **21** luật mở rộng truy vấn (chờ verify Sprint 2)
+- **16** ứng viên candidate chờ duyệt (ABSA Sprint 2)
 - **1** contract metadata chốt (1 trong 3 contract của team)
 - **3** script tự sinh phục vụ mở rộng dữ liệu
 

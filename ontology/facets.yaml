@@ -27,44 +27,22 @@ facets:
     da09_slot: accommodation_type
     metadata_field: core_metadata.accommodation_type   # + core_metadata.entity_type
     description: Loại hình lưu trú.
-    values: [OBJ_HOTEL, OBJ_RESORT, OBJ_VILLA, OBJ_HOMESTAY, OBJ_APARTMENT]
+    values: [OBJ_HOTEL, OBJ_RESORT, OBJ_VILLA, OBJ_HOMESTAY, OBJ_APARTMENT, OBJ_GUESTHOUSE, OBJ_BNB, OBJ_BUNGALOW]
 
   location:
     cardinality: one          # một cơ sở ở một địa điểm chính (place); landmark gắn qua quan hệ near (Task 1.5)
     fact_type: hard
     da09_slot: destination
-    metadata_field: core_metadata.city               # + area, district, province (cây địa danh)
-    description: Địa danh hành chính (place) + landmark. Cây phân cấp country>province>city>area.
-    hierarchy: [country, province, city, area]
-    # values phân theo kind (xem ontology/core/location.yaml). Place dùng để FILTER destination;
-    # landmark (LMK_*) chủ yếu dùng cho quan hệ near ở ontology.yaml.
-    values_places:
-      - LOC_KHANH_HOA          # province
-      - LOC_NHA_TRANG          #   city (parent: LOC_KHANH_HOA)
-      - LOC_HON_TRE            #     area (parent: LOC_NHA_TRANG)
-      - LOC_PHU_QUOC
-      - LOC_GANH_DAU           #     area (parent: LOC_PHU_QUOC)
-      - LOC_HOI_AN
-      - LOC_CUA_DAI            #     area (parent: LOC_HOI_AN)
-      - LOC_HO_CHI_MINH
-      - LOC_HA_TINH
-      - LOC_HA_LONG
-      - LOC_DA_NANG
-      - LOC_HUE
-      - LOC_CUA_LO
-      - LOC_QUANG_BINH
-      - LOC_THANH_HOA
-      - LOC_HA_NAM
-      - LOC_TAY_NINH
-      - LOC_BAC_NINH
-      - LOC_HAI_PHONG
-    values_landmarks:
-      - LMK_VINWONDERS_NHA_TRANG
-      - LMK_VINWONDERS_PHU_QUOC
-      - LMK_GRAND_WORLD_PHU_QUOC
-      - LMK_BAI_DAI
-      - LMK_VIEN_HAI_DUONG_HOC
-      - LMK_DINH_BAO_DAI
+    metadata_field: core_metadata.city               # + area, country (cây địa danh)
+    description: >
+      Địa danh hành chính (country>province>city>area) + landmark. PHẠM VI VIỆT NAM. TỰ SINH từ
+      data: xem ontology/core/location.generated.yaml (build_locations.py, Lớp A). Corpus VN:
+      1 country / 14 province (tách tự động) / 69 city / 126 area / 153 landmark (520 hotel).
+    hierarchy: [country, province, city, area]   # tỉnh tách tự động từ tên "City (Tỉnh)" trong data
+    # values KHÔNG liệt kê tay nữa (đã tự sinh, ~360 concept). Tra trực tiếp trong
+    # ontology/core/location.generated.yaml. Place (kind=country/place/area) -> FILTER destination;
+    # landmark (LMK_*, kind=landmark) -> quan hệ near (ontology.yaml + relations_near.generated.yaml).
+    values_source: ontology/core/location.generated.yaml
 
   amenity:
     cardinality: many
@@ -75,10 +53,13 @@ facets:
     values_groups:
       water:   [AMEN_POOL, AMEN_INFINITY_POOL, AMEN_KIDS_POOL, AMEN_PRIVATE_POOL, AMEN_BEACHFRONT, AMEN_SEA_VIEW]
       wellness: [AMEN_SPA, AMEN_GYM]
-      family:  [AMEN_KIDS_CLUB]
-      dining:  [AMEN_BAR, AMEN_RESTAURANT]
-      service: [AMEN_AIRPORT_SHUTTLE, AMEN_WIFI]
-      sport:   [AMEN_GOLF]
+      family:  [AMEN_KIDS_CLUB, AMEN_BABYSITTING]
+      dining:  [AMEN_BAR, AMEN_RESTAURANT, AMEN_CAFE]
+      service: [AMEN_AIRPORT_SHUTTLE, AMEN_WIFI, AMEN_PARKING, AMEN_ELEVATOR, AMEN_MEETING_ROOM]
+      sport:   [AMEN_GOLF, AMEN_BIKE]
+      room:    [AMEN_AC, AMEN_KITCHEN]
+      outdoor: [AMEN_GARDEN]
+      access:  [AMEN_WHEELCHAIR, AMEN_PET_FRIENDLY]
 
   setting:
     cardinality: many
@@ -86,7 +67,7 @@ facets:
     da09_slot: location_type
     metadata_field: semantic_metadata.location_type
     description: Bối cảnh / vị trí tự nhiên của cơ sở (khác địa danh cụ thể).
-    values: [SETTING_COASTAL, SETTING_NATURE, SETTING_CITY_CENTER, SETTING_MOUNTAIN, SETTING_ISLAND]
+    values: [SETTING_COASTAL, SETTING_NATURE, SETTING_CITY_CENTER, SETTING_MOUNTAIN, SETTING_ISLAND, SETTING_RIVERSIDE]
 
   price_tier:
     cardinality: one

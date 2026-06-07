@@ -167,6 +167,131 @@ concepts:
     provenance: [domain_knowledge, agoda, booking, google_hotels]
     label: {vi: Nhà hàng, en: Restaurant}
     surface_forms:
-      vi: [nhà hàng, ẩm thực, quán cà phê, dịch vụ phòng]
-      en: [restaurant, dining, cafe]
+      vi: [nhà hàng, ẩm thực, dịch vụ phòng]
+      en: [restaurant, dining]
     description: {vi: Nhà hàng / dịch vụ ẩm thực tại chỗ, en: On-site restaurant / dining}
+
+  AMEN_CAFE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Quán cà phê, en: Cafe}
+    surface_forms:
+      vi: [quán cà phê, cà phê, coffee shop]
+      en: [cafe, coffee shop]
+    description: {vi: Quán cà phê tại cơ sở lưu trú, en: On-site cafe}
+
+  # ── Bổ sung từ corpus 520 VN (amenity du khách lọc, chưa có concept) ───────────
+  AMEN_AC:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Điều hòa, en: Air conditioning}
+    surface_forms:
+      vi: [điều hòa, máy lạnh, điều hoà nhiệt độ]
+      en: [air conditioning, ac, air-con]
+    description: {vi: Điều hòa nhiệt độ (819 hotel), en: Air conditioning}
+
+  AMEN_PARKING:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking, google_hotels]
+    label: {vi: Bãi đỗ xe, en: Parking}
+    surface_forms:
+      vi: [bãi đỗ xe, đỗ xe, chỗ đậu xe, đỗ xe miễn phí, bãi đậu xe, nhà để xe]
+      en: [parking, free parking, car park]
+    description: {vi: Bãi đỗ xe (miễn phí hoặc tính phí) (766 hotel), en: Parking (free or paid)}
+
+  AMEN_ELEVATOR:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Thang máy, en: Elevator}
+    surface_forms:
+      vi: [thang máy, thang cuốn]
+      en: [elevator, lift]
+    description: {vi: Thang máy (830 hotel), en: Elevator / lift}
+
+  AMEN_KITCHEN:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Bếp, en: Kitchen}
+    surface_forms:
+      vi: [bếp, nhà bếp, bếp chung, khu bếp, bếp nấu]
+      en: [kitchen, kitchenette, shared kitchen]
+    description: {vi: Bếp / khu nấu ăn (quan trọng cho căn hộ, lưu trú dài) (305 hotel), en: Kitchen / cooking area}
+    related: [OBJ_APARTMENT]
+
+  AMEN_PET_FRIENDLY:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Cho phép thú cưng, en: Pet-friendly}
+    surface_forms:
+      vi: [cho phép thú cưng, được phép đưa thú nuôi vào, thú cưng, mang theo thú cưng, pet]
+      en: [pet-friendly, pets allowed]
+    description: {vi: Cho phép mang theo thú cưng (144 hotel), en: Pets allowed}
+
+  AMEN_WHEELCHAIR:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Tiện nghi cho người khuyết tật, en: Wheelchair accessible}
+    surface_forms:
+      vi: [phù hợp cho xe lăn, tiện nghi cho khách khuyết tật, lối đi xe lăn, người khuyết tật]
+      en: [wheelchair accessible, accessibility, disabled access]
+    description: {vi: Tiện nghi tiếp cận cho người khuyết tật / xe lăn (510 hotel), en: Wheelchair / accessibility features}
+
+  AMEN_MEETING_ROOM:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Phòng họp / hội nghị, en: Meeting / conference room}
+    surface_forms:
+      vi: [phòng họp, phòng hội thảo, phòng hội nghị, cơ sở vật chất cho họp mặt tiệc lớn, trung tâm hội nghị]
+      en: [meeting room, conference room, banquet facilities]
+    description: {vi: Phòng họp / hội nghị / tiệc (564 hotel), en: Meeting / conference / banquet facilities}
+    related: [PURPOSE_BUSINESS]
+
+  AMEN_GARDEN:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Vườn / sân hiên, en: Garden / terrace}
+    surface_forms:
+      vi: [vườn, sân hiên, sân vườn, khu vực tầng thượng, ban công sân hiên]
+      en: [garden, terrace, rooftop area]
+    description: {vi: Vườn / sân hiên / không gian ngoài trời (600 hotel), en: Garden / terrace / outdoor area}
+
+  AMEN_BABYSITTING:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Dịch vụ trông trẻ, en: Babysitting}
+    surface_forms:
+      vi: [dịch vụ trông trẻ, trông trẻ, giữ trẻ]
+      en: [babysitting, child care]
+    description: {vi: Dịch vụ trông trẻ (410 hotel), en: Babysitting / child care service}
+    related: [PURPOSE_FAMILY]
+
+  AMEN_BIKE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda, booking]
+    label: {vi: Xe đạp, en: Bicycle}
+    surface_forms:
+      vi: [xe đạp, thuê xe đạp, cho thuê xe đạp, đỗ xe đạp]
+      en: [bicycle, bike rental, bike]
+    description: {vi: Xe đạp / cho thuê xe đạp (324 hotel), en: Bicycle / bike rental}
