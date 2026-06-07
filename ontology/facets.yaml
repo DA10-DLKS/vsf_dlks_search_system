@@ -27,7 +27,7 @@ facets:
     da09_slot: accommodation_type
     metadata_field: core_metadata.accommodation_type   # + core_metadata.entity_type
     description: Loại hình lưu trú.
-    values: [OBJ_HOTEL, OBJ_RESORT, OBJ_VILLA, OBJ_HOMESTAY, OBJ_APARTMENT]
+    values: [OBJ_HOTEL, OBJ_RESORT, OBJ_VILLA, OBJ_HOMESTAY, OBJ_APARTMENT, OBJ_GUESTHOUSE, OBJ_BNB, OBJ_BUNGALOW]
 
   location:
     cardinality: one          # một cơ sở ở một địa điểm chính (place); landmark gắn qua quan hệ near (Task 1.5)
