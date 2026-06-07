@@ -13,7 +13,16 @@
 | `view_types` (23) | setting + AMEN_SEA_VIEW + AMEN_POOL | 16/23 | 7 hướng đô thị/không-cảnh cố ý skip |
 | `amenities` (579) | amenity (AMEN_*) | ~90 chuỗi top | Pareto: phủ phần đầu, đuôi → _unmapped/_skip |
 
-Tham chiếu **41 concept_id** riêng biệt, tất cả tồn tại trong `ontology/core/`.
+Tham chiếu concept_id riêng biệt, tất cả tồn tại trong `ontology/core/`.
+
+### Duyệt candidate (2026-06-08) — bổ sung 5 amenity concept
+Sau khảo sát `_unmapped`, đã duyệt 18 ứng viên (candidate_queue + _unmapped): **5 promote / 10 defer / 1 reject**.
+- ✅ **Promote → core/amenity.yaml** (amenity hard, lọc được): `AMEN_TENNIS`(61) · `AMEN_KARAOKE`(65) ·
+  `AMEN_GAME_ROOM`(67, gộp bi-a+bóng bàn) · `AMEN_WATERSPORT`(101) · `AMEN_HIKING`(65). → core: 414→**419** concept; amenity 25→**30**.
+- ⏸ **Defer** (chờ query log / review ABSA): purpose MICE/Wedding/Workation/Backpacker/Staycation ·
+  setting Countryside · style Vintage/Traditional/Boutique (marketing-fluff) · amenity Yoga (tạm gộp GYM).
+- ❌ **Reject** (không phân biệt khi search): Đổi ngoại tệ (514 hotel nhưng KS nào cũng có).
+- synonym_dictionary regenerate: 1365 → **1432 form**.
 
 ## Độ phủ thực đo trên 520 hotel
 

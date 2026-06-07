@@ -295,3 +295,61 @@ concepts:
       vi: [xe đạp, thuê xe đạp, cho thuê xe đạp, đỗ xe đạp]
       en: [bicycle, bike rental, bike]
     description: {vi: Xe đạp / cho thuê xe đạp (324 hotel), en: Bicycle / bike rental}
+
+  # ── Promote từ candidate_queue (Sprint 2 Bước 1, duyệt 2026-06-08) — amenity giải trí/thể thao ──
+  AMEN_TENNIS:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Sân tennis, en: Tennis court}
+    surface_forms:
+      vi: [sân tennis, sân quần vợt, quần vợt, sân cầu lông, cầu lông]
+      en: [tennis court, tennis, badminton court]
+    description: {vi: Sân tennis / quần vợt / cầu lông (120 hotel), en: Tennis / racquet sports court}
+
+  AMEN_KARAOKE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Karaoke, en: Karaoke}
+    surface_forms:
+      vi: [karaoke, phòng karaoke, hát karaoke]
+      en: [karaoke]
+    description: {vi: Phòng karaoke (130 hotel), en: Karaoke room}
+
+  AMEN_GAME_ROOM:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Phòng giải trí, en: Game room}
+    surface_forms:
+      vi: [bi-a, bida, bi a, phòng bi-a, bóng bàn, phòng giải trí, phòng game]
+      en: [billiards, pool table, table tennis, ping pong, game room]
+    description: {vi: Phòng giải trí trong nhà — bi-a, bóng bàn (gom 116+64 hotel), en: Indoor game room — billiards, table tennis}
+
+  AMEN_WATERSPORT:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Thể thao nước, en: Water sports}
+    surface_forms:
+      vi: [thể thao nước, bơi xuồng, chèo thuyền, lặn, lặn biển, câu cá, bơi với ống thở, lặn ống thở, lướt ván]
+      en: [water sports, kayaking, diving, snorkeling, fishing, windsurfing]
+    description: {vi: Thể thao dưới nước — chèo xuồng, lặn, câu cá, ống thở (gom ~120 hotel), en: Water sports — kayaking, diving, fishing, snorkeling}
+    related: [SETTING_COASTAL]
+
+  AMEN_HIKING:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance: [domain_knowledge, agoda]
+    label: {vi: Đi bộ đường dài, en: Hiking}
+    surface_forms:
+      vi: [đi bộ đường dài, leo núi, trekking, hiking, đường mòn]
+      en: [hiking, trekking, hiking trail]
+    description: {vi: Đi bộ đường dài / leo núi / trekking (130 hotel), en: Hiking / trekking}
+    related: [SETTING_MOUNTAIN]

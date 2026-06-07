@@ -178,6 +178,22 @@ amenities:
   "Thuê xe đạp":            AMEN_BIKE
   "Xe đạp":                 AMEN_BIKE
   "Thuê xe đạp miễn phí":   AMEN_BIKE
+  # ---- Sport / leisure (promote từ candidate 2026-06-08) ----
+  "Sân quần vợt":           AMEN_TENNIS
+  "Sân cầu lông":           AMEN_TENNIS
+  "Sân bóng quần":          AMEN_TENNIS
+  "Karaoke":                AMEN_KARAOKE
+  "Bi-a":                   AMEN_GAME_ROOM
+  "Bóng bàn":               AMEN_GAME_ROOM
+  "Bơi xuồng":              AMEN_WATERSPORT
+  "Câu cá":                 AMEN_WATERSPORT
+  "Lặn":                    AMEN_WATERSPORT
+  "Bơi với ống thở":        AMEN_WATERSPORT
+  "Các môn thể thao dưới nước không có động cơ": AMEN_WATERSPORT
+  "Các môn thể thao dưới nước có động cơ":       AMEN_WATERSPORT
+  "Thuê dụng cụ thể thao dưới nước":             AMEN_WATERSPORT
+  "Đi chơi bằng thuyền":    AMEN_WATERSPORT
+  "Đi bộ đường dài":        AMEN_HIKING
 
 # ===========================================================================
 # _unmapped — vocabulary nguồn LẶP NHIỀU nhưng CHƯA có concept phù hợp.
@@ -185,27 +201,21 @@ amenities:
 #   Ghi kèm tần suất (số hotel) + gợi ý concept_id nếu được duyệt.
 # ===========================================================================
 _unmapped:
-  amenities:
-    - {value: "Karaoke",                freq: 130, suggest: AMEN_KARAOKE,        note: "đã ở candidate_queue"}
-    - {value: "Sân quần vợt",           freq: 120, suggest: AMEN_TENNIS,         note: "đã ở candidate_queue (tennis)"}
-    - {value: "Sân cầu lông",           freq: 22,  suggest: AMEN_TENNIS,         note: "sân thể thao vợt"}
-    - {value: "Sân bóng quần",          freq: 16,  suggest: AMEN_TENNIS}
-    - {value: "Phòng yoga",             freq: 120, suggest: AMEN_YOGA,           note: "đã ở candidate_queue; tạm map AMEN_GYM"}
-    - {value: "Bi-a",                   freq: 116, suggest: AMEN_BILLIARDS,      note: "đã ở candidate_queue"}
-    - {value: "Bóng bàn",               freq: 64,  suggest: AMEN_BILLIARDS,      note: "game room indoor"}
-    - {value: "Đổi ngoại tệ",           freq: 514, suggest: AMEN_CURRENCY_EXCHANGE, note: "đã ở candidate_queue"}
-    - {value: "Đi bộ đường dài",        freq: 130, suggest: AMEN_HIKING,         note: "đã ở candidate_queue"}
-    - {value: "Bơi xuồng",              freq: 112, suggest: AMEN_WATERSPORT,     note: "đã ở candidate_queue"}
-    - {value: "Câu cá",                 freq: 110, suggest: AMEN_WATERSPORT}
-    - {value: "Lặn",                    freq: 106, suggest: AMEN_WATERSPORT}
-    - {value: "Bơi với ống thở",        freq: 96,  suggest: AMEN_WATERSPORT}
-    - {value: "Tủ lạnh",                freq: 358, suggest: null, note: "tiện nghi trong phòng; cân nhắc AMEN_MINIBAR/ROOM_FRIDGE?"}
-    - {value: "Câu lạc bộ đêm",         freq: 88,  suggest: null, note: "nightclub; gần STYLE_LIVELY"}
-    - {value: "Sòng bạc",               freq: 47,  suggest: null, note: "casino; hiếm ở VN"}
-    - {value: "Công viên nước",         freq: 83,  suggest: null, note: "water park; gần PURPOSE_FAMILY"}
-    - {value: "Công viên giải trí",     freq: 45,  suggest: null, note: "amusement; thường là nearby landmark hơn amenity"}
-    - {value: "Thư viện",               freq: 52,  suggest: null}
-    - {value: "Cửa hàng tạp hóa",       freq: 288, suggest: null, note: "convenience; ít giá trị lọc"}
+  # ✅ ĐÃ PROMOTE (2026-06-08): Tennis, Karaoke, GameRoom(bi-a/bóng bàn), Watersport, Hiking
+  #    -> đã chuyển lên mục `amenities` chính + thêm vào core/amenity.yaml.
+  # ⏸ DEFER (chờ query log / review ABSA):
+  amenities_defer:
+    - {value: "Phòng yoga",   freq: 120, suggest: AMEN_YOGA,   note: "tạm map AMEN_GYM ở mục chính; tách riêng nếu query log đòi"}
+    - {value: "Câu lạc bộ đêm", freq: 88, suggest: null,       note: "nightclub; gần STYLE_LIVELY — chờ review"}
+    - {value: "Công viên nước", freq: 83, suggest: null,       note: "water park; gần PURPOSE_FAMILY — chờ tín hiệu"}
+    - {value: "Công viên giải trí", freq: 45, suggest: null,   note: "thường là nearby landmark hơn amenity"}
+    - {value: "Thư viện",     freq: 52,  suggest: null,        note: "chờ tín hiệu"}
+  # ❌ REJECT (không phân biệt / ít giá trị lọc — KHÔNG promote):
+  amenities_reject:
+    - {value: "Đổi ngoại tệ", freq: 514, reason: "dịch vụ vận hành, gần như KS nào cũng có -> không phân biệt khi search"}
+    - {value: "Cửa hàng tạp hóa", freq: 288, reason: "convenience, ít giá trị lọc"}
+    - {value: "Tủ lạnh",      freq: 358, reason: "tiện nghi trong phòng phổ biến, không phân biệt"}
+    - {value: "Sòng bạc",     freq: 47,  reason: "casino hiếm ở VN, không ai search"}
 
 # ===========================================================================
 # _skip — KHÔNG map (không mang ý nghĩa lọc tìm kiếm). Ghi lý do theo nhóm.
