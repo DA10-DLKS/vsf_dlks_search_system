@@ -15,7 +15,7 @@
 ## ⚙ CẬP NHẬT THỰC TẾ (sau Sprint 1) — đọc trước khi theo phần thân
 
 > Bản thân hướng dẫn dưới đây giữ NGUYÊN làm tham chiếu thiết kế. Nhưng khi thực thi Sprint 1 trên
-> **51 hotel Agoda thật** (+ một lượt phản biện theo chuẩn search thực tế), một số quyết định đã được
+> **520 hotel Việt Nam thật** (+ một lượt phản biện theo chuẩn search thực tế), một số quyết định đã được
 > điều chỉnh cho đúng/scale hơn. **Khi làm theo tài liệu này, ưu tiên các điểm cập nhật dưới đây**
 > ở những chỗ mâu thuẫn. Chi tiết đầy đủ: `docs/reports/ontology/sprint1/SPRINT1_REPORT.md` (mục 4).
 
@@ -814,7 +814,7 @@ output/  domain_analysis.md · knowledge_objects.json · hotel_semantic_profiles
 ## Checklist tổng
 
 **Sprint 1 — Foundation**  _(trạng thái 2026-06-04 — chi tiết: `sprint1/SPRINT1_REPORT.md`)_
-- [x] `concepts.yaml` ≥ 30 concept, **TRUNG TÍNH** — **73 concept**, tách 8 file `ontology/core/*.yaml`
+- [x] concept ≥ 30, **TRUNG TÍNH** — **414 concept** (63 viết tay + 351 location tự sinh), tách 8 file `ontology/core/*.yaml`
 - [x] `normalize.py` xử lý dấu + tách từ — `knowledge_engineering/common/normalize.py` (test 15/15)
 - [x] `facets.yaml` đủ facet + `cardinality` + `da09_slot` (+ `metadata_field`)
 - [x] `ontology.yaml` có quan hệ `near`/`located_in` — 22 quan hệ `near` (tự sinh)

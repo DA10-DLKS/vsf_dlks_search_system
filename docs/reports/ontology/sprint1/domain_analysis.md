@@ -115,7 +115,7 @@ Suy ra từ các trường ngữ nghĩa thật của Agoda (`tags`, `suitable_fo
 
 ## 4. Bước 4 — Vốn từ vựng nguồn (chuẩn bị `source_tag_map.yaml`)
 
-Vocabulary **đúng như Agoda ghi** (đếm trên 51 hotel). Đây là đầu vào cho Task 2.2 (Source-tag Mapping). Concept đích để TRỐNG ở đây — chốt sau khi có ontology Core (Task 1.2).
+Vocabulary **đúng như Agoda ghi** (số đếm là mốc 51 hotel cũ — xem disclaimer mục AMENITY; số 520 chính xác ở AUTO-STATS). Đây là đầu vào cho Task 2.2 (Source-tag Mapping). Concept đích để TRỐNG ở đây — chốt sau khi có ontology Core (Task 1.2).
 
 ### 4.1 `suitable_for` (6 giá trị — phủ gần hết corpus)
 <!-- AUTO-STATS:suitable_for:START -->
@@ -156,9 +156,9 @@ Nhiều nhất: Bệnh Viện và Cơ Sở Y Tế (830), Siêu Thị (616), Trun
 
 ## 5. Done criteria (Task 1.1)
 
-- [x] ≥ 20 semantic concept (35 ứng viên: 5 object_type + 30 còn lại, có bằng chứng nguồn trên 51 hotel) — mục 1
-- [ ] ≥ 30 golden query nhóm theo facet — **CHỜ golden set DA09** (mục 2)
+- [x] ≥ 20 semantic concept (có bằng chứng nguồn trên data; sau audit corpus 520 VN: 63 concept ngữ nghĩa + 351 location tự sinh) — mục 1
+- [x] ≥ 30 golden query nhóm theo facet — golden set KE `golden_query_concepts.md` (32 câu, 8/8 facet) — mục 2
 - [x] Danh sách facet ứng viên (sơ bộ từ data) — mục 2 + 4
 - [x] Ghi chú vocabulary nguồn (Agoda) — mục 4
 
-> **Mở khóa phần còn lại:** cần DA09 cấp golden set (30–50 query có nhãn) để hoàn tất bước 2 và kiểm chéo facet.
+> **Trạng thái:** Task 1.1 (gồm Bước 2) đã có đủ input. Golden set KE tự tạo thay cho golden set DA09 (chưa cấp).

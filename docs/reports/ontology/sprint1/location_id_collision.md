@@ -14,7 +14,15 @@
 
 ---
 
-## Tình trạng hiện tại (đã chạy, đã validate)
+## Trạng thái HIỆN TẠI (corpus VN 520 — sau khi giải quyết)
+
+| File | Vai trò | Concept |
+|---|---|---|
+| `location.generated.yaml` | TỰ SINH từ data (Lớp A) | 1 country + 14 tỉnh + 69 city + 126 area + 142 landmark = **351** |
+| `location.yaml` | Curated | **rỗng** (place/landmark đã chuyển hết sang generated) |
+| `location_id_registry.yaml` | Neo ID ổn định (append-only) | 351 ID + external_id Agoda city_id |
+
+## Bối cảnh CŨ (toàn cầu 555 — đã qua, giữ làm lịch sử phân tích)
 
 | File | Vai trò | Concept |
 |---|---|---|
