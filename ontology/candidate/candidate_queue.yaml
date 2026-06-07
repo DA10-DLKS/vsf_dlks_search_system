@@ -68,3 +68,38 @@ candidates:
     examples: ["staycation", "nghỉ dưỡng tại chỗ"]
     source: query_log
     status: pending
+
+  # ── SETTING (bối cảnh): SETTING_RIVERSIDE đã lên Core (từ room_view hard). Còn lại chờ. ──
+  - candidate_keyword: "nông thôn / thung lũng (countryside)"
+    suggested_facet: setting
+    suggested_concept_id: SETTING_COUNTRYSIDE
+    frequency: 26                               # room_view "Hướng Nông thôn" (17) + "Thung lũng" (9)
+    examples: ["Hướng Nông thôn", "Hướng Thung lũng"]
+    source: description                          # từ room_view; tần suất thấp -> chờ
+    status: pending
+
+  # ── STYLE: ứng viên từ keyword scan DESCRIPTION (nguồn YẾU/nhiễu cho style — description là lời
+  #    tự quảng cáo, không phải cảm nhận khách). CHỜ review ABSA mới đủ tin để promote. ──
+  - candidate_keyword: "cổ điển / hoài cổ (vintage)"
+    suggested_facet: style
+    suggested_concept_id: STYLE_VINTAGE
+    frequency: 139                              # 139/520 (~26%) trong description — CHỈ là gợi ý
+    examples: ["cổ điển", "hoài cổ", "cổ kính", "retro"]
+    source: description
+    status: pending
+
+  - candidate_keyword: "truyền thống / bản địa (traditional)"
+    suggested_facet: style
+    suggested_concept_id: STYLE_TRADITIONAL
+    frequency: 416                              # 80% description — nhưng marketing-fluff, ĐỘ TIN THẤP
+    examples: ["truyền thống", "bản địa", "đậm chất Việt", "văn hóa địa phương"]
+    source: description
+    status: pending
+
+  - candidate_keyword: "boutique / nghệ thuật / độc đáo"
+    suggested_facet: style
+    suggested_concept_id: STYLE_BOUTIQUE
+    frequency: 426                              # 81% description — marketing-fluff, ĐỘ TIN THẤP
+    examples: ["boutique", "nghệ thuật", "độc đáo", "phong cách riêng"]
+    source: description
+    status: pending
