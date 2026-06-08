@@ -1,18 +1,18 @@
-# Run guide: index data vao OpenSearch
+# Run guide: index data vào OpenSearch
 
-Tai lieu nay huong dan tao index va nap data sach tu `data/cleaned/` vao OpenSearch bang script BM25 hien co.
+Tài liệu này hướng dẫn tạo index và nạp dữ liệu sạch từ `data/cleaned/` vào OpenSearch bằng script BM25 hiện có.
 
-## 1. File lien quan
+## 1. File liên quan
 
 - Mapping OpenSearch: `indexing/bm25_index/index_mapping.json`
 - Script index: `indexing/bm25_index/index_bm25.py`
-- Thu muc data nguon: `data/cleaned/`
-- Index mac dinh: `travel_bm25`
+- Thư mục data nguồn: `data/cleaned/`
+- Index mặc định: `travel_bm25`
 - OpenSearch Dashboard: `http://localhost:5601`
 
-## 2. Bien moi truong
+## 2. Biến môi trường
 
-Cac bien can co trong `.env`:
+Các biến cần có trong `.env`:
 
 ```env
 OPENSEARCH_URL=http://localhost:9200
@@ -22,35 +22,35 @@ BULK_CHUNK_SIZE=25
 BULK_MAX_CHUNK_BYTES=2097152
 ```
 
-Trong do:
+Trong đó:
 
 - `OPENSEARCH_URL`: endpoint OpenSearch.
-- `BM25_INDEX`: ten index BM25 can nap data.
-- `CLEANED_DATA_DIR`: thu muc chua file JSON da lam sach.
-- `BULK_CHUNK_SIZE`: so document gui trong moi bulk request.
-- `BULK_MAX_CHUNK_BYTES`: kich thuoc toi da cua moi bulk request, tinh bang byte.
+- `BM25_INDEX`: tên index BM25 cần nạp data.
+- `CLEANED_DATA_DIR`: thư mục chứa file JSON đã làm sạch.
+- `BULK_CHUNK_SIZE`: số document gửi trong mỗi bulk request.
+- `BULK_MAX_CHUNK_BYTES`: kích thước tối đa của mỗi bulk request, tính bằng byte.
 
-Gia tri `BULK_CHUNK_SIZE=25` va `BULK_MAX_CHUNK_BYTES=2097152` duoc chon de tranh loi circuit breaker khi OpenSearch chay voi heap nho.
+Giá trị `BULK_CHUNK_SIZE=25` và `BULK_MAX_CHUNK_BYTES=2097152` được chọn để tránh lỗi circuit breaker khi OpenSearch chạy local với heap nhỏ.
 
 ## 3. Start OpenSearch
 
-Chay OpenSearch va Dashboard:
+Chạy OpenSearch và Dashboard:
 
 ```powershell
 docker compose up -d opensearch opensearch-dashboard
 ```
 
-Kiem tra OpenSearch:
+Kiểm tra OpenSearch:
 
 ```powershell
 curl.exe http://localhost:9200
 ```
 
-Neu OpenSearch tra ve thong tin cluster/name/version la da san sang.
+Nếu OpenSearch trả về thông tin cluster, name hoặc version thì service đã sẵn sàng.
 
-## 4. Tao index bang mapping
+## 4. Tạo index bằng mapping
 
-Tao index `travel_bm25`:
+Tạo index `travel_bm25`:
 
 ```powershell
 curl.exe -X PUT "http://localhost:9200/travel_bm25" `
@@ -58,19 +58,19 @@ curl.exe -X PUT "http://localhost:9200/travel_bm25" `
   -d "@indexing/bm25_index/index_mapping.json"
 ```
 
-Neu index da ton tai va can tao lai tu dau:
+Nếu index đã tồn tại và cần tạo lại từ đầu:
 
 ```powershell
 curl.exe -X DELETE "http://localhost:9200/travel_bm25"
 ```
 
-Sau do chay lai lenh `PUT` o tren.
+Sau đó chạy lại lệnh `PUT` ở trên.
 
-Luu y: xoa index se lam mat toan bo document da index trong index do.
+Lưu ý: xóa index sẽ làm mất toàn bộ document đã index trong index đó.
 
-## 5. Chay indexer
+## 5. Chạy indexer
 
-Set bien moi truong trong PowerShell:
+Set biến môi trường trong PowerShell:
 
 ```powershell
 $env:OPENSEARCH_URL="http://localhost:9200"
@@ -80,13 +80,13 @@ $env:BULK_CHUNK_SIZE="25"
 $env:BULK_MAX_CHUNK_BYTES="2097152"
 ```
 
-Chay script:
+Chạy script:
 
 ```powershell
 python indexing/bm25_index/index_bm25.py
 ```
 
-Ket qua mong doi:
+Kết quả mong đợi:
 
 ```text
 Indexing documents from data/cleaned into travel_bm25...
@@ -95,13 +95,13 @@ Indexed: <n> successfully. Failed: 0
 Done.
 ```
 
-## 6. Kiem tra so document
+## 6. Kiểm tra số document
 
 ```powershell
 curl.exe "http://localhost:9200/travel_bm25/_count"
 ```
 
-Neu index thanh cong, `count` phai lon hon `0`.
+Nếu index thành công, `count` phải lớn hơn `0`.
 
 ## 7. Test search nhanh
 
@@ -111,21 +111,21 @@ curl.exe -X GET "http://localhost:9200/travel_bm25/_search" `
   -d '{ \"query\": { \"match\": { \"description\": \"khach san gan bien\" } }, \"size\": 5 }'
 ```
 
-Trong PowerShell, nen boc JSON bang dau nhay don `'...'` de giu nguyen dau nhay kep `"` ben trong JSON.
+Trong PowerShell, nên bọc JSON bằng dấu nháy đơn `'...'` để giữ nguyên dấu nháy kép `"` bên trong JSON. Nếu dùng dấu nháy kép bên ngoài JSON, PowerShell có thể làm mất quote và OpenSearch sẽ báo lỗi `json_parse_exception`.
 
-## 8. Xu ly loi thuong gap
+## 8. Xử lý lỗi thường gặp
 
-### Loi 429 circuit_breaking_exception
+### Lỗi 429 circuit_breaking_exception
 
-Loi mau:
+Lỗi mẫu:
 
 ```text
 TransportError(429, 'circuit_breaking_exception', '[parent] Data too large ...')
 ```
 
-Nguyen nhan: bulk request qua lon so voi heap OpenSearch.
+Nguyên nhân: bulk request quá lớn so với heap OpenSearch.
 
-Cach xu ly: giam kich thuoc batch.
+Cách xử lý: giảm kích thước batch.
 
 ```powershell
 $env:BULK_CHUNK_SIZE="10"
@@ -133,7 +133,7 @@ $env:BULK_MAX_CHUNK_BYTES="1048576"
 python indexing/bm25_index/index_bm25.py
 ```
 
-Neu van gap loi, tiep tuc giam:
+Nếu vẫn gặp lỗi, tiếp tục giảm:
 
 ```powershell
 $env:BULK_CHUNK_SIZE="5"
@@ -141,47 +141,58 @@ $env:BULK_MAX_CHUNK_BYTES="524288"
 python indexing/bm25_index/index_bm25.py
 ```
 
-### Count bang 0 sau khi index
+### Count bằng 0 sau khi index
 
-Kiem tra theo thu tu:
+Kiểm tra theo thứ tự:
 
-1. OpenSearch co dang chay khong:
+1. OpenSearch có đang chạy không:
 
 ```powershell
 curl.exe http://localhost:9200
 ```
 
-2. Index da duoc tao chua:
+2. Index đã được tạo chưa:
 
 ```powershell
 curl.exe "http://localhost:9200/_cat/indices?v"
 ```
 
-3. Script dang index vao dung index chua:
+3. Script đang index vào đúng index chưa:
 
 ```powershell
 $env:BM25_INDEX
 ```
 
-4. Thu muc data co JSON khong:
+4. Thư mục data có JSON không:
 
 ```powershell
 Get-ChildItem data/cleaned -Filter *.json
 ```
 
-### Loi strict dynamic mapping
+### Lỗi strict dynamic mapping
 
-Mapping dang dung:
+Mapping đang dùng:
 
 ```json
 "dynamic": "strict"
 ```
 
-Neu document co field la hoac sai kieu du lieu, OpenSearch se reject document. Can sua script map field trong `indexing/bm25_index/index_bm25.py` hoac cap nhat mapping neu field moi la hop le.
+Nếu document có field lạ hoặc sai kiểu dữ liệu, OpenSearch sẽ reject document. Cần sửa script map field trong `indexing/bm25_index/index_bm25.py` hoặc cập nhật mapping nếu field mới là hợp lệ.
 
-## 9. Ghi chu van hanh
+### Lỗi JSON parse khi test search
 
-- Script dung `_id = hotel_id`, nen chay lai se update/upsert document cung hotel thay vi tao trung.
-- Khong nen bulk qua lon khi OpenSearch chay local voi heap `512m`.
-- Nen tao index bang mapping truoc khi chay script index.
-- Khi thay doi mapping/analyzer/schema, nen tao index version moi thay vi sua truc tiep index dang dung.
+Nếu gặp lỗi dạng:
+
+```text
+json_parse_exception
+curl: Could not resolve host
+```
+
+Nguyên nhân thường là quote JSON sai trong PowerShell. Dùng lại mẫu ở phần "Test search nhanh", trong đó JSON được bọc bằng dấu nháy đơn `'...'`.
+
+## 9. Ghi chú vận hành
+
+- Script dùng `_id = hotel_id`, nên chạy lại sẽ update hoặc upsert document cùng hotel thay vì tạo trùng.
+- Không nên bulk quá lớn khi OpenSearch chạy local với heap `512m`.
+- Nên tạo index bằng mapping trước khi chạy script index.
+- Khi thay đổi mapping, analyzer hoặc schema, nên tạo index version mới thay vì sửa trực tiếp index đang dùng.
