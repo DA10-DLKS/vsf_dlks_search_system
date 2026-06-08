@@ -54,10 +54,17 @@ def parse_range(q: str) -> dict:
     """Bắt vài range filter phổ biến từ câu (giá triệu / điểm / sao)."""
     rf: dict = {}
     ql = q.lower()
-    # dưới X triệu / trên X triệu
+    # tầm/khoảng X triệu -> dải quanh X (±30%)
+    m = re.search(r"(tầm|khoảng|tầm khoảng|cỡ|xấp xỉ)\s*([\d.,]+)\s*(triệu|tr)", ql)
+    if m:
+        x = float(m.group(2).replace(",", ".")) * 1_000_000
+        rf["price_min"] = int(x * 0.7)
+        rf["price_max"] = int(x * 1.3)
+    # dưới X triệu / tối đa
     m = re.search(r"(dưới|<|không quá|tối đa)\s*([\d.,]+)\s*(triệu|tr)", ql)
     if m:
         rf["price_max"] = int(float(m.group(2).replace(",", ".")) * 1_000_000)
+        rf.pop("price_min", None)  # "dưới X" thì không có sàn
     # trên X điểm
     m = re.search(r"(trên|>|từ)\s*([\d.,]+)\s*điểm", ql)
     if m:
@@ -125,13 +132,16 @@ def search(q: str, limit: int = 15) -> dict:
             if normalize(loc, fold=True) not in normalize(locblob, fold=True):
                 continue
         rf = obj["range_filters"]
-        if "price_max" in rng:
+        if "price_max" in rng or "price_min" in rng:
             p = rf.get("price_min_vnd")
-            if p is None or rf.get("price_capped") or p > rng["price_max"]:
-                # capped -> không loại cứng, nhưng đánh dấu; ở demo này ta loại để thấy rõ ảnh hưởng
-                if rf.get("price_capped"):
-                    pass  # giữ lại (giá không tin) — KHÔNG loại
-                else:
+            if rf.get("price_capped"):
+                pass  # giá cap 5tr -> không tin, KHÔNG loại theo giá (giữ lại, có cờ)
+            elif p is None:
+                continue  # không có giá -> không xét được
+            else:
+                if "price_max" in rng and p > rng["price_max"]:
+                    continue
+                if "price_min" in rng and p < rng["price_min"]:
                     continue
         if "score_min" in rng and (rf.get("review_score") or 0) < rng["score_min"]:
             continue

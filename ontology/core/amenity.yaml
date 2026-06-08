@@ -86,8 +86,9 @@ concepts:
     provenance: [domain_knowledge, agoda, booking, google_hotels]
     label: {vi: Spa, en: Spa}
     surface_forms:
-      vi: [spa, mát-xa, massage, xông hơi, xông khô, phòng xông ướt, sauna, tắm khoáng]
+      vi: [spa, mát-xa, massage, xông hơi, xông khô, phòng xông ướt, sauna]
       en: [spa, massage, sauna]
+      # bỏ "tắm khoáng": bỏ dấu = "tam khoang" trùng "tầm khoảng" (phổ biến) -> false match
     description: {vi: Dịch vụ spa, mát-xa, xông hơi, en: Spa, massage and sauna services}
     related: [PURPOSE_WELLNESS]
 
