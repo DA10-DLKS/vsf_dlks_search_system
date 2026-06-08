@@ -1,0 +1,179 @@
+"""query_demo.py — CÔNG CỤ TEST TAY (KHÔNG phải search engine production).
+
+Mục đích: kiểm CHẤT LƯỢNG NHÃN HARD đã gắn ở Bước 4. Mô phỏng phần "filter theo concept +
+range" mà tầng search (Anh Tài/Đạt) sẽ làm — KHÔNG có vector/BM25/ranking.
+
+Luồng (giống tầng search sẽ làm):
+  câu hỏi tiếng Việt
+   -> normalize + tra synonym_dictionary  => tập concept + facet
+   -> bắt range filter đơn giản (dưới X triệu / trên X điểm / N sao)
+   -> lọc knowledge_objects.json theo concept (AND) + range + location text
+   -> in hotel khớp.
+
+Chạy:  .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.enrichment.query_demo "câu hỏi"
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import sys
+
+import yaml
+
+from knowledge_engineering.common.normalize import normalize
+
+OBJ_JSON = "knowledge_engineering/enrichment/knowledge_objects.json"
+SYN_YAML = "ontology/synonym_dictionary.yaml"
+
+_objs = json.load(open(OBJ_JSON, encoding="utf-8"))
+_syn = yaml.safe_load(open(SYN_YAML, encoding="utf-8"))["synonyms"]
+
+
+# ---------------------------------------------------------------------------
+# Parse câu hỏi -> concept + range + location
+# ---------------------------------------------------------------------------
+def parse_concepts(q: str) -> list[str]:
+    """Tra mọi cụm con của câu (1-4 từ) qua synonym_dictionary. Trả tập concept (khử trùng)."""
+    norm = normalize(q)
+    normf = normalize(q, fold=True)
+    found: set[str] = set()
+    for text in (norm, normf):
+        toks = text.split()
+        for n in (4, 3, 2, 1):
+            for i in range(len(toks) - n + 1):
+                gram = " ".join(toks[i:i + n])
+                if len(gram) < 3:
+                    continue
+                if gram in _syn:
+                    found.update(_syn[gram])
+    return sorted(found)
+
+
+def parse_range(q: str) -> dict:
+    """Bắt vài range filter phổ biến từ câu (giá triệu / điểm / sao)."""
+    rf: dict = {}
+    ql = q.lower()
+    # dưới X triệu / trên X triệu
+    m = re.search(r"(dưới|<|không quá|tối đa)\s*([\d.,]+)\s*(triệu|tr)", ql)
+    if m:
+        rf["price_max"] = int(float(m.group(2).replace(",", ".")) * 1_000_000)
+    # trên X điểm
+    m = re.search(r"(trên|>|từ)\s*([\d.,]+)\s*điểm", ql)
+    if m:
+        rf["score_min"] = float(m.group(2).replace(",", "."))
+    # N sao
+    m = re.search(r"(\d)\s*sao", ql)
+    if m:
+        rf["star_eq"] = int(m.group(1))
+    return rf
+
+
+def parse_location_text(q: str) -> str | None:
+    """Bắt địa danh thô (dùng để lọc theo text city/area — đơn giản, không qua LOC concept)."""
+    # các thành phố hay gặp; mở rộng tùy ý
+    cities = ["đà nẵng", "nha trang", "hà nội", "hồ chí minh", "sài gòn", "phú quốc",
+              "đà lạt", "hội an", "huế", "hạ long", "vũng tàu", "sầm sơn", "quy nhơn",
+              "phan thiết", "sa pa", "ninh bình", "cát bà", "côn đảo"]
+    ql = normalize(q, fold=True)
+    for c in cities:
+        if normalize(c, fold=True) in ql:
+            return c
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Lọc object
+# ---------------------------------------------------------------------------
+def _all_concepts(obj: dict) -> set[str]:
+    sm = obj["semantic_metadata"]
+    out: set[str] = set()
+    for k, v in sm.items():
+        if v is None:
+            continue
+        out.update(v if isinstance(v, list) else [v])
+    return out
+
+
+def search(q: str, limit: int = 15) -> dict:
+    concepts = parse_concepts(q)
+    rng = parse_range(q)
+    loc = parse_location_text(q)
+    # Phân loại concept giống tầng search thật:
+    #   - HARD filter (AND bắt buộc): amenity + setting. Đây là "có/không" rõ ràng.
+    #   - NỚI LỎNG (không lọc cứng): object_type ("khách sạn"=mọi lưu trú, xem golden Q1-01),
+    #     purpose/style (cảm tính), price_tier (đã có range giá lo), location (lọc bằng TEXT
+    #     vì object chưa gắn LOC concept — known limitation Bước 4).
+    hard = [c for c in concepts if c.startswith(("AMEN_", "SETTING_"))]
+    soft = [c for c in concepts if c.startswith(("PURPOSE_", "STYLE_", "OBJ_", "PRICE_"))]
+
+    hits = []
+    for obj in _objs.values():
+        oc = _all_concepts(obj)
+        # AND mọi concept HARD (amenity/setting)
+        if not all(c in oc for c in hard):
+            continue
+        # object_type: nếu câu nói loại hình cụ thể (resort/villa...) thì lọc, trừ OBJ_HOTEL (hiểu rộng)
+        want_obj = [c for c in soft if c.startswith("OBJ_") and c != "OBJ_HOTEL"]
+        if want_obj and oc.isdisjoint(want_obj):
+            continue
+        # location text
+        if loc:
+            locblob = " ".join(
+                str(obj["location"].get(k) or "") for k in ("city", "area", "province", "district")
+            )
+            if normalize(loc, fold=True) not in normalize(locblob, fold=True):
+                continue
+        rf = obj["range_filters"]
+        if "price_max" in rng:
+            p = rf.get("price_min_vnd")
+            if p is None or rf.get("price_capped") or p > rng["price_max"]:
+                # capped -> không loại cứng, nhưng đánh dấu; ở demo này ta loại để thấy rõ ảnh hưởng
+                if rf.get("price_capped"):
+                    pass  # giữ lại (giá không tin) — KHÔNG loại
+                else:
+                    continue
+        if "score_min" in rng and (rf.get("review_score") or 0) < rng["score_min"]:
+            continue
+        if "star_eq" in rng and rf.get("star_rating") != rng["star_eq"]:
+            continue
+        hits.append(obj)
+
+    # sort: ưu tiên hotel khớp nhiều concept SOFT (purpose/price/style) rồi review_score
+    #       — proxy thô cho ranking (việc thật của Anh Tài).
+    def score(o: dict):
+        oc = _all_concepts(o)
+        soft_hit = sum(1 for c in soft if c in oc)
+        return (-soft_hit, -(o["range_filters"].get("review_score") or 0))
+    hits.sort(key=score)
+    return {"concepts": concepts, "hard": hard, "soft": soft, "range": rng, "location": loc,
+            "n": len(hits), "hits": hits[:limit]}
+
+
+def show(q: str) -> None:
+    r = search(q)
+    print(f"\n❓ {q}")
+    print(f"   → concept hiểu được: {r['concepts']}")
+    print(f"   → lọc CỨNG (amenity/setting): {r['hard'] or '—'} | nới lỏng: {r['soft'] or '—'}")
+    print(f"   → range: {r['range'] or '—'} | location: {r['location'] or '—'}")
+    print(f"   → {r['n']} hotel khớp. Top (ưu tiên khớp nhiều tiêu chí + điểm cao):")
+    for o in r["hits"]:
+        rf = o["range_filters"]
+        cap = " [giá~cap5tr]" if rf.get("price_capped") else ""
+        price = f"{rf.get('price_min_vnd', 0):,}đ" if rf.get("price_min_vnd") else "?"
+        print(f"      • {o['title'][:46]:46s} | {o['location'].get('city')} "
+              f"| {rf.get('star_rating')}★ {rf.get('review_score')}đ | từ {price}{cap}")
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        show(" ".join(sys.argv[1:]))
+    else:
+        # vài câu demo
+        for q in [
+            "khách sạn có hồ bơi ở Đà Nẵng",
+            "resort gần biển cho gia đình ở Nha Trang",
+            "resort hạng sang có spa ở Phú Quốc",
+            "khách sạn cho cặp đôi có hồ bơi vô cực",
+        ]:
+            show(q)
