@@ -108,8 +108,10 @@ Neu index thanh cong, `count` phai lon hon `0`.
 ```powershell
 curl.exe -X GET "http://localhost:9200/travel_bm25/_search" `
   -H "Content-Type: application/json" `
-  -d "{ `"query`": { `"match`": { `"description`": `"khach san gan bien`" } }, `"size`": 5 }"
+  -d '{ \"query\": { \"match\": { \"description\": \"khach san gan bien\" } }, \"size\": 5 }'
 ```
+
+Trong PowerShell, nen boc JSON bang dau nhay don `'...'` de giu nguyen dau nhay kep `"` ben trong JSON.
 
 ## 8. Xu ly loi thuong gap
 
@@ -183,4 +185,3 @@ Neu document co field la hoac sai kieu du lieu, OpenSearch se reject document. C
 - Khong nen bulk qua lon khi OpenSearch chay local voi heap `512m`.
 - Nen tao index bang mapping truoc khi chay script index.
 - Khi thay doi mapping/analyzer/schema, nen tao index version moi thay vi sua truc tiep index dang dung.
-
