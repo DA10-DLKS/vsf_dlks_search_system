@@ -5,6 +5,8 @@ from opensearchpy import OpenSearch, helpers
 OPENSEARCH_URL = os.environ.get('OPENSEARCH_URL', 'http://localhost:9200')
 INDEX_NAME = os.environ.get('BM25_INDEX', 'travel_bm25')
 DATA_DIR = os.environ.get('CLEANED_DATA_DIR', 'data/cleaned')
+BULK_CHUNK_SIZE = int(os.environ.get('BULK_CHUNK_SIZE', '50'))
+BULK_MAX_CHUNK_BYTES = int(os.environ.get('BULK_MAX_CHUNK_BYTES', str(5 * 1024 * 1024)))
 
 client = OpenSearch(OPENSEARCH_URL)
 
@@ -140,14 +142,32 @@ if __name__ == '__main__':
         print(f"Index {INDEX_NAME} does not exist. Please create it with the agreed mapping before running this script.")
         exit(1)
 
-    actions = list(iter_docs(DATA_DIR))
-    print(f"Indexing {len(actions)} documents into {INDEX_NAME}...")
+    print(f"Indexing documents from {DATA_DIR} into {INDEX_NAME}...")
+    print(f"Bulk chunk size: {BULK_CHUNK_SIZE}, max chunk bytes: {BULK_MAX_CHUNK_BYTES}")
     try:
-        success, failed = helpers.bulk(client, actions, stats_only=False, raise_on_error=False)
-        print(f"Indexed: {success} successfully. Failed: {len(failed)}")
-        if failed:
+        success = 0
+        failed = 0
+        first_failures = []
+
+        for ok, item in helpers.streaming_bulk(
+            client,
+            iter_docs(DATA_DIR),
+            chunk_size=BULK_CHUNK_SIZE,
+            max_chunk_bytes=BULK_MAX_CHUNK_BYTES,
+            raise_on_error=False,
+            raise_on_exception=False,
+        ):
+            if ok:
+                success += 1
+            else:
+                failed += 1
+                if len(first_failures) < 3:
+                    first_failures.append(item)
+
+        print(f"Indexed: {success} successfully. Failed: {failed}")
+        if first_failures:
             print("First few failure errors:")
-            for item in failed[:3]:
+            for item in first_failures:
                 print(json.dumps(item, indent=2, ensure_ascii=True))
     except Exception as e:
         print("Bulk indexing exception:", e)
