@@ -1,0 +1,149 @@
+"""build_objects.py — Ghép tag + metadata thành knowledge_object HARD (Sprint 2, Bước 4).
+
+Owner: Trương Anh Long (KE, DA10). Hợp nhất:
+  - tag concept (Bước 2, ontology_mapper -> hotel_tags.json)
+  - metadata map/reconcile (Bước 3, metadata_pipeline -> hotel_metadata.json)
+-> knowledge_object phần HARD cho cả 520 hotel, theo CONTRACT ontology/metadata_schema.yaml
+   + hình dạng docs/.../knowledge_object_SAMPLE.md.
+
+PHẦN HARD: semantic_metadata (object_type/location/amenity/setting/purpose/price_tier),
+range_filters, nearby_places, tags(provenance), provenance.
+PHẦN SOFT (style/aspect + sentiment từ review) -> Bước 5, gắn sau.
+
+Cardinality (facets.yaml): object_type/price_tier = one (1 id); amenity/setting/purpose = many (list).
+Giá: cờ price_capped=true cho hotel giá min=5tr (cap, xem Bước 3) -> tầng search không lọc-giá cứng.
+
+Chạy: .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.enrichment.build_objects
+"""
+
+from __future__ import annotations
+
+import glob
+import json
+from collections import defaultdict
+
+import yaml
+
+HOTELS_GLOB = "data/cleaned/hotel_*.json"
+TAGS_JSON = "knowledge_engineering/enrichment/hotel_tags.json"
+META_JSON = "knowledge_engineering/enrichment/hotel_metadata.json"
+CORE_GLOB = "ontology/core/*.yaml"
+OUT_JSON = "knowledge_engineering/enrichment/knowledge_objects.json"
+
+ONTOLOGY_VERSION = "concepts_v2.0.0"
+PRICE_CAP_VND = 5_000_000  # giá min == cap này -> không tin (Bước 3)
+
+# Facet cardinality (khớp ontology/facets.yaml)
+ONE_FACETS = {"object_type", "location", "price_tier"}
+MANY_FACETS = {"amenity", "setting", "purpose", "style", "aspect"}
+
+
+def load_facets() -> dict[str, str]:
+    out = {}
+    for f in sorted(glob.glob(CORE_GLOB)):
+        d = yaml.safe_load(open(f, encoding="utf-8")) or {}
+        for cid, v in (d.get("concepts") or {}).items():
+            out[cid] = v.get("facet", "")
+    return out
+
+
+def split_by_facet(tags: list[dict], facets: dict[str, str]) -> dict[str, list[dict]]:
+    """Gom tag theo facet (giữ confidence/sources/nature)."""
+    by: dict[str, list[dict]] = defaultdict(list)
+    for t in tags:
+        fct = facets.get(t["concept"], "?")
+        by[fct].append(t)
+    return by
+
+
+def build_semantic_metadata(by_facet: dict[str, list[dict]]) -> dict:
+    """semantic_metadata: one-facet -> 1 concept_id (conf cao nhất); many -> list concept_id."""
+    sm: dict = {}
+    # object_type (one)
+    obj = by_facet.get("object_type", [])
+    sm["object_type"] = max(obj, key=lambda t: t["confidence"])["concept"] if obj else None
+    # price_tier (one) — gắn ở build (từ metadata), xử lý riêng ngoài hàm này
+    # many facets
+    for fct in ("amenity", "setting", "purpose"):
+        items = by_facet.get(fct, [])
+        # sort theo confidence giảm, khử trùng concept
+        seen, out = set(), []
+        for t in sorted(items, key=lambda x: -x["confidence"]):
+            if t["concept"] not in seen:
+                seen.add(t["concept"])
+                out.append(t["concept"])
+        sm[fct] = out
+    return sm
+
+
+def build_object(hotel: dict, tags: list[dict], meta: dict, facets: dict[str, str]) -> dict:
+    hid = hotel.get("hotel_id")
+    by_facet = split_by_facet(tags, facets)
+    sm = build_semantic_metadata(by_facet)
+
+    # price_tier (one) từ metadata reconcile (Bước 3), KHÔNG từ tag
+    sm["price_tier"] = meta.get("price_tier")
+
+    # range_filters + cờ giá
+    rf = dict(meta.get("range_filters", {}))
+    price = rf.get("price_min_vnd")
+    price_capped = price is not None and price >= PRICE_CAP_VND
+    if price_capped:
+        rf["price_capped"] = True  # giá min chạm cap 5tr -> không tin, tầng search đừng lọc cứng
+
+    return {
+        "id": f"acc_{hid}",
+        "type": meta.get("type", "hotel"),
+        "title": hotel.get("name"),
+        "source": hotel.get("source", "agoda"),
+        "ontology_version": ONTOLOGY_VERSION,
+        "content": hotel.get("description_short") or hotel.get("description"),
+        # semantic_metadata: concept_id theo facet (HARD; SOFT style/aspect để Bước 5)
+        "semantic_metadata": sm,
+        # tags: provenance từng nhãn (đủ schema.py: concept/confidence/sources)
+        "tags": [
+            {"concept": t["concept"], "confidence": t["confidence"], "sources": t["sources"]}
+            for t in sorted(tags, key=lambda x: (-x["confidence"], x["concept"]))
+        ],
+        "range_filters": rf,
+        "location": meta.get("location"),
+        "nearby_places": meta.get("nearby_places", []),
+        "provenance": {
+            "source": hotel.get("source", "agoda"),
+            "source_url": hotel.get("source_url"),
+            "crawled_at": hotel.get("crawled_at"),
+            "mapper_version": "ontology_mapper Tầng0+1 (Bước2) + metadata_pipeline (Bước3)",
+            "price_note": "price_min capped at 5M (placeholder)" if price_capped else None,
+        },
+    }
+
+
+def run() -> dict:
+    facets = load_facets()
+    tags_all = json.load(open(TAGS_JSON, encoding="utf-8"))
+    meta_all = json.load(open(META_JSON, encoding="utf-8"))
+    objects: dict[str, dict] = {}
+    stats = {"n": 0, "price_capped": 0, "no_object_type": 0, "tier": defaultdict(int)}
+
+    for f in sorted(glob.glob(HOTELS_GLOB)):
+        hotel = json.load(open(f, encoding="utf-8"))
+        key = f"acc_{hotel.get('hotel_id')}"
+        obj = build_object(hotel, tags_all.get(key, []), meta_all.get(key, {}), facets)
+        objects[key] = obj
+        stats["n"] += 1
+        if obj["range_filters"].get("price_capped"):
+            stats["price_capped"] += 1
+        if obj["semantic_metadata"].get("object_type") is None:
+            stats["no_object_type"] += 1
+        stats["tier"][obj["semantic_metadata"].get("price_tier")] += 1
+
+    json.dump(objects, open(OUT_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    return stats
+
+
+if __name__ == "__main__":
+    s = run()
+    print(f"Objects: {s['n']} -> {OUT_JSON}")
+    print(f"price_capped (giá min=5tr, gắn cờ): {s['price_capped']}")
+    print(f"thiếu object_type: {s['no_object_type']}")
+    print(f"price_tier: {dict(sorted(s['tier'].items(), key=lambda x: str(x[0])))}")
