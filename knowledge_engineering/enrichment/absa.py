@@ -65,12 +65,20 @@ def analyze_review(text: str) -> dict:
     return {"overall_sentiment": out.get("overall_sentiment", "neutral"), "items": items}
 
 
-EVIDENCE_JSON = "knowledge_engineering/enrichment/review_evidence.json"
+# evidence CHIA THEO HOTEL: review_evidence/hotel_<id>.json (mỗi hotel 1 file).
+# Lý do (vs 1 file gộp): 112k review -> 1 file ~100MB ghi lại mỗi lần = chậm dần + hỏng
+# cả mẻ. Theo hotel: resume/ghi nhanh (file nhỏ ~150KB), hỏng cục bộ, khớp pattern
+# data/raw/reviews (1 file/hotel). profile gộp thì vẫn 1 file (hotel_profiles.json).
+EVIDENCE_DIR = Path("knowledge_engineering/enrichment/review_evidence")
 
 
-def _load_evidence() -> dict:
-    """Evidence đã có (resume). Key = str(review_id) -> KHÔNG chạy lại (không tốn tiền lại)."""
-    p = Path(EVIDENCE_JSON)
+def _evidence_path(hotel_id: int) -> Path:
+    return EVIDENCE_DIR / f"hotel_{hotel_id}.json"
+
+
+def _load_evidence(hotel_id: int) -> dict:
+    """Evidence đã có của 1 hotel (resume). Key = str(review_id) -> KHÔNG chạy lại."""
+    p = _evidence_path(hotel_id)
     if p.exists():
         try:
             return json.loads(p.read_text(encoding="utf-8"))
@@ -79,8 +87,9 @@ def _load_evidence() -> dict:
     return {}
 
 
-def _save_evidence(store: dict) -> None:
-    Path(EVIDENCE_JSON).write_text(
+def _save_evidence(hotel_id: int, store: dict) -> None:
+    EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
+    _evidence_path(hotel_id).write_text(
         json.dumps(store, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
@@ -103,11 +112,11 @@ def analyze_hotel(hotel_id: int, limit: int | None = None, save_every: int = 10)
     if limit:
         reviews = reviews[:limit]
 
-    store = _load_evidence()
+    store = _load_evidence(hotel_id)
     done_before = len(store)
     processed = 0
     try:
-        for i, r in enumerate(reviews, 1):
+        for r in reviews:
             rid = str(r.get("review_id"))
             if rid in store:           # đã chạy -> resume, không tốn tiền lại
                 continue
@@ -121,11 +130,11 @@ def analyze_hotel(hotel_id: int, limit: int | None = None, save_every: int = 10)
             }
             processed += 1
             if processed % save_every == 0:
-                _save_evidence(store)   # lưu định kỳ
+                _save_evidence(hotel_id, store)   # lưu định kỳ
     finally:
-        _save_evidence(store)           # LUÔN lưu, kể cả khi raise giữa chừng
+        _save_evidence(hotel_id, store)           # LUÔN lưu, kể cả khi raise giữa chừng
     print(f"  (đã có sẵn {done_before}, chạy mới {processed}, tổng {len(store)} evidence)")
-    return {k: v for k, v in store.items() if v.get("hotel_id") == hotel_id}
+    return store
 
 
 # ---------------------------------------------------------------------------
@@ -140,7 +149,7 @@ def estimate_cost(hotel_id: int, limit: int | None, model: str) -> dict:
     reviews = json.loads(f.read_text(encoding="utf-8")).get("reviews", [])
     if limit:
         reviews = reviews[:limit]
-    store = _load_evidence()
+    store = _load_evidence(hotel_id)
     todo = [r for r in reviews if str(r.get("review_id")) not in store]
     avg_chars = sum(len(_review_text(r)) for r in todo) / max(1, len(todo))
     in_tok = 260 + avg_chars / 4          # system ~260 + review
