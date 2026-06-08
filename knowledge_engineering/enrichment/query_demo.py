@@ -83,8 +83,10 @@ def parse_location_text(q: str) -> str | None:
               "đà lạt", "hội an", "huế", "hạ long", "vũng tàu", "sầm sơn", "quy nhơn",
               "phan thiết", "sa pa", "ninh bình", "cát bà", "côn đảo"]
     ql = normalize(q, fold=True)
+    ql_nospace = ql.replace(" ", "")          # bắt cả dạng gõ liền: "danang", "nhatrang", "phuquoc"
     for c in cities:
-        if normalize(c, fold=True) in ql:
+        cf = normalize(c, fold=True)
+        if cf in ql or cf.replace(" ", "") in ql_nospace:
             return c
     return None
 
@@ -213,6 +215,11 @@ def show(q: str) -> None:
     print(f"   → concept hiểu được: {r['concepts']}")
     print(f"   → lọc CỨNG (amenity/setting): {r['hard'] or '—'} | nới lỏng: {r['soft'] or '—'}")
     print(f"   → range: {r['range'] or '—'} | location: {r['location'] or '—'}")
+    # cảnh báo SOFT: style/aspect là cảm nhận từ review -> CHƯA lọc được (chờ Bước 5 ABSA)
+    soft_seen = [c for c in r["concepts"] if c.startswith(("STYLE_", "ASPECT_"))]
+    if soft_seen:
+        print(f"   ⚠ CẢM NHẬN {soft_seen} CHƯA lọc được — cần phân tích review (Bước 5). "
+              "Kết quả dưới chỉ là hotel khớp phần còn lại, sắp theo điểm review chung.")
     if "price_max" in r["range"] or "price_min" in r["range"]:
         print("   ⚠ GIÁ là placeholder (fake) — KHÔNG lọc cứng theo giá, chỉ ưu tiên hotel giá gần mức yêu cầu.")
     print(f"   → {r['n']} hotel khớp. Top (ưu tiên khớp nhiều tiêu chí + gần giá + điểm cao):")
