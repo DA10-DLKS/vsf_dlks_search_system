@@ -65,58 +65,142 @@ def analyze_review(text: str) -> dict:
     return {"overall_sentiment": out.get("overall_sentiment", "neutral"), "items": items}
 
 
-def analyze_hotel(hotel_id: int, limit: int | None = None) -> list[dict]:
-    """Chạy ABSA cho review của 1 hotel. Trả list evidence per-review."""
+EVIDENCE_JSON = "knowledge_engineering/enrichment/review_evidence.json"
+
+
+def _load_evidence() -> dict:
+    """Evidence đã có (resume). Key = str(review_id) -> KHÔNG chạy lại (không tốn tiền lại)."""
+    p = Path(EVIDENCE_JSON)
+    if p.exists():
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+    return {}
+
+
+def _save_evidence(store: dict) -> None:
+    Path(EVIDENCE_JSON).write_text(
+        json.dumps(store, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def _review_text(r: dict) -> str:
+    text = r.get("text") or ""
+    extra = " ".join(filter(None, [r.get("positives"), r.get("negatives")]))
+    return (text + " " + extra).strip()
+
+
+def analyze_hotel(hotel_id: int, limit: int | None = None, save_every: int = 10) -> dict:
+    """Chạy ABSA cho review 1 hotel. LƯU INCREMENTAL + RESUME:
+    - review_id đã có trong evidence store -> BỎ QUA (không gọi API lại).
+    - cứ `save_every` review xong -> ghi file (lỗi giữa chừng không mất phần đã trả tiền).
+    Trả dict {review_id: evidence}.
+    """
     f = Path(REVIEWS_DIR) / f"hotel_{hotel_id}_reviews.json"
     if not f.exists():
         raise FileNotFoundError(f"Không có file review: {f}")
-    data = json.loads(f.read_text(encoding="utf-8"))
-    reviews = data.get("reviews", [])
+    reviews = json.loads(f.read_text(encoding="utf-8")).get("reviews", [])
     if limit:
         reviews = reviews[:limit]
-    out = []
-    for r in reviews:
-        text = r.get("text") or ""
-        # ghép positives/negatives nếu có (Agoda tách)
-        extra = " ".join(filter(None, [r.get("positives"), r.get("negatives")]))
-        full = (text + " " + extra).strip()
-        res = analyze_review(full)
-        out.append({
-            "review_id": r.get("review_id"),
-            "hotel_id": hotel_id,
-            "rating": r.get("rating"),
-            "overall_sentiment": res["overall_sentiment"],
-            "items": res["items"],
-        })
-    return out
+
+    store = _load_evidence()
+    done_before = len(store)
+    processed = 0
+    try:
+        for i, r in enumerate(reviews, 1):
+            rid = str(r.get("review_id"))
+            if rid in store:           # đã chạy -> resume, không tốn tiền lại
+                continue
+            res = analyze_review(_review_text(r))
+            store[rid] = {
+                "review_id": r.get("review_id"),
+                "hotel_id": hotel_id,
+                "rating": r.get("rating"),
+                "overall_sentiment": res["overall_sentiment"],
+                "items": res["items"],
+            }
+            processed += 1
+            if processed % save_every == 0:
+                _save_evidence(store)   # lưu định kỳ
+    finally:
+        _save_evidence(store)           # LUÔN lưu, kể cả khi raise giữa chừng
+    print(f"  (đã có sẵn {done_before}, chạy mới {processed}, tổng {len(store)} evidence)")
+    return {k: v for k, v in store.items() if v.get("hotel_id") == hotel_id}
+
+
+# ---------------------------------------------------------------------------
+# Ước lượng chi phí (gpt-4o-mini) — để xác nhận TRƯỚC khi đốt tiền
+# ---------------------------------------------------------------------------
+# giá 2025 (USD / 1M token)
+PRICE = {"gpt-4o-mini": (0.15, 0.60), "gpt-4o": (2.50, 10.0)}
+
+
+def estimate_cost(hotel_id: int, limit: int | None, model: str) -> dict:
+    f = Path(REVIEWS_DIR) / f"hotel_{hotel_id}_reviews.json"
+    reviews = json.loads(f.read_text(encoding="utf-8")).get("reviews", [])
+    if limit:
+        reviews = reviews[:limit]
+    store = _load_evidence()
+    todo = [r for r in reviews if str(r.get("review_id")) not in store]
+    avg_chars = sum(len(_review_text(r)) for r in todo) / max(1, len(todo))
+    in_tok = 260 + avg_chars / 4          # system ~260 + review
+    out_tok = 120
+    pin, pout = PRICE.get(model, PRICE["gpt-4o-mini"])
+    cost = len(todo) * (in_tok * pin + out_tok * pout) / 1_000_000
+    return {"todo": len(todo), "skip_cached": len(reviews) - len(todo),
+            "avg_chars": int(avg_chars), "est_usd": round(cost, 4)}
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--hotel", type=int, required=True)
     ap.add_argument("--limit", type=int, default=20)
+    ap.add_argument("--yes", action="store_true",
+                    help="bỏ qua xác nhận (chạy thẳng). KHÔNG khuyến nghị cho lần đầu.")
     args = ap.parse_args()
 
-    print(f"LLM: {active_config()['provider']}/{active_config()['model']}")
-    print(f"ABSA hotel {args.hotel}, {args.limit} review (mẫu nghiệm thu)...\n")
+    cfg = active_config()
+    print(f"LLM: {cfg['provider']}/{cfg['model']}")
+
+    # --- ƯỚC LƯỢNG + XÁC NHẬN trước khi gọi API (chống đốt tiền nhầm) ---
+    est = estimate_cost(args.hotel, args.limit, cfg["model"])
+    print(f"\n=== DỰ TOÁN (hotel {args.hotel}, limit {args.limit}) ===")
+    print(f"  review sẽ chạy mới : {est['todo']}")
+    print(f"  bỏ qua (đã cache)  : {est['skip_cached']}")
+    print(f"  độ dài TB          : {est['avg_chars']} ký tự")
+    if cfg["provider"] == "openai":
+        print(f"  CHI PHÍ ƯỚC TÍNH   : ${est['est_usd']}  (model {cfg['model']})")
+    else:
+        print(f"  provider {cfg['provider']} — miễn phí/local (không tính tiền)")
+
+    if est["todo"] == 0:
+        print("\nKhông có review mới để chạy (đã cache hết). Dừng.")
+        sys.exit(0)
+
+    if cfg["provider"] == "openai" and not args.yes:
+        ans = input(f"\n>>> Chạy {est['todo']} review (~${est['est_usd']})? gõ 'yes' để tiếp: ")
+        if ans.strip().lower() != "yes":
+            print("Đã hủy — không gọi API, không tốn tiền.")
+            sys.exit(0)
+
+    print(f"\nĐang chạy ABSA hotel {args.hotel}...\n")
     ev = analyze_hotel(args.hotel, args.limit)
 
     # tóm tắt
     from collections import Counter
     concept_sent = Counter()
     n_items = 0
-    for e in ev:
+    for e in ev.values():
         for it in e["items"]:
             concept_sent[(it["concept"], it["sentiment"])] += 1
             n_items += 1
-    print(f"Đã phân tích {len(ev)} review -> {n_items} cặp (concept, sentiment).\n")
+    print(f"\nĐã phân tích {len(ev)} review -> {n_items} cặp (concept, sentiment).\n")
     print("Phân bố (concept, sentiment):")
     for (c, s), n in concept_sent.most_common(20):
         print(f"  {n:3d}  {c:22s} {s}")
-    # vài span mẫu
     print("\nVí dụ span dẫn chứng:")
     shown = 0
-    for e in ev:
+    for e in ev.values():
         for it in e["items"]:
             if it["span"]:
                 print(f"  [{it['concept']}/{it['sentiment']}] \"{it['span'][:70]}\"")

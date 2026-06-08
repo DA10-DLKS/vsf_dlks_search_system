@@ -39,8 +39,14 @@ except Exception:
     pass
 
 CACHE_DIR = Path("knowledge_engineering/enrichment/.llm_cache")
-TIMEOUT = 60
+TIMEOUT = 60          # cloud API (nhanh)
+TIMEOUT_OLLAMA = 300  # local CPU chậm hơn nhiều -> timeout dài hơn
 MAX_RETRY = 3
+MAX_TOKENS = 800      # cap output (JSON ABSA ngắn) — chặn model "lảm nhảm" tốn token
+
+
+class FatalLLMError(RuntimeError):
+    """Lỗi KHÔNG nên retry (sai key/hết quota/request sai) — dừng ngay, đừng đốt thêm."""
 
 
 # ---------------------------------------------------------------------------
@@ -112,9 +118,20 @@ def _extract_json(text: str) -> dict:
 # ---------------------------------------------------------------------------
 # Adapter từng provider (HTTP)
 # ---------------------------------------------------------------------------
+def _raise_for_status_classified(r) -> None:
+    """4xx auth/quota/bad-request -> FatalLLMError (KHÔNG retry). Còn lại -> raise thường (retry)."""
+    if r.status_code in (400, 401, 403, 404):
+        raise FatalLLMError(f"HTTP {r.status_code} (sai key/request/model — KHÔNG retry): "
+                            f"{r.text[:200]}")
+    if r.status_code == 429:
+        raise FatalLLMError(f"HTTP 429 (hết quota/rate-limit — DỪNG để khỏi đốt thêm): "
+                            f"{r.text[:200]}")
+    r.raise_for_status()  # 5xx/khác -> retry
+
+
 def _call_openai(cfg, system, user, temperature) -> str:
     if not cfg["openai_key"]:
-        raise RuntimeError("Thiếu OPENAI_API_KEY trong .env")
+        raise FatalLLMError("Thiếu OPENAI_API_KEY trong .env")
     r = requests.post(
         "https://api.openai.com/v1/chat/completions",
         headers={"Authorization": f"Bearer {cfg['openai_key']}"},
@@ -123,17 +140,18 @@ def _call_openai(cfg, system, user, temperature) -> str:
             "messages": [{"role": "system", "content": system},
                          {"role": "user", "content": user}],
             "temperature": temperature,
+            "max_tokens": MAX_TOKENS,                     # cap chống lảm nhảm
             "response_format": {"type": "json_object"},
         },
         timeout=TIMEOUT,
     )
-    r.raise_for_status()
+    _raise_for_status_classified(r)
     return r.json()["choices"][0]["message"]["content"]
 
 
 def _call_gemini(cfg, system, user, temperature) -> str:
     if not cfg["google_key"]:
-        raise RuntimeError("Thiếu GOOGLE_API_KEY trong .env")
+        raise FatalLLMError("Thiếu GOOGLE_API_KEY trong .env")
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{cfg['model']}:generateContent?key={cfg['google_key']}")
     r = requests.post(
@@ -142,11 +160,12 @@ def _call_gemini(cfg, system, user, temperature) -> str:
             "system_instruction": {"parts": [{"text": system}]},
             "contents": [{"parts": [{"text": user}]}],
             "generationConfig": {"temperature": temperature,
+                                 "maxOutputTokens": MAX_TOKENS,
                                  "responseMimeType": "application/json"},
         },
         timeout=TIMEOUT,
     )
-    r.raise_for_status()
+    _raise_for_status_classified(r)
     return r.json()["candidates"][0]["content"]["parts"][0]["text"]
 
 
@@ -161,7 +180,7 @@ def _call_ollama(cfg, system, user, temperature) -> str:
             "format": "json",
             "options": {"temperature": temperature},
         },
-        timeout=TIMEOUT,
+        timeout=TIMEOUT_OLLAMA,  # local CPU chậm
     )
     r.raise_for_status()
     return r.json()["message"]["content"]
@@ -169,21 +188,21 @@ def _call_ollama(cfg, system, user, temperature) -> str:
 
 def _call_claude(cfg, system, user, temperature) -> str:
     if not cfg["anthropic_key"]:
-        raise RuntimeError("Thiếu ANTHROPIC_API_KEY trong .env")
+        raise FatalLLMError("Thiếu ANTHROPIC_API_KEY trong .env")
     r = requests.post(
         "https://api.anthropic.com/v1/messages",
         headers={"x-api-key": cfg["anthropic_key"],
                  "anthropic-version": "2023-06-01"},
         json={
             "model": cfg["model"],
-            "max_tokens": 1024,
+            "max_tokens": MAX_TOKENS,
             "temperature": temperature,
             "system": system,
             "messages": [{"role": "user", "content": user}],
         },
         timeout=TIMEOUT,
     )
-    r.raise_for_status()
+    _raise_for_status_classified(r)
     return r.json()["content"][0]["text"]
 
 
@@ -221,7 +240,9 @@ def complete_json(system: str, user: str, temperature: float = 0.0,
             if use_cache:
                 _cache_put(key, out)
             return out
-        except Exception as e:  # noqa: BLE001 — retry mọi lỗi mạng/parse
+        except FatalLLMError:
+            raise  # sai key/quota/request -> DỪNG ngay, KHÔNG đốt thêm
+        except Exception as e:  # noqa: BLE001 — lỗi mạng/timeout/parse -> retry
             last_err = e
             time.sleep(1.5 * (attempt + 1))
     raise RuntimeError(f"LLM gọi thất bại sau {MAX_RETRY} lần "
