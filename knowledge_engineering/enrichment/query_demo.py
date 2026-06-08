@@ -160,7 +160,54 @@ def search(q: str, limit: int = 15) -> dict:
             "n": len(hits), "hits": hits[:limit]}
 
 
+# ---------------------------------------------------------------------------
+# Intent "tìm ĐỊA ĐIỂM" (không phải tìm hotel) — trả lời từ nearby_places
+# ---------------------------------------------------------------------------
+PLACE_INTENT_KW = ["khu vui chơi", "vui chơi", "chơi gì", "tham quan", "địa điểm",
+                   "điểm đến", "giải trí", "đi đâu", "có gì chơi", "thắng cảnh"]
+# loại nearby (category) coi là "vui chơi/giải trí"
+FUN_CATEGORIES = ["giải trí", "công viên", "vui chơi", "thể thao", "bãi biển",
+                  "vườn", "thú", "cắm trại", "chợ"]
+
+
+def is_place_intent(q: str) -> bool:
+    ql = normalize(q, fold=True)
+    return any(normalize(k, fold=True) in ql for k in PLACE_INTENT_KW)
+
+
+def search_places(q: str, limit: int = 20) -> list[tuple]:
+    """Gom nearby_places (loại vui chơi/giải trí) của hotel trong location -> địa điểm + tần suất."""
+    loc = parse_location_text(q)
+    from collections import Counter
+    seen: dict[str, dict] = {}
+    freq: Counter = Counter()
+    for obj in _objs.values():
+        if loc:
+            blob = " ".join(str(obj["location"].get(k) or "") for k in ("city", "area", "province"))
+            if normalize(loc, fold=True) not in normalize(blob, fold=True):
+                continue
+        for p in obj["nearby_places"]:
+            nm, cat = p.get("name"), (p.get("category") or "")
+            if not nm:
+                continue
+            if any(normalize(fc, fold=True) in normalize(cat, fold=True) for fc in FUN_CATEGORIES):
+                freq[nm] += 1
+                seen[nm] = {"name": nm, "category": cat}
+    return [(seen[nm], n) for nm, n in freq.most_common(limit)]
+
+
 def show(q: str) -> None:
+    # nếu hỏi ĐỊA ĐIỂM -> trả địa điểm, không phải hotel
+    if is_place_intent(q):
+        loc = parse_location_text(q)
+        places = search_places(q)
+        print(f"\n❓ {q}")
+        print(f"   → intent: TÌM ĐỊA ĐIỂM (không phải hotel) | location: {loc or '—'}")
+        print(f"   → {len(places)} địa điểm vui chơi/giải trí (từ nearby_places của hotel quanh đó):")
+        for pl, n in places:
+            print(f"      • {pl['name'][:46]:46s} | {pl['category']}  (gần {n} hotel)")
+        return
+
     r = search(q)
     print(f"\n❓ {q}")
     print(f"   → concept hiểu được: {r['concepts']}")
@@ -170,9 +217,11 @@ def show(q: str) -> None:
     for o in r["hits"]:
         rf = o["range_filters"]
         cap = " [giá~cap5tr]" if rf.get("price_capped") else ""
-        price = f"{rf.get('price_min_vnd', 0):,}đ" if rf.get("price_min_vnd") else "?"
+        price = f"từ {rf.get('price_min_vnd', 0):,}đ/đêm" if rf.get("price_min_vnd") else "giá ?"
+        score = f"{rf.get('review_score')}/10" if rf.get("review_score") else "—"
+        star = f"{rf.get('star_rating')}★" if rf.get("star_rating") else "?★"
         print(f"      • {o['title'][:46]:46s} | {o['location'].get('city')} "
-              f"| {rf.get('star_rating')}★ {rf.get('review_score')}đ | từ {price}{cap}")
+              f"| {star} | review {score} | {price}{cap}")
 
 
 if __name__ == "__main__":
