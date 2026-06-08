@@ -35,6 +35,8 @@ synonyms:
   - ASPECT_FACILITIES
   an hai bac:
   - LOC_DA_NANG__AN_HAI_BAC
+  an sang:
+  - AMEN_RESTAURANT
   an thoi:
   - LOC_PHU_QUOC__AN_THOI
   an thới:
@@ -208,6 +210,8 @@ synonyms:
   - LOC_TUY_HOA__BIEN_TUY_HOA
   biet thu:
   - OBJ_VILLA
+  biet thu bien:
+  - OBJ_VILLA
   biet thu nghi duong:
   - OBJ_VILLA
   bike:
@@ -242,6 +246,8 @@ synonyms:
   - LOC_TUY_HOA__BIEN_TUY_HOA
   biệt_thự:
   - OBJ_VILLA
+  biệt_thự biển:
+  - OBJ_VILLA
   biệt_thự nghỉ_dưỡng:
   - OBJ_VILLA
   bnb:
@@ -258,6 +264,8 @@ synonyms:
   - ASPECT_FOOD
   budget:
   - PRICE_BUDGET
+  buffet:
+  - AMEN_RESTAURANT
   bungalow:
   - OBJ_BUNGALOW
   buon ma thuot:
@@ -481,6 +489,10 @@ synonyms:
   - PURPOSE_FAMILY
   cho gia_đình:
   - PURPOSE_FAMILY
+  cho mang thu cung:
+  - AMEN_PET_FRIENDLY
+  cho mang thú cưng:
+  - AMEN_PET_FRIENDLY
   cho phep thu cung:
   - AMEN_PET_FRIENDLY
   cho sat:
@@ -553,6 +565,10 @@ synonyms:
   - AMEN_CAFE
   con dao:
   - LOC_CON_DAO
+  con nho:
+  - PURPOSE_FAMILY
+  con nhỏ:
+  - PURPOSE_FAMILY
   conference room:
   - AMEN_MEETING_ROOM
   cong tac:
@@ -744,6 +760,8 @@ synonyms:
   dang cap:
   - PRICE_LUXURY
   - STYLE_LUXURY
+  dang cap quoc te:
+  - PRICE_LUXURY
   dang gia:
   - ASPECT_VALUE
   dang tien:
@@ -951,12 +969,18 @@ synonyms:
   - LOC_GIA_LAI_TINH
   gia lam:
   - LOC_GIA_LAM
+  gia mem:
+  - PRICE_BUDGET
   gia re:
+  - PRICE_BUDGET
+  gia sinh vien:
   - PRICE_BUDGET
   gia tot:
   - PRICE_BUDGET
   gia tri:
   - ASPECT_VALUE
+  gia vua:
+  - PRICE_MID
   gia vua phai:
   - PRICE_MID
   gia_lai:
@@ -975,10 +999,16 @@ synonyms:
   - AMEN_BABYSITTING
   giuong va bua sang:
   - OBJ_BNB
+  giá mềm:
+  - PRICE_BUDGET
   giá rẻ:
+  - PRICE_BUDGET
+  giá sinh_viên:
   - PRICE_BUDGET
   giá tốt:
   - PRICE_BUDGET
+  giá vừa:
+  - PRICE_MID
   giá vừa phải:
   - PRICE_MID
   giá_trị:
@@ -1051,6 +1081,8 @@ synonyms:
   - PRICE_MID
   hat karaoke:
   - AMEN_KARAOKE
+  hen ho:
+  - STYLE_ROMANTIC
   hien dai:
   - STYLE_MODERN
   high-end:
@@ -1097,6 +1129,8 @@ synonyms:
   - LOC_DA_NANG__HOA_NINH
   hoa_binh:
   - LOC_HOA_BINH
+  hoanh trang:
+  - STYLE_LUXURY
   hoi an:
   - LOC_HOI_AN
   homestay:
@@ -1115,6 +1149,8 @@ synonyms:
   - PURPOSE_ROMANTIC
   hotel:
   - OBJ_HOTEL
+  hoành_tráng:
+  - STYLE_LUXURY
   hue:
   - LOC_HUE
   huong bien:
@@ -1187,6 +1223,8 @@ synonyms:
   - LOC_DA_NANG__HAI_CHAU
   hải_phòng:
   - LOC_HAI_PHONG
+  hẹn hò:
+  - STYLE_ROMANTIC
   hồ bơi:
   - AMEN_POOL
   hồ bơi ngoài_trời:
@@ -1223,10 +1261,14 @@ synonyms:
   - STYLE_ROMANTIC
   island:
   - SETTING_ISLAND
+  it on:
+  - STYLE_QUIET
   karaoke:
   - AMEN_KARAOKE
   kayaking:
   - AMEN_WATERSPORT
+  kha sang:
+  - PRICE_UPSCALE
   khach di cong tac:
   - PURPOSE_BUSINESS
   khach du lich mot minh:
@@ -1265,6 +1307,8 @@ synonyms:
   - LMK_KHU_NGHI_DUONG_HOAN_CAU
   khu pho phap:
   - LMK_KHU_PHO_PHAP
+  khu resort:
+  - OBJ_RESORT
   khu vuc tang thuong:
   - AMEN_GARDEN
   khu vui choi giai tri sun world ha long:
@@ -1285,6 +1329,8 @@ synonyms:
   - SETTING_NATURE
   khung_cảnh thiên_nhiên:
   - SETTING_NATURE
+  khá sang:
+  - PRICE_UPSCALE
   khách du_lịch một_mình:
   - PURPOSE_SOLO
   khách đi công_tác:
@@ -1427,6 +1473,10 @@ synonyms:
   - LMK_LOP_HOC_NAU_AN_THUAN_TINH
   mang:
   - AMEN_WIFI
+  mang cho meo:
+  - AMEN_PET_FRIENDLY
+  mang chó mèo:
+  - AMEN_PET_FRIENDLY
   mang theo thu cung:
   - AMEN_PET_FRIENDLY
   mang theo thú cưng:
@@ -1501,6 +1551,10 @@ synonyms:
   - SETTING_NATURE
   ngay bai bien:
   - AMEN_BEACHFRONT
+  ngay bien:
+  - SETTING_COASTAL
+  ngay biển:
+  - SETTING_COASTAL
   ngay bãi biển:
   - AMEN_BEACHFRONT
   nghi duong:
@@ -1661,6 +1715,8 @@ synonyms:
   - LMK_NUI_TRUONG_LE
   nội_thành:
   - SETTING_CITY_CENTER
+  o nha dan:
+  - OBJ_HOMESTAY
   ocean view:
   - AMEN_SEA_VIEW
   opulent:
@@ -1677,6 +1733,8 @@ synonyms:
   - AMEN_PET_FRIENDLY
   pets allowed:
   - AMEN_PET_FRIENDLY
+  phai chang:
+  - PRICE_BUDGET
   phan rang - thap cham:
   - LOC_PHAN_RANG_THAP_CHAM
   - LOC_PHAN_RANG_THAP_CHAM__PHAN_RANG_THAP_CHAM
@@ -1718,6 +1776,8 @@ synonyms:
   - AMEN_GYM
   phong the duc:
   - AMEN_GYM
+  phong view bien:
+  - AMEN_SEA_VIEW
   phong xong uot:
   - AMEN_SPA
   phu hop cho xe lan:
@@ -1783,6 +1843,8 @@ synonyms:
   - AMEN_GYM
   phòng tập:
   - AMEN_GYM
+  phòng view biển:
+  - AMEN_SEA_VIEW
   phòng xông ướt:
   - AMEN_SPA
   phù_hợp cho xe_lăn:
@@ -1822,6 +1884,8 @@ synonyms:
   - LOC_BEN_TRE__PHUONG_7
   phường 8:
   - LOC_VUNG_TAU__PHUONG_8
+  phải chăng:
+  - PRICE_BUDGET
   phố cổ:
   - LOC_HA_NOI__PHO_CO
   phủ_lý:
@@ -1950,11 +2014,17 @@ synonyms:
   rach gia:
   - LOC_RACH_GIA
   - LOC_RACH_GIA__RACH_GIA
+  re:
+  - PRICE_BUDGET
   relaxation:
   - PURPOSE_WELLNESS
   relaxing:
   - STYLE_RELAXING
   resort:
+  - OBJ_RESORT
+  resort nghi duong:
+  - OBJ_RESORT
+  resort nghỉ_dưỡng:
   - OBJ_RESORT
   restaurant:
   - AMEN_RESTAURANT
@@ -1982,6 +2052,8 @@ synonyms:
   rạch giá:
   - LOC_RACH_GIA
   - LOC_RACH_GIA__RACH_GIA
+  rẻ:
+  - PRICE_BUDGET
   rừng dừa_nước:
   - LMK_RUNG_DUA_NUOC
   sach:
@@ -2072,6 +2144,9 @@ synonyms:
   - AMEN_GARDEN
   san_bay co_ong:
   - LMK_SAN_BAY_CO_ONG
+  sang:
+  - PRICE_LUXURY
+  - STYLE_LUXURY
   sang chanh:
   - PRICE_LUXURY
   sang chảnh:
@@ -2101,10 +2176,14 @@ synonyms:
   - OBJ_APARTMENT
   shared kitchen:
   - AMEN_KITCHEN
+  sieu sang:
+  - PRICE_LUXURY
   sinh thai:
   - STYLE_ECO
   sinh_thái:
   - STYLE_ECO
+  siêu sang:
+  - PRICE_LUXURY
   snorkeling:
   - AMEN_WATERSPORT
   soc trang:
@@ -2227,6 +2306,8 @@ synonyms:
   - LOC_TAM_DAO__TAM_DAO
   tam hiep:
   - LOC_TAN_HIEP__TAM_HIEP
+  tam khoang:
+  - AMEN_SPA
   tam ky:
   - LOC_TAM_KY
   - LOC_TAM_KY__TAM_KY
@@ -2254,6 +2335,8 @@ synonyms:
   - LOC_TAN_HIEP
   tan thach:
   - LOC_BEN_TRE__TAN_THACH
+  tan tien:
+  - STYLE_MODERN
   tan_binh:
   - LOC_HO_CHI_MINH__TAN_BINH
   tay ninh:
@@ -2426,6 +2509,8 @@ synonyms:
   - PRICE_BUDGET
   tinh lang:
   - STYLE_QUIET
+  tinh tu:
+  - STYLE_ROMANTIC
   tiến thành:
   - LOC_PHAN_THIET__TIEN_THANH
   tiết_kiệm:
@@ -2462,6 +2547,8 @@ synonyms:
   - PURPOSE_ROMANTIC
   tre em:
   - PURPOSE_FAMILY
+  tre trung:
+  - STYLE_MODERN
   trekking:
   - AMEN_HIKING
   tren dao:
@@ -2576,12 +2663,17 @@ synonyms:
   - LMK_TRAI_CA_SAU_BLUE_SKY
   trạm khí_tượng hải_văn côn_đảo:
   - LMK_TRAM_KHI_TUONG_HAI_VAN_CON_DAO
+  trẻ trung:
+  - STYLE_MODERN
   trẻ_em:
   - PURPOSE_FAMILY
   tt mua sam imperial plaza:
   - LMK_TT_MUA_SAM_IMPERIAL_PLAZA
   tt mua_sắm imperial plaza:
   - LMK_TT_MUA_SAM_IMPERIAL_PLAZA
+  tuan trang mat:
+  - PURPOSE_ROMANTIC
+  - STYLE_ROMANTIC
   tuong chua kito vua:
   - LMK_TUONG_CHUA_KITO_VUA
   tuong chua_kito vua:
@@ -2602,14 +2694,21 @@ synonyms:
   - LOC_TUYEN_QUANG
   tuyên_quang:
   - LOC_TUYEN_QUANG
+  tuần trăng_mật:
+  - PURPOSE_ROMANTIC
+  - STYLE_ROMANTIC
   tân bình:
   - LOC_HO_CHI_MINH__TAN_BINH
   tân hiệp:
   - LOC_TAN_HIEP
   tân thạch:
   - LOC_BEN_TRE__TAN_THACH
+  tân tiến:
+  - STYLE_MODERN
   tây ninh:
   - LOC_TAY_NINH
+  tình tứ:
+  - STYLE_ROMANTIC
   tĩnh_lặng:
   - STYLE_QUIET
   tượng chúa kitô vua:
@@ -2622,6 +2721,8 @@ synonyms:
   - AMEN_SEA_VIEW
   tầm trung:
   - PRICE_MID
+  tắm khoáng:
+  - AMEN_SPA
   ultra luxury:
   - PRICE_LUXURY
   upscale:
@@ -2681,6 +2782,10 @@ synonyms:
   - AMEN_INFINITY_POOL
   villa:
   - OBJ_VILLA
+  villa nghi duong:
+  - OBJ_VILLA
+  villa nghỉ_dưỡng:
+  - OBJ_VILLA
   vinh:
   - LOC_VINH
   vinh hai:
@@ -2722,6 +2827,8 @@ synonyms:
   - LMK_VINWONDERS_PHU_QUOC
   vinwonders phú_quốc:
   - LMK_VINWONDERS_PHU_QUOC
+  vip:
+  - PRICE_LUXURY
   viện hải_dương_học:
   - LMK_VIEN_HAI_DUONG_HOC
   việt_nam:
@@ -2729,6 +2836,8 @@ synonyms:
   việt_trì:
   - LOC_VIET_TRI
   - LOC_VIET_TRI__VIET_TRI
+  vua tien:
+  - PRICE_MID
   vui nhon:
   - STYLE_LIVELY
   vui nhộn:
@@ -2776,6 +2885,8 @@ synonyms:
   - ASPECT_LOCATION
   vị_trí thuận_tiện:
   - ASPECT_LOCATION
+  vừa tiền:
+  - PRICE_MID
   water sports:
   - AMEN_WATERSPORT
   waterfront:
@@ -2786,6 +2897,8 @@ synonyms:
   - LMK_WENSHAN_PUZHEHEI_AIRPORT
   wheelchair accessible:
   - AMEN_WHEELCHAIR
+  wi fi:
+  - AMEN_WIFI
   wi-fi:
   - AMEN_WIFI
   wifi:
@@ -2801,6 +2914,10 @@ synonyms:
   xa hoa:
   - PRICE_LUXURY
   - STYLE_LUXURY
+  xa xi:
+  - PRICE_LUXURY
+  xa_xỉ:
+  - PRICE_LUXURY
   xanh:
   - STYLE_ECO
   xe dap:
@@ -2813,6 +2930,8 @@ synonyms:
   - AMEN_BIKE
   xin:
   - PRICE_LUXURY
+  xin so:
+  - STYLE_LUXURY
   xong hoi:
   - AMEN_SPA
   xong kho:
@@ -2833,12 +2952,22 @@ synonyms:
   - LOC_NHA_TRANG__XUONG_HUAN
   xịn:
   - PRICE_LUXURY
+  xịn sò:
+  - STYLE_LUXURY
   xứng_đáng:
   - ASPECT_VALUE
+  yen binh:
+  - STYLE_QUIET
   yen tinh:
+  - STYLE_QUIET
+  yên bình:
   - STYLE_QUIET
   yên_tĩnh:
   - STYLE_QUIET
+  ít ồn:
+  - STYLE_QUIET
+  ăn sáng:
+  - AMEN_RESTAURANT
   ăn_uống:
   - ASPECT_FOOD
   đa tốn:
@@ -2896,6 +3025,8 @@ synonyms:
   đẳng_cấp:
   - PRICE_LUXURY
   - STYLE_LUXURY
+  đẳng_cấp quốc_tế:
+  - PRICE_LUXURY
   đền bà_chúa xứ:
   - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
   đền độc_cước:
@@ -2930,3 +3061,5 @@ synonyms:
   ẩm_thực:
   - AMEN_RESTAURANT
   - ASPECT_FOOD
+  ở nhà dân:
+  - OBJ_HOMESTAY
