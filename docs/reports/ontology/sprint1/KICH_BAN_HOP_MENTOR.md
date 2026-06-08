@@ -1,128 +1,158 @@
-# Kịch bản họp mentor — Sprint 1 (Knowledge Engineering, DA10)
+# Kịch bản họp mentor — Knowledge Engineering (DA10) — Sprint 1 + Sprint 2 (đang làm)
 
-> Người trình bày: Trương Anh Long. Thời lượng: ~5–7 phút.
-> Cách dùng: đây là kịch bản NÓI, không phải đọc nguyên văn. Mỗi mục có [thời lượng] +
-> ý chính + 1 câu chốt. Phần **in đậm** là từ khóa cần nhấn. Phần `(nếu mentor hỏi)` để dự phòng.
+> Người trình bày: Trương Anh Long. Thời lượng: ~8–10 phút.
+> Cách dùng: kịch bản NÓI, không đọc nguyên văn. Mỗi mục có ý chính + ví dụ cụ thể + 1 câu chốt.
+> **In đậm** = từ khóa cần nhấn. `(nếu mentor hỏi)` = dự phòng.
+> Cập nhật 2026-06-08: bao trùm Sprint 1 (Foundation) đã xong + Sprint 2 (Enrichment) đang chạy.
 
 ---
 
 ## 0. Mở đầu — đặt khung (30 giây)
 
-"Em xin báo cáo phần việc tuần vừa rồi. Em phụ trách **Knowledge Engineering** trong DA10 —
-nói nôm na là xây **bộ não từ vựng** để hệ thống *hiểu nghĩa* câu hỏi người dùng, chứ không chỉ
-so khớp từ khóa. Tuần này em hoàn thành **Sprint 1 — Semantic Foundation**, gồm 8 task.
-Em xin trình bày 3 phần: *làm gì*, *kết quả ra sao*, và *cái gì chưa xong cùng kế hoạch tiếp theo*."
+"Em phụ trách **Knowledge Engineering** trong DA10 — xây **bộ não từ vựng** để hệ thống *hiểu nghĩa*
+câu hỏi người dùng, chứ không chỉ so khớp từ khóa. Em đã xong **Sprint 1 — Semantic Foundation**
+(dựng vốn từ vựng) và đang ở giữa **Sprint 2 — Semantic Enrichment** (gắn vốn từ đó lên 520 khách
+sạn thật). Em trình bày 4 phần: *vấn đề*, *thiết kế cốt lõi*, *kết quả Sprint 1 & 2*, *cái gì chưa xong*."
 
 ---
 
-## 1. Vấn đề Sprint 1 giải quyết (1 phút)
+## 1. Vấn đề giải quyết (1 phút) — mở bằng ví dụ
 
-Lấy 1 ví dụ cho mentor hình dung ngay:
+"Người dùng gõ: ***'resort yên tĩnh gần biển cho gia đình ở Nha Trang dưới 3 triệu'***.
+Máy phải tách ra: *resort*=loại hình, *yên tĩnh*=cảm nhận, *gần biển*=bối cảnh, *gia đình*=nhóm khách,
+*Nha Trang*=địa danh lọc cứng, *dưới 3 triệu*=lọc giá.
 
-"Ví dụ người dùng gõ: ***'resort yên tĩnh gần biển cho gia đình ở Nha Trang'***.
-Máy phải tách ra: *resort* là loại hình, *yên tĩnh* là cảm nhận, *gần biển* là vị trí,
-*gia đình* là nhóm khách, *Nha Trang* là địa danh lọc cứng.
+Hai cái khó: **(1) mỗi người gõ một kiểu** — 'hồ bơi' / 'bể bơi' / 'pool', có dấu hay không;
+**(2) mỗi nguồn (Agoda/Booking) lại dùng từ khác** — Agoda ghi 'Bể bơi' nhưng người miền Nam gõ
+'hồ bơi'. Em xây lớp quy mọi cách diễn đạt đó về **cùng một khái niệm chuẩn**."
 
-Vấn đề là **mỗi người gõ một kiểu** — 'hồ bơi', 'bể bơi', hay 'pool'; có dấu hay không dấu —
-và **mỗi nguồn dữ liệu Agoda/Booking lại dùng từ khác nhau**. Sprint 1 của em xây lớp quy mọi
-cách diễn đạt đó về **cùng một khái niệm chuẩn**."
-
-> **Câu chốt:** "Đây là **trần chất lượng** của cả hệ thống — tầng này sai thì mọi tầng tìm kiếm phía sau đều sai, nên em làm kỹ phần nền này trước."
+> **Câu chốt:** "Đây là **trần chất lượng** của cả hệ thống — tầng này sai thì mọi tầng search phía
+> sau đều sai. Nên em làm kỹ phần nền trước."
 
 ---
 
 ## 2. Ba ý tưởng thiết kế cốt lõi (1.5 phút)
 
-Nói 3 cái này để mentor thấy có *tư duy thiết kế*, không phải làm cho có:
+1. **Khái niệm trung tính về cảm xúc.** "Mỗi nghĩa gắn 1 mã, tách khỏi ngôn ngữ. Ví dụ `STYLE_QUIET`
+   gom 'yên tĩnh', 'yên bình', 'quiet', 'yen tinh' không dấu. Em **cố ý không tạo** `STYLE_NOT_QUIET` —
+   tốt/xấu để ở trường *sentiment* riêng. Nhét cảm xúc vào mã thì số khái niệm nổ gấp đôi."
 
-1. **Khái niệm trung tính.** "Mỗi nghĩa gắn 1 mã, tách khỏi ngôn ngữ. Ví dụ `STYLE_QUIET` gom cả
-   'yên tĩnh', 'quiet', 'yen tinh' không dấu. Em **cố ý không tạo** mã kiểu `STYLE_NOT_QUIET` —
-   tốt/xấu để ở một trường *sentiment* riêng. Nếu nhét cảm xúc vào mã thì số khái niệm nổ gấp đôi."
+2. **Hard fact vs Soft fact.** "*Có hồ bơi* là **sự thật cứng** → lọc cứng. *Yên tĩnh* là **cảm nhận
+   từ review** → chỉ tăng/giảm điểm xếp hạng, không lọc cứng vì có thể sai."
 
-2. **Hard fact vs Soft fact.** "*Có hồ bơi*, *5 sao* là **sự thật cứng** → dùng **lọc cứng**.
-   Còn *yên tĩnh*, *lãng mạn* là **cảm nhận từ review** → chỉ dùng **tăng/giảm điểm xếp hạng**,
-   không lọc cứng, vì nó là suy luận có thể sai."
+3. **Core vs Candidate.** "Khái niệm chuẩn ngành dùng ngay (Core). Từ lạ trong review/data **không tự
+   thêm** — đẩy vào hàng đợi Candidate, **chờ người duyệt + kiểm golden set**. Để ontology không phình
+   loạn. Ví dụ thật tuần này: em phát hiện 'karaoke', 'sân tennis' trong data → đưa vào hàng đợi →
+   **em duyệt tay** → mới cho lên Core. Còn 'đổi ngoại tệ' tuy 514 khách sạn có, em **từ chối** vì
+   khách sạn nào cũng có, không giúp lọc gì."
 
-3. **Core vs Candidate.** "Khái niệm chuẩn ngành thì dùng ngay (Core). Còn từ lạ phát hiện trong
-   review thì **không tự thêm** — đẩy vào hàng đợi Candidate, **chờ người duyệt**. Để ontology
-   không phình loạn theo thời gian."
-
-> **Câu chốt:** "Ba nguyên tắc này đến từ một lượt em **tự phản biện theo chuẩn search thực tế**, không chỉ làm theo bản kế hoạch gốc."
-
----
-
-## 3. Kết quả — con số cụ thể (1.5 phút)
-
-Đọc chậm, nhấn từng số:
-
-"Em đã phân tích **520 khách sạn Việt Nam thật** crawl từ Agoda, và sản xuất ra:
-- **414 khái niệm Core** = **63 khái niệm ngữ nghĩa viết tay** (7 nhóm: loại hình, tiện ích, bối cảnh,
-  giá, nhóm khách, phong cách, khía cạnh) + **351 khái niệm địa danh TỰ SINH** từ data (quốc gia / tỉnh /
-  thành phố / khu / 142 landmark). Hard/soft: **394 hard / 20 soft**.
-- **1.365 cách gõ** trong từ điển đồng nghĩa — bàn giao cho bạn làm tầng tìm kiếm.
-- **1.093 quan hệ 'gần'** giữa khách sạn và landmark, để trả lời 'gần VinWonders không' bằng **đồ thị**.
-- **1 hợp đồng dữ liệu** (metadata schema) — **1 trong 3 contract chốt** của cả team, có code kiểm tra
-  tự động bằng pydantic (load 414 concept, validate object mẫu).
-- Và **4 script tự sinh**: khi corpus đổi — đã đi 27 → 51 → 555 → **520** — thì **chạy lại script thay
-  vì sửa tay**. Đặc biệt địa danh + landmark đều tự sinh nên scale 1.000+ khách sạn không phải gõ tay."
-
-> **Câu chốt:** "Điểm em tâm đắc nhất là phần **scale**: em không hard-code, mà thiết kế để khi dữ liệu tăng 10–20 lần thì vẫn chạy lại được, không phải làm lại từ đầu."
-
-`(nếu mentor hỏi 'scale cụ thể thế nào')`: "Em chia 3 lớp — **Lớp A** tự sinh từ data (chạy lại script);
-**Lớp B** khái niệm mới (vào hàng đợi, người duyệt); **Lớp C** đổi cấu trúc (hỏi chủ dự án). Mỗi
-loại thay đổi có một quy trình riêng."
+> **Câu chốt:** "Ba nguyên tắc này đến từ một lượt em **tự phản biện theo chuẩn search thực tế**,
+> không chỉ làm theo bản kế hoạch gốc."
 
 ---
 
-## 4. Điều chỉnh so với kế hoạch gốc (1 phút)
+## 3A. Kết quả SPRINT 1 — bộ não từ vựng (1.5 phút)
 
-Cho mentor thấy có *chính kiến*, không làm máy móc. Chọn 2–3 cái mạnh nhất:
+"Em phân tích **520 khách sạn Việt Nam thật** từ Agoda, sản xuất:
+- **419 khái niệm Core** = ~68 khái niệm ngữ nghĩa viết tay (7 nhóm: loại hình, tiện ích, bối cảnh,
+  giá, nhóm khách, phong cách, khía cạnh) + **351 địa danh TỰ SINH** (1 quốc gia / tỉnh / thành phố /
+  khu / **142 landmark**). Hard/soft: **399 hard / 20 soft**.
+- **~1.500 cách gõ** trong từ điển đồng nghĩa — bàn giao tầng search.
+- **1.093 quan hệ 'gần'** giữa khách sạn ↔ landmark, trả lời 'gần VinWonders không' bằng **đồ thị**.
+- **1 hợp đồng dữ liệu** (metadata schema) — 1 trong 3 contract chốt của team, có **pydantic** kiểm tự động.
+- **4 script tự sinh**: corpus đã đi 27 → 51 → 555 → **520** mà chỉ cần **chạy lại script**, không gõ tay."
 
-"Trong lúc làm em có **điều chỉnh vài điểm so với bản hướng dẫn gốc**, vì bản gốc đơn giản hơn
-thực tế search:
-- Em **tách ontology thành nhiều file** thay vì một file — vì một file sẽ vỡ khi lên cả nghìn khái niệm.
-- Em **bỏ cách làm field kiểu `near_vinwonders`** — vì mỗi địa danh mới lại phải thêm một field,
-  không scale. Em thay bằng mô hình `nearby_places` gồm *loại địa điểm + khoảng cách*.
-- Em **không coi số sao / giá / khoảng cách là khái niệm** — chúng là bộ lọc dạng khoảng, nên để
-  riêng ở schema."
+> **Câu chốt:** "Điểm em tâm đắc là **scale**: không hard-code, dữ liệu tăng 10–20 lần vẫn chạy lại được."
 
-> **Câu chốt:** "Em ghi lại đầy đủ 9 điều chỉnh kèm lý do trong báo cáo, để team sau truy được *tại sao làm vậy*."
-
----
-
-## 5. Cái gì CHƯA xong — và tại sao (1 phút) ⚠ phần quan trọng nhất với mentor
-
-Phải nói thẳng, đây là chỗ thể hiện sự trung thực:
-
-"Có 3 hạng mục em **cố ý chưa đánh dấu hoàn thành**:
-1. **Query expansion** — em viết được **21 luật** mở rộng truy vấn, nhưng để nguyên trạng thái
-   ***unverified***. Vì DA10 yêu cầu mỗi luật phải **kiểm trên bộ test golden** — luật nào không
-   tăng độ phủ thì bỏ. Golden set em **đã tự chuẩn bị** (có cột `expansion_should_help`), nhưng bước
-   A/B đo Recall cần **tầng retrieval Sprint 2** mới chạy được nên em **chưa đánh dấu 'đã kiểm'** —
-   trung thực thay vì khai khống.
-2. **Nhóm golden query theo facet** — em đã TỰ TẠO golden set KE (`golden_query_concepts.md`, 32 câu
-   có nhãn facet/concept), nên bước này đã có input; chạm đủ 8/8 facet.
-3. **Verify pipeline metadata trên dữ liệu thật** — mới validate được object *mẫu*, đúng-thật chỉ
-   kiểm được khi Sprint 2 (ontology_mapper) chạy gắn nhãn cả 520 khách sạn."
-
-> **Câu chốt:** "Phần verify expansion chờ **pipeline retrieval Sprint 2** để chạy A/B đo Recall —
-> không phải bỏ sót, mà cần tầng search chạy mới đo được. Golden set thì em đã tự chuẩn bị."
-
-`(nếu mentor hỏi 'còn review thì sao')`: "Review **chưa crawl xong**, nhưng nó **không chặn Sprint 1** —
-vì ontology nền lấy từ **dữ liệu cấu trúc**, không cần review. Review chỉ cần cho **Sprint 2** (phân tích
-cảm xúc + hồ sơ ngữ nghĩa khách sạn). Em đang crawl dần, hiện đã có vài trăm khách sạn có review."
+`(nếu mentor hỏi 'scale thế nào')`: "3 lớp — **Lớp A** tự sinh từ data (chạy script); **Lớp B** khái
+niệm mới (hàng đợi + người duyệt); **Lớp C** đổi cấu trúc (hỏi chủ dự án)."
 
 ---
 
-## 6. Kế hoạch Sprint 2 (30–45 giây)
+## 3B. Kết quả SPRINT 2 — gắn vốn từ lên khách sạn (2 phút) ⭐ phần mới
 
-"Bước tiếp theo em đã chuẩn bị sẵn: viết **ontology_mapper** — tự động gắn 414 khái niệm này lên
-cả 520 khách sạn, sinh ra **knowledge object hoàn chỉnh** cho tầng chunking/embedding dùng.
-Em đã làm **một object mẫu gán tay** để chốt hình dạng trước khi code. Phần này **làm được ngay**,
-không cần chờ gì. Còn phần phân tích review (ABSA) thì làm song song khi crawl xong."
+"Sprint 1 dựng *vốn từ*. Sprint 2 em **dùng vốn từ đó gắn nhãn cho cả 520 khách sạn thật**. Đã làm:
 
-> **Câu chốt kết:** "Tóm lại Sprint 1 em đã xây xong **bộ não từ vựng** — chuẩn hóa, có kiểm soát,
-> mở rộng được, và đã bàn giao 3 contract cho các bạn trong team. Em sẵn sàng nghe góp ý của thầy/cô ạ."
+**Bước 0 — khảo sát data:** quét 520 file, đo vocabulary nguồn. Phát hiện quan trọng: **review KHÔNG
+thiếu như em tưởng** — 520/520 có điểm review, **518 khách sạn có review chi tiết, tổng 112.000 review
+thật, trung vị 250 review/khách sạn**. Đủ để phân tích cảm xúc.
+
+**Bước 1 — bản đồ tag nguồn (Tầng 0):** map vocabulary Agoda → khái niệm. Ví dụ 'Bể bơi'→`AMEN_POOL`,
+'Gia đình có trẻ nhỏ'→`PURPOSE_FAMILY`. **Phủ 99% khách sạn** chỉ bằng lớp này, gần như miễn phí.
+
+**Bước 2 — bộ gắn nhãn lai (ontology_mapper):** chạy nhiều tầng từ rẻ đến đắt:
+- *Tầng 0* dùng bản đồ trên (tin 95%).
+- *Tầng 1* quét text mô tả qua từ điển đồng nghĩa, **biết xử lý phủ định** — 'có hồ bơi' thì gắn,
+  'KHÔNG có hồ bơi' thì bỏ.
+- *Tầng 2 (embedding)* em để **khung model-tham-số** — vì bạn phụ trách embedding chưa chốt model,
+  em thiết kế để cắm model nào cũng được, đổi model không phải viết lại.
+→ Kết quả: **520/520 khách sạn được gắn nhãn, ~10.600 nhãn, trung vị 22 nhãn/khách sạn**.
+
+Một ví dụ em tâm đắc về **chất lượng**: lúc đầu bộ gắn nhãn bắt nhầm — mọi khách sạn đều bị gán
+'trung tâm thành phố' vì mô tả nào cũng có chữ 'gần trung tâm'. Em phát hiện **520/520 = rõ ràng sai**,
+nên **chặn không cho luật text đoán bừa các nhãn cảm tính**; nhãn vị trí chỉ lấy từ dữ liệu cấu trúc."
+
+> **Câu chốt:** "Giờ câu hỏi *'khách sạn có hồ bơi ở Đà Nẵng'* đã **trả lời được** — trước Sprint 2
+> thì chưa, vì khách sạn chưa được gắn nhãn khái niệm nào."
+
+`(nếu mentor hỏi 'hard/soft xử lý sao trong mapper')`: "Em thêm mô hình **hybrid**: cùng một nhãn
+'gia đình' — nếu đến từ trường có-sẵn của Agoda thì là *presence* (chắc chắn, lọc được); nếu sau này
+đến từ review thì là *experience* (cảm nhận, kèm sentiment). Phân biệt bằng một trường `nature`."
+
+---
+
+## 4. Ví dụ xuyên suốt — 'resort sang gần biển' chạy tới đâu (1 phút)
+
+"Để thầy/cô thấy hệ thống *hiểu liên kết ngữ nghĩa* thật, em lấy từ 'sang':
+- **Đồng nghĩa:** 'sang', 'xịn', 'luxury', 'sang trọng', 'đẳng cấp' → đều quy về nhóm `PRICE_LUXURY` /
+  `STYLE_LUXURY`. Tuần này em vừa **audit có hệ thống** bổ sung ~45 cách gõ còn thiếu (như 'sang' trần,
+  'tuần trăng mật', 'ăn sáng').
+- **Liên kết khái niệm:** 'luxury' còn **kéo thêm** 'spa', 'hồ bơi riêng', 'view biển' (luật mở rộng).
+- **Cố ý KHÔNG nhồi bừa:** '5 sao' em **không** map thành 'luxury' — vì số sao là **bộ lọc khoảng**,
+  và có resort 5 sao giá tầm trung. Map vào sẽ sai về chất."
+
+> **Câu chốt:** "Em phân biệt rõ *cái gì là khái niệm ngữ nghĩa* với *cái gì là bộ lọc số* — đây là
+> lỗi thiết kế thường gặp mà em tránh."
+
+---
+
+## 5. Điều chỉnh so với kế hoạch gốc (45 giây)
+
+"Em **điều chỉnh vài điểm** vì bản gốc đơn giản hơn thực tế:
+- **Tách ontology nhiều file** thay vì một file — một file vỡ khi lên cả nghìn khái niệm.
+- **Bỏ field kiểu `near_vinwonders`** — không scale; thay bằng `nearby_places` (loại địa điểm + khoảng cách).
+- **Số sao/giá/khoảng cách KHÔNG là khái niệm** — là bộ lọc khoảng, để riêng ở schema.
+- **Đảo thứ tự Sprint 2:** làm bản-đồ-tag-nguồn TRƯỚC bộ gắn nhãn (data Agoda giàu sẵn, phủ 99% rẻ trước)."
+
+> **Câu chốt:** "Em ghi đầy đủ điều chỉnh kèm lý do trong báo cáo, để team sau truy được *tại sao*."
+
+---
+
+## 6. Cái gì CHƯA xong — và tại sao (1 phút) ⚠ phần quan trọng nhất
+
+"Em **cố ý chưa đánh dấu hoàn thành** mấy chỗ:
+1. **Query expansion (21 luật)** để trạng thái ***unverified*** — DA10 yêu cầu mỗi luật phải kiểm trên
+   golden set, mà bước A/B đo Recall cần **tầng retrieval** (bạn khác làm) mới chạy được. Golden set
+   em **đã tự chuẩn bị** (32 câu có nhãn). Trung thực thay vì khai khống.
+2. **Phân tích cảm xúc review (ABSA) + hồ sơ ngữ nghĩa khách sạn** — đây là phần SOFT của Sprint 2,
+   em đang làm. Có 112k review rồi nên **không bị chặn**, chỉ là chưa tới bước đó.
+3. **Tầng 2 embedding của bộ gắn nhãn** — chờ bạn embedding chốt model. Nhưng phần cứng đã phủ 99%
+   nên không chặn tiến độ."
+
+> **Câu chốt:** "Phần chưa xong đều có **lý do phụ thuộc rõ ràng** (chờ tầng search / chờ chốt model),
+> không phải bỏ sót."
+
+---
+
+## 7. Kế hoạch còn lại của Sprint 2 (30 giây)
+
+"Còn 4 bước: **Bước 3** đối chiếu mâu thuẫn dữ liệu (ví dụ Agoda ghi `is_luxury=false` cho resort 5 sao
+Gold Circle → em tự suy lại phân khúc giá, không tin cờ nguồn mù); **Bước 4** đóng gói thành knowledge
+object hoàn chỉnh cho 520 khách sạn; **Bước 5** phân tích cảm xúc review → hồ sơ ngữ nghĩa; **Bước 6**
+hợp nhất + bàn giao."
+
+> **Câu chốt kết:** "Tóm lại: Sprint 1 em xây xong **bộ não từ vựng**; Sprint 2 đang **gắn nó lên dữ
+> liệu thật** — đã gắn xong phần cứng cho cả 520 khách sạn. Em sẵn sàng nghe góp ý ạ."
 
 ---
 
@@ -130,16 +160,18 @@ không cần chờ gì. Còn phần phân tích review (ABSA) thì làm song son
 
 | Mentor hỏi | Trả lời 1 câu |
 |---|---|
-| "Số liệu này lấy từ đâu, có thật không?" | "Tất cả từ **520 file JSON Agoda thật** (khách sạn VN) trong repo; 4 script tự sinh nên **tái lập được**, không gõ tay." |
-| "Sao chỉ Việt Nam?" | "Team chốt phạm vi VN (đã từng có 555 gồm quốc tế, sau lọc về 520 VN). Thiết kế vẫn giữ tầng country + cơ chế auto-slug để mở ra nước ngoài sau mà không đập lại." |
-| "Có gì khó nhất tuần này?" | "Một bug chuẩn hóa tiếng Việt: bản không dấu và bản tách-từ không khớp nhau → query trượt. Em phát hiện và sửa ở hàm normalize." |
-| "Làm sao biết ontology đúng?" | "Phần *cứng* validate bằng pydantic + kiểm không trùng mã/không tham chiếu chết. Phần *mềm* (expansion) **chưa dám nói đúng** — chờ golden set kiểm." |
-| "Phụ thuộc ai?" | "Cần **pipeline retrieval (Sprint 2)** để verify expansion (golden set em tự có rồi); nhận **clean data** từ Data Quality; bàn giao synonym cho tầng search và metadata schema cho DA09." |
+| "Số liệu có thật không?" | "Tất cả từ **520 file JSON Agoda thật** + **112k review** trong repo; script tự sinh nên **tái lập được**." |
+| "Sao chỉ Việt Nam?" | "Team chốt VN (từng có 555 gồm quốc tế, lọc về 520 VN). Thiết kế giữ tầng country + auto-slug để mở rộng nước ngoài sau mà không đập lại." |
+| "Hệ thống hiểu đồng nghĩa thật chưa?" | "Có ở tầng từ vựng — 'sang/xịn/luxury'→cùng nhóm luxury, tra được thật. Liên kết khái niệm (luxury→spa/pool) đã viết, chờ tầng search verify." |
+| "Khó nhất là gì?" | "Bộ gắn nhãn bắt nhầm nhãn cảm tính từ marketing (mọi khách sạn thành 'trung tâm thành phố'). Em phát hiện nhờ con số 520/520 vô lý, rồi chặn luật text đoán bừa." |
+| "Làm sao biết ontology đúng?" | "Phần cứng: pydantic + kiểm không trùng mã / không tham chiếu chết (0 lỗi). Phần mềm (expansion): **chưa dám nói đúng** — chờ golden set." |
+| "Candidate duyệt tay không scale?" | "Phần *phát hiện + lọc + xếp hạng* sẽ tự động (Sprint 4). Phần *người ký duyệt* cố ý giữ làm van chặn rác — và nhẹ vì ontology là tập hữu hạn, cạn dần. Giờ em duyệt tay vì mới 520 khách sạn." |
+| "Phụ thuộc ai?" | "Cần **tầng retrieval** verify expansion; **chốt model embedding** cho Tầng 2; nhận **clean data** từ Data Quality; bàn giao synonym→search, schema→DA09." |
 
 ---
 
 ### Mẹo trình bày
-- **Mở bằng ví dụ câu query**, đừng mở bằng định nghĩa — mentor nắm ngay.
-- Phần **chưa xong nói thẳng** — mentor đánh giá cao sự trung thực hơn là báo cáo đẹp.
-- Nếu quá giờ: bỏ mục 4 (điều chỉnh), giữ mục 1-2-3-5-6.
-- Nếu thừa giờ: thêm chi tiết "3 Lớp scale" ở mục 3.
+- **Mở bằng ví dụ câu query**, đừng mở bằng định nghĩa.
+- Phần **chưa xong nói thẳng** — mentor đánh giá cao trung thực.
+- Nếu quá giờ: bỏ mục 5 (điều chỉnh) + 4 (ví dụ 'sang'), giữ 1-2-3A-3B-6-7.
+- Nếu thừa giờ: thêm ví dụ bug 'trung tâm thành phố' (mục 3B) — mentor thích chỗ tự phát hiện lỗi.
