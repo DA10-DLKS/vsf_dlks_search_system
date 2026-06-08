@@ -1,120 +1,245 @@
-# ontology/query_expansion.yaml — Query Expansion (concept -> concept). Task 1.7 — Sprint 1.
-# Owner: Trương Anh Long (Knowledge Engineering). Bàn giao -> Anh Tài (áp dụng lúc query).
-#
-# Mục đích: mở rộng concept -> concept để TĂNG RECALL. Query có concept X -> thêm các concept
-# Y liên quan vào tập tìm kiếm (vd "gia đình" -> kéo thêm "kids club", "hồ bơi trẻ em").
-#
-# ⚠ TRẠNG THÁI: TẤT CẢ rule = unverified. DA10 yêu cầu "mỗi rule kiểm trên golden set, không
-# tăng Recall thì BỎ". GOLDEN SET CHƯA CÓ (DA09 chưa cấp) -> KHÔNG đánh dấu rule nào "đã kiểm".
-# Lộ trình: golden set có -> chạy A/B từng rule -> set status: verified | rejected (xóa).
-# KHÔNG dùng rule unverified như đã kiểm chứng.
-#
-# Nguồn rule (source):
-#   - related/broader/narrower: lấy từ quan hệ THẬT trong ontology/core/*.yaml.
-#   - domain: logic ngành (chưa có cạnh trong ontology nhưng hợp lý) — cần golden set kiểm kỹ hơn.
-#
-# expands_to = list concept_id sẽ thêm khi query chứa concept khóa.
-
-version: "2.0.0"
-status: unverified           # toàn bộ file chờ golden set; xem ghi chú trên
-default_weight: 0.5          # gợi ý trọng số expansion (Anh Tài tinh chỉnh); <1 để không lấn precision
-
+# AUTO-GENERATED — KHÔNG sửa tay. Sinh bởi knowledge_engineering/common/build_expansion.py
+# Nguồn: (1) related/broader/narrower trong ontology/core (ontology_relation);
+#        (2) co-occurrence trong hotel_tags.json (cooccurrence(p,n)).
+# status=unverified: CHỜ golden set A/B. KHÔNG dùng như đã kiểm chứng.
+# Bàn giao -> Anh Tài (áp dụng lúc query). Đổi corpus/concept -> chạy lại script.
+version: 3.0.0
+status: unverified
+default_weight: 0.5
 rules:
-
-  # ---- PURPOSE -> tiện ích/đặc tính phục vụ mục đích đó -----------------------
-  PURPOSE_FAMILY:
-    expands_to: [AMEN_KIDS_CLUB, AMEN_KIDS_POOL]
-    source: related
+  AMEN_BABYSITTING:
+    expands_to:
+    - PURPOSE_FAMILY
+    evidence:
+      PURPOSE_FAMILY: ontology_relation
     status: unverified
-  PURPOSE_ROMANTIC:
-    expands_to: [AMEN_SEA_VIEW, STYLE_ROMANTIC, AMEN_PRIVATE_POOL]
-    source: related+domain         # sea_view/style_romantic từ related; private_pool từ domain
+  AMEN_BEACHFRONT:
+    expands_to:
+    - SETTING_COASTAL
+    evidence:
+      SETTING_COASTAL: ontology_relation
     status: unverified
-  PURPOSE_BUSINESS:
-    expands_to: [AMEN_WIFI, SETTING_CITY_CENTER]
-    source: related+domain
+  AMEN_HIKING:
+    expands_to:
+    - SETTING_MOUNTAIN
+    evidence:
+      SETTING_MOUNTAIN: ontology_relation
     status: unverified
-  PURPOSE_WELLNESS:
-    expands_to: [AMEN_SPA, STYLE_QUIET, STYLE_RELAXING]
-    source: related+domain
-    status: unverified
-
-  # ---- STYLE -> tiện ích/bối cảnh gợi cảm giác đó -----------------------------
-  STYLE_QUIET:
-    expands_to: [STYLE_RELAXING, SETTING_NATURE]
-    source: related
-    status: unverified
-  STYLE_RELAXING:
-    expands_to: [STYLE_QUIET, PURPOSE_WELLNESS, AMEN_SPA]
-    source: related+domain
-    status: unverified
-  STYLE_ROMANTIC:
-    expands_to: [PURPOSE_ROMANTIC, AMEN_SEA_VIEW]
-    source: related+domain
-    status: unverified
-  STYLE_LUXURY:
-    expands_to: [PRICE_LUXURY, AMEN_SPA, AMEN_PRIVATE_POOL, AMEN_SEA_VIEW]
-    source: related+domain
-    status: unverified
-  STYLE_ECO:
-    expands_to: [SETTING_NATURE, SETTING_MOUNTAIN]
-    source: related+domain
-    status: unverified
-
-  # ---- PRICE_LUXURY (phân khúc) -> tiện ích thường đi kèm ---------------------
-  PRICE_LUXURY:
-    expands_to: [AMEN_SPA, AMEN_PRIVATE_POOL, AMEN_SEA_VIEW, AMEN_INFINITY_POOL]
-    source: domain
-    status: unverified
-
-  # ---- SETTING -> tiện ích/đặc tính của bối cảnh ------------------------------
-  SETTING_COASTAL:
-    expands_to: [AMEN_BEACHFRONT, AMEN_SEA_VIEW]
-    source: narrower+domain
-    status: unverified
-  SETTING_ISLAND:
-    expands_to: [SETTING_COASTAL, AMEN_BEACHFRONT]
-    source: related+domain
-    status: unverified
-  SETTING_NATURE:
-    expands_to: [STYLE_QUIET, STYLE_ECO]
-    source: related+domain
-    status: unverified
-
-  # ---- AMENITY <-> AMENITY / OBJECT (đi kèm tự nhiên) -------------------------
-  AMEN_PRIVATE_POOL:
-    expands_to: [OBJ_VILLA]
-    source: related
+  AMEN_INFINITY_POOL:
+    expands_to:
+    - AMEN_POOL
+    evidence:
+      AMEN_POOL: ontology_relation
     status: unverified
   AMEN_KIDS_CLUB:
-    expands_to: [PURPOSE_FAMILY, AMEN_KIDS_POOL]
-    source: related+domain
+    expands_to:
+    - PURPOSE_FAMILY
+    evidence:
+      PURPOSE_FAMILY: ontology_relation
+    status: unverified
+  AMEN_KIDS_POOL:
+    expands_to:
+    - AMEN_POOL
+    - PURPOSE_FAMILY
+    evidence:
+      AMEN_POOL: ontology_relation
+      PURPOSE_FAMILY: ontology_relation
+    status: unverified
+  AMEN_KITCHEN:
+    expands_to:
+    - OBJ_APARTMENT
+    evidence:
+      OBJ_APARTMENT: ontology_relation
+    status: unverified
+  AMEN_MEETING_ROOM:
+    expands_to:
+    - PURPOSE_BUSINESS
+    evidence:
+      PURPOSE_BUSINESS: ontology_relation
+    status: unverified
+  AMEN_POOL:
+    expands_to:
+    - AMEN_INFINITY_POOL
+    - AMEN_KIDS_POOL
+    - AMEN_PRIVATE_POOL
+    evidence:
+      AMEN_INFINITY_POOL: ontology_relation
+      AMEN_KIDS_POOL: ontology_relation
+      AMEN_PRIVATE_POOL: ontology_relation
+    status: unverified
+  AMEN_PRIVATE_POOL:
+    expands_to:
+    - AMEN_POOL
+    - OBJ_VILLA
+    evidence:
+      AMEN_POOL: ontology_relation
+      OBJ_VILLA: ontology_relation
     status: unverified
   AMEN_SPA:
-    expands_to: [PURPOSE_WELLNESS, AMEN_GYM]
-    source: related+domain
+    expands_to:
+    - PURPOSE_WELLNESS
+    evidence:
+      PURPOSE_WELLNESS: ontology_relation
     status: unverified
-  AMEN_GOLF:
-    expands_to: [PRICE_UPSCALE]
-    source: domain
+  AMEN_WATERSPORT:
+    expands_to:
+    - SETTING_COASTAL
+    evidence:
+      SETTING_COASTAL: ontology_relation
     status: unverified
-
-  # ---- OBJECT_TYPE -> tiện ích/đặc tính đặc trưng -----------------------------
-  OBJ_VILLA:
-    expands_to: [AMEN_PRIVATE_POOL]
-    source: related
+  OBJ_APARTMENT:
+    expands_to:
+    - AMEN_KITCHEN
+    - AMEN_SEA_VIEW
+    evidence:
+      AMEN_KITCHEN: cooccurrence(p=0.72,lift=1.85,n=54)
+      AMEN_SEA_VIEW: cooccurrence(p=0.52,lift=1.55,n=54)
+    status: unverified
+  OBJ_HOMESTAY:
+    expands_to:
+    - AMEN_KITCHEN
+    evidence:
+      AMEN_KITCHEN: cooccurrence(p=0.73,lift=1.88,n=15)
     status: unverified
   OBJ_RESORT:
-    expands_to: [AMEN_POOL, AMEN_SPA, SETTING_COASTAL]
-    source: domain
+    expands_to:
+    - AMEN_BEACHFRONT
+    - AMEN_GOLF
+    - AMEN_SEA_VIEW
+    - AMEN_WATERSPORT
+    - SETTING_NATURE
+    evidence:
+      AMEN_BEACHFRONT: cooccurrence(p=0.7,lift=2.73,n=43)
+      AMEN_GOLF: cooccurrence(p=0.58,lift=2.27,n=43)
+      AMEN_SEA_VIEW: cooccurrence(p=0.79,lift=2.36,n=43)
+      AMEN_WATERSPORT: cooccurrence(p=0.6,lift=3.11,n=43)
+      SETTING_NATURE: cooccurrence(p=0.88,lift=3.65,n=43)
     status: unverified
-
-  # ---- LOCATION -> bối cảnh đặc trưng của địa danh (từ data thật) -------------
-  LOC_PHU_QUOC:
-    expands_to: [SETTING_ISLAND, AMEN_BEACHFRONT]
-    source: related+domain
+  OBJ_VILLA:
+    expands_to:
+    - AMEN_PRIVATE_POOL
+    evidence:
+      AMEN_PRIVATE_POOL: ontology_relation
     status: unverified
-  LOC_HON_TRE:
-    expands_to: [SETTING_ISLAND]
-    source: related
+  PRICE_LUXURY:
+    expands_to:
+    - PRICE_UPSCALE
+    evidence:
+      PRICE_UPSCALE: ontology_relation
+    status: unverified
+  PRICE_UPSCALE:
+    expands_to:
+    - PRICE_LUXURY
+    evidence:
+      PRICE_LUXURY: ontology_relation
+    status: unverified
+  PURPOSE_BUSINESS:
+    expands_to:
+    - AMEN_WIFI
+    evidence:
+      AMEN_WIFI: ontology_relation
+    status: unverified
+  PURPOSE_FAMILY:
+    expands_to:
+    - AMEN_KIDS_CLUB
+    - AMEN_KIDS_POOL
+    evidence:
+      AMEN_KIDS_CLUB: ontology_relation
+      AMEN_KIDS_POOL: ontology_relation
+    status: unverified
+  PURPOSE_ROMANTIC:
+    expands_to:
+    - AMEN_SEA_VIEW
+    - STYLE_ROMANTIC
+    evidence:
+      AMEN_SEA_VIEW: ontology_relation
+      STYLE_ROMANTIC: ontology_relation
+    status: unverified
+  PURPOSE_WELLNESS:
+    expands_to:
+    - AMEN_SPA
+    - STYLE_QUIET
+    evidence:
+      AMEN_SPA: ontology_relation
+      STYLE_QUIET: ontology_relation
+    status: unverified
+  SETTING_COASTAL:
+    expands_to:
+    - AMEN_BEACHFRONT
+    evidence:
+      AMEN_BEACHFRONT: ontology_relation
+    status: unverified
+  SETTING_ISLAND:
+    expands_to:
+    - SETTING_COASTAL
+    evidence:
+      SETTING_COASTAL: ontology_relation
+    status: unverified
+  SETTING_MOUNTAIN:
+    expands_to:
+    - AMEN_BIKE
+    evidence:
+      AMEN_BIKE: cooccurrence(p=0.56,lift=1.31,n=64)
+    status: unverified
+  SETTING_NATURE:
+    expands_to:
+    - AMEN_BIKE
+    - AMEN_GARDEN
+    - AMEN_KIDS_POOL
+    - AMEN_SEA_VIEW
+    - STYLE_QUIET
+    evidence:
+      AMEN_BIKE: cooccurrence(p=0.64,lift=1.5,n=126)
+      AMEN_GARDEN: cooccurrence(p=0.98,lift=1.34,n=126)
+      AMEN_KIDS_POOL: cooccurrence(p=0.52,lift=1.59,n=126)
+      AMEN_SEA_VIEW: cooccurrence(p=0.51,lift=1.52,n=126)
+      STYLE_QUIET: ontology_relation
+    status: unverified
+  SETTING_RIVERSIDE:
+    expands_to:
+    - AMEN_BAR
+    - AMEN_CAFE
+    - AMEN_GYM
+    - AMEN_MEETING_ROOM
+    - AMEN_SPA
+    evidence:
+      AMEN_BAR: cooccurrence(p=0.88,lift=1.41,n=68)
+      AMEN_CAFE: cooccurrence(p=0.81,lift=1.42,n=68)
+      AMEN_GYM: cooccurrence(p=0.69,lift=1.39,n=68)
+      AMEN_MEETING_ROOM: cooccurrence(p=0.81,lift=1.45,n=68)
+      AMEN_SPA: cooccurrence(p=0.68,lift=1.39,n=68)
+    status: unverified
+  STYLE_ECO:
+    expands_to:
+    - SETTING_NATURE
+    evidence:
+      SETTING_NATURE: ontology_relation
+    status: unverified
+  STYLE_LUXURY:
+    expands_to:
+    - PRICE_LUXURY
+    evidence:
+      PRICE_LUXURY: ontology_relation
+    status: unverified
+  STYLE_QUIET:
+    expands_to:
+    - SETTING_NATURE
+    - STYLE_RELAXING
+    evidence:
+      SETTING_NATURE: ontology_relation
+      STYLE_RELAXING: ontology_relation
+    status: unverified
+  STYLE_RELAXING:
+    expands_to:
+    - PURPOSE_WELLNESS
+    - STYLE_QUIET
+    evidence:
+      PURPOSE_WELLNESS: ontology_relation
+      STYLE_QUIET: ontology_relation
+    status: unverified
+  STYLE_ROMANTIC:
+    expands_to:
+    - PURPOSE_ROMANTIC
+    evidence:
+      PURPOSE_ROMANTIC: ontology_relation
     status: unverified
