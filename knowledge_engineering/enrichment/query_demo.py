@@ -114,13 +114,20 @@ def search(q: str, limit: int = 15) -> dict:
     #     purpose/style (cảm tính), price_tier (đã có range giá lo), location (lọc bằng TEXT
     #     vì object chưa gắn LOC concept — known limitation Bước 4).
     hard = [c for c in concepts if c.startswith(("AMEN_", "SETTING_"))]
-    soft = [c for c in concepts if c.startswith(("PURPOSE_", "STYLE_", "OBJ_", "PRICE_"))]
+    soft = [c for c in concepts if c.startswith(("PURPOSE_", "OBJ_", "PRICE_"))]
+    # CẢM NHẬN từ review (Bước 5 profile): style/aspect -> lọc theo semantic_profile score.
+    feel = [c for c in concepts if c.startswith(("STYLE_", "ASPECT_"))]
+    FEEL_MIN = 0.6  # hotel phải đạt score >= ngưỡng cho concept cảm nhận mới tính là "khớp"
 
     hits = []
     for obj in _objs.values():
         oc = _all_concepts(obj)
+        prof = obj.get("semantic_profile", {})
         # AND mọi concept HARD (amenity/setting)
         if not all(c in oc for c in hard):
+            continue
+        # CẢM NHẬN: hotel phải có profile score đủ cao cho MỌI concept feel yêu cầu
+        if not all((prof.get(c, {}).get("score", 0) >= FEEL_MIN) for c in feel):
             continue
         # object_type: nếu câu nói loại hình cụ thể (resort/villa...) thì lọc, trừ OBJ_HOTEL (hiểu rộng)
         want_obj = [c for c in soft if c.startswith("OBJ_") and c != "OBJ_HOTEL"]
@@ -149,17 +156,18 @@ def search(q: str, limit: int = 15) -> dict:
     def score(o: dict):
         oc = _all_concepts(o)
         soft_hit = sum(1 for c in soft if c in oc)
+        prof = o.get("semantic_profile", {})
+        feel_score = sum(prof.get(c, {}).get("score", 0) for c in feel)  # tổng điểm cảm nhận
         rf = o["range_filters"]
         p = rf.get("price_min_vnd")
-        # khoảng cách tới mức giá (hotel cap/None xếp sau)
         if target_price and p and not rf.get("price_capped"):
             price_gap = abs(p - target_price)
         else:
             price_gap = 10**12
-        return (-soft_hit, price_gap, -(rf.get("review_score") or 0))
+        return (-soft_hit, -feel_score, price_gap, -(rf.get("review_score") or 0))
     hits.sort(key=score)
-    return {"concepts": concepts, "hard": hard, "soft": soft, "range": rng, "location": loc,
-            "n": len(hits), "hits": hits[:limit]}
+    return {"concepts": concepts, "hard": hard, "soft": soft, "feel": feel,
+            "range": rng, "location": loc, "n": len(hits), "hits": hits[:limit]}
 
 
 # ---------------------------------------------------------------------------
@@ -214,12 +222,8 @@ def show(q: str) -> None:
     print(f"\n❓ {q}")
     print(f"   → concept hiểu được: {r['concepts']}")
     print(f"   → lọc CỨNG (amenity/setting): {r['hard'] or '—'} | nới lỏng: {r['soft'] or '—'}")
+    print(f"   → CẢM NHẬN (từ review, lọc theo profile≥0.6): {r['feel'] or '—'}")
     print(f"   → range: {r['range'] or '—'} | location: {r['location'] or '—'}")
-    # cảnh báo SOFT: style/aspect là cảm nhận từ review -> CHƯA lọc được (chờ Bước 5 ABSA)
-    soft_seen = [c for c in r["concepts"] if c.startswith(("STYLE_", "ASPECT_"))]
-    if soft_seen:
-        print(f"   ⚠ CẢM NHẬN {soft_seen} CHƯA lọc được — cần phân tích review (Bước 5). "
-              "Kết quả dưới chỉ là hotel khớp phần còn lại, sắp theo điểm review chung.")
     if "price_max" in r["range"] or "price_min" in r["range"]:
         print("   ⚠ GIÁ là placeholder (fake) — KHÔNG lọc cứng theo giá, chỉ ưu tiên hotel giá gần mức yêu cầu.")
     print(f"   → {r['n']} hotel khớp. Top (ưu tiên khớp nhiều tiêu chí + gần giá + điểm cao):")
@@ -229,8 +233,14 @@ def show(q: str) -> None:
         price = f"từ {rf.get('price_min_vnd', 0):,}đ/đêm" if rf.get("price_min_vnd") else "giá ?"
         score = f"{rf.get('review_score')}/10" if rf.get("review_score") else "—"
         star = f"{rf.get('star_rating')}★" if rf.get("star_rating") else "?★"
-        print(f"      • {o['title'][:46]:46s} | {o['location'].get('city')} "
-              f"| {star} | review {score} | {price}{cap}")
+        # điểm cảm nhận của hotel cho các concept feel trong câu
+        prof = o.get("semantic_profile", {})
+        feel_str = " ".join(
+            f"{c.split('_', 1)[1].lower()}={prof.get(c, {}).get('score', 0):.2f}" for c in r["feel"]
+        )
+        feel_str = f" | {feel_str}" if feel_str else ""
+        print(f"      • {o['title'][:42]:42s} | {o['location'].get('city')} "
+              f"| {star} | review {score}{feel_str} | {price}{cap}")
 
 
 if __name__ == "__main__":

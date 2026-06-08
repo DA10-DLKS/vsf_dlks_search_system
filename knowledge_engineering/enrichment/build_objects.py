@@ -27,8 +27,13 @@ import yaml
 HOTELS_GLOB = "data/cleaned/hotel_*.json"
 TAGS_JSON = "knowledge_engineering/enrichment/hotel_tags.json"
 META_JSON = "knowledge_engineering/enrichment/hotel_metadata.json"
+PROFILE_JSON = "knowledge_engineering/enrichment/hotel_profiles.json"  # Bước 5 SOFT
 CORE_GLOB = "ontology/core/*.yaml"
 OUT_JSON = "knowledge_engineering/enrichment/knowledge_objects.json"
+
+# Ngưỡng score để đưa SOFT concept (style) vào semantic_metadata (lọc/boost). Dưới ngưỡng =
+# tín hiệu yếu, giữ trong semantic_profile nhưng không đẩy lên metadata lọc.
+SOFT_STYLE_MIN_SCORE = 0.6
 
 ONTOLOGY_VERSION = "concepts_v2.0.0"
 PRICE_CAP_VND = 5_000_000  # giá min == cap này -> không tin (Bước 3)
@@ -76,13 +81,21 @@ def build_semantic_metadata(by_facet: dict[str, list[dict]]) -> dict:
     return sm
 
 
-def build_object(hotel: dict, tags: list[dict], meta: dict, facets: dict[str, str]) -> dict:
+def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
+                 facets: dict[str, str]) -> dict:
     hid = hotel.get("hotel_id")
     by_facet = split_by_facet(tags, facets)
     sm = build_semantic_metadata(by_facet)
 
     # price_tier (one) từ metadata reconcile (Bước 3), KHÔNG từ tag
     sm["price_tier"] = meta.get("price_tier")
+
+    # SOFT (Bước 5): style đủ mạnh -> semantic_metadata.style (để lọc/boost);
+    #                aspect -> luôn ở semantic_profile (điểm trải nghiệm, không lọc cứng).
+    sm["style"] = sorted(
+        c for c, v in profile.items()
+        if c.startswith("STYLE_") and v["score"] >= SOFT_STYLE_MIN_SCORE
+    )
 
     # range_filters + cờ giá
     rf = dict(meta.get("range_filters", {}))
@@ -108,11 +121,17 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, facets: dict[str, st
         "range_filters": rf,
         "location": meta.get("location"),
         "nearby_places": meta.get("nearby_places", []),
+        # semantic_profile (Bước 5): điểm SOFT trải nghiệm/cảm nhận từ review (score/evidence/source).
+        # KHÔNG lọc cứng — dùng để rank/boost + giải thích. aspect ở đây, style cũng giữ đầy đủ.
+        "semantic_profile": {
+            c: {"score": v["score"], "evidence_count": v["evidence_count"], "source": v["source"]}
+            for c, v in sorted(profile.items(), key=lambda x: -x[1]["score"])
+        },
         "provenance": {
             "source": hotel.get("source", "agoda"),
             "source_url": hotel.get("source_url"),
             "crawled_at": hotel.get("crawled_at"),
-            "mapper_version": "ontology_mapper Tầng0+1 (Bước2) + metadata_pipeline (Bước3)",
+            "mapper_version": "mapper Tầng0+1 (B2) + metadata (B3) + profile seed (B5.2)",
             "price_note": "price_min capped at 5M (placeholder)" if price_capped else None,
         },
     }
@@ -122,15 +141,20 @@ def run() -> dict:
     facets = load_facets()
     tags_all = json.load(open(TAGS_JSON, encoding="utf-8"))
     meta_all = json.load(open(META_JSON, encoding="utf-8"))
+    import os
+    prof_all = json.load(open(PROFILE_JSON, encoding="utf-8")) if os.path.exists(PROFILE_JSON) else {}
     objects: dict[str, dict] = {}
-    stats = {"n": 0, "price_capped": 0, "no_object_type": 0, "tier": defaultdict(int)}
+    stats = {"n": 0, "price_capped": 0, "no_object_type": 0, "with_style": 0, "tier": defaultdict(int)}
 
     for f in sorted(glob.glob(HOTELS_GLOB)):
         hotel = json.load(open(f, encoding="utf-8"))
         key = f"acc_{hotel.get('hotel_id')}"
-        obj = build_object(hotel, tags_all.get(key, []), meta_all.get(key, {}), facets)
+        obj = build_object(hotel, tags_all.get(key, []), meta_all.get(key, {}),
+                           prof_all.get(key, {}), facets)
         objects[key] = obj
         stats["n"] += 1
+        if obj["semantic_metadata"].get("style"):
+            stats["with_style"] += 1
         if obj["range_filters"].get("price_capped"):
             stats["price_capped"] += 1
         if obj["semantic_metadata"].get("object_type") is None:
@@ -146,4 +170,5 @@ if __name__ == "__main__":
     print(f"Objects: {s['n']} -> {OUT_JSON}")
     print(f"price_capped (giá min=5tr, gắn cờ): {s['price_capped']}")
     print(f"thiếu object_type: {s['no_object_type']}")
+    print(f"có style (SOFT từ profile): {s['with_style']}")
     print(f"price_tier: {dict(sorted(s['tier'].items(), key=lambda x: str(x[0])))}")
