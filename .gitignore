@@ -76,6 +76,9 @@ observability/**/*.log
 evaluation/reports/*
 !evaluation/reports/.gitkeep
 
+# ===== KE derived outputs (tái sinh bằng script — không commit) =====
+knowledge_engineering/enrichment/hotel_tags.json
+
 # ===== Jupyter =====
 .ipynb_checkpoints/
 *.ipynb_checkpoints

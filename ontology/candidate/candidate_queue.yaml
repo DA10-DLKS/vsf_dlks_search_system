@@ -35,7 +35,7 @@ candidates:
     frequency: 107                              # 107/520 hotel (~20%) nhắc trong description/faq
     examples: ["team building", "hội nghị", "hội thảo", "tổ chức tiệc / gala", "sự kiện"]
     source: description
-    status: pending
+    status: deferred
 
   - candidate_keyword: "tiệc cưới / đám cưới (wedding)"
     suggested_facet: purpose
@@ -43,7 +43,7 @@ candidates:
     frequency: 24                               # 24/520 (~4%)
     examples: ["tiệc cưới", "đám cưới", "wedding"]
     source: description
-    status: pending
+    status: deferred
 
   - candidate_keyword: "workation / làm việc từ xa"
     suggested_facet: purpose
@@ -51,7 +51,7 @@ candidates:
     frequency: 10                               # 10/520 (~2%) — tần suất thấp
     examples: ["workation", "làm việc từ xa", "remote work"]
     source: description
-    status: pending
+    status: deferred
 
   - candidate_keyword: "phượt / backpacker"
     suggested_facet: purpose
@@ -59,7 +59,7 @@ candidates:
     frequency: 9                                # 9/520 (~2%) — tần suất thấp
     examples: ["phượt", "đi bụi", "backpacker"]
     source: description
-    status: pending
+    status: deferred
 
   - candidate_keyword: "staycation"
     suggested_facet: purpose
@@ -67,7 +67,7 @@ candidates:
     frequency: 0                                # chưa thấy trong description; thường ở QUERY LOG/review
     examples: ["staycation", "nghỉ dưỡng tại chỗ"]
     source: query_log
-    status: pending
+    status: deferred
 
   # ── SETTING (bối cảnh): SETTING_RIVERSIDE đã lên Core (từ room_view hard). Còn lại chờ. ──
   - candidate_keyword: "nông thôn / thung lũng (countryside)"
@@ -76,7 +76,7 @@ candidates:
     frequency: 26                               # room_view "Hướng Nông thôn" (17) + "Thung lũng" (9)
     examples: ["Hướng Nông thôn", "Hướng Thung lũng"]
     source: description                          # từ room_view; tần suất thấp -> chờ
-    status: pending
+    status: deferred
 
   # ── STYLE: ứng viên từ keyword scan DESCRIPTION (nguồn YẾU/nhiễu cho style — description là lời
   #    tự quảng cáo, không phải cảm nhận khách). CHỜ review ABSA mới đủ tin để promote. ──
@@ -86,7 +86,7 @@ candidates:
     frequency: 139                              # 139/520 (~26%) trong description — CHỈ là gợi ý
     examples: ["cổ điển", "hoài cổ", "cổ kính", "retro"]
     source: description
-    status: pending
+    status: deferred
 
   - candidate_keyword: "truyền thống / bản địa (traditional)"
     suggested_facet: style
@@ -94,7 +94,7 @@ candidates:
     frequency: 416                              # 80% description — nhưng marketing-fluff, ĐỘ TIN THẤP
     examples: ["truyền thống", "bản địa", "đậm chất Việt", "văn hóa địa phương"]
     source: description
-    status: pending
+    status: deferred
 
   - candidate_keyword: "boutique / nghệ thuật / độc đáo"
     suggested_facet: style
@@ -102,7 +102,7 @@ candidates:
     frequency: 426                              # 81% description — marketing-fluff, ĐỘ TIN THẤP
     examples: ["boutique", "nghệ thuật", "độc đáo", "phong cách riêng"]
     source: description
-    status: pending
+    status: deferred
 
   # ── AMENITY: 11 đáng lọc đã lên Core. Dưới là tiện ích giải trí NGÁCH (ít hotel) + dịch vụ
   #    vận hành phổ biến nhưng ÍT GIÁ TRỊ LỌC (gần như hotel nào cũng có) -> chờ duyệt. ──
@@ -112,7 +112,7 @@ candidates:
     frequency: 120
     examples: ["Sân quần vợt"]
     source: amenities
-    status: pending
+    status: approved                            # PROMOTE 2026-06-08 -> core/amenity.yaml (gom cả cầu lông)
 
   - candidate_keyword: "phòng yoga"
     suggested_facet: amenity
@@ -120,7 +120,7 @@ candidates:
     frequency: 120
     examples: ["Phòng yoga"]
     source: amenities
-    status: pending
+    status: deferred                            # DEFER: tạm gộp AMEN_GYM; tách nếu query log đòi
 
   - candidate_keyword: "karaoke"
     suggested_facet: amenity
@@ -128,15 +128,15 @@ candidates:
     frequency: 130
     examples: ["Karaoke"]
     source: amenities
-    status: pending
+    status: approved                            # PROMOTE 2026-06-08 -> core/amenity.yaml
 
   - candidate_keyword: "bi-a / bida"
     suggested_facet: amenity
-    suggested_concept_id: AMEN_BILLIARDS
+    suggested_concept_id: AMEN_GAME_ROOM        # gộp bi-a + bóng bàn thành phòng giải trí
     frequency: 116
-    examples: ["Bi-a"]
+    examples: ["Bi-a", "Bóng bàn"]
     source: amenities
-    status: pending
+    status: approved                            # PROMOTE 2026-06-08 -> AMEN_GAME_ROOM
 
   - candidate_keyword: "thể thao nước (bơi xuồng / lặn / câu cá)"
     suggested_facet: amenity
@@ -144,7 +144,7 @@ candidates:
     frequency: 112                              # Bơi xuồng(112)+Lặn(106)+Câu cá(110) — gom
     examples: ["Bơi xuồng", "Lặn", "Câu cá"]
     source: amenities
-    status: pending
+    status: approved                            # PROMOTE 2026-06-08 -> core/amenity.yaml
 
   - candidate_keyword: "đi bộ đường dài / hiking"
     suggested_facet: amenity
@@ -152,7 +152,7 @@ candidates:
     frequency: 130
     examples: ["Đi bộ đường dài"]
     source: amenities
-    status: pending
+    status: approved                            # PROMOTE 2026-06-08 -> core/amenity.yaml
 
   - candidate_keyword: "đổi ngoại tệ / rút tiền"
     suggested_facet: amenity
@@ -160,4 +160,4 @@ candidates:
     frequency: 514                              # phổ biến nhưng dịch vụ vận hành, ít giá trị lọc
     examples: ["Đổi ngoại tệ", "Rút tiền mặt"]
     source: amenities
-    status: pending
+    status: rejected                            # REJECT 2026-06-08: không phân biệt khi search
