@@ -132,29 +132,29 @@ def search(q: str, limit: int = 15) -> dict:
             if normalize(loc, fold=True) not in normalize(locblob, fold=True):
                 continue
         rf = obj["range_filters"]
-        if "price_max" in rng or "price_min" in rng:
-            p = rf.get("price_min_vnd")
-            if rf.get("price_capped"):
-                pass  # giá cap 5tr -> không tin, KHÔNG loại theo giá (giữ lại, có cờ)
-            elif p is None:
-                continue  # không có giá -> không xét được
-            else:
-                if "price_max" in rng and p > rng["price_max"]:
-                    continue
-                if "price_min" in rng and p < rng["price_min"]:
-                    continue
+        # GIÁ: toàn bộ giá là placeholder (fake) -> KHÔNG loại cứng theo giá (tránh "0 kết quả"
+        # giả). Chỉ dùng để SORT ưu tiên (xem score()). star/score thì lọc thật.
         if "score_min" in rng and (rf.get("review_score") or 0) < rng["score_min"]:
             continue
         if "star_eq" in rng and rf.get("star_rating") != rng["star_eq"]:
             continue
         hits.append(obj)
 
-    # sort: ưu tiên hotel khớp nhiều concept SOFT (purpose/price/style) rồi review_score
-    #       — proxy thô cho ranking (việc thật của Anh Tài).
+    # sort: ưu tiên hotel khớp nhiều concept SOFT; nếu câu có mức giá -> ưu tiên hotel giá
+    #       GẦN mức đó (dù giá fake, vẫn là proxy); rồi review_score.
+    target_price = rng.get("price_max") or rng.get("price_min")
+
     def score(o: dict):
         oc = _all_concepts(o)
         soft_hit = sum(1 for c in soft if c in oc)
-        return (-soft_hit, -(o["range_filters"].get("review_score") or 0))
+        rf = o["range_filters"]
+        p = rf.get("price_min_vnd")
+        # khoảng cách tới mức giá (hotel cap/None xếp sau)
+        if target_price and p and not rf.get("price_capped"):
+            price_gap = abs(p - target_price)
+        else:
+            price_gap = 10**12
+        return (-soft_hit, price_gap, -(rf.get("review_score") or 0))
     hits.sort(key=score)
     return {"concepts": concepts, "hard": hard, "soft": soft, "range": rng, "location": loc,
             "n": len(hits), "hits": hits[:limit]}
@@ -213,7 +213,9 @@ def show(q: str) -> None:
     print(f"   → concept hiểu được: {r['concepts']}")
     print(f"   → lọc CỨNG (amenity/setting): {r['hard'] or '—'} | nới lỏng: {r['soft'] or '—'}")
     print(f"   → range: {r['range'] or '—'} | location: {r['location'] or '—'}")
-    print(f"   → {r['n']} hotel khớp. Top (ưu tiên khớp nhiều tiêu chí + điểm cao):")
+    if "price_max" in r["range"] or "price_min" in r["range"]:
+        print("   ⚠ GIÁ là placeholder (fake) — KHÔNG lọc cứng theo giá, chỉ ưu tiên hotel giá gần mức yêu cầu.")
+    print(f"   → {r['n']} hotel khớp. Top (ưu tiên khớp nhiều tiêu chí + gần giá + điểm cao):")
     for o in r["hits"]:
         rf = o["range_filters"]
         cap = " [giá~cap5tr]" if rf.get("price_capped") else ""
