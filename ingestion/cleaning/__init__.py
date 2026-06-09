@@ -13,7 +13,7 @@ from ingestion.cleaning.amenity_normalizer import (
     normalize_amenities,
     normalize_amenities_batch,
 )
-from ingestion.cleaning.translator import translate_to_vi, translate_batch
+from ingestion.cleaning.translator import translate_texts
 
 __all__ = [
     "StrippedDocument",
@@ -27,6 +27,5 @@ __all__ = [
     "remove_control_chars",
     "normalize_amenities",
     "normalize_amenities_batch",
-    "translate_to_vi",
-    "translate_batch",
+    "translate_texts",
 ]
