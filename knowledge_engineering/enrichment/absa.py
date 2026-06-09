@@ -25,13 +25,19 @@ from knowledge_engineering.enrichment.llm import complete_json, active_config
 
 REVIEWS_DIR = "data/raw/reviews"
 
+# prompt_version: tăng khi SỬA prompt SYSTEM. Lưu vào evidence để biết evidence sinh từ bản nào
+# (đổi prompt -> cache LLM vô hiệu, evidence cũ version cũ -> cần chạy lại). v1=vi-only, v2=đa ngôn ngữ.
+PROMPT_VERSION = "v2-multilang"
+
 # Vocabulary cho phép (ràng buộc LLM chỉ chọn trong đây)
 ASPECTS = ["ASPECT_CLEANLINESS", "ASPECT_SERVICE", "ASPECT_LOCATION", "ASPECT_ROOM",
            "ASPECT_FOOD", "ASPECT_VALUE", "ASPECT_FACILITIES"]
 STYLES = ["STYLE_QUIET", "STYLE_LIVELY", "STYLE_RELAXING", "STYLE_MODERN",
           "STYLE_ROMANTIC", "STYLE_LUXURY", "STYLE_ECO"]
 
-SYSTEM = f"""Bạn trích cảm xúc theo khía cạnh (ABSA) từ review du lịch tiếng Việt.
+SYSTEM = f"""Bạn trích cảm xúc theo khía cạnh (ABSA) từ review khách sạn.
+Review CÓ THỂ bằng nhiều ngôn ngữ (Việt, Anh, Hàn, Nga, Trung...). Dù review ngôn ngữ nào,
+vẫn trả về concept ID CHUNG (tiếng Anh) dưới đây và span trích NGUYÊN VĂN theo ngôn ngữ gốc.
 
 aspect CHỈ chọn trong: {ASPECTS}
 style (cảm nhận phong cách, tùy chọn) CHỈ chọn trong: {STYLES}
@@ -55,10 +61,16 @@ def analyze_review(text: str) -> dict:
     out = complete_json(SYSTEM, text.strip()[:2000], temperature=0)
     allowed = set(ASPECTS) | set(STYLES)
     items = []
+    seen = set()                       # DEDUPE: mỗi concept tối đa 1 phiếu/review (prompt yêu cầu
+                                       # vậy nhưng LLM vẫn trả trùng) -> lọc tại nguồn, evidence sạch.
     for it in out.get("items", []) or []:
-        if isinstance(it, dict) and it.get("concept") in allowed:
+        if not isinstance(it, dict):
+            continue
+        c = it.get("concept")
+        if c in allowed and c not in seen:
+            seen.add(c)
             items.append({
-                "concept": it["concept"],
+                "concept": c,
                 "sentiment": it.get("sentiment", "neutral"),
                 "span": (it.get("span") or "")[:200],
             })
@@ -127,6 +139,11 @@ def analyze_hotel(hotel_id: int, limit: int | None = None, save_every: int = 10)
     reviews = json.loads(f.read_text(encoding="utf-8")).get("reviews", [])
     reviews = _sample_balanced(reviews, limit)   # cân bằng theo rating, KHÔNG [:limit]
 
+    from datetime import datetime, timezone
+    cfg = active_config()
+    meta_run = {"provider": cfg["provider"], "model": cfg["model"],
+                "prompt_version": PROMPT_VERSION}
+
     store = _load_evidence(hotel_id)
     done_before = len(store)
     processed = 0
@@ -142,6 +159,9 @@ def analyze_hotel(hotel_id: int, limit: int | None = None, save_every: int = 10)
                 "rating": r.get("rating"),
                 "overall_sentiment": res["overall_sentiment"],
                 "items": res["items"],
+                # metadata: biết evidence sinh từ provider/model/prompt nào (đổi -> chạy lại)
+                **meta_run,
+                "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             }
             processed += 1
             if processed % save_every == 0:
