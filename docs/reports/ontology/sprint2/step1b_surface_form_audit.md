@@ -40,3 +40,41 @@ PURPOSE_FAMILY(con nhỏ) · PURPOSE_ROMANTIC(tuần trăng mật) · SETTING_CO
 ## Còn lại
 Đây là vá ĐỢT 1 (nhóm hay-bị-hỏi: price/style/object/amenity phổ biến). Vốn từ là tập mở —
 đợt sau bổ sung khi có **query log thật** (DA09) cho thấy cách gõ thực tế chưa phủ.
+
+---
+
+## ĐỢT 2 — intent NGẦM (mô tả hoàn cảnh) + skip concept "chết". Ngày: 2026-06-09.
+
+> Trigger: câu thật của user "...nhà tôi có 2 con" → gán THIẾU PURPOSE_FAMILY. Gốc: người
+> dùng MÔ TẢ hoàn cảnh thay vì gọi tên concept; cách nói chứa BIẾN SỐ ("2 con", "nhóm 6
+> đứa bạn") không liệt kê hết được vào surface_forms. Sửa TOÀN DIỆN mọi facet, không vá lẻ.
+
+**(a) Mở rộng surface_forms tĩnh** (core/*.yaml, build lại synonym):
+PURPOSE_FAMILY(có con, có con nhỏ, có em bé, dắt con, đi với con, cho bé, con cái, cả nhà...) ·
+PURPOSE_ROMANTIC(vợ chồng, hai vợ chồng, với người yêu, kỷ niệm ngày cưới...) ·
+PURPOSE_GROUP(nhóm bạn, đám bạn, hội bạn, team building...) ·
+PURPOSE_BUSINESS(đi công tác, dự hội nghị, đi họp...) · PURPOSE_WELLNESS(dưỡng sức, xả stress...) ·
+SETTING_COASTAL(gần biển, cạnh biển, đi biển) · SETTING_NATURE/MOUNTAIN/CITY_CENTER(gần núi,
+view núi, gần phố...) · STYLE_QUIET/LIVELY/LUXURY · PRICE_BUDGET/MID(vừa túi tiền, giá hạt dẻ...) ·
+AMEN_KIDS_CLUB(chỗ cho trẻ chơi, khu trẻ em).
+
+**(b) Pattern extractor** — `knowledge_engineering/common/implicit_intent.py` (mới): bảng luật
+regex (RULES) bắt mô tả CÓ BIẾN SỐ mà lookup không kham. Match cả dạng có dấu + fold. DÙNG
+CHUNG cho query_demo lẫn tầng search production (Anh Tài/Đạt). PURPOSE là soft → chỉ ƯU TIÊN
+ranking (qua PURPOSE_EVIDENCE: FAMILY→kids_club/kids_pool/babysitting...), KHÔNG lọc cứng.
+
+**(c) Skip concept "chết"** (query_demo.py) — cùng nguyên lý "giá fake → không lọc cứng":
+một hard/feel concept mà 0 hotel thỏa được thì lọc theo nó chỉ tạo **0-kết-quả-giả**.
+- `_LIVE_CONCEPTS`: SETTING_COASTAL/CITY_CENTER/ISLAND = 0 hotel (Bước 4 chưa suy ra setting
+  từ structured — xem step2 §setting) → skip khỏi AND. "ven biển nha trang": 0 → **29 hotel**.
+- `_LIVE_FEEL`: STYLE_LUXURY/ROMANTIC/MODERN... chưa hotel nào đạt profile≥0.6 → skip lọc, vẫn
+  góp ranking. "resort hạng sang có spa phú quốc": 0 → **8 hotel**.
+- In cảnh báo `⚠ bỏ qua ... concept` để minh bạch lỗ hổng — không che giấu. Khi Bước 4/5 gắn
+  đủ nhãn thì filter tự sống lại, không sửa code.
+
+## Kết quả ĐỢT 2
+- synonym_dictionary: **1688 form** (67 đa-concept). core 419 concept, 0 ID trùng.
+- Đã chạy lại pipeline tag (ontology_mapper → build_objects, 520 object): nhãn ĐỒNG NHẤT với
+  ontology mới; setting vẫn 258 tag (COASTAL=0 — form "ven biển" không xuất hiện trong
+  description hotel nên rule không tag được; đây là lý do (c) cần thiết).
+- "...có 2 con" → PURPOSE_FAMILY ✅, 28 hotel, hotel có kids_club/babysitting lên top.
