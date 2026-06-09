@@ -13,8 +13,29 @@ user_agent: >-
 
 # --- Tang 1: autocomplete (keyword -> danh sach hotel) ---
 autocomplete_api: /api/cronos/search/GetUnifiedSuggestResult/3/24/24/0/vi-vn/
-# Cac hau to dia diem de gom du KS cua 1 chuoi o nhieu noi
-# (autocomplete chi tra ~6 ket qua/luot).
+# Chi crawl khach san co vi tri tai Viet Nam. Tang detail se kiem tra
+# `country` sau khi parse record; neu khong khop thi bo qua va khong luu.
+allowed_countries:
+  - Việt Nam
+  - Vietnam
+  - Viet Nam
+  - VN
+
+# Hau to quoc gia de autocomplete uu tien ket qua Viet Nam khi search brand
+# hoac keyword chung.
+country_search_suffixes:
+  - Việt Nam
+  - Vietnam
+
+# Mac dinh khong tu dong ghep moi keyword voi tat ca region_hints vi voi
+# keyword dia danh se tao truy van nhieu va de bi Agoda tra HTTP 502.
+# Khi can crawl brand theo vung, hay truyen keyword ro rang qua --keys
+# vi du: "Vinpearl Nha Trang,Vinpearl Phu Quoc".
+expand_region_hints: false
+
+# Cac hau to dia diem Viet Nam de gom du KS cua 1 chuoi o nhieu noi
+# (autocomplete chi tra ~6 ket qua/luot). Tranh dung hau to chung nhu
+# "Resort"/"Hotel" vi de keo nham khach san nuoc ngoai cung brand.
 region_hints:
   - Nha Trang
   - Phu Quoc
@@ -22,9 +43,6 @@ region_hints:
   - Ha Long
   - Hoi An
   - Nam Hoi An
-  - Resort
-  - Hotel
-  - Condotel
   - Ha Noi
   - Sai Gon
   - Da Lat
@@ -62,6 +80,41 @@ detail_crawl:
   # Duoi nguong nay + grades rong => coi la THIEU THAT (KS qua it review),
   # danh dau _incomplete nhung KHONG day vao recrawl_queue.
   min_reviews_threshold: 20
+
+# --- Tool review: crawl review chi tiet 1 KS (endpoint review/HotelReviews) ---
+# Endpoint da biet (capture_endpoints.reviews). Tool mo trang lay session +
+# reviewProviderIds, roi page.request.post() lap phan trang (huong C).
+review_crawl:
+  api_path: /api/cronos/property/review/HotelReviews
+  page_size: 25            # so review/request (Agoda gop da provider, co the > size gui)
+  max_pages_per_sort: 40   # tran an toan moi vong sort (chong lap vo han)
+  request_delay: [1.0, 2.5]  # random.uniform giua moi request phan trang (giay)
+  # Bat seed trang 1: 1 so KS tra response review RAT muon (~19s) -> can cho lau
+  # + thu lai. (KS dau tien dinh: Jeju Renaissance 11025533.)
+  seed_max_attempts: 2     # mo lai trang N lan neu lo response review trang 1
+  seed_scroll_steps: 25    # so lan cuon de ep widget review lazy-load (truoc: 18)
+  seed_wait_secs: 35       # cho toi da bao lau sau cuon de response review ve (truoc: 20)
+  retries: 2               # so lan thu THEM ca quy trinh 1 KS (runner) neu loi
+  refresh_browser_every: 15  # mo lai browser sau moi N KS (chong tich luy mem)
+  # Cap dong theo so review (xem thao luan thiet ke):
+  #   <= cap_normal            -> lay het (co text)
+  #   cap_normal < n           -> dung cap_normal
+  #   hotel_id trong flagship  -> dung cap_flagship
+  cap_normal: 250
+  cap_flagship: 400
+  # KS "trong diem" tu suy theo so review (kho dinh nghia tay): review_count
+  # >= nguong nay -> noi cap len cap_flagship. (KS cang nhieu review cang dang
+  # lay sau de profile/ABSA giau bang chung.) De 0/bo trong -> tat tier flagship.
+  flagship_min_reviews: 2000
+  # Sort options Agoda (xac nhan tu response): 1=moi nhat 2=cao->thap
+  # 3=thap->cao 7=huu ich. Chien luoc: vet review diem THAP truoc (hiem, quy),
+  # roi lap bang review MOI NHAT toi khi du cap.
+  sort_low_first: 3
+  sort_recent: 1
+  # Chi giu review co NOI DUNG: text HOAC positives HOAC negatives.
+  # (Nhieu review Agoda khong co reviewComments nhung co cap positives/negatives
+  #  da tach san — rat quy cho ABSA. Bo qua chung la phi.)
+  require_content: true
 
 # --- Gioi han toc do (lich su, tranh bi chan) ---
 rate_limit:

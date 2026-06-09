@@ -76,6 +76,9 @@ observability/**/*.log
 evaluation/reports/*
 !evaluation/reports/.gitkeep
 
+# ===== KE derived outputs (tái sinh bằng script — không commit) =====
+knowledge_engineering/enrichment/hotel_tags.json
+
 # ===== Jupyter =====
 .ipynb_checkpoints/
 *.ipynb_checkpoints
@@ -96,3 +99,22 @@ htmlcov/
 .DS_Store
 Thumbs.db
 desktop.ini
+task.md
+# Ignore file hieu created to track his tasks, but keep the folder so we can see the board
+AI_REVIEW_SUMMARY.md
+docs/PROJECT_STATE.md
+docs/architecture.md
+docs/DECISIONS.md
+docs/HIEU_TASK_BOARD.md
+docs/TEAM_DEPENDENCY_MAP.md
+
+
+# Database exports
+da10_export.sql
+
+# Local crawl/debug outputs
+data/raw/failed.json
+data/raw/hotels_detail.json
+data/raw/hotels_list.json
+data/quarantine/foreign_hotels_*/
+data/quarantine/foreign_hotels_report_*.json

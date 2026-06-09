@@ -11,6 +11,7 @@ import re
 _PKG_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.normpath(os.path.join(_PKG_DIR, "..", "data", "raw"))
 HOTELS_DIR = os.path.join(DATA_DIR, "hotels")
+REVIEWS_DIR = os.path.join(DATA_DIR, "reviews")
 
 LIST_FILE = os.path.join(DATA_DIR, "hotels_list.json")
 DETAIL_FILE = os.path.join(DATA_DIR, "hotels_detail.json")
@@ -79,6 +80,41 @@ def save_detail_record(record: dict) -> str:
     path = os.path.join(HOTELS_DIR, fname)
     _write_json(path, record)
     return path
+
+
+def save_reviews(record: dict) -> str:
+    """Luu review record ra data/reviews/hotel_<id>_reviews.json (ghi de).
+
+    File rieng, doc lap voi file KS (sample_comments giu nguyen lam preview).
+    Tra ve path."""
+    os.makedirs(REVIEWS_DIR, exist_ok=True)
+    path = os.path.join(REVIEWS_DIR, f"hotel_{record['hotel_id']}_reviews.json")
+    _write_json(path, record)
+    return path
+
+
+def reviews_done_ids() -> set:
+    """hotel_id da co file review (de bo qua khi chay batch)."""
+    if not os.path.isdir(REVIEWS_DIR):
+        return set()
+    ids = set()
+    for f in os.listdir(REVIEWS_DIR):
+        m = re.match(r"hotel_(\d+)_reviews\.json$", f)
+        if m:
+            ids.add(int(m.group(1)))
+    return ids
+
+
+def hotel_file_done_ids() -> set:
+    """hotel_id da co file detail rieng trong data/raw/hotels."""
+    if not os.path.isdir(HOTELS_DIR):
+        return set()
+    ids = set()
+    for f in os.listdir(HOTELS_DIR):
+        m = re.match(r"hotel_(\d+)(?:_|\.json)", f)
+        if m:
+            ids.add(int(m.group(1)))
+    return ids
 
 
 # ---------------------------------------------------------------------------
