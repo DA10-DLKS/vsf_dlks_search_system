@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import random
+import secrets
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -87,7 +88,7 @@ def _detect_cjk_source(text: str) -> str | None:
     return None
 
 
-_SEPARATOR = " ||| "
+_SEPARATOR_ESTIMATE = " __||__ "
 _MAX_CHARS_PER_CALL = 4500
 _MAX_SINGLE_TEXT_CHARS = 4000
 
@@ -119,7 +120,7 @@ def _chunk_texts(texts: list[str]) -> list[list[str]]:
     current: list[str] = []
     current_len = 0
     for text in texts:
-        sep_len = len(_SEPARATOR) if current else 0
+        sep_len = len(_SEPARATOR_ESTIMATE) if current else 0
         if current_len + sep_len + len(text) > _MAX_CHARS_PER_CALL and current:
             batches.append(current)
             current = []
@@ -137,7 +138,8 @@ def _translate_chunk(
     cache: dict[str, str] | None = None,
 ) -> dict[str, str]:
     cache = cache or _TRANSLATION_CACHE
-    joined = _SEPARATOR.join(chunk)
+    sep = f"||{secrets.token_hex(8)}||"
+    joined = sep.join(chunk)
     last_exc: Exception | None = None
     for attempt in range(5):
         try:
@@ -145,7 +147,7 @@ def _translate_chunk(
             translated = t.translate(joined)
             if not translated:
                 return {t: t for t in chunk}
-            parts = translated.split(_SEPARATOR)
+            parts = translated.split(sep)
             result: dict[str, str] = {}
             for i, part in enumerate(parts):
                 if i < len(chunk):
@@ -159,8 +161,34 @@ def _translate_chunk(
             last_exc = exc
             if attempt < 4:
                 time.sleep(min(2 ** attempt + random.random(), 10))
-    print(f"Google batch failed after retries: {last_exc}", flush=True)
-    return {t: t for t in chunk}
+
+    # Batch failed → fallback: translate each text individually with rate limiting
+    print(f"  Batch failed ({len(chunk)} texts), translating individually...", flush=True)
+    result: dict[str, str] = {}
+    for text in chunk:
+        if text in result:
+            continue
+        cached = cache.get(text)
+        if cached is not None:
+            result[text] = cached
+            continue
+        for attempt in range(3):
+            try:
+                time.sleep(0.25 + random.random() * 0.25)
+                t = GoogleTranslator(source=source or "auto", target="vi")
+                tr = t.translate(text)
+                value = tr.strip() if tr.strip() else text
+                result[text] = value
+                cache[text] = value
+                break
+            except Exception as exc:
+                if attempt < 2:
+                    time.sleep(1 + random.random())
+                else:
+                    print(f"    Individual failed after 3 retries: {exc}", flush=True)
+                    result[text] = text
+                    cache[text] = text
+    return result
 
 
 def translate_texts(
