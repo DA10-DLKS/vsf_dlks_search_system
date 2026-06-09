@@ -43,12 +43,42 @@ ONE_FACETS = {"object_type", "location", "price_tier"}
 MANY_FACETS = {"amenity", "setting", "purpose", "style", "aspect"}
 
 
+LOC_YAML = "ontology/core/location.generated.yaml"
+LOC_SETTING_YAML = "ontology/core/location_setting.generated.yaml"
+
+
 def load_facets() -> dict[str, str]:
     out = {}
     for f in sorted(glob.glob(CORE_GLOB)):
         d = yaml.safe_load(open(f, encoding="utf-8")) or {}
         for cid, v in (d.get("concepts") or {}).items():
             out[cid] = v.get("facet", "")
+    return out
+
+
+def load_location_setting() -> dict[str, list[str]]:
+    """city text (fold) -> [SETTING_*] từ 2 nguồn: location.related (override) +
+    location_setting.generated (suy từ data hotel). Để gắn SETTING cho hotel theo location."""
+    import os
+    from knowledge_engineering.common.normalize import normalize
+    loc = yaml.safe_load(open(LOC_YAML, encoding="utf-8"))["concepts"]
+    # loc_id -> set(SETTING) từ related + từ file suy
+    by_locid: dict[str, set] = defaultdict(set)
+    for cid, v in loc.items():
+        for r in (v.get("related") or []):
+            if str(r).startswith("SETTING_"):
+                by_locid[cid].add(r)
+    if os.path.exists(LOC_SETTING_YAML):
+        ls = yaml.safe_load(open(LOC_SETTING_YAML, encoding="utf-8")) or {}
+        for lid, settings in (ls.get("location_setting") or {}).items():
+            by_locid[lid].update(settings.keys())
+    # map qua city text (label) -> setting
+    out: dict[str, list[str]] = {}
+    for cid, v in loc.items():
+        if v.get("kind") == "place" and cid in by_locid:
+            lab = (v.get("label") or {}).get("vi", "")
+            if lab:
+                out[normalize(lab, fold=True)] = sorted(by_locid[cid])
     return out
 
 
@@ -82,10 +112,17 @@ def build_semantic_metadata(by_facet: dict[str, list[dict]]) -> dict:
 
 
 def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
-                 facets: dict[str, str]) -> dict:
+                 facets: dict[str, str], loc_setting: dict[str, list[str]]) -> dict:
     hid = hotel.get("hotel_id")
     by_facet = split_by_facet(tags, facets)
     sm = build_semantic_metadata(by_facet)
+
+    # SETTING bổ sung TỪ LOCATION (suy từ data: hotel ở Nha Trang -> COASTAL...). Gộp với
+    # setting đã có từ view_types (tag). Khử trùng. -> COASTAL/ISLAND/CITY_CENTER không còn "chết".
+    from knowledge_engineering.common.normalize import normalize
+    city = (meta.get("location") or {}).get("city") or ""
+    extra_setting = loc_setting.get(normalize(city, fold=True), [])
+    sm["setting"] = sorted(set(sm.get("setting", [])) | set(extra_setting))
 
     # price_tier (one) từ metadata reconcile (Bước 3), KHÔNG từ tag
     sm["price_tier"] = meta.get("price_tier")
@@ -143,6 +180,7 @@ def run() -> dict:
     meta_all = json.load(open(META_JSON, encoding="utf-8"))
     import os
     prof_all = json.load(open(PROFILE_JSON, encoding="utf-8")) if os.path.exists(PROFILE_JSON) else {}
+    loc_setting = load_location_setting()
     objects: dict[str, dict] = {}
     stats = {"n": 0, "price_capped": 0, "no_object_type": 0, "with_style": 0, "tier": defaultdict(int)}
 
@@ -150,7 +188,7 @@ def run() -> dict:
         hotel = json.load(open(f, encoding="utf-8"))
         key = f"acc_{hotel.get('hotel_id')}"
         obj = build_object(hotel, tags_all.get(key, []), meta_all.get(key, {}),
-                           prof_all.get(key, {}), facets)
+                           prof_all.get(key, {}), facets, loc_setting)
         objects[key] = obj
         stats["n"] += 1
         if obj["semantic_metadata"].get("style"):

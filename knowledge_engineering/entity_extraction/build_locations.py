@@ -385,6 +385,15 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     city_state = {(co, ci) for (co, ci) in city_n
                   if f"LOC_{slug(city_clean[(co, ci)])}" == f"LOC_{country_slug(co)}"}
 
+    # CITY == PROVINCE: data bẩn — hotel ghi city = TÊN TỈNH (vd city "Phú Thọ" trong khi
+    # hotel khác có "Việt Trì (Phú Thọ)" -> đã tạo province LOC_PHU_THO_TINH). City trần đó
+    # trùng tỉnh -> KHÔNG tạo concept city riêng (tránh LOC_PHU_THO ≡ LOC_PHU_THO_TINH trùng),
+    # mà gắn thẳng vào province (coi như "trung tâm tỉnh").
+    province_label_slugs = {slug(pv[1]) for pv in prov_of.values() if pv}  # slug các tỉnh đã tách
+    city_is_province = {(co, ci) for (co, ci) in city_n
+                        if prov_of[(co, ci)] is None
+                        and slug(city_clean[(co, ci)]) in province_label_slugs}
+
     # ID city: proposed = CITY_OVERRIDE (ID quen) > slug (tránh trùng). Sau đó qua REGISTRY resolve
     # (external_id Agoda city_id -> alias -> proposed) để ID CỐ ĐỊNH dù Agoda đổi text tên.
     city_id = {}
@@ -392,6 +401,10 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     for (co, ci), n in sorted(city_n.items(), key=lambda x: (-x[1], x[0])):
         if (co, ci) in city_state:
             city_id[(co, ci)] = f"LOC_{country_slug(co)}"
+            continue
+        if (co, ci) in city_is_province:
+            # city trần == tên tỉnh -> dùng luôn province_id (không tạo concept city trùng)
+            city_id[(co, ci)] = province_id(city_clean[(co, ci)])
             continue
         cc = city_clean[(co, ci)]
         if slug(cc) in CITY_OVERRIDE:
@@ -452,6 +465,8 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     for (co, ci), n in sorted(city_n.items(), key=lambda x: (-x[1], x[0])):
         if (co, ci) in city_state:
             continue
+        if (co, ci) in city_is_province:
+            continue   # city trần == tỉnh -> đã trỏ vào province block, không tạo block city trùng
         cid = city_id[(co, ci)]
         cc = city_clean[(co, ci)]
         ov = CITY_OVERRIDE.get(slug(cc), {})

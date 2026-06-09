@@ -780,17 +780,6 @@ concepts:
       vi: ["nam ðinh", "nam ðịnh"]
     description: {vi: "Nam Ðịnh, Việt Nam (1 hotel)", en: "Nam Ðịnh, Việt Nam (1 hotel)"}
 
-  LOC_PHU_THO:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: place
-    parent: LOC_VIETNAM
-    label: {vi: "Phú Thọ", en: "Phú Thọ"}
-    surface_forms:
-      vi: ["phu tho", "phú thọ"]
-    description: {vi: "Phú Thọ, Việt Nam (1 hotel)", en: "Phú Thọ, Việt Nam (1 hotel)"}
-
   LOC_PHUC_YEN:
     facet: location
     fact_type: hard
@@ -846,17 +835,6 @@ concepts:
       vi: ["sapa"]
     description: {vi: "Sapa, Việt Nam (1 hotel)", en: "Sapa, Việt Nam (1 hotel)"}
 
-  LOC_THANH_HOA:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: place
-    parent: LOC_VIETNAM
-    label: {vi: "Thanh Hóa", en: "Thanh Hóa"}
-    surface_forms:
-      vi: ["thanh hoa", "thanh hóa"]
-    description: {vi: "Thanh Hóa, Việt Nam (1 hotel)", en: "Thanh Hóa, Việt Nam (1 hotel)"}
-
   LOC_THUAN_AN:
     facet: location
     fact_type: hard
@@ -900,17 +878,6 @@ concepts:
     surface_forms:
       vi: ["viet tri", "việt trì"]
     description: {vi: "Việt Trì, Việt Nam (1 hotel)", en: "Việt Trì, Việt Nam (1 hotel)"}
-
-  LOC_VINH_PHUC:
-    facet: location
-    fact_type: hard
-    tier: core
-    kind: place
-    parent: LOC_VIETNAM
-    label: {vi: "Vĩnh Phúc", en: "Vĩnh Phúc"}
-    surface_forms:
-      vi: ["vinh phuc", "vĩnh phúc"]
-    description: {vi: "Vĩnh Phúc, Việt Nam (1 hotel)", en: "Vĩnh Phúc, Việt Nam (1 hotel)"}
 
   LOC_DIEN_BIEN_PHU:
     facet: location
@@ -2148,12 +2115,12 @@ concepts:
       vi: ["vinh hai", "vĩnh hải"]
     description: {vi: "Vĩnh Hải (thuộc Phan Rang - Tháp Chàm (Ninh Thuận), Việt Nam; 1 hotel)", en: "Vĩnh Hải (thuộc Phan Rang - Tháp Chàm (Ninh Thuận), Việt Nam; 1 hotel)"}
 
-  LOC_PHU_THO__THANH_THUY:
+  LOC_PHU_THO_TINH__THANH_THUY:
     facet: location
     fact_type: hard
     tier: core
     kind: area
-    parent: LOC_PHU_THO
+    parent: LOC_PHU_THO_TINH
     label: {vi: "Thanh Thủy", en: "Thanh Thủy"}
     surface_forms:
       vi: ["thanh thuy", "thanh thủy"]
@@ -2214,12 +2181,12 @@ concepts:
       vi: ["trung tam sapa", "trung tâm sapa"]
     description: {vi: "Trung tâm Sapa (thuộc Sapa, Việt Nam; 1 hotel)", en: "Trung tâm Sapa (thuộc Sapa, Việt Nam; 1 hotel)"}
 
-  LOC_THANH_HOA__TRUNG_TAM_TP_THANH_HOA:
+  LOC_THANH_HOA_TINH__TRUNG_TAM_TP_THANH_HOA:
     facet: location
     fact_type: hard
     tier: core
     kind: area
-    parent: LOC_THANH_HOA
+    parent: LOC_THANH_HOA_TINH
     label: {vi: "Trung tâm Tp.Thanh Hóa", en: "Trung tâm Tp.Thanh Hóa"}
     surface_forms:
       vi: ["trung tam tp.thanh hoa", "trung tâm tp.thanh hóa"]
