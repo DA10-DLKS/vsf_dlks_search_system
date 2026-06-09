@@ -56,20 +56,24 @@ def seed_from_hotel(hotel: dict) -> dict[str, dict]:
     prof: dict[str, dict] = {}
     rd = hotel.get("reviews_detail") or {}
 
-    # (1) rating_breakdown -> ASPECT score = điểm/10 (đã là tổng hợp toàn bộ review)
+    # (1) rating_breakdown -> ASPECT score = điểm/10 (tổng hợp TOÀN BỘ review).
+    #     score_source ghi rõ nguồn của SCORE (tách khỏi mention bên dưới).
     n_reviews = rd.get("review_count") or hotel.get("review_count") or 0
     for name, score10 in (hotel.get("rating_breakdown") or {}).items():
         cid = RB_MAP.get(name)
         if cid and isinstance(score10, (int, float)):
             prof[cid] = {
                 "score": round(score10 / 10.0, 3),
-                "pos": None, "neg": None,
+                "score_source": "agoda_grades(all reviews)",
                 "evidence_count": n_reviews,
                 "source": "agoda_grades",
                 "nature": "experience",
             }
 
-    # (2) reviews_detail.tags -> concept; pos/neg từ pos_pct*mentioned; Wilson score
+    # (2) reviews_detail.tags -> mention pos/neg. LƯU Ý 2 NGUỒN KHÁC NHAU:
+    #     score (trên) = grades toàn bộ; mention_pos/neg (dưới) = SỐ REVIEW NHẮC TỚI aspect
+    #     (Agoda chỉ trích vài trăm review tiêu biểu, KHÔNG phải toàn bộ). 2 số đo việc khác
+    #     nhau -> KHÔNG đá nhau, đánh dấu rõ mention_source để người đọc không hiểu nhầm.
     for t in rd.get("tags", []) or []:
         if not isinstance(t, dict):
             continue
@@ -77,19 +81,19 @@ def seed_from_hotel(hotel: dict) -> dict[str, dict]:
         if not cid:
             continue
         mentioned = int(t.get("mentioned") or 0)
-        pos_pct = float(t.get("positive_pct") or 0) / 100.0
-        pos = round(mentioned * pos_pct)
+        pos = round(mentioned * float(t.get("positive_pct") or 0) / 100.0)
         neg = mentioned - pos
-        score = round(wilson_lower_bound(pos, mentioned), 3)
-        # nếu concept đã có từ rating_breakdown (aspect) -> giữ cái grades (mạnh hơn), bổ sung pos/neg
-        if cid in prof and prof[cid]["source"] == "agoda_grades":
-            prof[cid]["pos"] = pos
-            prof[cid]["neg"] = neg
-            prof[cid]["evidence_count"] = mentioned
+        if cid in prof and prof[cid].get("source") == "agoda_grades":
+            # aspect đã có score từ grades -> CHỈ thêm mention (đánh dấu nguồn riêng), KHÔNG đè score.
+            prof[cid]["mention_pos"] = pos
+            prof[cid]["mention_neg"] = neg
+            prof[cid]["mention_source"] = "agoda_tags(mentioned)"
         else:
-            nat = "presence" if cid.startswith("AMEN_") or cid.startswith("PURPOSE_") else "experience"
+            nat = "presence" if cid.startswith(("AMEN_", "PURPOSE_")) else "experience"
             prof[cid] = {
-                "score": score, "pos": pos, "neg": neg,
+                "score": round(wilson_lower_bound(pos, mentioned), 3),
+                "score_source": "agoda_tags(mentioned)",
+                "pos": pos, "neg": neg,
                 "evidence_count": mentioned,
                 "source": "agoda_review_tags", "nature": nat,
             }
