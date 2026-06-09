@@ -132,16 +132,21 @@ def merge_absa(hotel_id: int, prof: dict[str, dict]) -> None:
             if c in prof and span.get(c):
                 prof[c]["span"] = span[c]
             continue
-        # STYLE:
-        n = pos.get(c, 0) + neg.get(c, 0)
-        if n < ABSA_MIN_EVIDENCE:
+        # STYLE: là cặp ĐỐI NGHĨA (sôi động↔yên tĩnh), KHÔNG phải thang tốt↔xấu như aspect.
+        # "chê ồn" (neg cho LIVELY) KHÔNG có nghĩa "hotel kém sôi động" -> nếu tính cả neg thì
+        # ra STYLE_LIVELY=0.02 vô nghĩa. GIẢI: score style = sự HIỆN DIỆN TÍCH CỰC ('hotel này
+        # CÓ phong cách X'); chỉ đếm positive, bỏ negative. Concept toàn negative -> LOẠI.
+        p = pos.get(c, 0)
+        if p < ABSA_MIN_EVIDENCE:        # cần >=3 phiếu KHEN mới công nhận phong cách này
             continue
         if c in prof and prof[c].get("source") in ("agoda_review_tags", "agoda_grades"):
             prof[c]["span"] = span.get(c, "")   # seed giữ score, ABSA thêm span
             continue
+        # score = tỷ lệ KHEN trên tổng nhắc; nhưng tối thiểu dựa positive (presence).
+        n = p + neg.get(c, 0)
         prof[c] = {
-            "score": round(wilson_lower_bound(pos.get(c, 0), n), 3),
-            "pos": pos.get(c, 0), "neg": neg.get(c, 0),
+            "score": round(wilson_lower_bound(p, n), 3),
+            "pos": p, "neg": neg.get(c, 0),
             "evidence_count": n,
             "span": span.get(c, ""),
             "source": "absa", "nature": "experience",
