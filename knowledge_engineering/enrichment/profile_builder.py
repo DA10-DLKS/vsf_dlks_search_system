@@ -96,11 +96,14 @@ def seed_from_hotel(hotel: dict) -> dict[str, dict]:
     return prof
 
 
-def merge_absa_style(hotel_id: int, prof: dict[str, dict]) -> None:
-    """Bổ sung STYLE_* từ ABSA evidence (nếu có file). KHÔNG đụng ASPECT (seed lo).
+def merge_absa(hotel_id: int, prof: dict[str, dict]) -> None:
+    """Bổ sung từ ABSA evidence (nếu có file). 2 vai theo điểm mạnh nguồn:
 
-    Mỗi STYLE concept: pos/neg đếm từ evidence (1 phiếu/review), score = Wilson,
-    kèm 1 span dẫn chứng tích cực. Chỉ giữ concept có >= ABSA_MIN_EVIDENCE phiếu.
+      - ASPECT_* : score GIỮ TỪ SEED (Agoda toàn bộ review, cân bằng). ABSA chỉ THÊM
+                   SPAN dẫn chứng tích cực (để DA09 giải thích "vì sao sạch").
+      - STYLE_*  : nếu seed CHƯA có -> ABSA đóng góp cả score (Wilson) + span. Nếu seed
+                   đã có -> chỉ thêm span (mẫu crawl thiên-thấp không đủ tin đè score).
+    Span lấy review TÍCH CỰC (vì aspect score = % khen -> dẫn chứng nên là khen).
     """
     import os
     p = os.path.join(EVIDENCE_DIR, f"hotel_{hotel_id}.json")
@@ -109,12 +112,12 @@ def merge_absa_style(hotel_id: int, prof: dict[str, dict]) -> None:
     ev = json.load(open(p, encoding="utf-8"))
     pos: dict[str, int] = {}
     neg: dict[str, int] = {}
-    span: dict[str, str] = {}
+    span: dict[str, str] = {}     # span TÍCH CỰC (ưu tiên) làm dẫn chứng
     for e in ev.values():
         seen = set()
         for it in e.get("items", []):
             c = it.get("concept", "")
-            if not c.startswith("STYLE_") or c in seen:
+            if not c.startswith(("ASPECT_", "STYLE_")) or c in seen:
                 continue
             seen.add(c)
             if it.get("sentiment") == "positive":
@@ -122,14 +125,19 @@ def merge_absa_style(hotel_id: int, prof: dict[str, dict]) -> None:
                 span.setdefault(c, it.get("span", ""))
             elif it.get("sentiment") == "negative":
                 neg[c] = neg.get(c, 0) + 1
-    for c in set(pos) | set(neg):
+
+    for c in set(pos) | set(neg) | set(span):
+        # ASPECT: chỉ thêm span (nếu seed có concept đó), KHÔNG đụng score.
+        if c.startswith("ASPECT_"):
+            if c in prof and span.get(c):
+                prof[c]["span"] = span[c]
+            continue
+        # STYLE:
         n = pos.get(c, 0) + neg.get(c, 0)
         if n < ABSA_MIN_EVIDENCE:
             continue
         if c in prof and prof[c].get("source") in ("agoda_review_tags", "agoda_grades"):
-            # seed (toàn bộ review, cân bằng) ĐÃ có concept này -> giữ score seed,
-            # ABSA chỉ THÊM span dẫn chứng (mẫu crawl thiên-thấp không đủ tin để đè score).
-            prof[c]["span"] = span.get(c, "")
+            prof[c]["span"] = span.get(c, "")   # seed giữ score, ABSA thêm span
             continue
         prof[c] = {
             "score": round(wilson_lower_bound(pos.get(c, 0), n), 3),
@@ -148,7 +156,7 @@ def run() -> dict:
         hid = hotel.get("hotel_id")
         key = f"acc_{hid}"
         prof = seed_from_hotel(hotel)
-        merge_absa_style(hid, prof)        # bổ sung STYLE_* + span từ ABSA (nếu đã chạy)
+        merge_absa(hid, prof)              # ASPECT: thêm span; STYLE: score+span từ ABSA
         profiles[key] = prof
         stats["n"] += 1
         if prof:
