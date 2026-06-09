@@ -70,6 +70,15 @@ def parse_concepts(q: str) -> tuple[list[str], dict[str, str]]:
                     found.update(_syn[gram])
     implicit = parse_implicit_intent(q)
     found.update(implicit)
+    # NGỮ CẢNH "ngân sách": "budget/ngân sách" + một SỐ TIỀN ("budget 10 triệu") là khai báo
+    # NGÂN SÁCH (-> range filter), KHÔNG phải phân khúc giá rẻ. Surface "budget" (en) khớp
+    # PRICE_BUDGET ở bước lookup -> suppress khi đi kèm số tiền. Giữ "budget hotel" (không số) là
+    # giá rẻ như cũ. parse_range lo phần range; ở đây chỉ gỡ concept hiểu sai.
+    if "PRICE_BUDGET" in found and re.search(
+        r"(budget|ngân sách|ngan sach)\D{0,6}[\d.,]+\s*(triệu|tr|trieu|k|nghìn|nghin|đồng|dong)",
+        normalize(q, fold=True),
+    ):
+        found.discard("PRICE_BUDGET")
     return sorted(found), implicit
 
 

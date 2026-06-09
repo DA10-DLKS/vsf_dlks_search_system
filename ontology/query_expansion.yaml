@@ -149,9 +149,11 @@ rules:
     status: unverified
   PURPOSE_ROMANTIC:
     expands_to:
+    - AMEN_PRIVATE_POOL
     - AMEN_SEA_VIEW
     - STYLE_ROMANTIC
     evidence:
+      AMEN_PRIVATE_POOL: ontology_relation
       AMEN_SEA_VIEW: ontology_relation
       STYLE_ROMANTIC: ontology_relation
     status: unverified
@@ -217,8 +219,12 @@ rules:
     status: unverified
   STYLE_LUXURY:
     expands_to:
+    - AMEN_PRIVATE_POOL
+    - AMEN_SPA
     - PRICE_LUXURY
     evidence:
+      AMEN_PRIVATE_POOL: ontology_relation
+      AMEN_SPA: ontology_relation
       PRICE_LUXURY: ontology_relation
     status: unverified
   STYLE_QUIET:

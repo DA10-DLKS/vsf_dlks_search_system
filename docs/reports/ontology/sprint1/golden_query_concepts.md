@@ -129,13 +129,13 @@
   "query": "Khách sạn nào ở Sầm Sơn phù hợp cho gia đình có trẻ nhỏ?",
   "expected_concepts": {
     "object_type": ["OBJ_HOTEL"],
-    "location":    ["LOC_THANH_HOA"],       // Sầm Sơn thuộc Thanh Hóa (chưa có concept LOC_SAM_SON riêng -> gap)
+    "location":    ["LOC_BAI_BIEN_SAM_SON"], // Sầm Sơn (city con của tỉnh Thanh Hóa) — concept tự sinh, parser bắt qua surface "sầm sơn"
     "purpose":     ["PURPOSE_FAMILY"]
   },
   "expected_range_filters": {},
   // luật PURPOSE_FAMILY -> [AMEN_KIDS_CLUB, AMEN_KIDS_POOL]:
   "expansion_should_help": ["AMEN_KIDS_CLUB", "AMEN_KIDS_POOL"],
-  "_note": "Cần concept LOC_SAM_SON (area của Thanh Hóa) ở vòng mở rộng location.",
+  "_note": "LOC_BAI_BIEN_SAM_SON tự sinh từ data (parent LOC_THANH_HOA_TINH). Surface 'sầm sơn' thêm qua CITY_OVERRIDE.",
   "hotel_ids": [25455208, 926899, 2265300, 745965]
 }
 ```

@@ -79,6 +79,8 @@ def split_province(city: str):
 CITY_OVERRIDE = {
     "DAO_PHU_QUOC":  {"id": "LOC_PHU_QUOC", "related": ["SETTING_ISLAND"],  "extra": ["phú quốc", "đảo phú quốc"]},
     "BIEN_CUA_LO":   {"id": "LOC_CUA_LO",   "related": ["SETTING_COASTAL"], "extra": ["cửa lò", "biển cửa lò"]},
+    # "Thanh Hoá / Bãi biển Sầm Sơn" -> city_clean "Bãi biển Sầm Sơn"; thêm cách gõ trần "sầm sơn".
+    "BAI_BIEN_SAM_SON": {"id": "LOC_BAI_BIEN_SAM_SON", "related": ["SETTING_COASTAL"], "extra": ["sầm sơn", "bãi biển sầm sơn"]},
 }
 
 # AREA_OVERRIDE: (city_slug, area_slug từ data) -> {id, related?}. parent = id của city (đã override).
