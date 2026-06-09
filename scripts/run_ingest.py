@@ -39,7 +39,6 @@ def run(
     report_path: Path = DEFAULT_REPORT_PATH,
     *,
     skip_clean: bool = False,
-    translate_comments: bool = False,
     skip_dedup: bool = False,
     skip_validate: bool = False,
     skip_db: bool = False,
@@ -47,7 +46,7 @@ def run(
     summary: dict[str, int | str | bool] = {}
 
     if not skip_clean:
-        cleaned = run_clean(raw_dir, cleaned_dir, translate_comments=translate_comments)
+        cleaned = run_clean(raw_dir, cleaned_dir)
         summary["cleaned"] = len(cleaned)
     else:
         summary["cleaned"] = summary.get("total", 0)
@@ -96,7 +95,6 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--cleaned-dir", type=str, default=str(DEFAULT_CLEANED_DIR))
     parser.add_argument("--report", type=str, default=str(DEFAULT_REPORT_PATH))
     parser.add_argument("--skip-clean", action="store_true")
-    parser.add_argument("--translate", action="store_true", help="Translate reviews to Vietnamese")
     parser.add_argument("--skip-dedup", action="store_true")
     parser.add_argument("--skip-validate", action="store_true")
     parser.add_argument("--skip-db", action="store_true")
@@ -110,7 +108,6 @@ def main(argv: list[str] | None = None) -> None:
         cleaned_dir=Path(args.cleaned_dir),
         report_path=Path(args.report),
         skip_clean=args.skip_clean,
-        translate_comments=args.translate,
         skip_dedup=args.skip_dedup,
         skip_validate=args.skip_validate,
         skip_db=args.skip_db,

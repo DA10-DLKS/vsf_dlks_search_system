@@ -4,7 +4,7 @@
 
 | Metric | Value | Target | Pass |
 |---|---|---|---|
-| **Total documents** | 503 | – | – |
+| **Total documents** | 502 | – | – |
 | **Missing rate** | 0.0% | < 5.0% | ✅ |
 | **Duplicate rate** | 0.0% | < 2.0% | ✅ |
 | **Duplicate groups** | 0 | – | – |
