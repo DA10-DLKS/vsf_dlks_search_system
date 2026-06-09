@@ -60,7 +60,10 @@ RULE_TEXT_FIELDS = ["description_short", "highlights", "tags"]
 # setting: LOẠI khỏi rule — text marketing "gần trung tâm"/"cách trung tâm 5km" làm SETTING_CITY_CENTER
 #   over-tag (520/520 hotel = rác). Setting chỉ lấy từ Tầng 0 source-tag (view_types) + location
 #   structured (Sprint 1 suy SETTING từ địa hình). KHÔNG đoán setting từ text tự do.
-RULE_ALLOWED_FACETS = {"amenity", "object_type", "purpose", "price_tier"}
+# object_type: LOẠI khỏi rule — facet `one`, nguồn chuẩn là accommodation_type (Tầng 0). Text mô tả
+#   chứa "villa"/"khách sạn" làm rule gán object_type THỨ HAI (vd hotel + villa) -> vi phạm cardinality
+#   one. Object_type chỉ lấy từ source-tag (đúng 1 giá trị Agoda khẳng định).
+RULE_ALLOWED_FACETS = {"amenity", "purpose", "price_tier"}
 
 # Manh mối phủ định tiếng Việt (dạng đã normalize, có dấu). Nếu xuất hiện ngay TRƯỚC surface
 # form trong cửa sổ N token -> bỏ tag (vd "không có hồ bơi").
