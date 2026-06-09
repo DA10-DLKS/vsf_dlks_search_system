@@ -26,10 +26,18 @@ import yaml
 HOTELS_GLOB = "data/cleaned/hotel_*.json"
 MAP_YAML = "ontology/review_tag_map.yaml"
 OUT_JSON = "knowledge_engineering/enrichment/hotel_profiles.json"
+EVIDENCE_DIR = "knowledge_engineering/enrichment/review_evidence"
 
 _map = yaml.safe_load(open(MAP_YAML, encoding="utf-8"))
 RB_MAP = _map["rating_breakdown"]
 TAG_MAP = _map["review_tags"]
+
+# Phân vai 2 nguồn (sau khi đo: review crawl thiên-thấp -> ABSA mẫu lệch tiêu cực):
+#   - ASPECT score  : LẤY TỪ SEED (rating_breakdown = toàn bộ review Agoda, cân bằng).
+#                     KHÔNG đè bằng ABSA (mẫu crawl không đại diện tỷ lệ pos/neg).
+#   - STYLE + span  : LẤY TỪ ABSA (seed/Agoda không có tag style). Chỉ cần sự HIỆN DIỆN,
+#                     không cần tỷ lệ cân bằng -> mẫu crawl dùng được.
+ABSA_MIN_EVIDENCE = 3   # cần >=3 review nhắc style mới đưa vào profile (tránh 1 review lẻ)
 
 
 def wilson_lower_bound(pos: int, n: int, z: float = 1.96) -> float:
@@ -88,13 +96,59 @@ def seed_from_hotel(hotel: dict) -> dict[str, dict]:
     return prof
 
 
+def merge_absa_style(hotel_id: int, prof: dict[str, dict]) -> None:
+    """Bổ sung STYLE_* từ ABSA evidence (nếu có file). KHÔNG đụng ASPECT (seed lo).
+
+    Mỗi STYLE concept: pos/neg đếm từ evidence (1 phiếu/review), score = Wilson,
+    kèm 1 span dẫn chứng tích cực. Chỉ giữ concept có >= ABSA_MIN_EVIDENCE phiếu.
+    """
+    import os
+    p = os.path.join(EVIDENCE_DIR, f"hotel_{hotel_id}.json")
+    if not os.path.exists(p):
+        return
+    ev = json.load(open(p, encoding="utf-8"))
+    pos: dict[str, int] = {}
+    neg: dict[str, int] = {}
+    span: dict[str, str] = {}
+    for e in ev.values():
+        seen = set()
+        for it in e.get("items", []):
+            c = it.get("concept", "")
+            if not c.startswith("STYLE_") or c in seen:
+                continue
+            seen.add(c)
+            if it.get("sentiment") == "positive":
+                pos[c] = pos.get(c, 0) + 1
+                span.setdefault(c, it.get("span", ""))
+            elif it.get("sentiment") == "negative":
+                neg[c] = neg.get(c, 0) + 1
+    for c in set(pos) | set(neg):
+        n = pos.get(c, 0) + neg.get(c, 0)
+        if n < ABSA_MIN_EVIDENCE:
+            continue
+        if c in prof and prof[c].get("source") in ("agoda_review_tags", "agoda_grades"):
+            # seed (toàn bộ review, cân bằng) ĐÃ có concept này -> giữ score seed,
+            # ABSA chỉ THÊM span dẫn chứng (mẫu crawl thiên-thấp không đủ tin để đè score).
+            prof[c]["span"] = span.get(c, "")
+            continue
+        prof[c] = {
+            "score": round(wilson_lower_bound(pos.get(c, 0), n), 3),
+            "pos": pos.get(c, 0), "neg": neg.get(c, 0),
+            "evidence_count": n,
+            "span": span.get(c, ""),
+            "source": "absa", "nature": "experience",
+        }
+
+
 def run() -> dict:
     profiles: dict[str, dict] = {}
     stats = {"n": 0, "with_profile": 0, "concept_hits": defaultdict(int), "no_data": 0}
     for f in sorted(glob.glob(HOTELS_GLOB)):
         hotel = json.load(open(f, encoding="utf-8"))
-        key = f"acc_{hotel.get('hotel_id')}"
+        hid = hotel.get("hotel_id")
+        key = f"acc_{hid}"
         prof = seed_from_hotel(hotel)
+        merge_absa_style(hid, prof)        # bổ sung STYLE_* + span từ ABSA (nếu đã chạy)
         profiles[key] = prof
         stats["n"] += 1
         if prof:

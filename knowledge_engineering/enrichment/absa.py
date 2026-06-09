@@ -99,6 +99,22 @@ def _review_text(r: dict) -> str:
     return (text + " " + extra).strip()
 
 
+def _sample_balanced(reviews: list, limit: int | None) -> list:
+    """Lấy mẫu CÂN BẰNG theo rating, KHÔNG phải `[:limit]`.
+
+    Lý do: crawler dùng sort_strategy=low_first -> review ĐẦU file toàn điểm thấp
+    (50 đầu rating ~5.7 vs 50 cuối ~9.5). Lấy `[:limit]` = chỉ đọc phần tệ nhất ->
+    ABSA lệch tiêu cực. Giải: sắp theo rating rồi lấy CÁCH ĐỀU -> mẫu trải đủ tệ/TB/tốt.
+    (Aspect score vẫn lấy từ SEED/Agoda — toàn bộ review, cân bằng sẵn. ABSA chỉ cần
+    sự HIỆN DIỆN của style + span, nên mẫu cân bằng là đủ, không cần crawl lại.)
+    """
+    if not limit or limit >= len(reviews):
+        return reviews
+    ranked = sorted(reviews, key=lambda r: (r.get("rating") is None, r.get("rating") or 0))
+    step = len(ranked) / limit
+    return [ranked[int(i * step)] for i in range(limit)]
+
+
 def analyze_hotel(hotel_id: int, limit: int | None = None, save_every: int = 10) -> dict:
     """Chạy ABSA cho review 1 hotel. LƯU INCREMENTAL + RESUME:
     - review_id đã có trong evidence store -> BỎ QUA (không gọi API lại).
@@ -109,8 +125,7 @@ def analyze_hotel(hotel_id: int, limit: int | None = None, save_every: int = 10)
     if not f.exists():
         raise FileNotFoundError(f"Không có file review: {f}")
     reviews = json.loads(f.read_text(encoding="utf-8")).get("reviews", [])
-    if limit:
-        reviews = reviews[:limit]
+    reviews = _sample_balanced(reviews, limit)   # cân bằng theo rating, KHÔNG [:limit]
 
     store = _load_evidence(hotel_id)
     done_before = len(store)
@@ -147,8 +162,7 @@ PRICE = {"gpt-4o-mini": (0.15, 0.60), "gpt-4o": (2.50, 10.0)}
 def estimate_cost(hotel_id: int, limit: int | None, model: str) -> dict:
     f = Path(REVIEWS_DIR) / f"hotel_{hotel_id}_reviews.json"
     reviews = json.loads(f.read_text(encoding="utf-8")).get("reviews", [])
-    if limit:
-        reviews = reviews[:limit]
+    reviews = _sample_balanced(reviews, limit)   # cùng mẫu cân bằng như khi chạy thật
     store = _load_evidence(hotel_id)
     todo = [r for r in reviews if str(r.get("review_id")) not in store]
     avg_chars = sum(len(_review_text(r)) for r in todo) / max(1, len(todo))
