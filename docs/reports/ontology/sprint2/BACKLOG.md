@@ -27,11 +27,11 @@
 
 ## ⬜ CÒN NỢ — ưu tiên cao (cần để CHỐT Sprint 2)
 
-1. **Chạy ABSA cả corpus (~518 hotel)** — hiện chỉ 1 hotel có style+span.
-   - Chặn bởi: quyết định chi phí (~$13.5) + cần **batch runner** (mục 4 dưới).
-   - Sau khi chạy: STYLE_* (MODERN/LUXURY/ROMANTIC/LIVELY/ECO) hết "chết".
-2. **Batch runner cho ABSA** (`--all`, `--max-hotels`, `--max-reviews`, `--budget-usd`, `--dry-run`).
-   - Hiện chỉ chạy từng `--hotel`. Cần trước khi chạy 518 file.
+1. **Chạy ABSA cả corpus** — hiện 0 hotel có evidence (đã xóa 805030 v1). Batch dry-run:
+   **504 hotel, 92k review, ~$10.96** (limit 250). Chỉ còn chờ QUYẾT ĐỊNH chi phí.
+   - Sau khi chạy: STYLE_* (MODERN/LUXURY/ROMANTIC/LIVELY/ECO) hết "chết" + có span.
+2. ~~Batch runner ABSA~~ ✅ **XONG** — `--all --max-hotels --limit --budget-usd --dry-run`.
+   Budget cap chặn cứng chi phí (test: cap $2 → tự cắt còn 73 hotel).
 3. **Bước 6 — hợp nhất + báo cáo Sprint 2 tổng kết** + cập nhật handover (JSON là seed, production dùng DB).
 
 ## ⬜ CÒN NỢ — ưu tiên trung bình

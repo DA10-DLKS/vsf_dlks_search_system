@@ -17,6 +17,7 @@ Chạy mẫu:
 from __future__ import annotations
 
 import argparse
+import glob
 import json
 import sys
 from pathlib import Path
@@ -179,6 +180,17 @@ def analyze_hotel(hotel_id: int, limit: int | None = None, save_every: int = 10)
 PRICE = {"gpt-4o-mini": (0.15, 0.60), "gpt-4o": (2.50, 10.0)}
 
 
+def list_review_hotels() -> list[int]:
+    """Danh sách hotel_id có file review, sắp tăng dần (deterministic)."""
+    import re
+    ids = []
+    for f in glob.glob(f"{REVIEWS_DIR}/hotel_*_reviews.json"):
+        m = re.search(r"hotel_(\d+)_reviews", f)
+        if m:
+            ids.append(int(m.group(1)))
+    return sorted(ids)
+
+
 def estimate_cost(hotel_id: int, limit: int | None, model: str) -> dict:
     f = Path(REVIEWS_DIR) / f"hotel_{hotel_id}_reviews.json"
     reviews = json.loads(f.read_text(encoding="utf-8")).get("reviews", [])
@@ -194,59 +206,79 @@ def estimate_cost(hotel_id: int, limit: int | None, model: str) -> dict:
             "avg_chars": int(avg_chars), "est_usd": round(cost, 4)}
 
 
+def _summarize(ev: dict) -> None:
+    from collections import Counter
+    cs = Counter(); n_items = 0
+    for e in ev.values():
+        for it in e["items"]:
+            cs[(it["concept"], it["sentiment"])] += 1; n_items += 1
+    print(f"  -> {len(ev)} review, {n_items} cặp (concept, sentiment).")
+
+
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--hotel", type=int, required=True)
-    ap.add_argument("--limit", type=int, default=20)
-    ap.add_argument("--yes", action="store_true",
-                    help="bỏ qua xác nhận (chạy thẳng). KHÔNG khuyến nghị cho lần đầu.")
+    ap = argparse.ArgumentParser(description="ABSA per-review. Chạy 1 hotel (--hotel) hoặc cả corpus (--all).")
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--hotel", type=int, help="chạy 1 hotel")
+    g.add_argument("--all", action="store_true", help="chạy nhiều hotel (batch)")
+    ap.add_argument("--limit", type=int, default=20, help="số review/hotel (mẫu cân bằng)")
+    ap.add_argument("--max-hotels", type=int, default=None, help="[batch] tối đa N hotel")
+    ap.add_argument("--budget-usd", type=float, default=None,
+                    help="[batch] DỪNG khi tổng dự toán vượt ngân sách này (chặn cứng chi phí)")
+    ap.add_argument("--dry-run", action="store_true", help="CHỈ dự toán, KHÔNG gọi API")
+    ap.add_argument("--yes", action="store_true", help="bỏ xác nhận (chạy thẳng)")
     args = ap.parse_args()
 
     cfg = active_config()
-    print(f"LLM: {cfg['provider']}/{cfg['model']}")
+    is_openai = cfg["provider"] == "openai"
+    print(f"LLM: {cfg['provider']}/{cfg['model']}\n")
 
-    # --- ƯỚC LƯỢNG + XÁC NHẬN trước khi gọi API (chống đốt tiền nhầm) ---
-    est = estimate_cost(args.hotel, args.limit, cfg["model"])
-    print(f"\n=== DỰ TOÁN (hotel {args.hotel}, limit {args.limit}) ===")
-    print(f"  review sẽ chạy mới : {est['todo']}")
-    print(f"  bỏ qua (đã cache)  : {est['skip_cached']}")
-    print(f"  độ dài TB          : {est['avg_chars']} ký tự")
-    if cfg["provider"] == "openai":
-        print(f"  CHI PHÍ ƯỚC TÍNH   : ${est['est_usd']}  (model {cfg['model']})")
+    # ----- danh sách hotel cần chạy -----
+    if args.all:
+        hotels = list_review_hotels()
+        if args.max_hotels:
+            hotels = hotels[:args.max_hotels]
     else:
-        print(f"  provider {cfg['provider']} — miễn phí/local (không tính tiền)")
+        hotels = [args.hotel]
 
-    if est["todo"] == 0:
-        print("\nKhông có review mới để chạy (đã cache hết). Dừng.")
-        sys.exit(0)
-
-    if cfg["provider"] == "openai" and not args.yes:
-        ans = input(f"\n>>> Chạy {est['todo']} review (~${est['est_usd']})? gõ 'yes' để tiếp: ")
-        if ans.strip().lower() != "yes":
-            print("Đã hủy — không gọi API, không tốn tiền.")
-            sys.exit(0)
-
-    print(f"\nĐang chạy ABSA hotel {args.hotel}...\n")
-    ev = analyze_hotel(args.hotel, args.limit)
-
-    # tóm tắt
-    from collections import Counter
-    concept_sent = Counter()
-    n_items = 0
-    for e in ev.values():
-        for it in e["items"]:
-            concept_sent[(it["concept"], it["sentiment"])] += 1
-            n_items += 1
-    print(f"\nĐã phân tích {len(ev)} review -> {n_items} cặp (concept, sentiment).\n")
-    print("Phân bố (concept, sentiment):")
-    for (c, s), n in concept_sent.most_common(20):
-        print(f"  {n:3d}  {c:22s} {s}")
-    print("\nVí dụ span dẫn chứng:")
-    shown = 0
-    for e in ev.values():
-        for it in e["items"]:
-            if it["span"]:
-                print(f"  [{it['concept']}/{it['sentiment']}] \"{it['span'][:70]}\"")
-                shown += 1
-        if shown >= 6:
+    # ----- DỰ TOÁN toàn bộ TRƯỚC (gom + chặn ngân sách) -----
+    plan = []           # (hotel_id, est) — chỉ hotel còn review todo, trong ngân sách
+    total_cost = 0.0; total_todo = 0; skipped_budget = 0
+    for hid in hotels:
+        try:
+            est = estimate_cost(hid, args.limit, cfg["model"])
+        except FileNotFoundError:
+            continue
+        if est["todo"] == 0:
+            continue
+        # chặn ngân sách: nếu cộng hotel này vượt budget -> dừng nhận thêm
+        if args.budget_usd is not None and is_openai and total_cost + est["est_usd"] > args.budget_usd:
+            skipped_budget = len([h for h in hotels if h >= hid])  # ước lượng còn lại
             break
+        plan.append((hid, est)); total_cost += est["est_usd"]; total_todo += est["todo"]
+
+    print(f"=== DỰ TOÁN {'(BATCH)' if args.all else ''} ===")
+    print(f"  hotel sẽ chạy   : {len(plan)}" + (f" (cắt vì ngân sách, bỏ ~{skipped_budget})" if skipped_budget else ""))
+    print(f"  review chạy mới : {total_todo}")
+    if is_openai:
+        print(f"  CHI PHÍ ƯỚC TÍNH: ${round(total_cost,4)}  (model {cfg['model']}"
+              + (f", trần ${args.budget_usd}" if args.budget_usd else "") + ")")
+    else:
+        print(f"  provider {cfg['provider']} — miễn phí/local")
+
+    if not plan:
+        print("\nKhông có review mới để chạy. Dừng."); sys.exit(0)
+    if args.dry_run:
+        print("\n--dry-run: CHỈ dự toán, không gọi API."); sys.exit(0)
+
+    if is_openai and not args.yes:
+        ans = input(f"\n>>> Chạy {total_todo} review / {len(plan)} hotel (~${round(total_cost,4)})? gõ 'yes': ")
+        if ans.strip().lower() != "yes":
+            print("Đã hủy — không gọi API, không tốn tiền."); sys.exit(0)
+
+    # ----- CHẠY -----
+    print()
+    for i, (hid, est) in enumerate(plan, 1):
+        print(f"[{i}/{len(plan)}] hotel {hid} (~{est['todo']} review)...")
+        ev = analyze_hotel(hid, args.limit)
+        _summarize(ev)
+    print(f"\nXong {len(plan)} hotel. Evidence -> {EVIDENCE_DIR}/hotel_*.json")
