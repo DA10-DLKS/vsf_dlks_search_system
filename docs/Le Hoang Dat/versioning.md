@@ -1,30 +1,30 @@
-# Quy tac dat ten va danh version cac index
+# Quy Tắc Đặt Tên Và Đánh Version Các Index
 
-Tai lieu nay quy dinh cach dat ten, danh version va quan ly vong doi cac index trong he thong tim kiem.
+Tài liệu này quy định cách đặt tên, đánh version và quản lý vòng đời các index trong hệ thống tìm kiếm.
 
-## 1. Nguyen tac chung
+## 1. Nguyên Tắc Chung
 
-- Ten index phai ro nghia, the hien dung ngu canh du lieu va muc dich su dung.
-- Moi thay doi co kha nang anh huong schema, mapping, analyzer, embedding model, pipeline tao du lieu hoac chat luong truy van phai tao version moi.
-- Khong cap nhat truc tiep vao index production dang phuc vu truy van neu thay doi co rui ro lam sai ket qua.
-- Su dung alias de tro den version index dang active thay vi hard-code ten index version trong code ung dung.
+- Tên index phải rõ nghĩa, thể hiện đúng ngữ cảnh dữ liệu và mục đích sử dụng.
+- Mọi thay đổi có khả năng ảnh hưởng schema, mapping, analyzer, embedding model, pipeline tạo dữ liệu hoặc chất lượng truy vấn phải tạo version mới.
+- Không cập nhật trực tiếp vào index production đang phục vụ truy vấn nếu thay đổi có rủi ro làm sai kết quả.
+- Ứng dụng nên truy vấn qua alias ổn định thay vì hard-code tên index version.
 
-## 2. Cau truc ten index
+## 2. Cấu Trúc Tên Index
 
-Dinh dang khuyen nghi:
+Định dạng khuyến nghị:
 
 ```text
 <domain>_<dataset>_<purpose>_v<major>_<minor>_<patch>
 ```
 
-Trong do:
+Trong đó:
 
-- `domain`: nhom nghiep vu hoac he thong, viet thuong, khong dau.
-- `dataset`: loai du lieu chinh cua index.
-- `purpose`: muc dich index, vi du `search`, `semantic`, `hybrid`, `logs`.
+- `domain`: nhóm nghiệp vụ hoặc hệ thống, viết thường, không dấu.
+- `dataset`: loại dữ liệu chính của index.
+- `purpose`: mục đích index, ví dụ `search`, `semantic`, `hybrid`, `logs`, `bm25`.
 - `v<major>_<minor>_<patch>`: version index theo semantic versioning.
 
-Vi du:
+Ví dụ:
 
 ```text
 dlks_documents_hybrid_v1_0_0
@@ -32,62 +32,62 @@ dlks_products_search_v2_1_0
 vsf_faq_semantic_v1_3_2
 ```
 
-## 3. Quy tac ky tu
+## 3. Quy Tắc Ký Tự
 
-- Chi dung chu thuong `a-z`, so `0-9` va dau gach duoi `_`.
-- Khong dung dau cach, tieng Viet co dau, ky tu dac biet hoac chu hoa.
-- Khong dat ten qua chung chung nhu `index_v1`, `data_search`, `test_index`.
-- Khong dung ngay thang lam version chinh, tru khi do la index snapshot hoac batch theo ngay.
+- Chỉ dùng chữ thường `a-z`, số `0-9` và dấu gạch dưới `_`.
+- Không dùng dấu cách, tiếng Việt có dấu, ký tự đặc biệt hoặc chữ hoa trong tên index.
+- Không đặt tên quá chung chung như `index_v1`, `data_search`, `test_index`.
+- Không dùng ngày tháng làm version chính, trừ khi đó là index snapshot hoặc batch theo ngày.
 
-## 4. Quy tac danh version
+## 4. Quy Tắc Đánh Version
 
-Dung dang:
+Dùng dạng:
 
 ```text
 v<major>_<minor>_<patch>
 ```
 
-### Tang major
+### Tăng major
 
-Tang `major` khi co thay doi khong tuong thich nguoc:
+Tăng `major` khi có thay đổi không tương thích ngược:
 
-- Doi mapping hoac kieu du lieu cua field quan trong.
-- Doi analyzer, tokenizer, normalizer lam thay doi cach index/search.
-- Doi embedding model hoac kich thuoc vector.
-- Doi logic chunking, ranking, boost, reranking o muc lam thay doi hanh vi ket qua lon.
-- Loai bo field ma code hoac nguoi dung dang phu thuoc.
+- Đổi mapping hoặc kiểu dữ liệu của field quan trọng.
+- Đổi analyzer, tokenizer hoặc normalizer làm thay đổi cách index/search.
+- Đổi embedding model hoặc kích thước vector.
+- Đổi logic chunking, ranking, boost hoặc reranking ở mức làm thay đổi hành vi kết quả lớn.
+- Loại bỏ field mà code hoặc người dùng đang phụ thuộc.
 
-Vi du:
+Ví dụ:
 
 ```text
 dlks_documents_hybrid_v1_4_2 -> dlks_documents_hybrid_v2_0_0
 ```
 
-### Tang minor
+### Tăng minor
 
-Tang `minor` khi them kha nang moi nhung van tuong thich nguoc:
+Tăng `minor` khi thêm khả năng mới nhưng vẫn tương thích ngược:
 
-- Them field moi.
-- Them analyzer phu tro trong khi analyzer cu van giu.
-- Them metadata dung de filter hoac ranking.
-- Cai tien pipeline nhung khong pha vo contract hien tai.
+- Thêm field mới.
+- Thêm analyzer phụ trợ trong khi analyzer cũ vẫn giữ.
+- Thêm metadata dùng để filter hoặc ranking.
+- Cải tiến pipeline nhưng không phá vỡ contract hiện tại.
 
-Vi du:
+Ví dụ:
 
 ```text
 dlks_documents_hybrid_v1_4_2 -> dlks_documents_hybrid_v1_5_0
 ```
 
-### Tang patch
+### Tăng patch
 
-Tang `patch` khi sua loi nho hoac reindex lai cung schema:
+Tăng `patch` khi sửa lỗi nhỏ hoặc reindex lại cùng schema:
 
-- Sua loi du lieu sai.
-- Bo sung tai lieu thieu.
-- Reindex do pipeline loi tam thoi.
-- Dieu chinh nho khong anh huong schema va contract truy van.
+- Sửa lỗi dữ liệu sai.
+- Bổ sung tài liệu thiếu.
+- Reindex do pipeline lỗi tạm thời.
+- Điều chỉnh nhỏ không ảnh hưởng schema và contract truy vấn.
 
-Vi du:
+Ví dụ:
 
 ```text
 dlks_documents_hybrid_v1_4_2 -> dlks_documents_hybrid_v1_4_3
@@ -95,35 +95,64 @@ dlks_documents_hybrid_v1_4_2 -> dlks_documents_hybrid_v1_4_3
 
 ## 5. Alias
 
-Moi index production nen co alias on dinh:
+Mỗi index production nên có alias ổn định:
 
 ```text
 <domain>_<dataset>_<purpose>_current
 ```
 
-Vi du:
+Ví dụ:
 
 ```text
 dlks_documents_hybrid_current -> dlks_documents_hybrid_v1_5_0
 ```
 
-Ung dung chi nen truy van alias `*_current`. Khi release version moi, cap nhat alias sang index moi sau khi validate thanh cong.
+Ứng dụng chỉ nên truy vấn alias `*_current`. Khi release version mới, cập nhật alias sang index mới sau khi validate thành công.
 
-## 6. Index moi truong
+## 6. Quy Tắc Riêng Cho BM25 Hotel Index
 
-Neu can tach moi truong, them suffix moi truong sau `purpose`:
+BM25 hotel index dùng chuẩn:
+
+```text
+vsf_hotels_bm25_v<major>_<minor>_<patch>
+```
+
+Alias runtime ổn định:
+
+```text
+vsf_hotels_bm25_current
+```
+
+Ví dụ:
+
+```text
+vsf_hotels_bm25_current -> vsf_hotels_bm25_v1_0_0
+```
+
+Quy ước biến môi trường:
+
+- `BM25_INDEX`: alias runtime mà API dùng để search, ví dụ `vsf_hotels_bm25_current`.
+- `BM25_TARGET_INDEX`: index version mà indexer nạp data vào, ví dụ `vsf_hotels_bm25_v1_0_0`.
+- `BM25_ALIAS`: alias sẽ được promote sau validation, mặc định `vsf_hotels_bm25_current`.
+- `BM25_PROMOTE_ALIAS`: chỉ promote alias khi đặt `true`.
+
+`travel_bm25` là tên legacy, không dùng cho release mới.
+
+## 7. Index Môi Trường
+
+Nếu cần tách môi trường, thêm suffix môi trường sau `purpose`:
 
 ```text
 <domain>_<dataset>_<purpose>_<env>_v<major>_<minor>_<patch>
 ```
 
-Gia tri `env` hop le:
+Giá trị `env` hợp lệ:
 
 - `dev`
 - `staging`
 - `prod`
 
-Vi du:
+Ví dụ:
 
 ```text
 dlks_documents_hybrid_dev_v1_5_0
@@ -131,27 +160,27 @@ dlks_documents_hybrid_staging_v1_5_0
 dlks_documents_hybrid_prod_v1_5_0
 ```
 
-Neu he thong da tach cluster theo moi truong, co the bo qua `env` trong ten index de tranh dai dong.
+Nếu hệ thống đã tách cluster theo môi trường, có thể bỏ qua `env` trong tên index để tránh dài dòng.
 
-## 7. Snapshot hoac batch index
+## 8. Snapshot Hoặc Batch Index
 
-Voi index sinh theo batch ngay, dung ngay o cuoi ten sau version:
+Với index sinh theo batch ngày, dùng ngày ở cuối tên sau version:
 
 ```text
 <domain>_<dataset>_<purpose>_v<major>_<minor>_<patch>_<yyyymmdd>
 ```
 
-Vi du:
+Ví dụ:
 
 ```text
 dlks_logs_search_v1_0_0_20260608
 ```
 
-Khong dung batch date thay cho version vi ngay tao index khong noi len muc do thay doi schema.
+Không dùng batch date thay cho version vì ngày tạo index không thể hiện mức độ thay đổi schema.
 
-## 8. Metadata bat buoc
+## 9. Metadata Bắt Buộc
 
-Moi index nen luu metadata release kem theo:
+Mỗi index nên lưu metadata release kèm theo:
 
 - `index_name`
 - `version`
@@ -160,32 +189,32 @@ Moi index nen luu metadata release kem theo:
 - `source_dataset`
 - `schema_hash`
 - `pipeline_version`
-- `embedding_model`, neu co vector search
+- `embedding_model`, nếu có vector search
 - `release_note`
 
-## 9. Quy trinh release index
+## 10. Quy Trình Release Index
 
-1. Tao index moi voi version moi.
-2. Nap du lieu vao index moi.
-3. Chay validation schema, document count, sample queries va quality checks.
-4. So sanh ket qua voi index current.
-5. Cap nhat alias sang index moi neu dat yeu cau.
-6. Ghi release note va nguoi thuc hien.
-7. Giu index cu trong thoi gian rollback da thong nhat.
+1. Tạo index mới với version mới.
+2. Nạp dữ liệu vào index mới.
+3. Chạy validation schema, document count, sample queries và quality checks.
+4. So sánh kết quả với index current.
+5. Cập nhật alias sang index mới nếu đạt yêu cầu.
+6. Ghi release note và người thực hiện.
+7. Giữ index cũ trong thời gian rollback đã thống nhất.
 
-## 10. Quy tac rollback
+## 11. Quy Tắc Rollback
 
-- Rollback bang cach tro alias ve version index cu gan nhat da validate.
-- Khong xoa index cu ngay sau release.
-- Chi xoa index cu khi da het thoi gian retention va khong con phu thuoc rollback.
+- Rollback bằng cách trỏ alias về version index cũ gần nhất đã validate.
+- Không xóa index cũ ngay sau release.
+- Chỉ xóa index cũ khi đã hết thời gian retention và không còn phụ thuộc rollback.
 
-## 11. Checklist truoc khi chuyen alias
+## 12. Checklist Trước Khi Chuyển Alias
 
-- Ten index dung format.
-- Version tang dung loai thay doi.
-- Mapping/schema da duoc validate.
-- So luong document nam trong nguong ky vong.
-- Cac query mau cho ket qua chap nhan duoc.
-- Latency va resource usage khong vuot nguong.
-- Co release note va thong tin rollback.
+- Tên index đúng format.
+- Version tăng đúng loại thay đổi.
+- Mapping/schema đã được validate.
+- Số lượng document nằm trong ngưỡng kỳ vọng.
+- Các query mẫu cho kết quả chấp nhận được.
+- Latency và resource usage không vượt ngưỡng.
+- Có release note và thông tin rollback.
 
