@@ -165,7 +165,7 @@ def _translate_chunk(
     # Batch failed → fallback: translate each text individually with rate limiting
     print(f"  Batch failed ({len(chunk)} texts), translating individually...", flush=True)
     result: dict[str, str] = {}
-    for text in chunk:
+    for i, text in enumerate(chunk):
         if text in result:
             continue
         cached = cache.get(text)
@@ -174,20 +174,24 @@ def _translate_chunk(
             continue
         for attempt in range(3):
             try:
-                time.sleep(0.25 + random.random() * 0.25)
+                time.sleep(0.4 + random.random() * 0.3)
                 t = GoogleTranslator(source=source or "auto", target="vi")
                 tr = t.translate(text)
-                value = tr.strip() if tr.strip() else text
+                value = (tr or "").strip()
+                value = value if value else text
                 result[text] = value
                 cache[text] = value
+                if i % 50 == 0:
+                    _save_cache(cache)
                 break
             except Exception as exc:
                 if attempt < 2:
-                    time.sleep(1 + random.random())
+                    time.sleep(1.5 + random.random())
                 else:
                     print(f"    Individual failed after 3 retries: {exc}", flush=True)
                     result[text] = text
                     cache[text] = text
+    _save_cache(cache)
     return result
 
 
