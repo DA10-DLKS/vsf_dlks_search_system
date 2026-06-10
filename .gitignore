@@ -78,6 +78,11 @@ evaluation/reports/*
 
 # ===== KE derived outputs (tái sinh bằng script — không commit) =====
 knowledge_engineering/enrichment/hotel_tags.json
+knowledge_engineering/enrichment/hotel_metadata.json
+knowledge_engineering/enrichment/knowledge_objects.json
+knowledge_engineering/enrichment/hotel_profiles.json
+knowledge_engineering/enrichment/.llm_cache/
+knowledge_engineering/enrichment/review_evidence/
 
 # ===== Jupyter =====
 .ipynb_checkpoints/
@@ -118,3 +123,5 @@ data/raw/hotels_detail.json
 data/raw/hotels_list.json
 data/quarantine/foreign_hotels_*/
 data/quarantine/foreign_hotels_report_*.json
+
+# Translation cache (regenerated from hotel files)

@@ -86,8 +86,9 @@ concepts:
     provenance: [domain_knowledge, agoda, booking, google_hotels]
     label: {vi: Spa, en: Spa}
     surface_forms:
-      vi: [spa, mát-xa, massage, xông hơi, xông khô, phòng xông ướt, sauna, tắm khoáng]
+      vi: [spa, mát-xa, massage, xông hơi, xông khô, phòng xông ướt, sauna]
       en: [spa, massage, sauna]
+      # bỏ "tắm khoáng": bỏ dấu = "tam khoang" trùng "tầm khoảng" (phổ biến) -> false match
     description: {vi: Dịch vụ spa, mát-xa, xông hơi, en: Spa, massage and sauna services}
     related: [PURPOSE_WELLNESS]
 
@@ -121,7 +122,8 @@ concepts:
     provenance: [domain_knowledge, agoda, booking]
     label: {vi: Câu lạc bộ trẻ em, en: Kids club}
     surface_forms:
-      vi: [câu lạc bộ trẻ em, clb trẻ em, khu vui chơi trẻ em, sân chơi]
+      vi: [câu lạc bộ trẻ em, clb trẻ em, khu vui chơi trẻ em, sân chơi,
+           chỗ cho trẻ chơi, chỗ cho bé chơi, khu trẻ em, khu vui chơi cho bé]
       en: [kids club, children club, playground]
     description: {vi: Câu lạc bộ / khu vui chơi cho trẻ em, en: Kids club / children play area}
     related: [PURPOSE_FAMILY]

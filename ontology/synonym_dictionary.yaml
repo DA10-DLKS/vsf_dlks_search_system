@@ -33,6 +33,8 @@ synonyms:
   - ASPECT_FOOD
   amenities quality:
   - ASPECT_FACILITIES
+  an duong:
+  - PURPOSE_WELLNESS
   an hai bac:
   - LOC_DA_NANG__AN_HAI_BAC
   an sang:
@@ -47,6 +49,8 @@ synonyms:
   - LOC_LY_SON__AN_VINH
   an vĩnh:
   - LOC_LY_SON__AN_VINH
+  an_dưỡng:
+  - PURPOSE_WELLNESS
   an_hải bắc:
   - LOC_DA_NANG__AN_HAI_BAC
   an_vinh:
@@ -178,8 +182,6 @@ synonyms:
   - LMK_BEN_TAU_DU_LICH_BAI_CHAY
   ben tre:
   - LOC_BEN_TRE
-  bep:
-  - AMEN_KITCHEN
   bep chung:
   - AMEN_KITCHEN
   bep nau:
@@ -385,8 +387,16 @@ synonyms:
   - AMEN_INFINITY_POOL
   bữa sáng:
   - ASPECT_FOOD
+  ca gia dinh:
+  - PURPOSE_FAMILY
+  ca hoi:
+  - PURPOSE_GROUP
   ca mau:
   - LOC_CA_MAU
+  ca nha:
+  - PURPOSE_FAMILY
+  ca nhom:
+  - PURPOSE_GROUP
   ca phe:
   - AMEN_CAFE
   cafe:
@@ -419,6 +429,8 @@ synonyms:
   - OBJ_APARTMENT
   can tho:
   - LOC_CAN_THO
+  can yen tinh:
+  - STYLE_QUIET
   cang an thoi:
   - LMK_CANG_AN_THOI
   cang an_thoi:
@@ -429,6 +441,8 @@ synonyms:
   - LOC_HA_LONG__CANG_HON_GAI
   cang_hon gai:
   - LOC_HA_LONG__CANG_HON_GAI
+  canh bien:
+  - SETTING_COASTAL
   canh ho:
   - SETTING_RIVERSIDE
   canh song:
@@ -439,8 +453,14 @@ synonyms:
   - LOC_CAO_BANG
   cao cap:
   - PRICE_UPSCALE
+  cao nguyen:
+  - SETTING_MOUNTAIN
+  cao sang:
+  - STYLE_LUXURY
   cao_cấp:
   - PRICE_UPSCALE
+  cao_nguyên:
+  - SETTING_MOUNTAIN
   cap doi:
   - PURPOSE_ROMANTIC
   car park:
@@ -483,6 +503,18 @@ synonyms:
   - AMEN_KIDS_CLUB
   children pool:
   - AMEN_KIDS_POOL
+  cho be:
+  - PURPOSE_FAMILY
+  cho bé:
+  - PURPOSE_FAMILY
+  cho cac be:
+  - PURPOSE_FAMILY
+  cho cho be choi:
+  - AMEN_KIDS_CLUB
+  cho cho tre choi:
+  - AMEN_KIDS_CLUB
+  cho các bé:
+  - PURPOSE_FAMILY
   cho dau xe:
   - AMEN_PARKING
   cho gia dinh:
@@ -515,6 +547,10 @@ synonyms:
   - LMK_CHUA_THIEN_VUONG_CO_SAT
   chua_sung duc:
   - LMK_CHUA_SUNG_DUC
+  chuyen cong tac:
+  - PURPOSE_BUSINESS
+  chuyến công_tác:
+  - PURPOSE_BUSINESS
   châu_đốc:
   - LOC_CHAU_DOC
   chèo thuyền:
@@ -535,6 +571,10 @@ synonyms:
   - AMEN_GOLF
   chất_lượng phòng:
   - ASPECT_ROOM
+  chỗ cho bé chơi:
+  - AMEN_KIDS_CLUB
+  chỗ cho trẻ chơi:
+  - AMEN_KIDS_CLUB
   chỗ đậu xe:
   - AMEN_PARKING
   chợ sắt:
@@ -555,19 +595,35 @@ synonyms:
   - ASPECT_CLEANLINESS
   cleanliness:
   - ASPECT_CLEANLINESS
+  co cho vui choi:
+  - STYLE_LIVELY
+  co con:
+  - PURPOSE_FAMILY
+  co con cai:
+  - PURPOSE_FAMILY
+  co con nho:
+  - PURPOSE_FAMILY
+  co em be:
+  - PURPOSE_FAMILY
   co so vat chat:
   - ASPECT_FACILITIES
   co so vat chat cho hop mat tiec lon:
   - AMEN_MEETING_ROOM
+  co tre nho:
+  - PURPOSE_FAMILY
   coastal:
   - SETTING_COASTAL
   coffee shop:
   - AMEN_CAFE
+  con cai:
+  - PURPOSE_FAMILY
   con dao:
   - LOC_CON_DAO
   con nho:
   - PURPOSE_FAMILY
   con nhỏ:
+  - PURPOSE_FAMILY
+  con_cái:
   - PURPOSE_FAMILY
   conference room:
   - AMEN_MEETING_ROOM
@@ -657,6 +713,18 @@ synonyms:
   - AMEN_KIDS_CLUB
   cây_xanh:
   - SETTING_NATURE
+  có chỗ vui_chơi:
+  - STYLE_LIVELY
+  có con:
+  - PURPOSE_FAMILY
+  có con nhỏ:
+  - PURPOSE_FAMILY
+  có con_cái:
+  - PURPOSE_FAMILY
+  có em bé:
+  - PURPOSE_FAMILY
+  có trẻ nhỏ:
+  - PURPOSE_FAMILY
   côn_đảo:
   - LOC_CON_DAO
   công_ty du_lịch mekong:
@@ -707,10 +775,20 @@ synonyms:
   - ASPECT_FACILITIES
   cơ_sở vật_chất cho họp_mặt tiệc lớn:
   - AMEN_MEETING_ROOM
+  cạnh biển:
+  - SETTING_COASTAL
   cạnh hồ:
   - SETTING_RIVERSIDE
   cạnh sông:
   - SETTING_RIVERSIDE
+  cả gia_đình:
+  - PURPOSE_FAMILY
+  cả hội:
+  - PURPOSE_GROUP
+  cả nhà:
+  - PURPOSE_FAMILY
+  cả nhóm:
+  - PURPOSE_GROUP
   cảng an_thới:
   - LMK_CANG_AN_THOI
   cảng cũ:
@@ -719,6 +797,8 @@ synonyms:
   - LOC_HA_LONG__CANG_HON_GAI
   cần thơ:
   - LOC_CAN_THO
+  cần yên_tĩnh:
+  - STYLE_QUIET
   cầu giấy:
   - LOC_HA_NOI__CAU_GIAY
   cầu lông:
@@ -757,11 +837,15 @@ synonyms:
   - LMK_DAI_TUONG_NIEM_LIET_SI
   dai_tuong niem liet si:
   - LMK_DAI_TUONG_NIEM_LIET_SI
+  dam ban:
+  - PURPOSE_GROUP
   dang cap:
   - PRICE_LUXURY
   - STYLE_LUXURY
   dang cap quoc te:
   - PRICE_LUXURY
+  dang cap sang trong:
+  - STYLE_LUXURY
   dang gia:
   - ASPECT_VALUE
   dang tien:
@@ -774,22 +858,54 @@ synonyms:
   - SETTING_ISLAND
   dao_phu quoc:
   - LOC_PHU_QUOC
+  dat con:
+  - PURPOSE_FAMILY
+  dat theo con:
+  - PURPOSE_FAMILY
   de chiu:
   - STYLE_RELAXING
   den ba chua xu:
   - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
   den doc cuoc:
   - LMK_DEN_DOC_CUOC
+  di bien:
+  - SETTING_COASTAL
   di bo duong dai:
   - AMEN_HIKING
+  di bui mot minh:
+  - PURPOSE_SOLO
+  di cong chuyen:
+  - PURPOSE_BUSINESS
+  di cong tac:
+  - PURPOSE_BUSINESS
+  di cung con:
+  - PURPOSE_FAMILY
   di doan:
   - PURPOSE_GROUP
+  di du lich mot minh:
+  - PURPOSE_SOLO
+  di hoi thao:
+  - PURPOSE_BUSINESS
+  di hop:
+  - PURPOSE_BUSINESS
+  di lam viec:
+  - PURPOSE_BUSINESS
   di mot minh:
   - PURPOSE_SOLO
+  di phuot nhom:
+  - PURPOSE_GROUP
   di theo nhom:
   - PURPOSE_GROUP
   di tich doc cay cam:
   - LMK_DI_TICH_DOC_CAY_CAM
+  di voi ban be:
+  - PURPOSE_GROUP
+  di voi con:
+  - PURPOSE_FAMILY
+  di voi nguoi yeu:
+  - PURPOSE_ROMANTIC
+  di voi nhom ban:
+  - PURPOSE_GROUP
   di_tich doc cay cam:
   - LMK_DI_TICH_DOC_CAY_CAM
   di_tích dốc cây cám:
@@ -853,12 +969,12 @@ synonyms:
   - AMEN_PARKING
   doc let:
   - LOC_NHA_TRANG__DOC_LET
-  doi:
-  - PURPOSE_ROMANTIC
   doi con heo:
   - LMK_DOI_CON_HEO
   doi nui:
   - SETTING_MOUNTAIN
+  doi uyen uong:
+  - PURPOSE_ROMANTIC
   dong da:
   - LOC_HA_NOI__DONG_DA
   dong hoi:
@@ -870,11 +986,19 @@ synonyms:
   - LOC_NINH_BINH__DONG_TAM_COC_BICH_DONG
   dong tam_coc - bich dong:
   - LOC_NINH_BINH__DONG_TAM_COC_BICH_DONG
+  dong vui:
+  - STYLE_LIVELY
   dong_hoi:
   - LOC_DONG_HOI
   - LOC_DONG_HOI__DONG_HOI
   downtown:
   - SETTING_CITY_CENTER
+  du hoi nghi:
+  - PURPOSE_BUSINESS
+  du hoi thao:
+  - PURPOSE_BUSINESS
+  dua con di:
+  - PURPOSE_FAMILY
   dua don san bay:
   - AMEN_AIRPORT_SHUTTLE
   duoc phep dua thu nuoi vao:
@@ -883,12 +1007,20 @@ synonyms:
   - LOC_PHU_QUOC__DUONG_DONG
   duong mon:
   - AMEN_HIKING
+  duong suc:
+  - PURPOSE_WELLNESS
   duong to:
   - LOC_PHU_QUOC__DUONG_TO
   dương tơ:
   - LOC_PHU_QUOC__DUONG_TO
   dương đông:
   - LOC_PHU_QUOC__DUONG_DONG
+  dưỡng sức:
+  - PURPOSE_WELLNESS
+  dắt con:
+  - PURPOSE_FAMILY
+  dắt theo con:
+  - PURPOSE_FAMILY
   dễ_chịu:
   - STYLE_RELAXING
   dịch_vụ:
@@ -901,6 +1033,10 @@ synonyms:
   - AMEN_AIRPORT_SHUTTLE
   dốc lết:
   - LOC_NHA_TRANG__DOC_LET
+  dự hội_nghị:
+  - PURPOSE_BUSINESS
+  dự hội_thảo:
+  - PURPOSE_BUSINESS
   eco:
   - STYLE_ECO
   eco-friendly:
@@ -949,7 +1085,20 @@ synonyms:
   - AMEN_GAME_ROOM
   gan bien:
   - AMEN_BEACHFRONT
+  - SETTING_COASTAL
+  gan cho an choi:
+  - STYLE_LIVELY
+  gan cho dem:
+  - SETTING_CITY_CENTER
   gan gui thien nhien:
+  - SETTING_NATURE
+  gan nui:
+  - SETTING_MOUNTAIN
+  gan pho:
+  - SETTING_CITY_CENTER
+  gan pho di bo:
+  - SETTING_CITY_CENTER
+  gan thien nhien:
   - SETTING_NATURE
   gan trung tam:
   - SETTING_CITY_CENTER
@@ -959,12 +1108,18 @@ synonyms:
   - AMEN_GARDEN
   garden view:
   - SETTING_NATURE
+  gia binh dan:
+  - PRICE_BUDGET
   gia dinh:
   - PURPOSE_FAMILY
   gia dinh co thanh thieu nien:
   - PURPOSE_FAMILY
   gia dinh co tre nho:
   - PURPOSE_FAMILY
+  gia hat de:
+  - PRICE_BUDGET
+  gia hop ly:
+  - PRICE_MID
   gia lai:
   - LOC_GIA_LAI_TINH
   gia lam:
@@ -999,6 +1154,12 @@ synonyms:
   - AMEN_BABYSITTING
   giuong va bua sang:
   - OBJ_BNB
+  giá bình_dân:
+  - PRICE_BUDGET
+  giá hạt dẻ:
+  - PRICE_BUDGET
+  giá hợp_lý:
+  - PRICE_MID
   giá mềm:
   - PRICE_BUDGET
   giá rẻ:
@@ -1043,6 +1204,19 @@ synonyms:
   - LOC_HO_CHI_MINH__GO_VAP
   gần biển:
   - AMEN_BEACHFRONT
+  - SETTING_COASTAL
+  gần chỗ ăn_chơi:
+  - STYLE_LIVELY
+  gần chợ đêm:
+  - SETTING_CITY_CENTER
+  gần núi:
+  - SETTING_MOUNTAIN
+  gần phố:
+  - SETTING_CITY_CENTER
+  gần phố đi bộ:
+  - SETTING_CITY_CENTER
+  gần thiên_nhiên:
+  - SETTING_NATURE
   gần trung_tâm:
   - SETTING_CITY_CENTER
   gần_gũi thiên_nhiên:
@@ -1069,6 +1243,10 @@ synonyms:
   - PURPOSE_ROMANTIC
   hai phong:
   - LOC_HAI_PHONG
+  hai vo chong:
+  - PURPOSE_ROMANTIC
+  hai vợ_chồng:
+  - PURPOSE_ROMANTIC
   hang sang:
   - PRICE_UPSCALE
   hang son doong:
@@ -1082,6 +1260,7 @@ synonyms:
   hat karaoke:
   - AMEN_KARAOKE
   hen ho:
+  - PURPOSE_ROMANTIC
   - STYLE_ROMANTIC
   hien dai:
   - STYLE_MODERN
@@ -1125,6 +1304,8 @@ synonyms:
   - LOC_HOA_BINH
   hoa hai:
   - LOC_DA_NANG__HOA_HAI
+  hoa minh thien nhien:
+  - SETTING_NATURE
   hoa ninh:
   - LOC_DA_NANG__HOA_NINH
   hoa_binh:
@@ -1133,6 +1314,8 @@ synonyms:
   - STYLE_LUXURY
   hoi an:
   - LOC_HOI_AN
+  hoi ban:
+  - PURPOSE_GROUP
   homestay:
   - OBJ_HOMESTAY
   hon dao:
@@ -1147,6 +1330,8 @@ synonyms:
   - LOC_HON_TRE
   honeymoon:
   - PURPOSE_ROMANTIC
+  hop tui tien:
+  - PRICE_BUDGET
   hotel:
   - OBJ_HOTEL
   hoành_tráng:
@@ -1189,6 +1374,8 @@ synonyms:
   - LOC_HOA_BINH
   hòa hải:
   - LOC_DA_NANG__HOA_HAI
+  hòa mình thiên_nhiên:
+  - SETTING_NATURE
   hòa ninh:
   - LOC_DA_NANG__HOA_NINH
   hòn móng tay:
@@ -1224,6 +1411,7 @@ synonyms:
   hải_phòng:
   - LOC_HAI_PHONG
   hẹn hò:
+  - PURPOSE_ROMANTIC
   - STYLE_ROMANTIC
   hồ bơi:
   - AMEN_POOL
@@ -1247,6 +1435,10 @@ synonyms:
   - LOC_DA_LAT__HO_XUAN_HUONG
   hội an:
   - LOC_HOI_AN
+  hội bạn:
+  - PURPOSE_GROUP
+  hợp túi_tiền:
+  - PRICE_BUDGET
   im ang:
   - STYLE_QUIET
   im_ắng:
@@ -1263,6 +1455,8 @@ synonyms:
   - SETTING_ISLAND
   it on:
   - STYLE_QUIET
+  it tien:
+  - PRICE_BUDGET
   karaoke:
   - AMEN_KARAOKE
   kayaking:
@@ -1277,8 +1471,14 @@ synonyms:
   - OBJ_HOTEL
   khong gian lang man:
   - STYLE_ROMANTIC
+  khong gian xanh:
+  - SETTING_NATURE
+  khong gian yen tinh:
+  - STYLE_QUIET
   khong on ao:
   - STYLE_QUIET
+  khong qua dat:
+  - PRICE_BUDGET
   khu bep:
   - AMEN_KITCHEN
   khu bếp:
@@ -1309,14 +1509,26 @@ synonyms:
   - LMK_KHU_PHO_PHAP
   khu resort:
   - OBJ_RESORT
+  khu tre em:
+  - AMEN_KIDS_CLUB
+  khu trung tam:
+  - SETTING_CITY_CENTER
+  khu trung_tâm:
+  - SETTING_CITY_CENTER
+  khu trẻ_em:
+  - AMEN_KIDS_CLUB
   khu vuc tang thuong:
   - AMEN_GARDEN
+  khu vui choi cho be:
+  - AMEN_KIDS_CLUB
   khu vui choi giai tri sun world ha long:
   - LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
   khu vui choi tre em:
   - AMEN_KIDS_CLUB
   khu vui_choi giai_tri sun world ha long:
   - LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
+  khu vui_chơi cho bé:
+  - AMEN_KIDS_CLUB
   khu vui_chơi giải_trí sun world_hạ long:
   - LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
   khu vui_chơi trẻ_em:
@@ -1337,10 +1549,16 @@ synonyms:
   - PURPOSE_BUSINESS
   khách_sạn:
   - OBJ_HOTEL
+  không quá đắt:
+  - PRICE_BUDGET
   không ồn_ào:
   - STYLE_QUIET
   không_gian lãng_mạn:
   - STYLE_ROMANTIC
+  không_gian xanh:
+  - SETTING_NATURE
+  không_gian yên_tĩnh:
+  - STYLE_QUIET
   kich thuoc phong:
   - ASPECT_ROOM
   kids club:
@@ -1357,14 +1575,20 @@ synonyms:
   - LOC_KIEN_GIANG_TINH
   ks:
   - OBJ_HOTEL
+  ky niem cuoi:
+  - PURPOSE_ROMANTIC
+  ky niem ngay cuoi:
+  - PURPOSE_ROMANTIC
   kích_thước phòng:
   - ASPECT_ROOM
+  kỷ_niệm cưới:
+  - PURPOSE_ROMANTIC
+  kỷ_niệm ngày cưới:
+  - PURPOSE_ROMANTIC
   lake view:
   - SETTING_RIVERSIDE
   lakeside:
   - SETTING_RIVERSIDE
-  lan:
-  - AMEN_WATERSPORT
   lan bien:
   - AMEN_WATERSPORT
   lan ong tho:
@@ -1392,6 +1616,8 @@ synonyms:
   - LOC_LANG_SON
   lao cai:
   - LOC_LAO_CAI
+  len nui:
+  - SETTING_MOUNTAIN
   leo nui:
   - AMEN_HIKING
   leo núi:
@@ -1416,6 +1642,8 @@ synonyms:
   - AMEN_BEACHFRONT
   long beach:
   - LMK_LONG_BEACH
+  long lay:
+  - STYLE_LUXURY
   long xuyen:
   - LOC_LONG_XUYEN
   long xuyên:
@@ -1447,6 +1675,8 @@ synonyms:
   - STYLE_ROMANTIC
   lãng_mạn riêng tư:
   - STYLE_ROMANTIC
+  lên núi:
+  - SETTING_MOUNTAIN
   lăng cô:
   - LOC_DA_NANG__LANG_CO
   lăng mộ_mạc cửu:
@@ -1467,12 +1697,12 @@ synonyms:
   - AMEN_WHEELCHAIR
   lộc thọ:
   - LOC_NHA_TRANG__LOC_THO
+  lộng_lẫy:
+  - STYLE_LUXURY
   lớp_học nấu_ăn lanterns:
   - LMK_LOP_HOC_NAU_AN_LANTERNS
   lớp_học nấu_ăn thuận_tính:
   - LMK_LOP_HOC_NAU_AN_THUAN_TINH
-  mang:
-  - AMEN_WIFI
   mang cho meo:
   - AMEN_PET_FRIENDLY
   mang chó mèo:
@@ -1503,6 +1733,8 @@ synonyms:
   - STYLE_MODERN
   mon an:
   - ASPECT_FOOD
+  mot minh:
+  - PURPOSE_SOLO
   mountain:
   - SETTING_MOUNTAIN
   mountain view:
@@ -1511,6 +1743,10 @@ synonyms:
   - LMK_MUI_GANH_DAU
   mui ne:
   - LOC_PHAN_THIET__MUI_NE
+  muon yen tinh:
+  - STYLE_QUIET
+  muốn yên_tĩnh:
+  - STYLE_QUIET
   my dinh:
   - LOC_HA_NOI__MY_DINH
   my tho:
@@ -1530,6 +1766,8 @@ synonyms:
   - AMEN_WIFI
   mộc châu:
   - LOC_MOC_CHAU
+  một_mình:
+  - PURPOSE_SOLO
   mỹ_tho:
   - LOC_MY_THO
   - LOC_MY_THO__MY_THO
@@ -1557,9 +1795,21 @@ synonyms:
   - SETTING_COASTAL
   ngay bãi biển:
   - AMEN_BEACHFRONT
+  ngay trung tam:
+  - SETTING_CITY_CENTER
+  ngay trung_tâm:
+  - SETTING_CITY_CENTER
+  nghi bien:
+  - SETTING_COASTAL
   nghi duong:
   - PURPOSE_WELLNESS
+  nghi ngoi:
+  - PURPOSE_WELLNESS
+  nghỉ biển:
+  - SETTING_COASTAL
   nghỉ dưỡng:
+  - PURPOSE_WELLNESS
+  nghỉ_ngơi:
   - PURPOSE_WELLNESS
   ngoc thanh:
   - LOC_PHUC_YEN__NGOC_THANH
@@ -1609,9 +1859,19 @@ synonyms:
   - LMK_NHA_TU_PHU_QUOC
   nhan vien:
   - ASPECT_SERVICE
+  nhieu cay xanh:
+  - SETTING_NATURE
+  nhieu hoat dong:
+  - STYLE_LIVELY
   nhin ra bien:
   - AMEN_SEA_VIEW
-  nhom:
+  nhin ra nui:
+  - SETTING_MOUNTAIN
+  nhiều cây_xanh:
+  - SETTING_NATURE
+  nhiều hoạt_động:
+  - STYLE_LIVELY
+  nhom ban:
   - PURPOSE_GROUP
   nhom du khach:
   - PURPOSE_GROUP
@@ -1657,7 +1917,11 @@ synonyms:
   - ASPECT_SERVICE
   nhìn ra biển:
   - AMEN_SEA_VIEW
+  nhìn ra núi:
+  - SETTING_MOUNTAIN
   nhóm:
+  - PURPOSE_GROUP
+  nhóm bạn:
   - PURPOSE_GROUP
   nhóm du_khách:
   - PURPOSE_GROUP
@@ -1791,12 +2055,13 @@ synonyms:
   phu quoc:
   - LOC_PHU_QUOC
   phu tho:
-  - LOC_PHU_THO
   - LOC_PHU_THO_TINH
   phu thuy:
   - LOC_PHAN_THIET__PHU_THUY
   phu yen:
   - LOC_PHU_YEN_TINH
+  phuc hoi suc khoe:
+  - PURPOSE_WELLNESS
   phuc yen:
   - LOC_PHUC_YEN
   phuoc long:
@@ -1860,7 +2125,6 @@ synonyms:
   phú_quốc:
   - LOC_PHU_QUOC
   phú_thọ:
-  - LOC_PHU_THO
   - LOC_PHU_THO_TINH
   phúc yên:
   - LOC_PHUC_YEN
@@ -1888,6 +2152,8 @@ synonyms:
   - PRICE_BUDGET
   phố cổ:
   - LOC_HA_NOI__PHO_CO
+  phục_hồi_sức khỏe:
+  - PURPOSE_WELLNESS
   phủ_lý:
   - LOC_PHU_LY
   ping pong:
@@ -2011,11 +2277,13 @@ synonyms:
   - LOC_HA_NOI__QUAN_HOANG_MAI
   quận tây hồ:
   - LOC_HA_NOI__QUAN_TAY_HO
+  ra bien:
+  - SETTING_COASTAL
+  ra biển:
+  - SETTING_COASTAL
   rach gia:
   - LOC_RACH_GIA
   - LOC_RACH_GIA__RACH_GIA
-  re:
-  - PRICE_BUDGET
   relaxation:
   - PURPOSE_WELLNESS
   relaxing:
@@ -2032,10 +2300,14 @@ synonyms:
   - STYLE_RELAXING
   retreat:
   - PURPOSE_WELLNESS
+  rieng tu yen tinh:
+  - STYLE_QUIET
   river view:
   - SETTING_RIVERSIDE
   riverside:
   - SETTING_RIVERSIDE
+  riêng tư yên_tĩnh:
+  - STYLE_QUIET
   romantic:
   - PURPOSE_ROMANTIC
   - STYLE_ROMANTIC
@@ -2056,10 +2328,10 @@ synonyms:
   - PRICE_BUDGET
   rừng dừa_nước:
   - LMK_RUNG_DUA_NUOC
-  sach:
-  - ASPECT_CLEANLINESS
   sach se:
   - ASPECT_CLEANLINESS
+  sam son:
+  - LOC_BAI_BIEN_SAM_SON
   san bay ca mau:
   - LMK_SAN_BAY_CA_MAU
   san bay chu lai:
@@ -2153,6 +2425,10 @@ synonyms:
   - PRICE_LUXURY
   sang trong:
   - PRICE_LUXURY
+  - STYLE_LUXURY
+  sang xin:
+  - STYLE_LUXURY
+  sang xịn:
   - STYLE_LUXURY
   sang_trọng:
   - PRICE_LUXURY
@@ -2299,6 +2575,8 @@ synonyms:
   - ASPECT_CLEANLINESS
   sạch_sẽ:
   - ASPECT_CLEANLINESS
+  sầm sơn:
+  - LOC_BAI_BIEN_SAM_SON
   table tennis:
   - AMEN_GAME_ROOM
   tam dao:
@@ -2306,14 +2584,14 @@ synonyms:
   - LOC_TAM_DAO__TAM_DAO
   tam hiep:
   - LOC_TAN_HIEP__TAM_HIEP
-  tam khoang:
-  - AMEN_SPA
   tam ky:
   - LOC_TAM_KY
   - LOC_TAM_KY__TAM_KY
   tam nhin ra bien:
   - AMEN_SEA_VIEW
   tam trung:
+  - PRICE_MID
+  tam trung kha:
   - PRICE_MID
   tam_dao:
   - LOC_TAM_DAO
@@ -2341,6 +2619,8 @@ synonyms:
   - LOC_HO_CHI_MINH__TAN_BINH
   tay ninh:
   - LOC_TAY_NINH
+  team building:
+  - PURPOSE_GROUP
   techo international airport:
   - LMK_TECHO_INTERNATIONAL_AIRPORT
   tennis:
@@ -2376,10 +2656,8 @@ synonyms:
   thanh ha:
   - LOC_HOI_AN__THANH_HA
   thanh hoa:
-  - LOC_THANH_HOA
   - LOC_THANH_HOA_TINH
   thanh hóa:
-  - LOC_THANH_HOA
   - LOC_THANH_HOA_TINH
   thanh pho bien:
   - LOC_QUY_NHON__THANH_PHO_BIEN
@@ -2393,9 +2671,9 @@ synonyms:
   thanh pho vinh:
   - LOC_VINH__THANH_PHO_VINH
   thanh thuy:
-  - LOC_PHU_THO__THANH_THUY
+  - LOC_PHU_THO_TINH__THANH_THUY
   thanh thủy:
-  - LOC_PHU_THO__THANH_THUY
+  - LOC_PHU_THO_TINH__THANH_THUY
   thanh_hà:
   - LOC_HOI_AN__THANH_HA
   the thao nuoc:
@@ -2491,6 +2769,8 @@ synonyms:
   - LOC_BINH_DUONG__THU_DAU_MOT
   thủ_đức:
   - LOC_HO_CHI_MINH__THU_DUC
+  tien di lai:
+  - SETTING_CITY_CENTER
   tien giang:
   - LOC_TIEN_GIANG_TINH
   tien ich:
@@ -2507,6 +2787,10 @@ synonyms:
   - LOC_PHAN_THIET__TIEN_THANH
   tiet kiem:
   - PRICE_BUDGET
+  tiet kiem chi phi:
+  - PRICE_BUDGET
+  tinh duong:
+  - PURPOSE_WELLNESS
   tinh lang:
   - STYLE_QUIET
   tinh tu:
@@ -2515,8 +2799,12 @@ synonyms:
   - LOC_PHAN_THIET__TIEN_THANH
   tiết_kiệm:
   - PRICE_BUDGET
+  tiết_kiệm chi_phí:
+  - PRICE_BUDGET
   tiền giang:
   - LOC_TIEN_GIANG_TINH
+  tiện đi_lại:
+  - SETTING_CITY_CENTER
   tiện_nghi cho khách khuyết_tật:
   - AMEN_WHEELCHAIR
   tiện_nghi cơ_sở lưu_trú:
@@ -2545,6 +2833,8 @@ synonyms:
   - LMK_TRAM_KHI_TUONG_HAI_VAN_CON_DAO
   trang mat:
   - PURPOSE_ROMANTIC
+  tranh on ao:
+  - STYLE_QUIET
   tre em:
   - PURPOSE_FAMILY
   tre trung:
@@ -2555,9 +2845,17 @@ synonyms:
   - SETTING_ISLAND
   tren nui:
   - SETTING_MOUNTAIN
+  trong lanh:
+  - SETTING_NATURE
+  trong lành:
+  - SETTING_NATURE
   trong noi thanh:
   - SETTING_CITY_CENTER
   trong nội_thành:
+  - SETTING_CITY_CENTER
+  trong pho:
+  - SETTING_CITY_CENTER
+  trong phố:
   - SETTING_CITY_CENTER
   trong tre:
   - AMEN_BABYSITTING
@@ -2591,7 +2889,7 @@ synonyms:
   - LOC_TAY_NINH__TRUNG_TAM_THANH_PHO_TAY_NINH
   trung tam tp.thanh hoa:
   - LOC_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
-  - LOC_THANH_HOA__TRUNG_TAM_TP_THANH_HOA
+  - LOC_THANH_HOA_TINH__TRUNG_TAM_TP_THANH_HOA
   trung_hoa nhan_chinh:
   - LOC_HA_NOI__TRUNG_HOA_NHAN_CHINH
   trung_hòa nhân chính:
@@ -2619,7 +2917,7 @@ synonyms:
   - LOC_TAY_NINH__TRUNG_TAM_THANH_PHO_TAY_NINH
   trung_tam tp.thanh hoa:
   - LOC_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
-  - LOC_THANH_HOA__TRUNG_TAM_TP_THANH_HOA
+  - LOC_THANH_HOA_TINH__TRUNG_TAM_TP_THANH_HOA
   trung_tâm:
   - SETTING_CITY_CENTER
   trung_tâm hội_nghị:
@@ -2648,9 +2946,11 @@ synonyms:
   - LOC_DA_LAT__TRUNG_TAM_THANH_PHO_DA_LAT
   trung_tâm tp.thanh hóa:
   - LOC_BAI_BIEN_SAM_SON__TRUNG_TAM_TP_THANH_HOA
-  - LOC_THANH_HOA__TRUNG_TAM_TP_THANH_HOA
+  - LOC_THANH_HOA_TINH__TRUNG_TAM_TP_THANH_HOA
   trà vinh:
   - LOC_TRA_VINH
+  tránh ồn_ào:
+  - STYLE_QUIET
   trên núi:
   - SETTING_MOUNTAIN
   trên đảo:
@@ -2671,6 +2971,8 @@ synonyms:
   - LMK_TT_MUA_SAM_IMPERIAL_PLAZA
   tt mua_sắm imperial plaza:
   - LMK_TT_MUA_SAM_IMPERIAL_PLAZA
+  tu di:
+  - PURPOSE_SOLO
   tuan trang mat:
   - PURPOSE_ROMANTIC
   - STYLE_ROMANTIC
@@ -2709,6 +3011,8 @@ synonyms:
   - LOC_TAY_NINH
   tình tứ:
   - STYLE_ROMANTIC
+  tĩnh_dưỡng:
+  - PURPOSE_WELLNESS
   tĩnh_lặng:
   - STYLE_QUIET
   tượng chúa kitô vua:
@@ -2721,8 +3025,10 @@ synonyms:
   - AMEN_SEA_VIEW
   tầm trung:
   - PRICE_MID
-  tắm khoáng:
-  - AMEN_SPA
+  tầm trung khá:
+  - PRICE_MID
+  tự đi:
+  - PURPOSE_SOLO
   ultra luxury:
   - PRICE_LUXURY
   upscale:
@@ -2778,6 +3084,10 @@ synonyms:
   - AMEN_SEA_VIEW
   view biển:
   - AMEN_SEA_VIEW
+  view nui:
+  - SETTING_MOUNTAIN
+  view núi:
+  - SETTING_MOUNTAIN
   view pool:
   - AMEN_INFINITY_POOL
   villa:
@@ -2797,7 +3107,6 @@ synonyms:
   vinh phu:
   - LOC_THUAN_AN__VINH_PHU
   vinh phuc:
-  - LOC_VINH_PHUC
   - LOC_VINH_PHUC_TINH
   vinh phuoc:
   - LOC_NHA_TRANG__VINH_PHUOC
@@ -2836,21 +3145,34 @@ synonyms:
   việt_trì:
   - LOC_VIET_TRI
   - LOC_VIET_TRI__VIET_TRI
+  vo chong:
+  - PURPOSE_ROMANTIC
+  vo chong son:
+  - PURPOSE_ROMANTIC
+  voi ban be:
+  - PURPOSE_GROUP
+  voi ban gai:
+  - PURPOSE_ROMANTIC
+  voi ban trai:
+  - PURPOSE_ROMANTIC
+  voi nguoi yeu:
+  - PURPOSE_ROMANTIC
   vua tien:
   - PRICE_MID
+  vua tui tien:
+  - PRICE_BUDGET
   vui nhon:
   - STYLE_LIVELY
   vui nhộn:
   - STYLE_LIVELY
   vung bien:
   - SETTING_COASTAL
+  vung cao:
+  - SETTING_MOUNTAIN
   vung nui:
   - SETTING_MOUNTAIN
   vung tau:
   - LOC_VUNG_TAU
-  vuon:
-  - AMEN_GARDEN
-  - SETTING_NATURE
   vuon be canh:
   - LMK_VUON_BE_CANH
   vân đồn:
@@ -2859,6 +3181,8 @@ synonyms:
   - SETTING_MOUNTAIN
   vùng_biển:
   - SETTING_COASTAL
+  vùng_cao:
+  - SETTING_MOUNTAIN
   vĩnh long:
   - LOC_VINH_LONG
   vĩnh_hòa:
@@ -2866,7 +3190,6 @@ synonyms:
   vĩnh_hải:
   - LOC_PHAN_RANG_THAP_CHAM__VINH_HAI
   vĩnh_phúc:
-  - LOC_VINH_PHUC
   - LOC_VINH_PHUC_TINH
   vĩnh_phước:
   - LOC_NHA_TRANG__VINH_PHUOC
@@ -2885,8 +3208,22 @@ synonyms:
   - ASPECT_LOCATION
   vị_trí thuận_tiện:
   - ASPECT_LOCATION
+  với bạn gái:
+  - PURPOSE_ROMANTIC
+  với bạn trai:
+  - PURPOSE_ROMANTIC
+  với bạn_bè:
+  - PURPOSE_GROUP
+  với người_yêu:
+  - PURPOSE_ROMANTIC
+  vợ_chồng:
+  - PURPOSE_ROMANTIC
+  vợ_chồng son:
+  - PURPOSE_ROMANTIC
   vừa tiền:
   - PRICE_MID
+  vừa túi_tiền:
+  - PRICE_BUDGET
   water sports:
   - AMEN_WATERSPORT
   waterfront:
@@ -2914,6 +3251,10 @@ synonyms:
   xa hoa:
   - PRICE_LUXURY
   - STYLE_LUXURY
+  xa hoi:
+  - PURPOSE_WELLNESS
+  xa stress:
+  - PURPOSE_WELLNESS
   xa xi:
   - PRICE_LUXURY
   xa_xỉ:
@@ -2928,8 +3269,6 @@ synonyms:
   - AMEN_AIRPORT_SHUTTLE
   xe_đạp:
   - AMEN_BIKE
-  xin:
-  - PRICE_LUXURY
   xin so:
   - STYLE_LUXURY
   xong hoi:
@@ -2950,6 +3289,10 @@ synonyms:
   - AMEN_SPA
   xương huân:
   - LOC_NHA_TRANG__XUONG_HUAN
+  xả hơi:
+  - PURPOSE_WELLNESS
+  xả stress:
+  - PURPOSE_WELLNESS
   xịn:
   - PRICE_LUXURY
   xịn sò:
@@ -2964,6 +3307,8 @@ synonyms:
   - STYLE_QUIET
   yên_tĩnh:
   - STYLE_QUIET
+  ít tiền:
+  - PRICE_BUDGET
   ít ồn:
   - STYLE_QUIET
   ăn sáng:
@@ -2972,11 +3317,39 @@ synonyms:
   - ASPECT_FOOD
   đa tốn:
   - LOC_GIA_LAM__DA_TON
+  đi biển:
+  - SETTING_COASTAL
   đi bộ đường dài:
   - AMEN_HIKING
+  đi bụi một_mình:
+  - PURPOSE_SOLO
+  đi công_chuyện:
+  - PURPOSE_BUSINESS
+  đi công_tác:
+  - PURPOSE_BUSINESS
+  đi cùng con:
+  - PURPOSE_FAMILY
+  đi du_lịch một_mình:
+  - PURPOSE_SOLO
+  đi họp:
+  - PURPOSE_BUSINESS
+  đi hội_thảo:
+  - PURPOSE_BUSINESS
+  đi làm_việc:
+  - PURPOSE_BUSINESS
   đi một_mình:
   - PURPOSE_SOLO
+  đi phượt nhóm:
+  - PURPOSE_GROUP
   đi theo nhóm:
+  - PURPOSE_GROUP
+  đi với bạn_bè:
+  - PURPOSE_GROUP
+  đi với con:
+  - PURPOSE_FAMILY
+  đi với người_yêu:
+  - PURPOSE_ROMANTIC
+  đi với nhóm bạn:
   - PURPOSE_GROUP
   đi đoàn:
   - PURPOSE_GROUP
@@ -2996,6 +3369,8 @@ synonyms:
   - LMK_DAI_TUONG_NIEM_LIET_SI
   đá chồng:
   - LMK_DA_CHONG
+  đám bạn:
+  - PURPOSE_GROUP
   đáng tiền:
   - ASPECT_VALUE
   đáng_giá:
@@ -3010,6 +3385,12 @@ synonyms:
   - LMK_DINH_THAN_NGUYEN_TRUNG_TRUC
   đôi:
   - PURPOSE_ROMANTIC
+  đôi uyên_ương:
+  - PURPOSE_ROMANTIC
+  đông vui:
+  - STYLE_LIVELY
+  đưa con đi:
+  - PURPOSE_FAMILY
   đưa_đón sân_bay:
   - AMEN_AIRPORT_SHUTTLE
   đường_mòn:
@@ -3027,6 +3408,8 @@ synonyms:
   - STYLE_LUXURY
   đẳng_cấp quốc_tế:
   - PRICE_LUXURY
+  đẳng_cấp sang_trọng:
+  - STYLE_LUXURY
   đền bà_chúa xứ:
   - LOC_CHAU_DOC__NUI_SAM_DEN_BA_CHUA_XU
   đền độc_cước:

@@ -28,6 +28,19 @@ CORE_GLOB = "ontology/core/*.yaml"
 OUT_YAML = "ontology/synonym_dictionary.yaml"
 VERSION = "2.0.0"
 
+# Bỏ dấu một âm tiết ngắn = bẫy đồng âm: 'mạng'->'mang' trúng động từ 'mang'.
+# Quy ước: form đã-fold mà là MỘT token và <=4 ký tự thì KHÔNG index dạng bỏ dấu
+# (chỉ giữ dạng có dấu). Cụm >=2 token vẫn fold bình thường.
+# GIỚI HẠN: guard này CHỈ chặn đơn âm tiết. Cụm nhiều âm tiết mà bỏ dấu trùng nhau
+# (vd 'tắm khoáng' vs 'tầm khoảng' -> đều 'tam khoang') KHÔNG được chặn ở đây — vẫn
+# phải né thủ công bằng cách bỏ form khỏi ontology (xem amenity.yaml AMEN_SPA, AMEN_GAME_ROOM).
+RISKY_FOLD_MAX_CHARS = 4
+
+
+def _is_risky_short(folded: str) -> bool:
+    """True nếu form bỏ dấu là một âm tiết ngắn -> dễ trùng đồng âm khác thanh."""
+    return " " not in folded and len(folded) <= RISKY_FOLD_MAX_CHARS
+
 
 def build_index(core_glob: str = CORE_GLOB) -> dict[str, list[str]]:
     """surface form (normalize, cả 2 dạng) -> sorted list concept_id."""
@@ -42,8 +55,10 @@ def build_index(core_glob: str = CORE_GLOB) -> dict[str, list[str]]:
             sf = v.get("surface_forms", {}) or {}
             for lang in ("vi", "en"):
                 for lb in sf.get(lang, []) or []:
-                    add(normalize(lb), cid)
-                    add(normalize(lb, fold=True), cid)
+                    add(normalize(lb), cid)           # dạng có dấu: luôn giữ
+                    fold = normalize(lb, fold=True)
+                    if not _is_risky_short(fold):     # bỏ dấu: bỏ qua nếu là âm tiết ngắn rủi ro
+                        add(fold, cid)
     return {form: sorted(cids) for form, cids in sorted(idx.items())}
 
 

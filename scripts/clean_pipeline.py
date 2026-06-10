@@ -20,9 +20,8 @@ if str(_PROJECT_ROOT) not in sys.path:
 from ingestion.cleaning.html_stripper import strip_html
 from ingestion.cleaning.text_normalizer import normalize_text
 from ingestion.cleaning.amenity_normalizer import normalize_amenities, normalize_amenities_batch
-from ingestion.cleaning.translator import translate_to_vi, translate_batch_parallel
-from ingestion.cleaning.html_stripper import strip_html
 from ingestion.cleaning.text_normalizer import normalize_text
+from ingestion.cleaning.html_stripper import strip_html
 from ingestion.cleaning.occupancy_imputer import impute_max_occupancy
 from ingestion.cleaning.price_mocker import mock_room_prices
 
@@ -73,7 +72,7 @@ def _clean_room(room: dict[str, Any], hotel: dict[str, Any]) -> dict[str, Any]:
     return cr
 
 
-def clean_document(doc: dict[str, Any], translate_comments: bool = False) -> dict[str, Any]:
+def clean_document(doc: dict[str, Any]) -> dict[str, Any]:
     cleaned: dict[str, Any] = {}
 
     for key, val in doc.items():
@@ -149,21 +148,6 @@ def clean_document(doc: dict[str, Any], translate_comments: bool = False) -> dic
                         cleaned_comments.append(nc)
                     else:
                         cleaned_comments.append(c)
-                # Batch translate all text fields in parallel
-                all_texts: list[str] = []
-                text_positions: list[tuple[int, str]] = []
-                for ci, nc in enumerate(cleaned_comments):
-                    if not isinstance(nc, dict):
-                        continue
-                    for fk in ("text", "title", "positives", "negatives", "response"):
-                        val = nc.get(fk)
-                        if isinstance(val, str) and val:
-                            all_texts.append(val)
-                            text_positions.append((ci, fk))
-                if translate_comments and all_texts:
-                    translated = translate_batch_parallel(all_texts, max_workers=8)
-                    for (ci, fk), t in zip(text_positions, translated):
-                        cleaned_comments[ci][fk] = t
                 cleaned[key]["sample_comments"] = cleaned_comments
 
         # amenities — normalize + merge near-duplicates
@@ -295,7 +279,6 @@ def write_cleaned(
 def run(
     input_dir: Path = DEFAULT_INPUT_DIR,
     output_dir: Path = DEFAULT_OUTPUT_DIR,
-    translate_comments: bool = False,
 ) -> list[Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
     paths = []
@@ -303,7 +286,7 @@ def run(
         doc_id = doc.get("id") or doc.get("hotel_id", "unknown")
         import time
         t0 = time.time()
-        cleaned = clean_document(doc, translate_comments=translate_comments)
+        cleaned = clean_document(doc)
         elapsed = time.time() - t0
         fname = f"hotel_{doc_id}.json"
         fpath = output_dir / fname
@@ -321,9 +304,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Clean raw hotel documents")
     parser.add_argument("--input-dir", type=str, default=str(DEFAULT_INPUT_DIR))
     parser.add_argument("--output-dir", type=str, default=str(DEFAULT_OUTPUT_DIR))
-    parser.add_argument("--translate", action="store_true", help="Translate reviews to Vietnamese")
     args = parser.parse_args()
-    paths = run(Path(args.input_dir), Path(args.output_dir), translate_comments=args.translate)
+    paths = run(Path(args.input_dir), Path(args.output_dir))
     print(f"Cleaned {len(paths)} documents → {args.output_dir}")
 
 
