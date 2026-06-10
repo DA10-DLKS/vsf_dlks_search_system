@@ -6,10 +6,11 @@ TODO: register routers from api/routes/.
 
 import os
 import time
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, HTTPException, Query
 from opensearchpy import OpenSearch
 from dotenv import load_dotenv
 from prometheus_client import Histogram, Counter, generate_latest, CollectorRegistry
+from retrieval.lexical_search import BM25SearchService
 
 # Load environment variables
 load_dotenv()
@@ -19,6 +20,7 @@ INDEX_NAME = os.environ.get('BM25_INDEX', 'travel_bm25')
 
 # Initialize OpenSearch Client
 client = OpenSearch(OPENSEARCH_URL)
+keyword_search_service = BM25SearchService(client=client, index_name=INDEX_NAME)
 
 # Prometheus metrics
 REGISTRY = CollectorRegistry()
@@ -54,7 +56,6 @@ def metrics():
     """Prometheus metrics endpoint."""
     return generate_latest(REGISTRY)
 
-
 @app.get("/search")
 def search_bm25(q: str = Query(..., description="Search query")) -> dict:
     """
@@ -66,48 +67,13 @@ def search_bm25(q: str = Query(..., description="Search query")) -> dict:
     REQUESTS_TOTAL.labels(endpoint=endpoint).inc()
 
     try:
-        query_body = {
-            "query": {
-                "multi_match": {
-                    "query": q,
-                    "fields": ["name^2", "description", "city", "address", "amenities"]
-                }
-            }
-        }
-        
-        response = client.search(
-            index=INDEX_NAME,
-            body=query_body
-        )
-        
-        hits = response.get("hits", {}).get("hits", [])
-        results = []
-        for hit in hits:
-            source = hit.get("_source", {})
-            results.append({
-                "id": source.get("id"),
-                "name": source.get("name"),
-                "accommodation_type": source.get("accommodation_type"),
-                "star_rating": source.get("star_rating"),
-                "review_score": source.get("review_score"),
-                "address": source.get("address"),
-                "city": source.get("city"),
-                "description": source.get("description"),
-                "score": hit.get("_score")
-            })
-            
+        response = keyword_search_service.search(q)
         latency = time.time() - start_time
         REQUEST_LATENCY.labels(endpoint=endpoint).observe(latency)
-
-        return {
-            "query": q,
-            "results": results,
-            "took_ms": int(latency * 1000),
-            "total_hits": response.get("hits", {}).get("total", {}).get("value", 0)
-        }
-    except Exception as e:
+        return response
+    except Exception:
         ERRORS_TOTAL.labels(endpoint=endpoint).inc()
-        raise
+        raise HTTPException(status_code=503, detail="Keyword search backend unavailable")
 
 
 # TODO:
