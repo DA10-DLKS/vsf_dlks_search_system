@@ -1,9 +1,13 @@
 import os
 import json
 from opensearchpy import OpenSearch, helpers
+from opensearchpy.exceptions import NotFoundError
 
 OPENSEARCH_URL = os.environ.get('OPENSEARCH_URL', 'http://localhost:9200')
-INDEX_NAME = os.environ.get('BM25_INDEX', 'travel_bm25')
+RUNTIME_INDEX_NAME = os.environ.get('BM25_INDEX', 'vsf_hotels_bm25_current')
+TARGET_INDEX_NAME = os.environ.get('BM25_TARGET_INDEX') or RUNTIME_INDEX_NAME
+BM25_ALIAS = os.environ.get('BM25_ALIAS', RUNTIME_INDEX_NAME)
+BM25_PROMOTE_ALIAS = os.environ.get('BM25_PROMOTE_ALIAS', 'false').lower() in ('1', 'true', 'yes', 'y')
 DATA_DIR = os.environ.get('CLEANED_DATA_DIR', 'data/cleaned')
 BULK_CHUNK_SIZE = int(os.environ.get('BULK_CHUNK_SIZE', '50'))
 BULK_MAX_CHUNK_BYTES = int(os.environ.get('BULK_MAX_CHUNK_BYTES', str(5 * 1024 * 1024)))
@@ -41,7 +45,7 @@ def parse_price(price_str):
                 return None
 
 
-def iter_docs(data_dir):
+def iter_docs(data_dir, index_name=TARGET_INDEX_NAME):
     for fname in os.listdir(data_dir):
         if not fname.endswith('.json'):
             continue
@@ -107,7 +111,7 @@ def iter_docs(data_dir):
             # Construct index doc conforming strictly to index_mapping.json
             index_doc = {
                 "_op_type": "index",
-                "_index": INDEX_NAME,
+                "_index": index_name,
                 "_id": str(hotel_id),
                 "id": hotel_id,
                 "name": doc.get('name'),
@@ -136,13 +140,35 @@ def iter_docs(data_dir):
             yield index_doc
 
 
-if __name__ == '__main__':
-    # ensure index exists
-    if not client.indices.exists(index=INDEX_NAME):
-        print(f"Index {INDEX_NAME} does not exist. Please create it with the agreed mapping before running this script.")
-        exit(1)
+def promote_alias(opensearch_client, alias_name, target_index):
+    """Atomically point the stable BM25 alias to a validated versioned index."""
+    try:
+        existing_aliases = opensearch_client.indices.get_alias(name=alias_name)
+        existing_indices = list(existing_aliases.keys())
+    except NotFoundError:
+        existing_indices = []
 
-    print(f"Indexing documents from {DATA_DIR} into {INDEX_NAME}...")
+    actions = [
+        {"remove": {"index": index_name, "alias": alias_name}}
+        for index_name in existing_indices
+    ]
+    actions.append({"add": {"index": target_index, "alias": alias_name}})
+
+    opensearch_client.indices.update_aliases(
+        body={"actions": actions}
+    )
+
+
+def run_indexing(opensearch_client=client):
+    # ensure index exists
+    if not opensearch_client.indices.exists(index=TARGET_INDEX_NAME):
+        print(f"Index {TARGET_INDEX_NAME} does not exist. Please create it with the agreed mapping before running this script.")
+        return 1
+
+    print(f"Runtime BM25 index/alias: {RUNTIME_INDEX_NAME}")
+    print(f"Target BM25 index: {TARGET_INDEX_NAME}")
+    print(f"Alias promotion: {BM25_PROMOTE_ALIAS} ({BM25_ALIAS} -> {TARGET_INDEX_NAME})")
+    print(f"Indexing documents from {DATA_DIR} into {TARGET_INDEX_NAME}...")
     print(f"Bulk chunk size: {BULK_CHUNK_SIZE}, max chunk bytes: {BULK_MAX_CHUNK_BYTES}")
     try:
         success = 0
@@ -150,8 +176,8 @@ if __name__ == '__main__':
         first_failures = []
 
         for ok, item in helpers.streaming_bulk(
-            client,
-            iter_docs(DATA_DIR),
+            opensearch_client,
+            iter_docs(DATA_DIR, TARGET_INDEX_NAME),
             chunk_size=BULK_CHUNK_SIZE,
             max_chunk_bytes=BULK_MAX_CHUNK_BYTES,
             raise_on_error=False,
@@ -169,6 +195,17 @@ if __name__ == '__main__':
             print("First few failure errors:")
             for item in first_failures:
                 print(json.dumps(item, indent=2, ensure_ascii=True))
+        if BM25_PROMOTE_ALIAS and failed == 0:
+            promote_alias(opensearch_client, BM25_ALIAS, TARGET_INDEX_NAME)
+            print(f"Promoted alias {BM25_ALIAS} -> {TARGET_INDEX_NAME}")
+        elif BM25_PROMOTE_ALIAS:
+            print(f"Skipped alias promotion because {failed} documents failed.")
     except Exception as e:
         print("Bulk indexing exception:", e)
+        return 1
     print("Done.")
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(run_indexing())
