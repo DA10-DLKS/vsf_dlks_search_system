@@ -1,12 +1,10 @@
 # Keyword Search Implementation Guide
 
-Tài liệu này ghi lại các thay đổi keyword search BM25 sau khi đã có OpenSearch index `travel_bm25`, kèm hướng dẫn chạy và test.
+Tài liệu này ghi lại cách keyword search BM25 đang được triển khai và cách chạy với BM25 alias/version mới.
 
-## 1. Thay Đổi Đã Thực Hiện
+## 1. Trạng Thái Hiện Tại
 
-### Tách keyword search sang Layer 6
-
-Logic BM25 không còn nằm trực tiếp trong `api/main.py`. Phần truy vấn OpenSearch đã được tách sang:
+Keyword search đã được tách khỏi `api/main.py` sang Layer 6:
 
 ```text
 retrieval/lexical_search/service.py
@@ -18,45 +16,31 @@ Service chính:
 BM25SearchService
 ```
 
-Nhiệm vụ:
+API runtime không trỏ trực tiếp vào index version. API đọc:
 
-- Nhận query text.
-- Build OpenSearch `multi_match` query.
-- Gọi OpenSearch index `travel_bm25`.
-- Map OpenSearch hits về response shape đang dùng bởi API.
-
-Các field search hiện tại:
-
-```python
-["name", "description^2", "city", "address", "amenities"]
+```env
+BM25_INDEX=vsf_hotels_bm25_current
 ```
 
-Các field trả về từ `_source`:
+Alias `vsf_hotels_bm25_current` sẽ được trỏ sang version đã validate, ví dụ:
 
-```python
-[
-    "id",
-    "name",
-    "accommodation_type",
-    "star_rating",
-    "review_score",
-    "address",
-    "city",
-    "description",
-]
+```text
+vsf_hotels_bm25_current -> vsf_hotels_bm25_v1_0_0
 ```
 
-### Giữ `GET /search`
+`travel_bm25` là legacy index, không dùng cho release mới.
 
-Endpoint hiện tại vẫn là:
+## 2. Endpoint Keyword Search
+
+Endpoint hiện tại:
 
 ```text
 GET /search?q=<query>
 ```
 
-Không thêm `POST /search` ở giai đoạn keyword-only. `POST /search` sẽ dành cho giai đoạn hybrid search hoàn chỉnh, khi output cần làm input cho Context API.
+Không thêm `POST /search` ở giai đoạn keyword-only. `POST /search` thuộc phase hybrid search và Context API sau này.
 
-Response vẫn giữ compatible:
+Response giữ compatible:
 
 ```json
 {
@@ -79,75 +63,22 @@ Response vẫn giữ compatible:
 }
 ```
 
-### Error handling
+## 3. Điều Kiện Trước Khi Chạy API
 
-Nếu OpenSearch hoặc keyword backend lỗi, API trả:
-
-```text
-HTTP 503
-```
-
-Response:
-
-```json
-{
-  "detail": "Keyword search backend unavailable"
-}
-```
-
-### Metrics
-
-Các Prometheus metrics hiện có vẫn được giữ:
-
-```text
-search_bm25_request_duration_seconds
-search_bm25_requests_total
-search_bm25_errors_total
-```
-
-## 2. Điều Kiện Trước Khi Chạy
-
-Đảm bảo đã có:
+Đảm bảo:
 
 - OpenSearch đang chạy.
-- Index `travel_bm25` đã được tạo bằng mapping.
-- Dữ liệu trong `data/cleaned/` đã được index vào `travel_bm25`.
-- File `.env` có cấu hình:
+- Đã tạo index version như `vsf_hotels_bm25_v1_0_0`.
+- Đã index data vào target version.
+- Alias `vsf_hotels_bm25_current` đã được promote sang version hợp lệ.
 
-```env
-OPENSEARCH_URL=http://localhost:9200
-BM25_INDEX=travel_bm25
-```
-
-Nếu chưa index data, xem thêm:
-
-```text
-docs/Le Hoang Dat/opensearch_index_run_guide.md
-```
-
-## 3. Hướng Dẫn Chạy
-
-### Start OpenSearch
+Kiểm tra alias:
 
 ```powershell
-docker compose up -d opensearch opensearch-dashboard
+curl.exe "http://localhost:9200/_alias/vsf_hotels_bm25_current"
 ```
 
-Kiểm tra OpenSearch:
-
-```powershell
-curl.exe http://localhost:9200
-```
-
-Kiểm tra số document:
-
-```powershell
-curl.exe "http://localhost:9200/travel_bm25/_count"
-```
-
-### Start API
-
-Chạy từ root project:
+## 4. Chạy API
 
 ```powershell
 venv\Scripts\python.exe -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
@@ -159,141 +90,85 @@ Kiểm tra health:
 curl.exe http://localhost:8000/health
 ```
 
-Kết quả mong đợi:
-
-```json
-{
-  "status": "ok"
-}
-```
-
-### Gọi keyword search API
+Gọi search:
 
 ```powershell
 curl.exe "http://localhost:8000/search?q=khach%20san%20gan%20bien"
 ```
 
-Hoặc dùng query tiếng Việt có dấu:
-
-```powershell
-curl.exe "http://localhost:8000/search?q=kh%C3%A1ch%20s%E1%BA%A1n%20g%E1%BA%A7n%20bi%E1%BB%83n"
-```
-
-Nếu dùng trình duyệt, có thể mở trực tiếp:
-
-```text
-http://localhost:8000/search?q=khach%20san%20gan%20bien
-```
-
-### Xem metrics
+## 5. Metrics
 
 ```powershell
 curl.exe http://localhost:8000/metrics
 ```
 
-## 4. Hướng Dẫn Benchmark
+Metrics hiện có:
 
-Chạy benchmark hiện có:
+```text
+search_bm25_request_duration_seconds
+search_bm25_requests_total
+search_bm25_errors_total
+```
+
+## 6. Benchmark
 
 ```powershell
 venv\Scripts\python.exe scripts/benchmark_search.py --target http://localhost:8000 --qps 50 --duration 60 --concurrency 10
 ```
 
-Các chỉ số cần ghi lại:
+Khi ghi SLO, cần ghi cả `Target QPS` và `Actual QPS` vì script benchmark hiện có thể tạo tải cao hơn target.
 
-- `Errors`
-- `Error rate`
-- `Actual QPS`
-- `P50`
-- `P95`
-- `P99`
-- `Max`
-- `StdDev`
+## 7. Test
 
-Lưu ý: script benchmark hiện có thể tạo `Actual QPS` cao hơn `Target QPS`. Khi ghi SLO, cần ghi cả hai giá trị để tránh hiểu nhầm điều kiện tải.
-
-## 5. Hướng Dẫn Test
-
-### Test phần keyword search liên quan
+Test keyword search và indexer:
 
 ```powershell
-venv\Scripts\python.exe -m pytest tests\test_api.py tests\test_retrieval.py
+venv\Scripts\python.exe -m pytest tests\test_api.py tests\test_retrieval.py tests\test_bm25_indexer.py
 ```
 
-Kết quả hiện tại:
-
-```text
-3 passed
-```
-
-### Compile nhanh các file đã thay đổi
+Compile nhanh:
 
 ```powershell
-venv\Scripts\python.exe -m py_compile api\main.py retrieval\lexical_search\service.py tests\test_api.py tests\test_retrieval.py
+venv\Scripts\python.exe -m py_compile api\main.py retrieval\lexical_search\service.py indexing\bm25_index\index_bm25.py
 ```
 
-### Full test suite
+Full suite:
 
 ```powershell
 venv\Scripts\python.exe -m pytest
 ```
 
-Ghi chú: tại thời điểm cập nhật tài liệu này, full suite còn lỗi ở `tests/test_chunking.py` liên quan review chunking trả list rỗng. Lỗi đó không nằm trong phạm vi keyword search refactor.
+Ghi chú: full suite có thể còn lỗi ngoài phạm vi keyword search ở `tests/test_chunking.py`.
 
-## 6. Troubleshooting
+## 8. Troubleshooting
 
 ### API trả HTTP 503
 
-Nguyên nhân thường gặp:
-
-- OpenSearch chưa chạy.
-- Index `travel_bm25` chưa tồn tại.
-- `.env` đang trỏ sai `OPENSEARCH_URL` hoặc `BM25_INDEX`.
-
-Kiểm tra:
+Kiểm tra OpenSearch và alias:
 
 ```powershell
 curl.exe http://localhost:9200
-curl.exe "http://localhost:9200/_cat/indices?v"
+curl.exe "http://localhost:9200/_alias/vsf_hotels_bm25_current"
+```
+
+Kiểm tra `.env`:
+
+```env
+BM25_INDEX=vsf_hotels_bm25_current
 ```
 
 ### Search trả rỗng
 
-Kiểm tra số document:
+Kiểm tra alias đang trỏ tới index có document:
 
 ```powershell
-curl.exe "http://localhost:9200/travel_bm25/_count"
+curl.exe "http://localhost:9200/_alias/vsf_hotels_bm25_current"
+curl.exe "http://localhost:9200/vsf_hotels_bm25_v1_0_0/_count"
 ```
 
-Nếu `count = 0`, cần chạy lại index data theo guide:
+Nếu count bằng `0`, chạy lại quy trình index trong:
 
 ```text
 docs/Le Hoang Dat/opensearch_index_run_guide.md
 ```
-
-### Pytest báo thiếu `opensearchpy`
-
-Nguyên nhân là đang chạy Python global thay vì venv của project.
-
-Chạy bằng:
-
-```powershell
-venv\Scripts\python.exe -m pytest tests\test_api.py tests\test_retrieval.py
-```
-
-Không chạy bằng:
-
-```powershell
-python -m pytest
-```
-
-nếu `python` không trỏ vào `venv`.
-
-## 7. Ghi Chú Thiết Kế
-
-- `GET /search` là endpoint tạm để validate BM25 baseline và benchmark keyword search.
-- `POST /search` chưa được thêm vì thuộc phase hybrid search.
-- Keyword search service hiện là building block để hybrid search dùng lại sau.
-- Chưa thêm filter, reranking hoặc vector fusion trong bước này.
-- Chưa chuyển sang `AsyncOpenSearch` vì SLO baseline hiện tại vẫn đạt; đây là hướng tối ưu sau nếu tải tăng.
 
