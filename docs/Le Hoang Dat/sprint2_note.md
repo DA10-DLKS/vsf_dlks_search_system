@@ -1,8 +1,10 @@
-# Sprint 2 - Ghi Chú Công Việc Trong Tuần
+# Sprint 2 - Ghi Chú Công Việc Theo Ngày
 
-Tài liệu này tổng hợp các nhiệm vụ đã thực hiện trong tuần cho phần OpenSearch, BM25 indexing, keyword search và SLO.
+Tài liệu này tổng hợp các nhiệm vụ đã thực hiện trong Sprint 2 cho phần OpenSearch, BM25 indexing, keyword search, SLO latency và benchmark.
 
-## 1. Cấu Hình OpenSearch Dashboard
+## 09/06/2026 - OpenSearch Dashboard Và Quy Trình Index
+
+### Cấu hình OpenSearch Dashboard
 
 - Thêm service `opensearch-dashboard` vào `docker-compose.yml`.
 - Sử dụng image:
@@ -23,7 +25,7 @@ http://localhost:5601
 OPENSEARCH_HOSTS=["http://opensearch:9200"]
 ```
 
-## 2. Hoàn Thiện Quy Trình Index Data Vào OpenSearch
+### Hoàn thiện quy trình index data vào OpenSearch
 
 - Cập nhật script `indexing/bm25_index/index_bm25.py` để tránh lỗi bulk quá lớn.
 - Chuyển từ bulk toàn bộ document sang `streaming_bulk`.
@@ -40,13 +42,13 @@ BULK_MAX_CHUNK_BYTES=2097152
 429 circuit_breaking_exception
 ```
 
-- Tạo tài liệu hướng dẫn chạy index:
+- Tạo/cập nhật tài liệu hướng dẫn chạy index:
 
 ```text
 docs/Le Hoang Dat/opensearch_index_run_guide.md
 ```
 
-## 3. Chuẩn Hóa Tên Và Version BM25 Index
+## 10/06/2026 - Chuẩn Hóa Tên Và Version BM25 Index
 
 - Thay naming cũ `travel_bm25` bằng chuẩn versioned index mới.
 - Runtime/API dùng alias ổn định:
@@ -78,7 +80,9 @@ BM25_PROMOTE_ALIAS=false
 docs/Le Hoang Dat/versioning.md
 ```
 
-## 4. Tách Keyword Search Sang Layer 6
+- Ghi rõ `travel_bm25` là legacy index, không dùng cho release mới.
+
+## 10/06/2026 - Tách Keyword Search Sang Layer 6
 
 - Tách logic BM25 keyword search khỏi `api/main.py`.
 - Tạo service:
@@ -97,9 +101,9 @@ BM25SearchService
 - Giữ response shape cũ để không phá benchmark và frontend/demo hiện tại.
 - Chưa thêm `POST /search` vì endpoint này thuộc phase hybrid search và Context API sau này.
 
-## 5. Cập Nhật Tài Liệu Keyword Search
+## 10/06/2026 - Cập Nhật Tài Liệu Keyword Search
 
-- Tạo tài liệu:
+- Tạo/cập nhật tài liệu:
 
 ```text
 docs/Le Hoang Dat/keyword_search_implementation_guide.md
@@ -114,74 +118,183 @@ docs/Le Hoang Dat/keyword_search_implementation_guide.md
   - Cách test
   - Troubleshooting cho alias/index/OpenSearch
 
-## 6. Đo Và Cập Nhật SLO Latency
+## 10/06/2026 - Đo Baseline Latency Ban Đầu
 
-- Đánh giá kết quả benchmark BM25 search.
-- Kết quả đo:
+- Chạy benchmark BM25 search trên port `8001`.
+- Kết quả ban đầu:
 
 ```text
-Actual QPS: 99.78
+Actual QPS: 57.86
 Error rate: 0.00%
-P50: 267.95 ms
-P95: 440.18 ms
-P99: 495.77 ms
-Max: 672.07 ms
+P50: 498.39 ms
+P95: 865.88 ms
+P99: 1391.82 ms
+Max: 1531.66 ms
 ```
 
-- Kết luận:
-  - Baseline BM25 đạt SLO đề xuất `P95 <= 500 ms`.
-  - Chưa cần tối ưu backend ngay ở Sprint 2.
-  - Cần lưu ý benchmark đang tạo actual QPS cao hơn target QPS.
+- Đánh giá:
+  - Reliability đạt vì không có lỗi request.
+  - Throughput đạt vì QPS > 50.
+  - Latency chưa đạt production SLO.
 
-- Cập nhật tài liệu:
+- Kết quả được ghi vào:
 
 ```text
-docs/Le Hoang Dat/slo_defination.md
+docs/Le Hoang Dat/baseline_latency_report.md
 ```
 
-## 7. Test Và Verification
+## 11/06/2026 - Tách SLO Target Và Baseline Report
 
-- Thêm test cho keyword search service và API:
+- Cập nhật `docs/Le Hoang Dat/slo_defination.md` để chỉ còn định nghĩa SLO target, không trộn kết quả đo.
+- Tạo file report riêng:
 
 ```text
-tests/test_api.py
-tests/test_retrieval.py
+docs/Le Hoang Dat/baseline_latency_report.md
 ```
 
-- Thêm test cho BM25 indexer:
+- Target production cho BM25-only search:
 
 ```text
-tests/test_bm25_indexer.py
+P50 <= 250 ms
+P95 <= 500 ms
+P99 <= 1000 ms
+Error rate <= 0.1%
+Sustained QPS >= 50
 ```
 
-- Các case đã test:
-  - API `GET /search` dùng keyword search service.
-  - BM25 service build query đúng.
-  - Indexer dùng `BM25_TARGET_INDEX`.
-  - Fallback sang `BM25_INDEX` nếu thiếu target index.
-  - Không promote alias khi flag false.
-  - Không promote alias khi bulk có failed docs.
-  - Promote alias khi indexing thành công.
+## 11/06/2026 - Tối Ưu BM25 Query Và Runtime
 
-- Kết quả test liên quan:
+Các quick wins đã thực hiện:
+
+- Thêm `track_total_hits=false` vào BM25 query để tránh chi phí đếm total hits chính xác khi không cần.
+- Giảm `_source` trả về, không fetch full `description`.
+- Giữ `size=10`.
+- Tăng OpenSearch client pool:
+
+```python
+OpenSearch(OPENSEARCH_URL, maxsize=25)
+```
+
+- Cập nhật `docker-compose.yml` để OpenSearch dùng heap `1g` khi container được recreate:
+
+```text
+OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g
+```
+
+Kết quả benchmark sau quick wins:
+
+```text
+Actual QPS: 62.78
+Error rate: 0.00%
+P50: 449.76 ms
+P95: 770.51 ms
+P99: 949.98 ms
+```
+
+Đánh giá:
+
+- P99 đã đạt target.
+- P50 và P95 vẫn chưa đạt production SLO.
+- Cần điều tra tiếp scheduler benchmark và bottleneck API/OpenSearch.
+
+## 11/06/2026 - Chuẩn Hóa Benchmark Scheduler
+
+- Phát hiện script `scripts/benchmark_search.py` tạo burst request không đúng với ý nghĩa `--qps` và `--concurrency`.
+- Sửa scheduler để:
+  - Phát request đều theo target QPS.
+  - Dùng semaphore để giới hạn concurrency thật.
+  - Tránh burst làm phình P50/P95/P99 không phản ánh đúng tải mục tiêu.
+
+Smoke test 10 giây sau khi sửa scheduler:
+
+```text
+Actual QPS: 49.60
+P50: 68.00 ms
+P95: 109.86 ms
+P99: 371.09 ms
+Error rate: 0.00%
+```
+
+## 11/06/2026 - Đạt BM25-only Production SLO
+
+Benchmark chính thức sau khi chuẩn hóa scheduler:
+
+```powershell
+venv\Scripts\python.exe scripts\benchmark_search.py --target http://localhost:8001 --qps 55 --duration 60 --concurrency 10
+```
+
+Kết quả:
+
+```text
+Total requests: 3300
+Successful: 3300
+Errors: 0
+Error rate: 0.00%
+Actual duration: 60.08s
+Actual QPS: 54.93
+P50: 60.37 ms
+P95: 108.13 ms
+P99: 142.04 ms
+Max: 484.19 ms
+```
+
+Đánh giá theo production SLO:
+
+| SLO | Target | Kết quả | Trạng thái |
+| :--- | ---: | ---: | :--- |
+| Sustained QPS | >= 50 | 54.93 | Đạt |
+| Error rate | <= 0.1% | 0.00% | Đạt |
+| P50 | <= 250 ms | 60.37 ms | Đạt |
+| P95 | <= 500 ms | 108.13 ms | Đạt |
+| P99 | <= 1000 ms | 142.04 ms | Đạt |
+
+Kết luận:
+
+```text
+BM25-only Search SLO: ĐẠT
+```
+
+Kết quả đã được cập nhật vào:
+
+```text
+docs/Le Hoang Dat/baseline_latency_report.md
+```
+
+## 11/06/2026 - Test Và Verification
+
+- Chạy compile các file liên quan:
+
+```powershell
+venv\Scripts\python.exe -m py_compile scripts\benchmark_search.py api\main.py retrieval\lexical_search\service.py
+```
+
+- Chạy test liên quan:
+
+```powershell
+venv\Scripts\python.exe -m pytest tests\test_api.py tests\test_retrieval.py tests\test_bm25_indexer.py
+```
+
+- Kết quả:
 
 ```text
 9 passed
 ```
 
-- Full test suite còn 2 lỗi ngoài phạm vi ở `tests/test_chunking.py`.
+- Full test suite trước đó còn 2 lỗi ngoài phạm vi ở `tests/test_chunking.py`.
 
-## 8. Tài Liệu Đã Tạo/Cập Nhật
+## Tài Liệu Đã Tạo/Cập Nhật
 
 - `docs/Le Hoang Dat/opensearch_index_run_guide.md`
 - `docs/Le Hoang Dat/keyword_search_implementation_guide.md`
 - `docs/Le Hoang Dat/slo_defination.md`
+- `docs/Le Hoang Dat/baseline_latency_report.md`
 - `docs/Le Hoang Dat/versioning.md`
 - `docs/Le Hoang Dat/sprint2_note.md`
 
-## 9. Ghi Chú Cho Tuần Tiếp Theo
+## Ghi Chú Cho Bước Tiếp Theo
 
-- Chuẩn hóa benchmark để `Actual QPS` bám sát `Target QPS`.
-- Xử lý lỗi còn lại trong `tests/test_chunking.py` nếu thuộc phạm vi Sprint 2.
-- Sau khi hybrid search sẵn sàng, thiết kế `POST /search` làm input cho Context API.
-- Cân nhắc thêm filter/ranking metadata cho BM25 nếu cần phục vụ demo hoặc evaluation.
+- Chạy lại benchmark ít nhất 3 lần nếu cần xác nhận độ ổn định production SLO.
+- Theo dõi thêm OpenSearch heap, CPU, search thread pool và API latency histogram.
+- Khi thêm vector search, hybrid fusion hoặc reranking, cần định nghĩa SLO riêng cho hybrid retrieval.
+- Tiếp tục xử lý lỗi còn lại trong `tests/test_chunking.py` nếu thuộc phạm vi Sprint 2.
+
