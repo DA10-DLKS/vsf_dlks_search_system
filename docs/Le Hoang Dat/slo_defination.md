@@ -1,62 +1,28 @@
-# Sprint 1 - BM25 Search SLO Definition
+# BM25 Search SLO Definition
 
-Tài liệu này định nghĩa Service Level Indicators (SLIs), Service Level Objectives (SLOs) và Error Budgets cho dịch vụ tìm kiếm BM25 của hệ thống VSF DLKS trong Sprint 1.
+Tài liệu này chỉ định nghĩa các Service Level Indicators (SLIs), Service Level Objectives (SLOs) và error budget cho BM25-only search trong hệ thống VSF DLKS. Kết quả benchmark thực tế được lưu riêng trong `baseline_latency_report.md`.
 
-Kết quả dưới đây được cập nhật từ benchmark chạy ngày 09/06/2026 trên môi trường local:
+## 1. Phạm Vi Áp Dụng
 
-```powershell
-python scripts/benchmark_search.py --target http://localhost:8000 --qps 50 --duration 60 --concurrency 10
-```
+SLO này áp dụng cho BM25-only retrieval:
 
-## 1. Kết Quả Load Benchmark Baseline
+- Endpoint hiện tại: `GET /search`
+- Backend: OpenSearch/Elasticsearch
+- Runtime index alias: `vsf_hotels_bm25_current`
+- Retrieval mode: keyword/BM25-only
+- Chưa bao gồm vector search, hybrid fusion, reranking, context building hoặc LLM generation.
 
-### Điều kiện đo
+BM25-only search là một thành phần trong pipeline RAG retrieval. Vì vậy latency của BM25 cần đủ thấp để còn ngân sách cho vector retrieval, fusion, reranking và Context API ở các phase sau.
 
-- Endpoint: `GET /search`
-- Target QPS: `50`
-- Actual QPS: `99.78`
-- Duration cấu hình: `60s`
-- Actual duration: `60.13s`
-- Concurrency: `10`
-- Error count: `0`
-- Error rate: `0.00%`
-- Search backend: OpenSearch BM25 index `travel_bm25`
+## 2. Service Level Indicators
 
-Lưu ý: benchmark hiện ghi nhận `Actual QPS = 99.78`, cao hơn target `50 QPS`. Vì vậy kết quả này có thể xem là baseline ở mức tải gần `100 QPS`, không phải đúng `50 QPS`.
-
-### Phân Bố Latency
-
-| Đo lường | Client-side latency |
-| :--- | ---: |
-| Minimum | 104.08 ms |
-| Maximum | 672.07 ms |
-| Mean | 272.95 ms |
-| Median | 267.95 ms |
-| P50 | 267.95 ms |
-| P95 | 440.18 ms |
-| P99 | 495.77 ms |
-| StdDev | 104.34 ms |
-
-### Đánh giá kết quả
-
-Kết quả benchmark đạt tốt cho baseline Sprint 1:
-
-- Không có lỗi request: `0.00%`.
-- P95 dưới `500 ms` dù actual throughput gần `100 QPS`.
-- P99 dưới `500 ms`, vẫn nằm trong vùng chấp nhận được cho baseline BM25 local.
-- Chưa cần tối ưu OpenSearch ngay nếu mục tiêu Sprint 1 là xác lập baseline ổn định.
-
-Điểm cần lưu ý là script benchmark đang tạo tải cao hơn target. Trước khi dùng số liệu này làm cam kết chính thức, cần chuẩn hóa lại benchmark để `Actual QPS` bám sát `Target QPS`.
-
-## 2. Định Nghĩa SLI Và SLO
-
-### 2.1. Availability
-
-Service Level Indicator:
+### Availability SLI
 
 ```text
-Availability SLI = số request /search thành công / tổng số request /search
+Availability = số request /search thành công / tổng số request /search
 ```
+
+Request thành công là request trả HTTP `2xx` và có response hợp lệ.
 
 Prometheus metrics liên quan:
 
@@ -65,99 +31,106 @@ search_bm25_requests_total
 search_bm25_errors_total
 ```
 
-Service Level Objective:
+### Latency SLI
+
+Latency được đo theo end-to-end client-side latency của request `/search`, bao gồm:
+
+- Thời gian request từ client tới API.
+- Thời gian API gọi OpenSearch.
+- Thời gian OpenSearch query/fetch.
+- Thời gian API serialize response.
+- Thời gian client nhận response.
+
+Các percentile cần theo dõi:
 
 ```text
-Availability >= 99.9% trong chu kỳ 30 ngày
+P50
+P95
+P99
 ```
 
-Error Budget:
+### Throughput SLI
 
 ```text
-Tối đa 0.1% request được phép lỗi trong chu kỳ 30 ngày
+Sustained QPS = số request thành công / thời gian benchmark hoặc cửa sổ đo
 ```
 
-### 2.2. End-to-End Client Latency
+Sustained QPS dùng để xác nhận hệ thống duy trì tải mục tiêu mà không tăng error rate hoặc tail latency quá ngưỡng.
 
-Service Level Indicator:
+## 3. Target SLO Cho BM25-only Search
 
-```text
-Tỷ lệ request /search có client-side latency <= 500 ms
-```
-
-Service Level Objective đề xuất cho Sprint 1:
+Target production-oriented cho BM25-only retrieval:
 
 ```text
+P50 latency <= 250 ms
 P95 latency <= 500 ms
+P99 latency <= 1000 ms
+Error rate <= 0.1%
+Sustained QPS >= 50
 ```
 
-Điều kiện áp dụng:
+Diễn giải:
 
-- Môi trường local Docker.
-- OpenSearch single-node.
-- Index `travel_bm25`.
-- Endpoint `GET /search`.
-- Duration benchmark `60s`.
-- Concurrency `10`.
-- Target load tối thiểu `50 QPS`.
+- `P50 <= 250 ms`: request thông thường phải phản hồi nhanh để đảm bảo UX tốt.
+- `P95 <= 500 ms`: phần lớn request phải nằm dưới nửa giây, đủ tốt cho retrieval trong RAG.
+- `P99 <= 1000 ms`: tail latency không nên vượt 1 giây vì pipeline RAG còn nhiều bước phía sau.
+- `Error rate <= 0.1%`: search backend phải ổn định, không được thường xuyên timeout hoặc trả lỗi.
+- `Sustained QPS >= 50`: hệ thống phải giữ được tối thiểu 50 request/giây trong benchmark chuẩn.
 
-Error Budget:
+## 4. Error Budget
+
+### Error Rate Budget
 
 ```text
-Tối đa 5% request được phép vượt quá 500 ms
+Tối đa 0.1% request được phép lỗi trong chu kỳ đo.
 ```
 
-Với kết quả hiện tại:
+Ví dụ với 100,000 request:
 
 ```text
-P95 = 440.18 ms
-Error rate = 0.00%
+Tối đa 100 request lỗi.
 ```
 
-SLO latency `P95 <= 500 ms` đang đạt.
+### Latency Budget
 
-### 2.3. Tail Latency
+Theo SLO `P95 <= 500 ms`, tối đa 5% request được phép vượt quá 500 ms.
 
-Service Level Indicator:
+Theo SLO `P99 <= 1000 ms`, tối đa 1% request được phép vượt quá 1000 ms.
 
-```text
-P99 latency của request /search
+## 5. Điều Kiện Benchmark Chuẩn
+
+Khi benchmark để đánh giá SLO, cần ghi rõ:
+
+- Target URL và port API.
+- Target QPS.
+- Actual QPS.
+- Duration.
+- Concurrency.
+- Query file hoặc danh sách query.
+- Runtime index alias.
+- OpenSearch index version alias đang trỏ tới.
+- API có chạy `--reload` hay không.
+- OpenSearch heap/container resources.
+
+Benchmark chuẩn khuyến nghị:
+
+```powershell
+venv\Scripts\python.exe scripts\benchmark_search.py --target http://localhost:8001 --qps 50 --duration 60 --concurrency 10
 ```
 
-Service Level Objective đề xuất:
+Khi báo cáo SLO, không chỉ ghi target QPS; phải ghi cả `Actual QPS`.
 
-```text
-P99 latency <= 800 ms
-```
+## 6. Ngưỡng Đánh Giá
 
-Với kết quả hiện tại:
+| Mức | Điều kiện |
+| :--- | :--- |
+| Đạt production target | P50 <= 250 ms, P95 <= 500 ms, P99 <= 1000 ms, error rate <= 0.1%, QPS >= 50 |
+| Đạt staging/baseline | P95 <= 700 ms, P99 <= 1200 ms, error rate <= 1%, QPS >= 50 |
+| Chưa đạt | P95 > 700 ms hoặc P99 > 1200 ms hoặc error rate > 1% |
 
-```text
-P99 = 495.77 ms
-```
+## 7. Ghi Chú Vận Hành
 
-SLO tail latency `P99 <= 800 ms` đang đạt.
-
-## 3. Kết Luận Sprint 1
-
-Baseline BM25 hiện tại đạt yêu cầu SLO đề xuất:
-
-| SLO | Mục tiêu | Kết quả đo | Trạng thái |
-| :--- | :--- | :--- | :--- |
-| Availability | >= 99.9% | 100.00% | Đạt |
-| Error rate | <= 1.0% | 0.00% | Đạt |
-| P95 latency | <= 500 ms | 440.18 ms | Đạt |
-| P99 latency | <= 800 ms | 495.77 ms | Đạt |
-
-Chưa cần tối ưu backend ngay ở Sprint 1. Việc nên ưu tiên trước là chuẩn hóa script benchmark để `Actual QPS` gần với `Target QPS`, sau đó chạy lại 2-3 lần để xác nhận độ ổn định của P95/P99.
-
-## 4. Kế Hoạch Duy Trì Và Cải Thiện
-
-Các hướng cải thiện nên cân nhắc ở sprint sau nếu latency tăng hoặc throughput yêu cầu cao hơn:
-
-1. Chuẩn hóa benchmark để kiểm soát chính xác QPS.
-2. Giới hạn số field trả về từ OpenSearch bằng `_source` filtering nếu response quá lớn.
-3. Thêm `size` mặc định hợp lý cho query search, ví dụ `size=10`.
-4. Tối ưu connection pool của OpenSearch client.
-5. Cân nhắc dùng `AsyncOpenSearch` nếu API chịu tải đồng thời cao.
-6. Thêm cache cho các truy vấn phổ biến nếu workload có tính lặp lại.
+- SLO này chỉ áp dụng cho BM25-only. Khi có hybrid search, cần định nghĩa SLO riêng cho hybrid retrieval.
+- Không dùng kết quả benchmark đơn lẻ làm cam kết production. Nên chạy ít nhất 3 lần và lấy xu hướng ổn định.
+- Nếu benchmark chạy với `--reload`, kết quả không đại diện cho production.
+- Nếu response trả full `description` hoặc payload lớn, latency client-side có thể cao hơn latency OpenSearch thực tế.

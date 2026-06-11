@@ -16,11 +16,12 @@ from retrieval.lexical_search import BM25SearchService
 load_dotenv()
 
 OPENSEARCH_URL = os.environ.get('OPENSEARCH_URL', 'http://localhost:9200')
-INDEX_NAME = os.environ.get('BM25_INDEX', 'travel_bm25')
+INDEX_NAME = os.environ.get('BM25_INDEX', 'vsf_hotels_bm25_current')
 
 # Initialize OpenSearch Client
-client = OpenSearch(OPENSEARCH_URL)
-keyword_search_service = BM25SearchService(client=client, index_name=INDEX_NAME)
+client = OpenSearch(OPENSEARCH_URL, maxsize=25)
+keyword_search_service = BM25SearchService(
+    client=client, index_name=INDEX_NAME)
 
 # Prometheus metrics
 REGISTRY = CollectorRegistry()
@@ -56,6 +57,7 @@ def metrics():
     """Prometheus metrics endpoint."""
     return generate_latest(REGISTRY)
 
+
 @app.get("/search")
 def search_bm25(q: str = Query(..., description="Search query")) -> dict:
     """
@@ -73,7 +75,8 @@ def search_bm25(q: str = Query(..., description="Search query")) -> dict:
         return response
     except Exception:
         ERRORS_TOTAL.labels(endpoint=endpoint).inc()
-        raise HTTPException(status_code=503, detail="Keyword search backend unavailable")
+        raise HTTPException(
+            status_code=503, detail="Keyword search backend unavailable")
 
 
 # TODO:
