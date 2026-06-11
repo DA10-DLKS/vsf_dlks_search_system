@@ -19,7 +19,7 @@ OPENSEARCH_URL = os.environ.get('OPENSEARCH_URL', 'http://localhost:9200')
 INDEX_NAME = os.environ.get('BM25_INDEX', 'vsf_hotels_bm25_current')
 
 # Initialize OpenSearch Client
-client = OpenSearch(OPENSEARCH_URL)
+client = OpenSearch(OPENSEARCH_URL, maxsize=25)
 keyword_search_service = BM25SearchService(
     client=client, index_name=INDEX_NAME)
 
