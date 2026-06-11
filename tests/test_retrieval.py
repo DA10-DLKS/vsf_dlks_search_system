@@ -47,12 +47,12 @@ def test_bm25_search_service_builds_query_and_maps_results():
         "review_score",
         "address",
         "city",
-        "description",
     ]
     assert client.calls[0]["body"]["query"]["multi_match"] == {
         "query": "khach san gan bien",
         "fields": ["name", "description^2", "city", "address", "amenities"],
     }
+    assert client.calls[0]["body"]["track_total_hits"] is False
     assert response["query"] == "khach san gan bien"
     assert response["total_hits"] == 1
     assert response["results"] == [
