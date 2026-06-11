@@ -17,7 +17,6 @@ DEFAULT_SOURCE_FIELDS = [
     "review_score",
     "address",
     "city",
-    "description",
 ]
 
 
@@ -62,6 +61,7 @@ class BM25SearchService:
     def _build_query(self, query: str, size: int) -> dict[str, Any]:
         return {
             "size": size,
+            "track_total_hits": False,
             "_source": self.source_fields,
             "query": {
                 "multi_match": {
@@ -91,4 +91,3 @@ class BM25SearchService:
         if isinstance(total, dict):
             return int(total.get("value", 0))
         return int(total or 0)
-

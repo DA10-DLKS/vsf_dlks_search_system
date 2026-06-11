@@ -62,6 +62,7 @@ async def benchmark(
     latencies = []
     errors = 0
     request_count = 0
+    completed_count = 0
 
     print(f"Target: {target_url}/search")
     print(f"Duration: {duration_sec}s")
@@ -81,45 +82,54 @@ async def benchmark(
     print("Starting benchmark...")
     print()
 
-    start_time = time.time()
-    interval_start = start_time
-    interval_count = 0
+    semaphore = asyncio.Semaphore(concurrency)
+
+    async def bounded_request(client, url, query):
+        async with semaphore:
+            return await send_request(client, url, query)
+
+    async def record_request(client, url, query):
+        nonlocal errors, completed_count, interval_completed
+        latency_ms, error = await bounded_request(client, url, query)
+        completed_count += 1
+        if latency_ms is not None:
+            latencies.append(latency_ms)
+            interval_completed += 1
+        else:
+            errors += 1
 
     # Run benchmark
     async with httpx.AsyncClient(timeout=30) as client:
-        while time.time() - start_time < duration_sec:
-            # Create tasks for this batch
-            batch_size = max(1, int(qps * concurrency / 10))  # batch per 100ms
-            tasks = []
+        start_time = time.time()
+        interval_start = start_time
+        interval_completed = 0
+        next_request_at = start_time
+        tasks = []
 
-            for _ in range(batch_size):
-                if time.time() - start_time >= duration_sec:
-                    break
+        while time.time() - start_time < duration_sec:
+            now = time.time()
+            if now >= next_request_at:
                 query = queries[request_count % len(queries)]
-                task = send_request(client, f"{target_url}/search", query)
+                task = asyncio.create_task(
+                    record_request(client, f"{target_url}/search", query)
+                )
                 tasks.append(task)
                 request_count += 1
+                next_request_at += 1.0 / qps
+            else:
+                await asyncio.sleep(min(0.001, next_request_at - now))
 
-            # Collect results
-            for latency_ms, error in await asyncio.gather(*tasks):
-                if latency_ms is not None:
-                    latencies.append(latency_ms)
-                    interval_count += 1
-                else:
-                    errors += 1
-
-            # Print progress every 1 second
             elapsed = time.time() - interval_start
             if elapsed >= 1.0:
-                actual_qps = interval_count / elapsed
+                actual_qps = interval_completed / elapsed
                 print(f"[{time.time() - start_time:.1f}s] "
                       f"Throughput: {actual_qps:.1f} req/s, "
                       f"Errors: {errors}")
                 interval_start = time.time()
-                interval_count = 0
+                interval_completed = 0
 
-            # Rate limiting: sleep to match target QPS
-            await asyncio.sleep(0.001)
+        if tasks:
+            await asyncio.gather(*tasks)
 
     # Print results
     elapsed_total = time.time() - start_time
