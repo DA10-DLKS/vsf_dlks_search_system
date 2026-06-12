@@ -7,8 +7,11 @@ embedding:
   model: BAAI/bge-m3
 
 vector_store:
-  url: ${QDRANT_URL}
-  collection: ${QDRANT_COLLECTION}
+  provider: pgvector
+  database_url: ${DATABASE_URL}
+  table: ${VECTOR_INDEX_TABLE}
+  dimension: ${VECTOR_DIMENSION}
+  top_k: ${VECTOR_TOP_K}
 
 keyword_store:
   url: ${OPENSEARCH_URL}
