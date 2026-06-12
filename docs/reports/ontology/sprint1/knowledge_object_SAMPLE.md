@@ -1,7 +1,12 @@
 # Mẫu bàn giao — `knowledge_object` (1 khách sạn)
 
-> Bản nháp Sprint 2. **Chưa phải code** — đây là HÌNH DẠNG output cuối mà tầng
-> chunking/embedding sẽ nhận. Gán TAY (chưa qua mapper) để team thấy contract cụ thể.
+> ⚠ **ĐÃ THAY THẾ MỘT PHẦN bởi code Sprint 2** — đây là bản nháp gán TAY Sprint 1 để chốt
+> HÌNH DẠNG. Output THẬT do [build_objects.py](../../../../knowledge_engineering/enrichment/build_objects.py)
+> sinh; khi khác file này thì **code là chuẩn**. Hai điểm đã đổi so với mẫu dưới (xem callout 🔻 tại chỗ):
+> 1. Tín hiệu review (`score`) KHÔNG còn đổ vào `tags[].confidence` — `tags` chỉ mang nhãn presence
+>    (HARD) với `confidence` = độ chắc tag đúng. Điểm trải nghiệm review nằm RIÊNG ở `semantic_profile`
+>    với trường tên là `score` (xem mục 1 review thiết kế — semantics `confidence` ≠ `score`).
+> 2. Object thật có thêm khối `semantic_profile` (SOFT, điểm review) tách khỏi `semantic_metadata`.
 >
 > - Schema chuẩn: [ontology/metadata_schema.yaml](../../../../ontology/metadata_schema.yaml) (CONTRACT v1.0)
 > - Nguồn dữ liệu: [hotel_805030](../../../../data/raw/hotels/hotel_805030_vinpearl-resort-spa-nha-trang-bay.json)
@@ -59,20 +64,20 @@
     ],
     "price_tier":  "PRICE_LUXURY",                            // one
     "purpose":     ["PURPOSE_FAMILY", "PURPOSE_WELLNESS"],    // many
-    "style": [                                                // many — SOFT: kèm sentiment + score
-      {"concept_id": "STYLE_QUIET",    "sentiment": "pos", "score": 0.78},
-      {"concept_id": "STYLE_RELAXING", "sentiment": "pos", "score": 0.81},
-      {"concept_id": "STYLE_MODERN",   "sentiment": "pos", "score": 0.62}
-    ]
+    // 🔻 ĐÃ ĐỔI: code (build_objects.py) đưa style vào đây dưới dạng LIST concept_id (không
+    //   phải object), CHỈ style có score >= SOFT_STYLE_MIN_SCORE (0.6). Sentiment + score đầy đủ
+    //   nằm ở (G) semantic_profile. Ở đây style chỉ để FILTER/BOOST nhanh như các many-facet khác.
+    "style": ["STYLE_QUIET", "STYLE_RELAXING", "STYLE_MODERN"]  // many — chỉ style đủ mạnh
   },
 
-  // ── (C) TAGS: provenance từng nhãn (knowledge_object.tags) ─────────────
-  //   để governance/audit biết nhãn này do tầng nào gắn, tin bao nhiêu.
+  // ── (C) TAGS: provenance từng nhãn PRESENCE (knowledge_object.tags) ─────
+  //   🔻 ĐÃ ĐỔI: `confidence` = ĐỘ CHẮC TAG ĐÚNG (presence từ structured/rule), KHÔNG phải
+  //   điểm trải nghiệm review. Tín hiệu review (yên tĩnh tới mức nào) nằm ở (G) semantic_profile
+  //   với trường `score` — KHÔNG đổ vào đây nữa (tránh ranking hiểu nhầm 0.40 = "bằng chứng yếu").
   "tags": [
     {"concept": "AMEN_POOL",     "confidence": 1.0,  "sources": ["source_tag", "rule"]},
     {"concept": "AMEN_GOLF",     "confidence": 0.95, "sources": ["source_tag"]},
-    {"concept": "STYLE_QUIET",   "confidence": 0.78, "sources": ["rule", "review_profile"]},
-    {"concept": "PURPOSE_FAMILY","confidence": 0.88, "sources": ["source_tag", "rule"]}
+    {"concept": "PURPOSE_FAMILY","confidence": 0.95, "sources": ["source_tag", "rule"]}
   ],
 
   // ── (D) RANGE FILTERS: attribute SỐ (filter cứng kiểu khoảng) ──────────
@@ -98,6 +103,19 @@
     "source_url": "https://www.agoda.com/...hotel=805030",
     "crawled_at": "2026-06-02T10:55:23",
     "mapper_version": "ontology_mapper_v0 (gán tay - mẫu)"
+  },
+
+  // ── (G) SEMANTIC PROFILE: điểm SOFT/trải nghiệm từ review (KHÔNG lọc cứng) ─
+  //   🔻 KHỐI MỚI (Bước 5). Mỗi concept review nhắc tới -> {score, evidence_count, source}.
+  //   `score` = mức độ MẠNH/YẾU của trải nghiệm (Wilson lower bound), KHÔNG phải confidence tag.
+  //   STYLE: score = tỷ lệ KHEN (cặp đối nghĩa, chỉ đếm positive). ASPECT: từ Agoda grades.
+  //   Tầng ranking đọc score để boost; concept dưới ngưỡng vẫn ở đây nhưng không lên (B).
+  "semantic_profile": {
+    "ASPECT_LOCATION":   {"score": 0.92, "evidence_count": 8123, "source": "agoda_grades"},
+    "ASPECT_CLEANLINESS":{"score": 0.90, "evidence_count": 8123, "source": "agoda_grades"},
+    "STYLE_RELAXING":    {"score": 0.81, "evidence_count": 42,   "source": "absa"},
+    "STYLE_QUIET":       {"score": 0.78, "evidence_count": 37,   "source": "absa"},
+    "STYLE_MODERN":      {"score": 0.62, "evidence_count": 19,   "source": "absa"}
   }
 }
 ```
@@ -109,11 +127,12 @@
 | Phần | Tầng tiêu thụ | Dùng làm gì |
 |---|---|---|
 | **(A) content_blocks** | chunking → embedding | Cắt parent-child, sinh vector. `facet_hint` cho chunk con thừa kế concept_id. |
-| **(B) semantic_metadata** | Qdrant payload + metadata_index | Filter cứng theo concept_id; `style.score` → ranking boost. |
-| **(C) tags** | governance / audit | Truy vết nhãn do tầng nào gắn + độ tin. |
+| **(B) semantic_metadata** | Qdrant payload + metadata_index | Filter cứng theo concept_id (style đủ mạnh cũng để filter/boost nhanh). |
+| **(C) tags** | governance / audit | Truy vết nhãn PRESENCE do tầng nào gắn + `confidence` = độ chắc tag đúng. |
 | **(D) range_filters** | metadata_index | Filter khoảng: "≥4 sao", "score ≥ 8". |
 | **(E) nearby_places** | metadata_index (geo) | "gần VinWonders < 2km". |
 | **(F) provenance** | governance + citation_builder (L7) | Nguồn + version cho trích dẫn. |
+| **(G) semantic_profile** | ranking / boost + giải thích | Điểm trải nghiệm review (`score`); ranking boost theo concept. KHÔNG lọc cứng. |
 
 ---
 
@@ -121,10 +140,13 @@
 
 1. Mọi value trong `semantic_metadata` + `tags.concept` = **concept_id tồn tại trong ontology** (cùng `ontology_version`).
 2. Facet `one` → đúng 1 concept_id. Facet `many` → list (có thể rỗng `[]`).
-3. **HARD fact** (amenity, object_type, location, setting, price_tier) → chỉ concept_id.
-   **SOFT fact** (style, purpose) → object `{concept_id, sentiment, score}`.
-4. **Text thô** ("hồ bơi") CHỈ nằm trong `content_blocks`. Ô filter KHÔNG được chứa text thô.
-5. Quan hệ gần = `nearby_places[]`, KHÔNG dùng `near_<x>` boolean.
+3. **HARD fact** (amenity, object_type, location, setting, price_tier) → chỉ concept_id trong `semantic_metadata`.
+   **SOFT fact** (style/aspect, điểm review) → `semantic_profile[concept] = {score, evidence_count, source}`.
+   `style` đủ mạnh (score ≥ 0.6) cũng được nhân bản vào `semantic_metadata.style` (list) cho filter/boost nhanh.
+4. **`confidence` (trong tags) ≠ `score` (trong semantic_profile).** `confidence` = độ chắc NHÃN ĐÚNG
+   (presence). `score` = mức độ MẠNH/YẾU của trải nghiệm review. KHÔNG trộn hai trường.
+5. **Text thô** ("hồ bơi") CHỈ nằm trong `content_blocks`. Ô filter KHÔNG được chứa text thô.
+6. Quan hệ gần = `nearby_places[]`, KHÔNG dùng `near_<x>` boolean.
 
 ---
 

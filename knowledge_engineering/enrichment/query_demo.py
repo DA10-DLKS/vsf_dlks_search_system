@@ -321,7 +321,8 @@ def show(q: str) -> None:
         # đánh dấu hotel có tiện ích hợp mục đích chuyến đi (lý do được ưu tiên lên top)
         matched = sorted(set(r["purpose_amen"]) & _all_concepts(o))
         purpose_str = f" | ✓hợp mục đích: {', '.join(c.split('_', 1)[1].lower() for c in matched)}" if matched else ""
-        print(f"      • {o['title'][:42]:42s} | {o['location'].get('city')} "
+        hotel_id = o.get("hotel_id") or o.get("id") or "?"
+        print(f"      • {o['title'][:42]:42s} | id={hotel_id} | {o['location'].get('city')} "
               f"| {star} | review {score}{feel_str} | {price}{cap}{purpose_str}")
 
 

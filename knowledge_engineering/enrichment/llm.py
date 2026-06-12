@@ -42,7 +42,11 @@ CACHE_DIR = Path("knowledge_engineering/enrichment/.llm_cache")
 TIMEOUT = 60          # cloud API (nhanh)
 TIMEOUT_OLLAMA = 300  # local CPU chậm hơn nhiều -> timeout dài hơn
 MAX_RETRY = 3
-MAX_TOKENS = 800      # cap output (JSON ABSA ngắn) — chặn model "lảm nhảm" tốn token
+MAX_TOKENS = 6000     # cap output. ABSA BATCH gộp ~20 review/request -> output là MẢNG 20 kết quả
+                      # (mỗi cái có items + novel) -> cần cap lớn, nếu không JSON cụt giữa mảng ->
+                      # _extract_json raise -> mất cả batch. 6000 đủ cho 20 review giàu thông tin.
+                      # Chỉ trả theo token THẬT sinh ra nên cap cao không tốn thêm khi output ngắn;
+                      # temperature=0 chặn lảm nhảm. (Gọi đơn lẻ cũ vẫn an toàn dưới cap này.)
 
 
 class FatalLLMError(RuntimeError):

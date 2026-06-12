@@ -420,10 +420,18 @@ relations:
 
 ## Task 1.6 — Synonym Dictionary · [BẠN tạo → Anh Tài]
 
-**Mục đích:** Bản đồ **surface form (chuẩn hóa) → concept_id**. Sinh tự động từ `concepts.yaml`. Anh Tài dùng nó trong `query_processor` lúc query; bạn dùng nó ở Tầng 1 tagger.
+**Mục đích:** Bản đồ **surface form (chuẩn hóa) → concept_id**. Sinh tự động từ ontology. Anh Tài dùng nó trong `query_processor` lúc query; bạn dùng nó ở Tầng 1 tagger.
+
+> ⚠ **ĐOẠN CODE DƯỚI ĐÃ THAY THẾ — KHÔNG copy-paste.** Bản thật:
+> [build_synonym_index.py](../../../knowledge_engineering/common/build_synonym_index.py). Ba khác biệt:
+> (1) nguồn là `ontology/core/*.yaml` (nhiều file), không phải `config/concepts.yaml` đơn;
+> (2) đọc `surface_forms` (không phải `labels` — labels đã tách riêng);
+> (3) **1 form → LIST concept_id** (`idx.setdefault(form,set()).add(cid)`), KHÔNG ghi đè `idx[..]=cid`.
+> Đoạn `idx[normalize(lb)] = cid` dưới đây làm "lãng mạn" mất 1 trong 2 mapping (PURPOSE vs STYLE).
+> Ngoài ra dạng fold đã `.replace("_"," ")` để query không dấu "ho boi" khớp được (xem normalize.py).
 
 ```python
-# src/build_synonym_index.py
+# ⚠ MẪU CŨ — đã thay bằng knowledge_engineering/common/build_synonym_index.py (1 form → LIST)
 import yaml
 from normalize import normalize
 def build(src="config/concepts.yaml", out="config/synonym_dictionary.yaml"):
@@ -431,11 +439,11 @@ def build(src="config/concepts.yaml", out="config/synonym_dictionary.yaml"):
     for cid, x in c.items():
         for lang in ("vi","en"):
             for lb in x.get("labels",{}).get(lang,[]):
-                idx[normalize(lb)] = cid; idx[normalize(lb, fold=True)] = cid
+                idx[normalize(lb)] = cid; idx[normalize(lb, fold=True)] = cid  # ⚠ ghi đè — mất mapping
     yaml.safe_dump(idx, open(out,"w",encoding="utf-8"), allow_unicode=True)
 ```
 
-**Done khi:** ≥ 100 surface form (kể cả bỏ dấu).
+**Done khi:** ≥ 100 surface form (kể cả bỏ dấu). *(Thực tế: 1.365 form — xem SPRINT1_REPORT.)*
 
 ## Task 1.7 — Query Expansion · [BẠN tạo → Anh Tài]
 
@@ -695,9 +703,13 @@ def build_embed_text(obj, chunk):
     "price_tier":"luxury", "star_rating":5
   },
   "tags": [
-    {"concept":"AMEN_BEACHFRONT","confidence":0.98,"sources":["source_tag","rule"]},
-    {"concept":"STYLE_QUIET","confidence":0.40,"sources":["review_profile"]}
+    {"concept":"AMEN_BEACHFRONT","confidence":0.98,"sources":["source_tag","rule"]}
   ],
+  // tags = nhãn PRESENCE; `confidence` = độ chắc tag ĐÚNG. Điểm trải nghiệm review (yên tĩnh tới
+  // mức nào) KHÔNG vào tags — nằm ở semantic_profile.score (tránh ranking hiểu nhầm score=confidence).
+  "semantic_profile": {
+    "STYLE_QUIET":{"score":0.40,"evidence_count":12,"source":"absa"}
+  },
   "chunks": [
     {
       "chunk_id":"acc_vinpearl_nhatrang#c2", "parent_id":"acc_vinpearl_nhatrang",
