@@ -132,6 +132,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.306,
+        "neg": 5,
+        "pos": 3,
+        "evidence_count": 8,
+        "top_spans": [
+          "noisy corridors or any event activity can clearly be heard in rooms",
+          "No such thing as 'quiet hours' here.",
+          "Breakfast is very loud, not a relaxing way to start the day.",
+          "Und dass sie gerne ruhe haben möchten.",
+          "Zimmer sind sehr hellhörig."
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.566,
       "pos": 5,
@@ -261,6 +277,22 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.237,
+        "neg": 5,
+        "pos": 5,
+        "evidence_count": 10,
+        "top_spans": [
+          "Nhân viên dọn phòng cười đùa ồn ào, k ngủ được",
+          "Nhưng đêm hôm hotel vẫn hơi ồn ào ngủ ko ngon",
+          "âm thanh tủ lạnh chạy rất to, vào đêm rất ồn",
+          "The hotel has noisy drilling",
+          "very loud hotel"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_10247322": {
@@ -391,6 +423,21 @@
       "evidence_count": 18,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.189,
+        "neg": 4,
+        "pos": 5,
+        "evidence_count": 9,
+        "top_spans": [
+          "it is super loud and absolutely impossible to relax.",
+          "Peut etre ne pas mettre la musique aussi forte à partir de 3:00PM.",
+          "on other days, silence in the evening :( no music, no DJ :(",
+          "there was some noise due to remodeling work"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.701,
@@ -1041,6 +1088,21 @@
       "evidence_count": 109,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "the place isn’t very quiet; you can hear noise from neighbors and visitors both inside and outside the building during the day and night and late night",
+          "the hallways were significantly noisy very early in the morning and late at night.",
+          "there is a noise and sound all day",
+          "It's noisy next door at night."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_10665115": {
@@ -1429,14 +1491,49 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
-    "STYLE_RELAXING": {
-      "score": 0.646,
-      "pos": 7,
-      "neg": 0,
-      "evidence_count": 7,
-      "span": "ein angenehmes Gefühl, sodass ich mich so entspannt fühlte wie in meinem eigenen Zuhause",
-      "source": "absa",
-      "nature": "experience"
+    "negative_style_profile": {
+      "STYLE_LIVELY": {
+        "negative_score": 0.453,
+        "neg": 7,
+        "pos": 2,
+        "evidence_count": 9,
+        "top_spans": [
+          "Very loud DJ music everey night.",
+          "there is a disco across the road that plays thump thump until 12 midnight every night.",
+          "Loud music from concerts nearby on a weekday.",
+          "Too noise for family",
+          "Bad sound proof from the disco from the beach."
+        ],
+        "source": "absa"
+      },
+      "STYLE_BOUTIQUE": {
+        "negative_score": 0.644,
+        "neg": 55,
+        "pos": 18,
+        "evidence_count": 73,
+        "top_spans": [
+          "Very loud DJ music everey night. Will not return.",
+          "Khách sạn cũ kỹ và xuống cấp.",
+          "I will not return to this hotel, and I cannot recommend it to others.",
+          "Nói chung ko có lý do để giới thiệu hay quay lại khách sạn này.",
+          "The noise from construction work."
+        ],
+        "source": "absa"
+      },
+      "STYLE_QUIET": {
+        "negative_score": 0.423,
+        "neg": 18,
+        "pos": 12,
+        "evidence_count": 30,
+        "top_spans": [
+          "the noise from construction work.",
+          "A lot of construction and noise about the hotel.",
+          "Too close to the street, you hear honking all the time.",
+          "The sound from a bar nearby made me awaken all the night",
+          "If you look for a quiet place to stay then this hotel is not the choice"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_BOUTIQUE": {
       "score": 0.162,
@@ -1444,6 +1541,15 @@
       "neg": 55,
       "evidence_count": 73,
       "span": "Me gustó mucho el estilo moderno y tranquilo de la habitación.",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_RELAXING": {
+      "score": 0.646,
+      "pos": 7,
+      "neg": 0,
+      "evidence_count": 7,
+      "span": "ein angenehmes Gefühl, sodass ich mich so entspannt fühlte wie in meinem eigenen Zuhause",
       "source": "absa",
       "nature": "experience"
     }
@@ -1663,6 +1769,20 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "amazing local coffee shop"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.07,
+        "neg": 3,
+        "pos": 12,
+        "evidence_count": 15,
+        "top_spans": [
+          "Yên tĩnh sạch sẽ lịch sự",
+          "the soundproofing isn't very good",
+          "the ceiling fan is a bit noisy when used"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_10961": {
@@ -1837,14 +1957,21 @@
       "nature": "experience",
       "span": "considering the hotel charges in Hanoi, Hilton rate is still value for money."
     },
-    "STYLE_QUIET": {
-      "score": 0.438,
-      "pos": 3,
-      "neg": 0,
-      "evidence_count": 3,
-      "span": "quiet",
-      "source": "absa",
-      "nature": "experience"
+    "negative_style_profile": {
+      "STYLE_BOUTIQUE": {
+        "negative_score": 0.458,
+        "neg": 18,
+        "pos": 10,
+        "evidence_count": 28,
+        "top_spans": [
+          "A very typical 'businessman' hotel which seems to have been stuck in the 80's.",
+          "the hotel is too old and the rooms was smelling.",
+          "compared to the boutique hotels in Old Quarters, I was disappointed",
+          "hotel in need of renovation",
+          "this hotel truly embarasses the HILTON brand which prides itself for stylish, forward thinking with innovative concepts!!"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_BOUTIQUE": {
       "score": 0.207,
@@ -1852,6 +1979,15 @@
       "neg": 18,
       "evidence_count": 28,
       "span": "the initial impression is terrific with a cheerful, efficient and very helpful front desk staff.",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_QUIET": {
+      "score": 0.438,
+      "pos": 3,
+      "neg": 0,
+      "evidence_count": 3,
+      "span": "quiet",
       "source": "absa",
       "nature": "experience"
     }
@@ -2259,6 +2395,22 @@
       "evidence_count": 11,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.529,
+        "neg": 7,
+        "pos": 1,
+        "evidence_count": 8,
+        "top_spans": [
+          "The rooms facing the walking street are noisy.",
+          "Hơi ồn",
+          "Hơi ồn",
+          "It's very noisy",
+          "the noise is too loud."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_11002": {
@@ -2383,6 +2535,22 @@
       "evidence_count": 7,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.487,
+        "neg": 6,
+        "pos": 1,
+        "evidence_count": 7,
+        "top_spans": [
+          "Karaoke too loud make me and my girl friend could not sleep up to 11pm.",
+          "Un peu bruyant  coté rue",
+          "every morning i could hear the staff , arriving and talking in a loud voice in the garden just beneath my room.",
+          "pounding bass in our room for the majority of the days we were there",
+          "Hơi nắng nóng"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_11013": {
@@ -2645,6 +2813,35 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "Très bruyant dans les parties communes et surtout au restaurant",
+          "A l exterieur la sono a 100 db c est anormal pour chanter a 22 h.",
+          "Cửa kính không chống ồn nên rất ồn",
+          "the parking lot next to the hotel was playing music SO LOUD!!"
+        ],
+        "source": "absa"
+      },
+      "STYLE_LIVELY": {
+        "negative_score": 0.49,
+        "neg": 8,
+        "pos": 2,
+        "evidence_count": 10,
+        "top_spans": [
+          "filled with loud people and children.",
+          "Les clients vietnamiens sont bruyants et manquent de savoir vivre.",
+          "Very crowded and noisy at breakfast.",
+          "Hotel is very crowded at weekend. Breakfast is full of people, very noisy and chaotic.",
+          "Luôn luôn trong trạng thái ồn ào náo nhiệt khắp nơi."
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_MODERN": {
       "score": 0.376,
       "pos": 4,
@@ -2893,6 +3090,21 @@
       "evidence_count": 4,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.25,
+        "neg": 4,
+        "pos": 3,
+        "evidence_count": 7,
+        "top_spans": [
+          "hellhörig - bitte Ohrenstöpsel mitnehmen",
+          "rücksichtslosen sowie lauten Hotelgäste",
+          "Не понравилось что в последнии дни привезли группу туристов в автобусах и стало шумно чуть чуть.",
+          "they start some works in the hotel in early morning around 7.30, so we couldn't sleep longer"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_1122443": {
@@ -4008,6 +4220,20 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "It's noisy at night",
+          "Cách âm của các phòng kém",
+          "it is very noisy at night"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_1174345": {
@@ -4702,6 +4928,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.376,
+        "neg": 4,
+        "pos": 1,
+        "evidence_count": 5,
+        "top_spans": [
+          "there is a rooster nearby that starts making noise at 4:45am",
+          "très bruyante puisqu’elle est au rez de chaussée là où vie la famille donc si ils sont levés, tu es levé.",
+          "notre chambre située à côté de la cuisine était très bruyante, nous avons été réveillées tous les matins par des bruits de vaisselle",
+          "A little loud in the mornings"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_1285662": {
@@ -4792,6 +5033,34 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.701,
+        "neg": 9,
+        "pos": 0,
+        "evidence_count": 9,
+        "top_spans": [
+          "Bình thường Quá ồn",
+          "my neighboring room (local Vietnamese) partied until 4:00am, even after pounding on the wall it continued.",
+          "it happened to be very loud this night as the hotel is across from a bus waiting lot and 50+ high school local kids were partying hard, and loud, and drunk into the night.",
+          "Aucune insonorisation avec la chambre d'à côté, nous n'avons pas pu dormir avant tard dans la nuit à cause des voisins...",
+          "Peu d'insonorisation."
+        ],
+        "source": "absa"
+      },
+      "STYLE_LIVELY": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "Hôtel très bruyant",
+          "Les discussions bruyantes et sans fin à des heures indues !",
+          "Popular with Viet tourists who shout, yell and scream along the corridor."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_1370955": {
@@ -5315,6 +5584,22 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.453,
+        "neg": 7,
+        "pos": 2,
+        "evidence_count": 9,
+        "top_spans": [
+          "Old style hotel",
+          "There is a slight downside regarding soundproofing with the adjacent room",
+          "it is very noisy in the early morning",
+          "very noisy in the morning if you are light sleepers",
+          "a little lonely mid-day when nobody else is around"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_1519798": {
@@ -6208,21 +6493,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
-    "STYLE_QUIET": {
-      "score": 0.376,
-      "pos": 4,
-      "neg": 1,
-      "evidence_count": 5,
-      "span": "peaceful, fresh air, suitable for family relax in resort",
-      "source": "absa",
-      "nature": "experience"
-    },
     "STYLE_RELAXING": {
       "score": 0.51,
       "pos": 4,
       "neg": 0,
       "evidence_count": 4,
       "span": "The lush green garden provides a wonderful relaxing space.",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_QUIET": {
+      "score": 0.376,
+      "pos": 4,
+      "neg": 1,
+      "evidence_count": 5,
+      "span": "peaceful, fresh air, suitable for family relax in resort",
       "source": "absa",
       "nature": "experience"
     }
@@ -6814,6 +7099,22 @@
       "evidence_count": 29,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.313,
+        "neg": 6,
+        "pos": 4,
+        "evidence_count": 10,
+        "top_spans": [
+          "there is loud major heavy equipment construction happening that starts at 3:00 am.",
+          "it blasts music with lots of bass until 2 am.",
+          "they play the music till 11:30 PM which we cannot sleep.",
+          "the noise from around appeared through the night and day",
+          "inside it has so strong a chemical perfumes that is hard to relax and breathe"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_16209810": {
@@ -7510,6 +7811,22 @@
       "evidence_count": 12,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.413,
+        "neg": 11,
+        "pos": 6,
+        "evidence_count": 17,
+        "top_spans": [
+          "une certaine clientèle très très bruyante",
+          "this was a noisy property",
+          "extremely loud in the rooms",
+          "Loud - seems to cater to evening events with loud music.",
+          "They want to enjoy quiet Con Dao"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.51,
@@ -8238,6 +8555,22 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.355,
+        "neg": 8,
+        "pos": 5,
+        "evidence_count": 13,
+        "top_spans": [
+          "Het was erg lawaaierig",
+          "ห้องไม่ค่อยเก็บเสียง",
+          "ห้องไม่เก็บเสียงเลยค่ะ",
+          "cách âm rất kém luôn ạ, tối có 2ac nào cãi nhau buổi đêm ko ngủ dc luôn",
+          "other guests who slam doors"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_168993": {
@@ -8605,6 +8938,21 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.3,
+        "neg": 4,
+        "pos": 2,
+        "evidence_count": 6,
+        "top_spans": [
+          "Expect occasional honking",
+          "Còn tiếng ồn",
+          "Near main road with noisy horn at night",
+          "A bit noisy street"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_173622": {
@@ -8708,6 +9056,22 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.354,
+        "neg": 7,
+        "pos": 4,
+        "evidence_count": 11,
+        "top_spans": [
+          "bị ồn",
+          "A lot of noise during the night.",
+          "it's kind of noisy due to the school next door.",
+          "very noise from music...and room not the same.",
+          "very noisy bar/cafe downstairs with loud music until 9pm"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_17556303": {
@@ -9039,6 +9403,22 @@
       "evidence_count": 7,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.86,
+        "neg": 46,
+        "pos": 2,
+        "evidence_count": 48,
+        "top_spans": [
+          "Whole group got nightmares! Sleepless night.",
+          "Too noisy sits above a club",
+          "very noisy.",
+          "khá ồn vì tiếng kèn xe lúc bình minh",
+          "the pounding and gridding from the hotel themselves so loud can't even watch tv in the room."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_1803429": {
@@ -9171,6 +9551,21 @@
       "evidence_count": 18,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.3,
+        "neg": 4,
+        "pos": 2,
+        "evidence_count": 6,
+        "top_spans": [
+          "Walls are a bit thin.",
+          "prevent the calmness of the property",
+          "making it hard to enjoy my meal",
+          "aber durchaus laut, auch am Strand!"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_1809347": {
@@ -9406,6 +9801,20 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "Next doors there was music from 11am-8pm so we couldn’t enjoy the beach for an entire day.",
+          "a lot of noice of people shouting in the hallways till 3 o clock in the morning.",
+          "Slamming doors at every hour - get some quiet closers fitted"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.487,
       "pos": 6,
@@ -9555,6 +9964,20 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_LIVELY": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "Insanely loud music with massive bass plays from 6-12 nightly, it shakes the room",
+          "The rooftop bar is extremely noisy at night with very very loud music until late night.",
+          "Parties booked on the mezzanine floor meant the noise carried throughout the hotel."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -9997,6 +10420,22 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.531,
+        "neg": 15,
+        "pos": 5,
+        "evidence_count": 20,
+        "top_spans": [
+          "The noise is more than that on an Aircraft and is constant",
+          "improves soundproofing",
+          "can get noisy around dinner time until 10pm or so",
+          "you can hear the noise from outside",
+          "a bit thin walls"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_LUXURY": {
       "score": 0.438,
@@ -10960,6 +11399,20 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.188,
+        "neg": 3,
+        "pos": 3,
+        "evidence_count": 6,
+        "top_spans": [
+          "sound system would have put most major bands to shame",
+          "when you book a quiet room, and have twice a Karaoke Party in front of the room",
+          "공사소음으로 인해 잠을 재대로 자지를 못했습니다..."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_20061348": {
@@ -11317,6 +11770,20 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "Lots of eateries around"
+    },
+    "negative_style_profile": {
+      "STYLE_LIVELY": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "music from main floor was extremely loud until 1am",
+          "Add slamming doors 24/7",
+          "couples come and go in the nite time and they are so 'noisy'"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_2114938": {
@@ -11547,6 +12014,22 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.254,
+        "neg": 6,
+        "pos": 6,
+        "evidence_count": 12,
+        "top_spans": [
+          "심한 노이즈로 잠설침 3일밤 내내",
+          "Sáng sớm ồn không ngủ được",
+          "the air conditioner is a bit loud.",
+          "there was more traffic noise, especially in the mornings, but not bad.",
+          "A bit noisy at night"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_2167475": {
@@ -11589,6 +12072,21 @@
       "source": "agoda_grades",
       "nature": "experience",
       "span": "가격대비 좋아요!"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "hơi ồn",
+          "Noise next door but minor issue.",
+          "A bit noisy at 5am",
+          "Ruido en los pasillos desde rất sớm"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_2190907": {
@@ -11712,6 +12210,20 @@
       "evidence_count": 21,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "too noisy with Chinese",
+          "the amount of noice you could hear from people walking outside of the rooms.",
+          "Very noisy hotel."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_21971824": {
@@ -11854,6 +12366,34 @@
       "evidence_count": 20,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.468,
+        "neg": 9,
+        "pos": 3,
+        "evidence_count": 12,
+        "top_spans": [
+          "A bit too noisy, always lots of people as the hotel is super big",
+          "which gave it an abandoned, almost eerie vibe.",
+          "the people are so noisy.",
+          "the other individuals staying on our floor were extremely rude and allowed their children to run the halls yelling and screaming.",
+          "the music from the rooftop was way too loud and I could hear it in my room."
+        ],
+        "source": "absa"
+      },
+      "STYLE_LIVELY": {
+        "negative_score": 0.231,
+        "neg": 3,
+        "pos": 2,
+        "evidence_count": 5,
+        "top_spans": [
+          "music in the outside bar overlooking the ocean was played at full blast, you just dont need it this loud!",
+          "La musique très forte et les gens qui crient dans la mer à cause des vagues.",
+          "Ensemble hôtelier surdimensionné et donc impersonnel"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -12360,6 +12900,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.3,
+        "neg": 4,
+        "pos": 2,
+        "evidence_count": 6,
+        "top_spans": [
+          "I could hear singing until about 9 PM, likely because the karaoke room was in the neighboring room",
+          "noisy when busy",
+          "the sound insulation; you can still hear the voices of guests in the hallway",
+          "the soundproofing at this hotel needs to be improved"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.438,
       "pos": 3,
@@ -12646,6 +13201,22 @@
       "evidence_count": 5,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.491,
+        "neg": 13,
+        "pos": 5,
+        "evidence_count": 18,
+        "top_spans": [
+          "Stay clear if u r looking for a quiet time.",
+          "it is totally disrespectful to all the guests who want to relax and spend their vacations.",
+          "I was so fed up that I checked out after being there for 2 hours.",
+          "ồn ào và mất chuyến đi vui.",
+          "not suitable for people who need to rest."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.741,
@@ -12965,6 +13536,20 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.231,
+        "neg": 3,
+        "pos": 2,
+        "evidence_count": 5,
+        "top_spans": [
+          "Soundproofing is the problem. I could hear all kinda of noises from the surrounding.",
+          "Bed was a bit hard.",
+          "Ab 6 Uhr extrem laut wegen rücksichtsloser Gäste"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_23780986": {
@@ -13228,6 +13813,20 @@
       "evidence_count": 8,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_LIVELY": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "너무 혼잡했다",
+          "Loud music in pool area from 7 am till 10 pm",
+          "there was a lot of undefined repeating annoying bass/music sound from the hotel or a disco nearby."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_239657": {
@@ -14045,6 +14644,20 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "Quanh ks nhiều quán ăn ngon."
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "A lot of karaoke singing around the hotel, quite annoying",
+          "Lawaai op straat",
+          "phòng không cách âm nên ồn ào,khó ngủ."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_25455208": {
@@ -14765,6 +15378,20 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.089,
+        "neg": 3,
+        "pos": 9,
+        "evidence_count": 12,
+        "top_spans": [
+          "there was some noise in the main building where we stayed.",
+          "so quite mosquitoes",
+          "there were times when families with small children splashed water and made noise."
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.785,
       "pos": 14,
@@ -15061,6 +15688,22 @@
       "source": "agoda_grades",
       "nature": "experience",
       "span": "Giá cả phải chăng"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.487,
+        "neg": 6,
+        "pos": 1,
+        "evidence_count": 7,
+        "top_spans": [
+          "Khách p kế gây ồn khuya",
+          "Phòng ko cách âm bên ngoài ồn ào thì bên trong nghe hết.",
+          "Rất là ồn…không biết bên trong làm gì bên ngoài có nghe không…nhưng mà khi ở ngoài người ta nói gì bên trong củng nghe và giờ đó khuya rồi mà người bên ngoài nói chuyện rất to tiếng không nghỉ ngơi đư",
+          "hơi ồn",
+          "phòng không cách âm"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_263516": {
@@ -15382,14 +16025,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
-    "STYLE_RELAXING": {
-      "score": 0.701,
-      "pos": 9,
-      "neg": 0,
-      "evidence_count": 9,
-      "span": "environment for a relaxing vacation",
-      "source": "absa",
-      "nature": "experience"
+    "negative_style_profile": {
+      "STYLE_BOUTIQUE": {
+        "negative_score": 0.307,
+        "neg": 18,
+        "pos": 22,
+        "evidence_count": 40,
+        "top_spans": [
+          "the current windows frame looks horrible which block the beach/ocean view.",
+          "The hotel itself is very nice but one of the reasons I chose it was for being supposedly a quiet place to relax and get a lot of sleep after an extremely hectic year at work and the one thing I wanted",
+          "전체적으로 인테리어가 오래 되어 고급스러운 느낌은 없었다",
+          "villa已經有點太舊",
+          "樓上太吵了，12點還很吵"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_BOUTIQUE": {
       "score": 0.398,
@@ -15397,6 +16047,15 @@
       "neg": 18,
       "evidence_count": 40,
       "span": "The Vinpearl is en route to being one of the great hotels in Da Nang with little improvements here and there.",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_RELAXING": {
+      "score": 0.701,
+      "pos": 9,
+      "neg": 0,
+      "evidence_count": 9,
+      "span": "environment for a relaxing vacation",
       "source": "absa",
       "nature": "experience"
     },
@@ -15841,6 +16500,22 @@
       "source": "agoda_review_tags",
       "nature": "experience"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.523,
+        "neg": 9,
+        "pos": 2,
+        "evidence_count": 11,
+        "top_spans": [
+          "주말에는 사람이 많아 조금 시끄러울 수 있습니다",
+          "단점은 피크 시간대 엘리베이터를 조금 기다려야 했던 점입니다",
+          "Buổi tối khu vực khá đông khách du lịch nên hơi nhộn nhịp, thỉnh thoảng có tiếng ồn nhẹ ngoài hành lang",
+          "At night the area can be busy, and sometimes you may hear a bit of noise from the hallway",
+          "Buổi tối khu vực khá đông khách du lịch nên hơi nhộn nhịp, đôi lúc hành lang có tiếng ồn nhẹ"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_LIVELY": {
       "score": 0.566,
       "pos": 5,
@@ -15997,6 +16672,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.376,
+        "neg": 4,
+        "pos": 1,
+        "evidence_count": 5,
+        "top_spans": [
+          "the karaoke starts up on level 2.",
+          "Noisy machinery outside our room (307), which kept me awake the first night.",
+          "Major roadworks going on out front so it was noisy and dusty",
+          "Hát karaoke rất ồn"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_287957": {
@@ -16728,6 +17418,35 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.354,
+        "neg": 6,
+        "pos": 3,
+        "evidence_count": 9,
+        "top_spans": [
+          "loud music from 2 PM to 10 PM",
+          "The hall way at night is very noisy, kids at the neighbors room was so noisy, call each other like in the market at night, while we are sleeping.",
+          "Không nên co ca nhac các buoi toi, anh huong nhieu den nhung nguoi thich yen tinh vi tri",
+          "cả đêm phòng trên đầu cứ lục đục kê bàn kê ghế tụ tập nói chuyện ồn ào.",
+          "too much noise at night, I could barely sleep."
+        ],
+        "source": "absa"
+      },
+      "STYLE_LIVELY": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "Bad and loud music was on till after 9.00 pm",
+          "nhac khong hop ly",
+          "Beliebtes Hotel füt Gruppen, deshalb oft etwas lärmig.",
+          "except for the performance (singers) in the evening which is quite loud until 10pm."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.701,
@@ -17520,6 +18239,22 @@
       "evidence_count": 16,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.231,
+        "neg": 7,
+        "pos": 9,
+        "evidence_count": 16,
+        "top_spans": [
+          "Very noisy due to big group party and we were not made aware of it till the day it happens",
+          "Not soundproofing for sure. The first evening I heard the noise and loud singing by two young men for quite a while.",
+          "the unbearable noise from the live band made it impossible.",
+          "BUT too noisy at around 10pm & 5-6am.",
+          "fishermen riding their scooters back and forth along the beach fishing kind of ruined the serenity and vibe of the place"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.676,
@@ -18521,6 +19256,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.3,
+        "neg": 4,
+        "pos": 2,
+        "evidence_count": 6,
+        "top_spans": [
+          "Noise will wake u up early in the morning.",
+          "the soundproofing is not very good.",
+          "the main door in the room is not dense so that when you want to sleep early but the light outside still turned on then you cannot sleep since the light annoys you.",
+          "I couldn’t sleep really well because the walls are very thin."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_31461091": {
@@ -18861,21 +19611,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
-    "STYLE_QUIET": {
-      "score": 0.376,
-      "pos": 4,
-      "neg": 1,
-      "evidence_count": 5,
-      "span": "Quiet",
-      "source": "absa",
-      "nature": "experience"
-    },
     "STYLE_MODERN": {
       "score": 0.529,
       "pos": 7,
       "neg": 1,
       "evidence_count": 8,
       "span": "modern and clean",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_QUIET": {
+      "score": 0.376,
+      "pos": 4,
+      "neg": 1,
+      "evidence_count": 5,
+      "span": "Quiet",
       "source": "absa",
       "nature": "experience"
     }
@@ -19002,6 +19752,20 @@
       "evidence_count": 4,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.089,
+        "neg": 3,
+        "pos": 9,
+        "evidence_count": 12,
+        "top_spans": [
+          "công trường ồn ào",
+          "The sound insulation is too poor",
+          "a few young people were ordering drinks and taking photos for a long time"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_ROMANTIC": {
       "score": 0.676,
@@ -19204,6 +19968,22 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "Quiet place."
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.181,
+        "neg": 7,
+        "pos": 13,
+        "evidence_count": 20,
+        "top_spans": [
+          "Sound insulation is a little bit poor, but this didn't disturb me much.",
+          "深夜までうるさかった",
+          "but noisy",
+          "the area district 7 sleeps by 10 pm.",
+          "조명이 좀 약하긴 하더라고요 간접등만 있어서.."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_31935748": {
@@ -19616,6 +20396,22 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.163,
+        "neg": 5,
+        "pos": 9,
+        "evidence_count": 14,
+        "top_spans": [
+          "壁が薄く、隣の部屋のテレビや話し声が聞こえるので寝るときは耳栓があると良いかも。",
+          "Tiếng kéo bàn ghế vào buổi tối và khuya rất khó chịu",
+          "hàng xóm kéo ghế nghe ồn không ngủ được",
+          "Cách âm không được tốt lắm",
+          "the hotel should add some soundproofing strips to the door for better noise insulation."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_32713399": {
@@ -19939,6 +20735,22 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.359,
+        "neg": 5,
+        "pos": 2,
+        "evidence_count": 7,
+        "top_spans": [
+          "Trop de bruit là nuit et le matin!!",
+          "It's a bit noisy at night.",
+          "It was quite noisy in the morning with street noise.",
+          "Un peu bruyant.",
+          "Extrêmement mal insonorisé."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_32914376": {
@@ -20061,6 +20873,22 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.565,
+        "neg": 8,
+        "pos": 1,
+        "evidence_count": 9,
+        "top_spans": [
+          "소음이 있으니 조용한 숙소 찾으시는분들은 참고 바랍니다.",
+          "비치 클럽 소음이 들려 12시 이전에는 시ếc.",
+          "야외공연으로 새벽까지 우퍼 소리가 꽤나 시ếc.",
+          "밤새 밖에서 노래방인지 뭔지 노래소리가 새벽 2시꺼지 계속 들리는것 빼곤 모두 민족",
+          "hơi ồn"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_33035367": {
@@ -20546,6 +21374,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "Style un peu vieillot",
+          "조용함",
+          "tiếng on ao",
+          "như bị tra tấn khi ở trong phòng vì công trường làm cả ngày lẫn đêm"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_33499898": {
@@ -20657,6 +21500,20 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "호텔 공사소리때문에 잠을 잘수가 없었다.",
+          "meget dårligt lyddæmpet, så trafikstøj med videre var ret generende.",
+          "Trop de bruit le soir …. 1h du matin bruit des chambres voisines"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_33550196": {
@@ -21814,6 +22671,20 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "gente haciendo ruido en la piscina hasta las 5am",
+          "no peaceful nights here.",
+          "too noisy - people are talking loud, you can literally hear everything from your bedroom"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_LIVELY": {
       "score": 0.722,
       "pos": 10,
@@ -22402,6 +23273,20 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.158,
+        "neg": 3,
+        "pos": 4,
+        "evidence_count": 7,
+        "top_spans": [
+          "Laut bis ca 23 Uhr Karaoke von Gegenüber",
+          "Baulärm begann täglich um 5.oo früh",
+          "Veel lawaai"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.566,
       "pos": 5,
@@ -22917,6 +23802,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.085,
+        "neg": 4,
+        "pos": 15,
+        "evidence_count": 19,
+        "top_spans": [
+          "Lautsprecher Boxen so laut am Pool dass wir uns tatsächlich nicht mehr unterhalten konnten.",
+          "construction in the guesthouse starts as early as possible, so it's very noisy",
+          "Bruit pas de volet",
+          "Tiếng ồn phát ra từ nhà nuôi yến rất khó chịu"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.61,
@@ -23612,6 +24512,20 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "Very comfortable, even better than in pictures"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "it could be slightly noisy in the evenings",
+          "poor soundproofing of the rooms; conversations in the rooms can be heard in the hallway",
+          "Other residents were very noisy late into the night"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_35958304": {
@@ -23743,6 +24657,20 @@
       "evidence_count": 21,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "صخب عاااالي جدا ولا يوجد عزل في الغرف",
+          "it was hard for us to sleep. Especially for children",
+          "Điều hoà hơi ồn"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_36122972": {
@@ -23989,15 +24917,6 @@
       "source": "absa",
       "nature": "experience"
     },
-    "STYLE_QUIET": {
-      "score": 0.596,
-      "pos": 9,
-      "neg": 1,
-      "evidence_count": 10,
-      "span": "we appreciated the quiet policy at night",
-      "source": "absa",
-      "nature": "experience"
-    },
     "STYLE_RELAXING": {
       "score": 0.757,
       "pos": 12,
@@ -24022,6 +24941,15 @@
       "neg": 0,
       "evidence_count": 6,
       "span": "It’s rare to find a place that feels both luxurious and homey at the same time.",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_QUIET": {
+      "score": 0.596,
+      "pos": 9,
+      "neg": 1,
+      "evidence_count": 10,
+      "span": "we appreciated the quiet policy at night",
       "source": "absa",
       "nature": "experience"
     }
@@ -24135,6 +25063,21 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "petit déjeuner bon"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.168,
+        "neg": 4,
+        "pos": 6,
+        "evidence_count": 10,
+        "top_spans": [
+          "A bit noisy",
+          "but a bit noisy",
+          "Los gritos y portazos  que pegaban por la noche unos huespedes muy maleducados",
+          "Mucho calor en el baño"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_36643921": {
@@ -24939,6 +25882,20 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.076,
+        "neg": 3,
+        "pos": 11,
+        "evidence_count": 14,
+        "top_spans": [
+          "Toilet is a bit too much audio with the neighbours toilet, you hear everything.",
+          "les deux premières nuits ont été bruyantes car un groupe de personnes faisaient beaucoup de bruit",
+          "die abendliche Ruhe wird gerne von der Karaoke Bar in der Nachbarschaft gestört."
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.722,
       "pos": 10,
@@ -25121,6 +26078,22 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.354,
+        "neg": 7,
+        "pos": 4,
+        "evidence_count": 11,
+        "top_spans": [
+          "エアコンの機械音がうるさくて寝付きが悪かった",
+          "the weekend’a traffic noise is terrible",
+          "It is a bit noisy in the morning due to nearby school and trucks around",
+          "Bị ồn bởi tiếng bên ngoài",
+          "it's quite noisy in the morning as the breakfast is happening right above you."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_37244894": {
@@ -25244,6 +26217,22 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "Spacious rooms with beautiful views"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.313,
+        "neg": 6,
+        "pos": 4,
+        "evidence_count": 10,
+        "top_spans": [
+          "10h tối mà ồn ào hát hò, kế bên phòng mình còn có mấy ông chạy ra hành lang la hét",
+          "buổi tối hơi buồn",
+          "Bruyant a la piscine et ces abords.",
+          "Chắc vì có nhiều con nít nên người thích yên tĩnh như mình k thích lắm.",
+          "not letting anyone sleep"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_MODERN": {
       "score": 0.438,
@@ -25472,6 +26461,22 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.359,
+        "neg": 5,
+        "pos": 2,
+        "evidence_count": 7,
+        "top_spans": [
+          "Tiếng chim yến nuôi quanh ks gây ồn khó chịu kinh khủng",
+          "yên tĩnh máy nước nóng không được nóng lắm",
+          "Máy lạnh ồn hơi khó chịu",
+          "Máy điều hòa ở ngoài sát phòng quá nên gây ra tiếng ồn khá lớn!",
+          "Nhà đối diện nuôi yến nên ồn"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_37474732": {
@@ -26100,6 +27105,22 @@
       "evidence_count": 12,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.213,
+        "neg": 5,
+        "pos": 6,
+        "evidence_count": 11,
+        "top_spans": [
+          "There is construction going on in the building right next door.",
+          "With noise throughtout the day",
+          "I was awakened very early one morning by a guests' non stop barking dog.",
+          "音が響くのか隣の部屋のトイレやシャワーのドアの閉める音が毎回部屋にバンバン聞こえうるさかった",
+          "a bit noisy"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_37719704": {
@@ -26503,6 +27524,22 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.436,
+        "neg": 5,
+        "pos": 1,
+        "evidence_count": 6,
+        "top_spans": [
+          "le calme en étant en plein devant la mer",
+          "Un peu bruyant mais c'est acceptable",
+          "Straße bei geöffnetem Fenster laut.",
+          "Etwas laut",
+          "Verkehrslärm"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_37922085": {
@@ -26617,6 +27654,20 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "There was a loud noise outside the room at times",
+          "In the evening, there were lots of kids running around, and the adult guests had a karaoke session that went on until the 10 pm curfew.",
+          "Das Schlimmste war der allabendliche Lärm der Karaoke Sänger."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -26800,6 +27851,22 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "their buffet breakfast was tasty"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.444,
+        "neg": 11,
+        "pos": 5,
+        "evidence_count": 16,
+        "top_spans": [
+          "xe chạy qua sẽ hơi ồn.",
+          "Room on the hotel front side may be noisy for those who like quite room",
+          "Only drawback is no soundproofing so some noise from adjacent rooms",
+          "Đường lớn nên ồn ào",
+          "hơi ồn"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_38583105": {
@@ -27229,6 +28296,22 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.359,
+        "neg": 5,
+        "pos": 2,
+        "evidence_count": 7,
+        "top_spans": [
+          "Phòng cách âm chưa được tốt",
+          "Tiếng ngoài hành lang ko bị cách âm, nên khách tây đi lại nch bên ngoài vẫn nghe được.",
+          "เสียงดัง",
+          "Uns persönlich hat es gestört, dass am Abend auf dem Flur Musik zu hören war.",
+          "Natürlich ist es am Pool etwas lauter, da er zur Straße ausgerichtet ist."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -27736,6 +28819,20 @@
       "evidence_count": 17,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.137,
+        "neg": 3,
+        "pos": 5,
+        "evidence_count": 8,
+        "top_spans": [
+          "Về đêm hơi tối",
+          "after the sun goes down, there’s just nothing to do",
+          "Resort đông và ồn quá"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_39532985": {
@@ -27988,6 +29085,22 @@
       "evidence_count": 31,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.216,
+        "neg": 7,
+        "pos": 10,
+        "evidence_count": 17,
+        "top_spans": [
+          "The construction is too noisy unable to relax.",
+          "noise due to high construction",
+          "There was a noisy energy plant next door that could be heard at all hours from this room.",
+          "Wind noise from lanai door was extremely annoying.",
+          "Air conditioner is noisy."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.646,
@@ -28434,6 +29547,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.354,
+        "neg": 6,
+        "pos": 3,
+        "evidence_count": 9,
+        "top_spans": [
+          "No sound proof as its very noisy.",
+          "外面唱歌的聲音會傳到房間裡.",
+          "關門的聲音很明顯會吵到人.",
+          "talked very loud, almost shouting. Their voices spread through the hall and were disturbing at night when I wanted to catch a sleep.",
+          "Noisy from outside the window."
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_QUIET": {
       "score": 0.121,
       "pos": 3,
@@ -28567,6 +29696,20 @@
       "evidence_count": 14,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.076,
+        "neg": 3,
+        "pos": 11,
+        "evidence_count": 14,
+        "top_spans": [
+          "I had a very noisy neighbor singing Karaoke too loud",
+          "the evenings here are a bit dull",
+          "a lot of rattling, slamming and banging noise until 11.30pm"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -29187,6 +30330,20 @@
       "evidence_count": 5,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.158,
+        "neg": 3,
+        "pos": 4,
+        "evidence_count": 7,
+        "top_spans": [
+          "There was a party happening on the level above us.",
+          "it can be a bit noisy if you're sensitive to noise",
+          "cách âm chưa tốt lắm ạ"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_41926154": {
@@ -29503,6 +30660,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.409,
+        "neg": 6,
+        "pos": 2,
+        "evidence_count": 8,
+        "top_spans": [
+          "A bit noisy at night because sound insulation is not good enough",
+          "Hơi ồn",
+          "tiếng xe bên ngoài rất ồn ào, tiếng còi xe ồn tới mức ko ngủ được",
+          "âm nhạc từ trường học phía sau gây ảnh hưởng đến giấc ngủ",
+          "the rooms can also be noisy when children or others walk in the hotel corridors at night while talking"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_LUXURY": {
       "score": 0.487,
       "pos": 6,
@@ -29711,6 +30884,20 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.108,
+        "neg": 3,
+        "pos": 7,
+        "evidence_count": 10,
+        "top_spans": [
+          "le comportement bruyant de certains et certaines clients",
+          "le comportement trop bruyant des clients vietnamiens de l'hôtel",
+          "Buổi sáng ngủ bị ồn khá nhiều từ bên ngoài"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_42154394": {
@@ -29917,6 +31104,22 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.772,
+        "neg": 13,
+        "pos": 0,
+        "evidence_count": 13,
+        "top_spans": [
+          "Không cách âm",
+          "Nghe tiêng ôn moi dêm",
+          "khách ồn ào nữa đêm mở nhạc nhưng nhân viên ko xử lý",
+          "every single sound made inside other rooms could be heard loud and clear",
+          "sáng nguyên đêm ko ngủ được"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_433003": {
@@ -30033,21 +31236,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
-    "STYLE_QUIET": {
-      "score": 0.596,
-      "pos": 9,
-      "neg": 1,
-      "evidence_count": 10,
-      "span": "it feels that it can be my home away from home. Great location and is very quiet",
-      "source": "absa",
-      "nature": "experience"
-    },
     "STYLE_MODERN": {
       "score": 0.566,
       "pos": 5,
       "neg": 0,
       "evidence_count": 5,
       "span": "modern",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_QUIET": {
+      "score": 0.596,
+      "pos": 9,
+      "neg": 1,
+      "evidence_count": 10,
+      "span": "it feels that it can be my home away from home. Great location and is very quiet",
       "source": "absa",
       "nature": "experience"
     }
@@ -30288,6 +31491,20 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.158,
+        "neg": 3,
+        "pos": 4,
+        "evidence_count": 7,
+        "top_spans": [
+          "it is very noisy in relax time.",
+          "Fenster könnten etwas isolierter sein",
+          "Aber man muss den Lärm wollen, der bis 22.00Uhr unerbittlich auf den Hotelgast von der Promenade eindrischt."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_43411": {
@@ -30385,6 +31602,21 @@
       "evidence_count": 8,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.376,
+        "neg": 4,
+        "pos": 1,
+        "evidence_count": 5,
+        "top_spans": [
+          "very noisy at night",
+          "Too noisy at Night Time",
+          "the noise is unbearable until 3am",
+          "music blasting out till 2am in the week 3am weekends"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_43573013": {
@@ -31302,6 +32534,22 @@
       "evidence_count": 16,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.61,
+        "neg": 6,
+        "pos": 0,
+        "evidence_count": 6,
+        "top_spans": [
+          "it was a very noisy way to start the day.",
+          "some very loud visitors in the middle of the night",
+          "Very quiet place and not too many thing to do around here.",
+          "many local families stays, so you may feel some noisy.",
+          "it was just to quiet"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_44689064": {
@@ -31950,6 +33198,22 @@
       "evidence_count": 5,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.454,
+        "neg": 10,
+        "pos": 4,
+        "evidence_count": 14,
+        "top_spans": [
+          "A bit loud when there is some fixing up during the day",
+          "Do khe cửa không có cách âm nên đêm đêm các couple khác \"hành sự\" đều nghe thấy hết :D",
+          "this room was extremely loud.",
+          "It was very noisy because there are a lot of cafes and live music in the hotel area.",
+          "I could hear the elevator a bit."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_45912624": {
@@ -32184,6 +33448,20 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "quiet"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.188,
+        "neg": 3,
+        "pos": 3,
+        "evidence_count": 6,
+        "top_spans": [
+          "Chờ xe điện hơi laqu",
+          "We found as couple's holiday to be a bit loud for us",
+          "Just killed the relaxing vibe"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -34032,6 +35310,20 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.158,
+        "neg": 3,
+        "pos": 4,
+        "evidence_count": 7,
+        "top_spans": [
+          "some noise from inside the building can still be heard",
+          "sound proofing problems",
+          "quá ồn ào sửa phòng cả buổi trưa"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_47679488": {
@@ -34394,6 +35686,20 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.137,
+        "neg": 3,
+        "pos": 5,
+        "evidence_count": 8,
+        "top_spans": [
+          "Ồn. Trong phòng ngủ trẻ con chạy ở ngoài nghe rõ.",
+          "Had very noisy Vietnamese guests right next door screaming nearly whole night and slashing doors at 5 a.m. and screaming again.",
+          "Bruit de travaux dans l’hôtel à partir de 07:50 du matin!! Intolérable!"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_QUIET": {
       "score": 0.306,
@@ -34795,6 +36101,22 @@
       "evidence_count": 12,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.764,
+        "neg": 19,
+        "pos": 1,
+        "evidence_count": 20,
+        "top_spans": [
+          "Very  noisy.",
+          "Ascenseur bruyant.",
+          "Très bruyant.",
+          "the room sound proofing is not good.",
+          "Very noisy from all over the hall, adjacent rooms and reception areas."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_48363": {
@@ -35207,6 +36529,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.168,
+        "neg": 4,
+        "pos": 6,
+        "evidence_count": 10,
+        "top_spans": [
+          "The noise from vietnamese people when they are gathering inside the Harbor restaurants.",
+          "Loud drunk partied noise all night under my room, hotel didn't do anything about it.",
+          "During our stay there was a private event in the middle of the resort that was unbearably loud.",
+          "hơi ồn ào"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.566,
       "pos": 5,
@@ -35466,6 +36803,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.61,
+        "neg": 6,
+        "pos": 0,
+        "evidence_count": 6,
+        "top_spans": [
+          "Lots of noise till late night from the surrounding area",
+          "la musique devienne insupportable",
+          "hyper bruyant",
+          "Noisy at midnight",
+          "but the acess of roof bar is diffcuilt"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_MODERN": {
       "score": 0.61,
       "pos": 6,
@@ -35710,6 +37063,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.25,
+        "neg": 4,
+        "pos": 3,
+        "evidence_count": 7,
+        "top_spans": [
+          "Ks không cách âm",
+          "hơi khoa ngủ",
+          "Cách âm không tốt",
+          "A little problem with the noise since the noise isolation not so strong"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.438,
       "pos": 3,
@@ -35833,6 +37201,21 @@
       "nature": "experience",
       "span": "morning buffet"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.215,
+        "neg": 4,
+        "pos": 4,
+        "evidence_count": 8,
+        "top_spans": [
+          "the sound proof should be improve as we are able to hear people walking and talking from the corridor and our neighbour",
+          "a major downside is the poor sound insulation; my room is adjacent to the storage area of the electronics supermarket next door, so around 5-6 AM, the staff unloading goods is very noisy, making it im",
+          "there was a little bit noisy.",
+          "it's close to the main breakfast area so it's quite noisy."
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_MODERN": {
       "score": 0.51,
       "pos": 4,
@@ -35945,6 +37328,34 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_VINTAGE": {
+        "negative_score": 0.185,
+        "neg": 6,
+        "pos": 10,
+        "evidence_count": 16,
+        "top_spans": [
+          "It's certainly vintage, an old place and space, the bathtub was rusty and some mould in places.",
+          "schmaler grad zwischen vintage und abgefuckt",
+          "My stay at Vintage Saigon Hotel and Spa had a mix of positives and serious concerns.",
+          "I confirmed booking with Vintage Saigon Hotel & Spa (3-star) but was relocated to another branch which is the Hoang Phi Hotel (2-star) because my room is suddenly not available.",
+          "Photos in agoda is definitely non existent room in vintage saigon hotel."
+        ],
+        "source": "absa"
+      },
+      "STYLE_QUIET": {
+        "negative_score": 0.231,
+        "neg": 3,
+        "pos": 2,
+        "evidence_count": 5,
+        "top_spans": [
+          "the noises from the plumbing system",
+          "隣のへやがすごい、うるさくて",
+          "Quá ồn ào. Gây mất ngủ"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_VINTAGE": {
       "score": 0.386,
@@ -36077,6 +37488,21 @@
       "evidence_count": 35,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.3,
+        "neg": 4,
+        "pos": 2,
+        "evidence_count": 6,
+        "top_spans": [
+          "it was so loud and can hear the noises from the street",
+          "Hotel was noisy during our stay due to the construction next door. Loud drilling noise all night!",
+          "Can hear karaoke party even on high floor.",
+          "beside construction makes noise"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_49654047": {
@@ -36386,6 +37812,20 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "Beware of loud noise in the early morning and late evening.",
+          "Quạt hút kêu to ồn.",
+          "the soundproofing isn't very good."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_4973904": {
@@ -36646,6 +38086,22 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.453,
+        "neg": 7,
+        "pos": 2,
+        "evidence_count": 9,
+        "top_spans": [
+          "it's absolute hell for anyone who's noise sensitive or a light sleeper as I got very little to no sleep.",
+          "Horrible soundproof.",
+          "the elevator itself was extremely noisy.",
+          "there’s a train sound and not sure where it comes from.",
+          "화장실 방구소리가 침대까지 다 들려요"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_49851722": {
@@ -37092,6 +38548,20 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "the environment was quiet and relaxing."
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.188,
+        "neg": 3,
+        "pos": 3,
+        "evidence_count": 6,
+        "top_spans": [
+          "nhưng khá ồn tiếng xe tải chạy và còi xe",
+          "Sáng ngày 11 khoan đục sửa chữa hơi ồn",
+          "not suitable for westerners that wants to relax or suntanning."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_50235857": {
@@ -37194,6 +38664,35 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.237,
+        "neg": 5,
+        "pos": 5,
+        "evidence_count": 10,
+        "top_spans": [
+          "La 1ere nuit a été extrêmement bruyante.",
+          "Pas très bien insonorisé eet pas de chance il y avait des travaux sur les étages supérieurs.",
+          "quá nhiều muỗi và côn trùng.",
+          "Điều hòa kêu ồn.",
+          "Carrelage partout ce qui raisonne et fait entendre ce qui se passe chez les voisins."
+        ],
+        "source": "absa"
+      },
+      "STYLE_MODERN": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "Décoration de l’hôtel et des chambres inexistante.",
+          "Hotel assez froid sans charme mais ce n'est pas pour cela qu'on le choisit.",
+          "Eclairage des chambres un peu agressif (blanc !!)",
+          "Déco un peu froide"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_QUIET": {
       "score": 0.237,
@@ -37331,6 +38830,34 @@
       "evidence_count": 8,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.667,
+        "neg": 12,
+        "pos": 1,
+        "evidence_count": 13,
+        "top_spans": [
+          "Шумный бар под окнами. Для любителей тишины будет не очень комфортно по вечерам.",
+          "но рано утром мешал шум ремонта на улице",
+          "A bit loud and noisy but by 10.30pm or so they close",
+          "晚上會有點吵，大約到凌晨1點才會比較安靜",
+          "附近施工晚上有點吵"
+        ],
+        "source": "absa"
+      },
+      "STYLE_LIVELY": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "Каждый вечер до поздна гремит музыка, закрытые окна не помогают.",
+          "гремела музыка,которая мешала спать",
+          "2 два самых шумных бара под окнами"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_ROMANTIC": {
       "score": 0.51,
@@ -37561,6 +39088,22 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.565,
+        "neg": 8,
+        "pos": 1,
+        "evidence_count": 9,
+        "top_spans": [
+          "Noise come from next door at late night make me have difficult times to get sleep",
+          "the next swallow factory is noisy, and it is woken up early in the morning",
+          "I have no idea why...but this happened in the afternoon as well.",
+          "bit noisy in front rooms at night",
+          "Das Geräusch vom Verkehr als auch vom Bauarbeiten waren laut."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_51620224": {
@@ -37646,6 +39189,20 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.231,
+        "neg": 3,
+        "pos": 2,
+        "evidence_count": 5,
+        "top_spans": [
+          "Nchung rat nen ơ",
+          "not child friendly",
+          "the water in the toilet ran all night, which was very noisy"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_517713": {
@@ -37992,6 +39549,22 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.487,
+        "neg": 6,
+        "pos": 1,
+        "evidence_count": 7,
+        "top_spans": [
+          "a small karaoke located in front of this hotel",
+          "Plenty of traffic noice, street vendors at all hours of the night.",
+          "it can be very loud on certain nights of the week.",
+          "might hear some noisy during night.",
+          "I don't like the noisy from motorbike sound."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_52495000": {
@@ -39068,6 +40641,21 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.3,
+        "neg": 4,
+        "pos": 2,
+        "evidence_count": 6,
+        "top_spans": [
+          "Lärm von der Strasse am Abend und in der Nacht",
+          "Etwas hellhörig",
+          "de noche se escuchaba el ruido de los compresores de aire condicionado ubicados en el exterior.",
+          "the rooster may crow in the early morning, which could cause some disturbance"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_55256505": {
@@ -39181,6 +40769,22 @@
       "evidence_count": 5,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.354,
+        "neg": 7,
+        "pos": 4,
+        "evidence_count": 11,
+        "top_spans": [
+          "Cách âm không tốt, khá ồn",
+          "thỉnh thoảng rất ồn",
+          "hơi ồn",
+          "Không cách âm, quá ồn",
+          "Phòng cách âm quá kém, quá ồn"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_55270044": {
@@ -39675,6 +41279,22 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.646,
+        "neg": 7,
+        "pos": 0,
+        "evidence_count": 7,
+        "top_spans": [
+          "Xung quanh là quán nhậu nhiều rất ồn.",
+          "Cửa ko cách âm nên ở ngoài ồn ào làm ảnh hưởng giấc ngủ",
+          "앞 상가의 시끄러운 노랫소리가 새벽까지 들립니다.",
+          "the only issue is the noise from the nearby beer house, which makes it impossible to sleep if you are a light sleeper like me.",
+          "the nearby pubs played loud music outside and operated until late at night, which made it difficult to sleep."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_56230572": {
@@ -39776,6 +41396,21 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "I could hear the elevator or some other machine every few minutes",
+          "隔音很差晚上各種聲音都有",
+          "隔音差",
+          "phong cách âm kém"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_56358742": {
@@ -40009,6 +41644,21 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.376,
+        "neg": 4,
+        "pos": 1,
+        "evidence_count": 5,
+        "top_spans": [
+          "khó vì khoảng hơn 7h là ồn ào lắm rồi",
+          "Sự cách âm giữa các phòng cần nên cải thiện.",
+          "the downside is that the soundproofing is a bit poor.",
+          "Construction started in the room next door around 8am and was very loud"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_5663774": {
@@ -40121,6 +41771,21 @@
       "evidence_count": 5,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.25,
+        "neg": 4,
+        "pos": 3,
+        "evidence_count": 7,
+        "top_spans": [
+          "Karaoke Musik am Abend war sehr störend ab 21 00 Uhr.",
+          "la ville est trop calme…",
+          "niet een super fijne sfeer in het hotel",
+          "veel luidruchtige hotelgasten die geen manieren toonden"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_LUXURY": {
       "score": 0.741,
@@ -40525,6 +42190,36 @@
       "evidence_count": 42,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_LIVELY": {
+        "negative_score": 0.529,
+        "neg": 7,
+        "pos": 1,
+        "evidence_count": 8,
+        "top_spans": [
+          "Area is very crowded in the summer months and can be a bit overwhelming",
+          "Loud music by the pool on 6F",
+          "be prepared for loud music on the beach side until midnight.",
+          "extrem laut bis spät in die Nacht am Wochenende wegen dem benachbarten Beach Club",
+          "no atmosphere"
+        ],
+        "source": "absa"
+      },
+      "STYLE_QUIET": {
+        "negative_score": 0.871,
+        "neg": 26,
+        "pos": 0,
+        "evidence_count": 26,
+        "top_spans": [
+          "the beach bar right in front of the hotel that was making too much noise due to loud speaker",
+          "The loud music every night",
+          "The noise from outside",
+          "Noise due to waves and night club.",
+          "Extremely look discotheque in front, can't sleep"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_5686721": {
@@ -40930,6 +42625,22 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.237,
+        "neg": 5,
+        "pos": 5,
+        "evidence_count": 10,
+        "top_spans": [
+          "Đèn hành lang bật 24/24 nên chói mắt khó ngủ",
+          "Gần trường nên hơi ồn buổi sáng",
+          "Quiet (hotel & staff)",
+          "Детей слышно с 7:30 и раньше.",
+          "Под окном школа , где громко орут."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_5797972": {
@@ -41931,6 +43642,20 @@
       "evidence_count": 4,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.231,
+        "neg": 3,
+        "pos": 2,
+        "evidence_count": 5,
+        "top_spans": [
+          "le bruit des constructions à côté et un peu dérangeant",
+          "nur die Baustellen vor der Tür stören",
+          "Der Lärm ist enorm"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_59037669": {
@@ -42034,6 +43759,20 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "徒歩圏内に飲食店多数あるので食事にも困らなかった。"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.137,
+        "neg": 3,
+        "pos": 5,
+        "evidence_count": 8,
+        "top_spans": [
+          "c'est très bruyant la nuit",
+          "was also very noisy at night time",
+          "ljudet från vägen störde min nattsömn."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_MODERN": {
       "score": 0.438,
@@ -42284,6 +44023,22 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.359,
+        "neg": 5,
+        "pos": 2,
+        "evidence_count": 7,
+        "top_spans": [
+          "Hơi ồn",
+          "Дуже шумно, вікно не повністю закривається",
+          "bruits des travaux au rez-de-chaussée",
+          "les occupants du logement voisin sont très bruyants , mal insonorisation",
+          "hơi đông và ồn ào."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_59714076": {
@@ -42876,6 +44631,20 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.231,
+        "neg": 3,
+        "pos": 2,
+        "evidence_count": 5,
+        "top_spans": [
+          "tối ồn ko ngủ dc",
+          "Der Straßenlärm, die Durchsagen und das Pfeifen vom Bahnhof war ziemlich laut.",
+          "Die Wohnung hat kein Sonnenlicht und hatten unangenehme Geruch."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_61425173": {
@@ -43189,6 +44958,22 @@
       "evidence_count": 20,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.453,
+        "neg": 7,
+        "pos": 2,
+        "evidence_count": 9,
+        "top_spans": [
+          "Beach club in the evenings a bit loud.",
+          "the music at the pool ara was the same song all the time and from morning- lunch-midday.",
+          "Bed is a bit uncomfortable for my back",
+          "so so ồn buổi tối",
+          "Gối đầu hơi cao, nằm ngủ dễ mỏi cổ"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.61,
@@ -43882,6 +45667,20 @@
       "evidence_count": 4,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "Cách âm k quá tốt nhưng vẫn ok",
+          "hơi ồn nếu mún nghĩ ngơi",
+          "Cách âm còn kém, âm thanh hành lang vọng vào phòng nhiều"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_6251087": {
@@ -44157,6 +45956,22 @@
       "evidence_count": 56,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.359,
+        "neg": 5,
+        "pos": 2,
+        "evidence_count": 7,
+        "top_spans": [
+          "too noisy with local tourist with kids and the food is same everyday.",
+          "If you are after a relaxing tranquil environment than don't go here.",
+          "la tranquilidad Que el hotel permita que la gente ponga ropa en las barandas de los balcones.",
+          "noice around 2 am in the morning",
+          "A fuir si on cherche de la tranquillité et de l’authenticité."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_62547913": {
@@ -44407,6 +46222,20 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.137,
+        "neg": 3,
+        "pos": 5,
+        "evidence_count": 8,
+        "top_spans": [
+          "the room is not very well isolated. So you can very well hear the occasional noise from the street and roosters at 3-4 am.",
+          "But very loud noice from cafe and neighbors.",
+          "Can be very loud when it rains!"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.51,
@@ -45279,6 +47108,20 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.188,
+        "neg": 3,
+        "pos": 3,
+        "evidence_count": 6,
+        "top_spans": [
+          "Thin walls.",
+          "Noise from the upstair.",
+          "There is a very loud industrial fan operating that made sitting outside on our balcony unpleasant."
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.676,
       "pos": 8,
@@ -45533,6 +47376,22 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "Très calme et reposant."
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.434,
+        "neg": 8,
+        "pos": 3,
+        "evidence_count": 11,
+        "top_spans": [
+          "Quite",
+          "Very noisy at night because of the next bar.",
+          "there's a very, very loud bar right beside the hotel that has music blaring until 3am or so.",
+          "Very loud noise from the construction site next door.",
+          "the soundproofing is really bad."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_63917222": {
@@ -45628,21 +47487,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
-    "STYLE_RELAXING": {
-      "score": 0.438,
-      "pos": 3,
-      "neg": 0,
-      "evidence_count": 3,
-      "span": "cozy and homely vibe during our stay",
-      "source": "absa",
-      "nature": "experience"
-    },
     "STYLE_BOUTIQUE": {
       "score": 0.722,
       "pos": 10,
       "neg": 0,
       "evidence_count": 10,
       "span": "This quaint boutique hotel is located in a quiet neighborhood within walking distance to the Old Town shopping district.",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_RELAXING": {
+      "score": 0.438,
+      "pos": 3,
+      "neg": 0,
+      "evidence_count": 3,
+      "span": "cozy and homely vibe during our stay",
       "source": "absa",
       "nature": "experience"
     }
@@ -45757,21 +47616,21 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
-    "STYLE_QUIET": {
-      "score": 0.436,
-      "pos": 5,
-      "neg": 1,
-      "evidence_count": 6,
-      "span": "조용하고 아늑하고 하이퐁의 최고 입니다",
-      "source": "absa",
-      "nature": "experience"
-    },
     "STYLE_RELAXING": {
       "score": 0.438,
       "pos": 3,
       "neg": 0,
       "evidence_count": 3,
       "span": "relaxing in the bathtub with ice-cold beer",
+      "source": "absa",
+      "nature": "experience"
+    },
+    "STYLE_QUIET": {
+      "score": 0.436,
+      "pos": 5,
+      "neg": 1,
+      "evidence_count": 6,
+      "span": "조용하고 아늑하고 하이퐁의 최고 입니다",
       "source": "absa",
       "nature": "experience"
     }
@@ -46298,6 +48157,21 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.3,
+        "neg": 4,
+        "pos": 2,
+        "evidence_count": 6,
+        "top_spans": [
+          "Too much light in the morning",
+          "Cách âm hành lang kém",
+          "Phòng cách âm quá tệ, tôi không thể nào ngủ được khi nghe rõ mồn một phòng bên cạnh nói chuyện.",
+          "Cách âm chưa được tốt lắm"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -47137,6 +49011,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.596,
+        "neg": 9,
+        "pos": 1,
+        "evidence_count": 10,
+        "top_spans": [
+          "It is quite noisy.",
+          "Not the hotel's fault, but it will be a little noisy",
+          "but high noise levels by outside street and train station.",
+          "extremely loud bells and announcements blast from the station right in front of the hotel.",
+          "the noise in the room from the train station was nightmare"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_MODERN": {
       "score": 0.487,
       "pos": 6,
@@ -47383,6 +49273,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.397,
+        "neg": 7,
+        "pos": 3,
+        "evidence_count": 10,
+        "top_spans": [
+          "Nachmittags sind sehr sehr viele Menschen am Pool und es ist sehr sehr laut.",
+          "The house lacked atmosphere.",
+          "noisy karaoke disturbances at night",
+          "deafening bad music at the bar and the pool.",
+          "the place was amazing, now coming back it’s very dead and eerie."
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.438,
       "pos": 3,
@@ -47516,6 +49422,21 @@
       "source": "agoda_review_tags",
       "nature": "experience",
       "span": "Good for peace and quiet stays."
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.215,
+        "neg": 4,
+        "pos": 4,
+        "evidence_count": 8,
+        "top_spans": [
+          "Super quiet and eerie, not much people stay",
+          "Family with cry baby next to our room. Heard his cry at night.",
+          "bumped into noisy and annoying Chinese everywhere",
+          "Family hotel but not for relaxation."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.436,
@@ -47846,6 +49767,21 @@
       "evidence_count": 4,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.215,
+        "neg": 4,
+        "pos": 4,
+        "evidence_count": 8,
+        "top_spans": [
+          "young neighbors are a bit noisy in the evening",
+          "hơi ồn",
+          "но ночью соседи купили и громко говорил посреди ночи",
+          "слышно абсолютно всё"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_65867796": {
@@ -48192,6 +50128,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.313,
+        "neg": 6,
+        "pos": 4,
+        "evidence_count": 10,
+        "top_spans": [
+          "Personnes bruyantes dans l'hôtel mais le personnel n'y pouvait rien !",
+          "Un peu bruyant",
+          "Cách âm chưa thực sự tốt",
+          "Phòng có muỗi",
+          "Except for noisy children"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_BOUTIQUE": {
       "score": 0.51,
       "pos": 4,
@@ -48326,6 +50278,22 @@
       "evidence_count": 13,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.306,
+        "neg": 5,
+        "pos": 3,
+        "evidence_count": 8,
+        "top_spans": [
+          "only downside is soundproofing of the windows is really bad so u can hear noise till late at night and early in the morning.",
+          "There was some street noise but it was unavoidable.",
+          "nous entendions les ascenseurs à travers la porte",
+          "うるさくて眠れなかった",
+          "When I am sleeping I always heard music from outside the window."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_LUXURY": {
       "score": 0.438,
@@ -48556,6 +50524,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.376,
+        "neg": 4,
+        "pos": 1,
+        "evidence_count": 5,
+        "top_spans": [
+          "The political/information broadcast from the loudspeakers on the harbour front at 5.30 each morning was a real pain and was extremely loud. It was impossible to sleep through it",
+          "Unfortunately, during our stay, there was noise from drilling.",
+          "both nights there was crazy loud singing right outside my room.",
+          "Most nights we stayed in the homestay, there was loud karaoke right in front of and beside the property."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_66810496": {
@@ -48762,6 +50745,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "Ruidoso",
+          "Des enfants criaient et jouaient le matin et le soir.",
+          "c’était super bruyant",
+          "les hauts parleurs du régime de l'état qui diffuse à haute intensité de 5 à 7h am et qui évidemment nous réveillent."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_67247416": {
@@ -49691,6 +51689,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "Hệ thống cách âm kém, ngồi trong phòng có thể nghe ngoài hành lang nói chuyện hoặc nghe thấy tiếng trên lầu hoặc phòng bên cạnh.",
+          "Quite noisy corridors.",
+          "it was really a nightmare/challenge to find some sleep because of the (traffic) noise.",
+          "Construction noises throughout the day :("
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_68299826": {
@@ -50211,6 +52224,20 @@
       "evidence_count": 6,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.188,
+        "neg": 3,
+        "pos": 3,
+        "evidence_count": 6,
+        "top_spans": [
+          "Thin walls ! Too loud in the room",
+          "a little quieter on this end of the beach.",
+          "there was a road construction on my first day so it was noisy"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_6945065": {
@@ -50458,6 +52485,21 @@
       "evidence_count": 1,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.376,
+        "neg": 4,
+        "pos": 1,
+        "evidence_count": 5,
+        "top_spans": [
+          "The view is of construction site with alot of noise.",
+          "They work at night :(",
+          "Phòng không có cách âm nên hơi ồn",
+          "Шум от стройки мешал спать"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_70417406": {},
@@ -50689,6 +52731,22 @@
       "evidence_count": 22,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_BOUTIQUE": {
+        "negative_score": 0.448,
+        "neg": 38,
+        "pos": 29,
+        "evidence_count": 67,
+        "top_spans": [
+          "Terrible 5 star feels soo old and mouldy and rotten hotel!",
+          "A room too old.",
+          "this was not a 5 star hotel",
+          "Hotel not worth 5star, staff distant and cold",
+          "The creaking of the flooring in the room is severe and very annoying."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_BOUTIQUE": {
       "score": 0.321,
@@ -51456,6 +53514,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.444,
+        "neg": 11,
+        "pos": 5,
+        "evidence_count": 16,
+        "top_spans": [
+          "very loud at night.",
+          "rất rất rất ồn",
+          "HOWEVER, THE SOUNDPROOFING OF THE ROOMS IS NOT GOOD.",
+          "the bed sheets made me a bit itchy.",
+          "Cách âm chưa ok nên khá ồn"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.438,
       "pos": 3,
@@ -51574,6 +53648,21 @@
       "evidence_count": 4,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.189,
+        "neg": 4,
+        "pos": 5,
+        "evidence_count": 9,
+        "top_spans": [
+          "Very noisy during the day.",
+          "mình ở 2 đêm thì cả 2 đêm đều bị thức giấc do ồn bên ngoài.",
+          "nma vẫn nóng k ngủ đc hic 😅",
+          "Hông có cách âm, mình ở phòng sát cầu thang nghe tiếng bước chân ở ngoài rõ."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_73179078": {
@@ -51818,6 +53907,20 @@
       "evidence_count": 19,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "ban đêm không vui",
+          "hơi ồn ào buổi chiều",
+          "không gian Yên tỉnh"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -52485,6 +54588,20 @@
       "evidence_count": 3,
       "source": "agoda_review_tags",
       "nature": "experience"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.231,
+        "neg": 3,
+        "pos": 2,
+        "evidence_count": 5,
+        "top_spans": [
+          "Some noise from ongoing construction throughout building",
+          "Noisy in early morning about at 6.30 am due to hotel technician drilled and repaired something at the room next to me",
+          "Elevator noise was a-bit loud"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_7394734": {
@@ -52616,6 +54733,20 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "Just the sound proof is poor.",
+          "도로 소음이 시끄럽다.",
+          "too noise from the traffic noise and barking dog and car alarms"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_LUXURY": {
       "score": 0.438,
@@ -53022,6 +55153,33 @@
       "evidence_count": 7,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_LIVELY": {
+        "negative_score": 0.438,
+        "neg": 3,
+        "pos": 0,
+        "evidence_count": 3,
+        "top_spans": [
+          "Forse un po troppo dispersivo è difficile da orientare",
+          "Erg lawaaierig, overal om het hotel word gebouwd",
+          "Big buses come every day, could of tourists."
+        ],
+        "source": "absa"
+      },
+      "STYLE_QUIET": {
+        "negative_score": 0.3,
+        "neg": 4,
+        "pos": 2,
+        "evidence_count": 6,
+        "top_spans": [
+          "Too noise from construction and music from the street",
+          "Music at the beach and construction makes it a bit noisy",
+          "Noise coming through windows from out side loud bikes and music on some nights",
+          "if you like peaceful and quiet, this hotel is not for you."
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.438,
@@ -53848,6 +56006,21 @@
       "evidence_count": 11,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.51,
+        "neg": 4,
+        "pos": 0,
+        "evidence_count": 4,
+        "top_spans": [
+          "hơi ồn",
+          "Lots of noise from the street and from the hallway",
+          "la sala colazione un po' troppo rumorosa",
+          "Hẹn gặp lại Khách TQ khá đông nên tầng ăn sáng hơi ồn"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_772347": {
@@ -54692,6 +56865,20 @@
       "evidence_count": 2,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.301,
+        "neg": 3,
+        "pos": 1,
+        "evidence_count": 4,
+        "top_spans": [
+          "quán bar đêm rất ồn khó ngủ",
+          "Very loud",
+          "điểm trừ duy nhất là ks nằm trên khu phố Tây có nhiều quán bar mở nhạc suốt đêm đến tận 3h sáng"
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_7911593": {},
@@ -56830,6 +59017,21 @@
       "evidence_count": 11,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.25,
+        "neg": 4,
+        "pos": 3,
+        "evidence_count": 7,
+        "top_spans": [
+          "Còn nhiều tiếng ồn từ hoạt động xung quanh như tiếng kéo đồ đạc ở phòng khác, tiếng nhạc từ quán gần bể bơi.",
+          "we heard a lot of noises from upper floor and also from the corridors which is quite annoying.",
+          "Little boring due to low season.",
+          "새벽에 스프링 쿨러 인지 따다다다닥 소리가 나는데 그거 빼곤 괜찮아요."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_9372539": {
@@ -57168,6 +59370,22 @@
       "source": "agoda_review_tags",
       "nature": "presence"
     },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.28,
+        "neg": 6,
+        "pos": 5,
+        "evidence_count": 11,
+        "top_spans": [
+          "Boring environment",
+          "If you want peace, go to another hotel.",
+          "Noisy from about 6pm to 11pm",
+          "viel Lärm in der früh, dass man nicht schlafen konnte",
+          "Geschrei der Kinder im Hotel in der Nacht"
+        ],
+        "source": "absa"
+      }
+    },
     "STYLE_RELAXING": {
       "score": 0.438,
       "pos": 3,
@@ -57290,6 +59508,22 @@
       "evidence_count": 5,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.711,
+        "neg": 19,
+        "pos": 2,
+        "evidence_count": 21,
+        "top_spans": [
+          "đêm cũng hơi ồn chút",
+          "buổi tối khá ồn, nhất là các loa kẹo kéo hát đến 12 g đêm chưa nghỉ!",
+          "Hơi ồn xíu về đêm vì gần chợ đêm.",
+          "Hơi ồn xíu về đêm vì gần chợ đêm",
+          "excessive noise from the market until."
+        ],
+        "source": "absa"
+      }
     }
   },
   "acc_9755468": {
@@ -57636,6 +59870,22 @@
       "evidence_count": 27,
       "source": "agoda_review_tags",
       "nature": "presence"
+    },
+    "negative_style_profile": {
+      "STYLE_QUIET": {
+        "negative_score": 0.61,
+        "neg": 6,
+        "pos": 0,
+        "evidence_count": 6,
+        "top_spans": [
+          "dommage pour ceux qui veulent se reposer.",
+          "Le bruit du compresseur et la musique en permanence à la piscine.",
+          "Musik am Pool könnte etwas leiser sein.",
+          "the music by the pool, in the restaurants, in the lift its just awful",
+          "it is quiet and pleasant"
+        ],
+        "source": "absa"
+      }
     },
     "STYLE_RELAXING": {
       "score": 0.376,

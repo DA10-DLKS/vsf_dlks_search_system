@@ -7,7 +7,7 @@ Luồng (giống tầng search sẽ làm):
   câu hỏi tiếng Việt
    -> normalize + tra synonym_dictionary  => tập concept + facet
    -> bắt range filter đơn giản (dưới X triệu / trên X điểm / N sao)
-   -> lọc knowledge_objects.json theo concept (AND) + range + location text
+   -> lọc knowledge_objects.json theo concept (AND) + range + LOC_* hierarchy/fallback text
    -> in hotel khớp.
 
 Chạy:  .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.enrichment.query_demo "câu hỏi"
@@ -37,9 +37,11 @@ PURPOSE_EVIDENCE = {
 
 OBJ_JSON = "knowledge_engineering/enrichment/knowledge_objects.json"
 SYN_YAML = "ontology/synonym_dictionary.yaml"
+LOC_YAML = "ontology/core/location.generated.yaml"
 
 _objs = json.load(open(OBJ_JSON, encoding="utf-8"))
 _syn = yaml.safe_load(open(SYN_YAML, encoding="utf-8"))["synonyms"]
+_loc_concepts = yaml.safe_load(open(LOC_YAML, encoding="utf-8"))["concepts"]
 
 
 # ---------------------------------------------------------------------------
@@ -136,6 +138,38 @@ def _all_concepts(obj: dict) -> set[str]:
     return out
 
 
+def _location_parent(cid: str | None) -> str | None:
+    if not cid:
+        return None
+    data = _loc_concepts.get(cid) or {}
+    return data.get("parent") or data.get("located_in")
+
+
+def _is_same_or_child_location(child: str | None, parent: str) -> bool:
+    cur = child
+    while cur:
+        if cur == parent:
+            return True
+        cur = _location_parent(cur)
+    return False
+
+
+def _prune_location_concepts(concepts: list[str]) -> list[str]:
+    """If both a city and its area are parsed, keep the more specific area."""
+    locs = [c for c in concepts if c.startswith("LOC_") and c in _loc_concepts]
+    return [
+        c for c in locs
+        if not any(other != c and _is_same_or_child_location(other, c) for other in locs)
+    ]
+
+
+def _matches_location_concepts(obj: dict, wanted: list[str]) -> bool:
+    if not wanted:
+        return True
+    obj_loc = (obj.get("semantic_metadata") or {}).get("location")
+    return any(_is_same_or_child_location(obj_loc, loc) for loc in wanted)
+
+
 # Tập concept THỰC SỰ có mặt trên ít nhất 1 hotel trong corpus. Dùng để bỏ qua các hard
 # concept "chết" khi lọc: vd SETTING_COASTAL/SETTING_CITY_CENTER/SETTING_ISLAND hiện 0 hotel
 # (Bước 4 chưa suy ra setting) -> nếu một surface form ("ven biển") kéo theo concept rỗng đó
@@ -146,6 +180,8 @@ for _o in _objs.values():
     _LIVE_CONCEPTS |= _all_concepts(_o)
 
 FEEL_MIN = 0.6  # hotel phải đạt profile score >= ngưỡng cho concept cảm nhận mới tính "khớp"
+# Negative style không lọc cứng để tránh loại hotel mixed-signal; chỉ trừ ranking.
+NEG_STYLE_PENALTY_WEIGHT = 0.5
 
 # Tập concept CẢM NHẬN có ít nhất 1 hotel đạt ngưỡng FEEL_MIN. Nhiều STYLE_* (LUXURY,
 # ROMANTIC, MODERN...) chưa hotel nào đạt -> nếu đưa vào lọc feel thì LUÔN 0 kết quả giả
@@ -158,15 +194,30 @@ for _o in _objs.values():
             _LIVE_FEEL.add(_c)
 
 
+def _feel_scores(obj: dict, concepts: list[str]) -> tuple[float, float, float]:
+    """(positive, negative_penalty, adjusted) cho concept cảm nhận trong query."""
+    prof = obj.get("semantic_profile", {})
+    neg_prof = obj.get("negative_style_profile", {})
+    positive = sum(prof.get(c, {}).get("score", 0) for c in concepts)
+    negative = sum(
+        neg_prof.get(c, {}).get("negative_score", 0)
+        for c in concepts
+        if c.startswith("STYLE_")
+    )
+    adjusted = positive - NEG_STYLE_PENALTY_WEIGHT * negative
+    return positive, negative, adjusted
+
+
 def search(q: str, limit: int = 15) -> dict:
     concepts, implicit = parse_concepts(q)
     rng = parse_range(q)
     loc = parse_location_text(q)
+    loc_concepts = _prune_location_concepts(concepts)
     # Phân loại concept giống tầng search thật:
     #   - HARD filter (AND bắt buộc): amenity + setting. Đây là "có/không" rõ ràng.
     #   - NỚI LỎNG (không lọc cứng): object_type ("khách sạn"=mọi lưu trú, xem golden Q1-01),
-    #     purpose/style (cảm tính), price_tier (đã có range giá lo), location (lọc bằng TEXT
-    #     vì object chưa gắn LOC concept — known limitation Bước 4).
+    #     purpose/style (cảm tính), price_tier (đã có range giá lo). Location dùng LOC_* hierarchy
+    #     nếu synonym bắt được, fallback text chỉ để demo không kẹt khi thiếu alias.
     hard_all = [c for c in concepts if c.startswith(("AMEN_", "SETTING_"))]
     # Bỏ qua hard concept "chết" (0 hotel) khỏi AND -> tránh 0-kết-quả-giả (xem _LIVE_CONCEPTS).
     hard = [c for c in hard_all if c in _LIVE_CONCEPTS]
@@ -193,8 +244,11 @@ def search(q: str, limit: int = 15) -> dict:
         want_obj = [c for c in soft if c.startswith("OBJ_") and c != "OBJ_HOTEL"]
         if want_obj and oc.isdisjoint(want_obj):
             continue
-        # location text
-        if loc:
+        # location concept: LOC city/place matches its area descendants; text is fallback only.
+        if loc_concepts:
+            if not _matches_location_concepts(obj, loc_concepts):
+                continue
+        elif loc:
             locblob = " ".join(
                 str(obj["location"].get(k) or "") for k in ("city", "area", "province", "district")
             )
@@ -224,8 +278,9 @@ def search(q: str, limit: int = 15) -> dict:
         oc = _all_concepts(o)
         soft_hit = sum(1 for c in soft if c in oc)
         purpose_hit = len(purpose_amen & oc)  # số amenity khớp mục đích chuyến đi
-        prof = o.get("semantic_profile", {})
-        feel_score = sum(prof.get(c, {}).get("score", 0) for c in feel_all)  # tổng điểm cảm nhận (kể cả feel skip)
+        # Tổng điểm cảm nhận (kể cả feel skip), đã trừ nhẹ negative_style_profile để hotel bị chê
+        # cùng STYLE (vd "không yên tĩnh") tụt hạng thay vì bị loại cứng.
+        _, _, feel_score = _feel_scores(o, feel_all)
         rf = o["range_filters"]
         p = rf.get("price_min_vnd")
         if target_price and p and not rf.get("price_capped"):
@@ -236,6 +291,7 @@ def search(q: str, limit: int = 15) -> dict:
     hits.sort(key=score)
     return {"concepts": concepts, "implicit": implicit, "hard": hard, "soft": soft, "feel": feel,
             "hard_skipped": hard_skipped, "feel_skipped": feel_skipped,
+            "loc_concepts": loc_concepts,
             "purpose_amen": sorted(purpose_amen),
             "range": rng, "location": loc, "n": len(hits), "hits": hits[:limit]}
 
@@ -243,6 +299,8 @@ def search(q: str, limit: int = 15) -> dict:
 # ---------------------------------------------------------------------------
 # Intent "tìm ĐỊA ĐIỂM" (không phải tìm hotel) — trả lời từ nearby_places
 # ---------------------------------------------------------------------------
+HOTEL_INTENT_KW = ["khách sạn", "khach san", "hotel", "resort", "villa", "homestay",
+                   "nơi lưu trú", "noi luu tru", "chỗ ở", "cho o"]
 PLACE_INTENT_KW = ["khu vui chơi", "vui chơi", "chơi gì", "tham quan", "địa điểm",
                    "điểm đến", "giải trí", "đi đâu", "có gì chơi", "thắng cảnh"]
 # loại nearby (category) coi là "vui chơi/giải trí"
@@ -255,14 +313,23 @@ def is_place_intent(q: str) -> bool:
     return any(normalize(k, fold=True) in ql for k in PLACE_INTENT_KW)
 
 
+def is_hotel_intent(q: str) -> bool:
+    ql = normalize(q, fold=True)
+    return any(normalize(k, fold=True) in ql for k in HOTEL_INTENT_KW)
+
+
 def search_places(q: str, limit: int = 20) -> list[tuple]:
     """Gom nearby_places (loại vui chơi/giải trí) của hotel trong location -> địa điểm + tần suất."""
     loc = parse_location_text(q)
+    loc_concepts = _prune_location_concepts(parse_concepts(q)[0])
     from collections import Counter
     seen: dict[str, dict] = {}
     freq: Counter = Counter()
     for obj in _objs.values():
-        if loc:
+        if loc_concepts:
+            if not _matches_location_concepts(obj, loc_concepts):
+                continue
+        elif loc:
             blob = " ".join(str(obj["location"].get(k) or "") for k in ("city", "area", "province"))
             if normalize(loc, fold=True) not in normalize(blob, fold=True):
                 continue
@@ -278,11 +345,13 @@ def search_places(q: str, limit: int = 20) -> list[tuple]:
 
 def show(q: str) -> None:
     # nếu hỏi ĐỊA ĐIỂM -> trả địa điểm, không phải hotel
-    if is_place_intent(q):
+    if is_place_intent(q) and not is_hotel_intent(q):
         loc = parse_location_text(q)
+        loc_concepts = _prune_location_concepts(parse_concepts(q)[0])
         places = search_places(q)
         print(f"\n❓ {q}")
-        print(f"   → intent: TÌM ĐỊA ĐIỂM (không phải hotel) | location: {loc or '—'}")
+        loc_label = loc_concepts or loc or "—"
+        print(f"   → intent: TÌM ĐỊA ĐIỂM (không phải hotel) | location: {loc_label}")
         print(f"   → {len(places)} địa điểm vui chơi/giải trí (từ nearby_places của hotel quanh đó):")
         for pl, n in places:
             print(f"      • {pl['name'][:46]:46s} | {pl['category']}  (gần {n} hotel)")
@@ -302,10 +371,11 @@ def show(q: str) -> None:
     if r["feel_skipped"]:
         print(f"   ⚠ bỏ qua feel concept 0 hotel đạt ngưỡng (Bước 5 chưa đủ profile): {r['feel_skipped']}")
     print(f"   → CẢM NHẬN (từ review, lọc theo profile≥0.6): {r['feel'] or '—'}")
-    print(f"   → range: {r['range'] or '—'} | location: {r['location'] or '—'}")
+    loc_label = r["loc_concepts"] or r["location"] or "—"
+    print(f"   → range: {r['range'] or '—'} | location: {loc_label}")
     if "price_max" in r["range"] or "price_min" in r["range"]:
         print("   ⚠ GIÁ là placeholder (fake) — KHÔNG lọc cứng theo giá, chỉ ưu tiên hotel giá gần mức yêu cầu.")
-    print(f"   → {r['n']} hotel khớp. Top (ưu tiên khớp nhiều tiêu chí + gần giá + điểm cao):")
+    print(f"   → {r['n']} hotel khớp. Top (ưu tiên khớp nhiều tiêu chí + gần giá + điểm cao; trừ nhẹ negative style):")
     for o in r["hits"]:
         rf = o["range_filters"]
         cap = " [giá~cap5tr]" if rf.get("price_capped") else ""
@@ -314,9 +384,15 @@ def show(q: str) -> None:
         star = f"{rf.get('star_rating')}★" if rf.get("star_rating") else "?★"
         # điểm cảm nhận của hotel cho các concept feel trong câu
         prof = o.get("semantic_profile", {})
-        feel_str = " ".join(
-            f"{c.split('_', 1)[1].lower()}={prof.get(c, {}).get('score', 0):.2f}" for c in r["feel"]
-        )
+        neg_prof = o.get("negative_style_profile", {})
+        feel_parts = []
+        for c in r["feel"]:
+            name = c.split("_", 1)[1].lower()
+            feel_parts.append(f"{name}={prof.get(c, {}).get('score', 0):.2f}")
+            neg_score = neg_prof.get(c, {}).get("negative_score", 0)
+            if neg_score:
+                feel_parts.append(f"neg_{name}={neg_score:.2f}")
+        feel_str = " ".join(feel_parts)
         feel_str = f" | {feel_str}" if feel_str else ""
         # đánh dấu hotel có tiện ích hợp mục đích chuyến đi (lý do được ưu tiên lên top)
         matched = sorted(set(r["purpose_amen"]) & _all_concepts(o))

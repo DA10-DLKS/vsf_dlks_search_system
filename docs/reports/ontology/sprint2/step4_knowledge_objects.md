@@ -10,7 +10,7 @@ Sau Bước 4, **520 hotel đã được gắn nhãn concept đầy đủ phần
 concept") — nay đã gỡ cho phần HARD.
 
 ## Object gồm gì (theo CONTRACT metadata_schema.yaml + SAMPLE)
-- `semantic_metadata`: concept_id theo facet. **one** (object_type/price_tier) → 1 id; **many**
+- `semantic_metadata`: concept_id theo facet. **one** (object_type/location/price_tier) → 1 id; **many**
   (amenity/setting/purpose) → list. SOFT (style/aspect) để trống → Bước 5.
 - `tags`: provenance từng nhãn (concept/confidence/sources) — cho governance/audit.
 - `range_filters`: star/review_score/price_min + cờ `price_capped`.
@@ -29,6 +29,7 @@ concept") — nay đã gỡ cho phần HARD.
 | Facet | Phủ | Ghi chú |
 |---|---|---|
 | object_type | **100%** | 1/hotel (đã sửa cardinality ở Bước 2) |
+| location | **100%** (520) | `LOC_*` cụ thể nhất resolve từ area/city; raw location vẫn giữ để hiển thị/toạ độ |
 | amenity | **99%** (517) | |
 | purpose | **97%** (504) | |
 | price_tier | **94%** (488) | 32 None = chưa xếp sao (đúng) |
@@ -47,8 +48,8 @@ concept") — nay đã gỡ cho phần HARD.
    để vòng tinh chỉnh (cần map hotel→LOC qua registry).
 2. **location.province đôi khi = city** (vd "Nha Trang" thay vì "Khánh Hòa") — vấn đề data nguồn,
    báo Data Quality. Không chặn (city/area vẫn đúng).
-3. `semantic_metadata.location` chưa gắn concept_id `LOC_*` (mới có text+toạ độ) — đủ filter/hiển thị;
-   gắn LOC concept để dùng cho quan hệ near là tinh chỉnh sau.
+3. `semantic_metadata.location` đã gắn concept_id `LOC_*` cho 520/520 hotel (cập nhật 2026-06-12).
+   Việc còn lại chỉ là QC alias/hierarchy của `location.generated.yaml` nếu cần mở rộng production.
 
 ## Kết luận → Bước 5
 Object HARD xong cho 520 hotel, validate sạch. Còn **phần SOFT** (style/aspect + sentiment từ

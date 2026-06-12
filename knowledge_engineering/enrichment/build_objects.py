@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import glob
 import json
+import re
 from collections import defaultdict
 
 import yaml
@@ -45,6 +46,107 @@ MANY_FACETS = {"amenity", "setting", "purpose", "style", "aspect"}
 
 LOC_YAML = "ontology/core/location.generated.yaml"
 LOC_SETTING_YAML = "ontology/core/location_setting.generated.yaml"
+
+
+def _location_text_forms(text: str | None) -> list[str]:
+    if not text:
+        return []
+    raw = str(text).strip()
+    if not raw:
+        return []
+    # Agoda sometimes stores city as "Tam Ky (Quang Nam)"; ontology label is "Tam Ky".
+    without_parentheses = re.sub(r"\s*\([^)]*\)\s*", " ", raw).strip()
+    out = [raw]
+    if without_parentheses and without_parentheses != raw:
+        out.append(without_parentheses)
+    return out
+
+
+def load_location_index() -> dict:
+    """Build a lookup index from location labels/surface forms to LOC_* concept ids."""
+    from knowledge_engineering.common.normalize import normalize
+
+    concepts = yaml.safe_load(open(LOC_YAML, encoding="utf-8"))["concepts"]
+    index: dict[str, list[str]] = defaultdict(list)
+
+    def add(text: str | None, cid: str) -> None:
+        for form in _location_text_forms(text):
+            key = normalize(form, fold=True)
+            if key and cid not in index[key]:
+                index[key].append(cid)
+
+    for cid, data in concepts.items():
+        if not cid.startswith("LOC_") or data.get("facet") != "location":
+            continue
+        label = data.get("label") or {}
+        add(label.get("vi"), cid)
+        add(label.get("en"), cid)
+        for forms in (data.get("surface_forms") or {}).values():
+            for form in forms or []:
+                add(form, cid)
+
+    depth_cache: dict[str, int] = {}
+
+    def depth(cid: str) -> int:
+        if cid in depth_cache:
+            return depth_cache[cid]
+        parent = concepts.get(cid, {}).get("parent") or concepts.get(cid, {}).get("located_in")
+        depth_cache[cid] = 1 + depth(parent) if parent in concepts else 0
+        return depth_cache[cid]
+
+    return {"concepts": concepts, "index": dict(index), "depth": depth}
+
+
+def _is_descendant(cid: str, parent_hint: str | None, concepts: dict) -> bool:
+    if not parent_hint:
+        return False
+    cur = cid
+    while cur in concepts:
+        parent = concepts[cur].get("parent") or concepts[cur].get("located_in")
+        if parent == parent_hint:
+            return True
+        cur = parent
+    return False
+
+
+def _resolve_location_value(
+    value: str | None,
+    loc_index: dict,
+    parent_hint: str | None = None,
+    preferred_kinds: tuple[str, ...] = (),
+) -> str | None:
+    from knowledge_engineering.common.normalize import normalize
+
+    concepts = loc_index["concepts"]
+    index = loc_index["index"]
+    depth = loc_index["depth"]
+    candidates: list[str] = []
+    for form in _location_text_forms(value):
+        candidates.extend(index.get(normalize(form, fold=True), []))
+    candidates = list(dict.fromkeys(candidates))
+    if not candidates:
+        return None
+
+    def rank(cid: str) -> tuple[int, int, int]:
+        data = concepts.get(cid, {})
+        parent_ok = _is_descendant(cid, parent_hint, concepts)
+        kind_ok = data.get("kind") in preferred_kinds if preferred_kinds else True
+        return (1 if parent_ok else 0, 1 if kind_ok else 0, depth(cid))
+
+    return max(candidates, key=rank)
+
+
+def resolve_location_concept(location: dict | None, loc_index: dict) -> str | None:
+    """Resolve structured hotel location to the most specific LOC_* concept id."""
+    if not isinstance(location, dict):
+        return None
+
+    country_id = _resolve_location_value(location.get("country"), loc_index, preferred_kinds=("country",))
+    province_id = _resolve_location_value(location.get("province"), loc_index, preferred_kinds=("place", "country"))
+    city_id = _resolve_location_value(location.get("city"), loc_index, province_id, preferred_kinds=("place",))
+    district_id = _resolve_location_value(location.get("district"), loc_index, city_id, preferred_kinds=("area",))
+    area_id = _resolve_location_value(location.get("area"), loc_index, city_id, preferred_kinds=("area",))
+    return area_id or district_id or city_id or province_id or country_id
 
 
 def load_facets() -> dict[str, str]:
@@ -112,10 +214,16 @@ def build_semantic_metadata(by_facet: dict[str, list[dict]]) -> dict:
 
 
 def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
-                 facets: dict[str, str], loc_setting: dict[str, list[str]]) -> dict:
+                 facets: dict[str, str], loc_setting: dict[str, list[str]], loc_index: dict) -> dict:
     hid = hotel.get("hotel_id")
+    negative_style_profile = profile.get("negative_style_profile", {}) or {}
+    concept_profile = {
+        c: v for c, v in profile.items()
+        if c != "negative_style_profile" and isinstance(v, dict) and "score" in v
+    }
     by_facet = split_by_facet(tags, facets)
     sm = build_semantic_metadata(by_facet)
+    sm["location"] = resolve_location_concept(meta.get("location"), loc_index)
 
     # SETTING bổ sung TỪ LOCATION (suy từ data: hotel ở Nha Trang -> COASTAL...). Gộp với
     # setting đã có từ view_types (tag). Khử trùng. -> COASTAL/ISLAND/CITY_CENTER không còn "chết".
@@ -130,7 +238,7 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
     # SOFT (Bước 5): style đủ mạnh -> semantic_metadata.style (để lọc/boost);
     #                aspect -> luôn ở semantic_profile (điểm trải nghiệm, không lọc cứng).
     sm["style"] = sorted(
-        c for c, v in profile.items()
+        c for c, v in concept_profile.items()
         if c.startswith("STYLE_") and v["score"] >= SOFT_STYLE_MIN_SCORE
     )
 
@@ -162,8 +270,11 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
         # KHÔNG lọc cứng — dùng để rank/boost + giải thích. aspect ở đây, style cũng giữ đầy đủ.
         "semantic_profile": {
             c: {"score": v["score"], "evidence_count": v["evidence_count"], "source": v["source"]}
-            for c, v in sorted(profile.items(), key=lambda x: -x[1]["score"])
+            for c, v in sorted(concept_profile.items(), key=lambda x: -x[1]["score"])
         },
+        # Negative style tách riêng để query/UI biết khách sạn bị chê theo cảm nhận nào
+        # (vd STYLE_QUIET negative = bị chê ồn). Không tạo STYLE_NOT_* trong ontology.
+        "negative_style_profile": negative_style_profile,
         "provenance": {
             "source": hotel.get("source", "agoda"),
             "source_url": hotel.get("source_url"),
@@ -181,14 +292,23 @@ def run() -> dict:
     import os
     prof_all = json.load(open(PROFILE_JSON, encoding="utf-8")) if os.path.exists(PROFILE_JSON) else {}
     loc_setting = load_location_setting()
+    loc_index = load_location_index()
     objects: dict[str, dict] = {}
-    stats = {"n": 0, "price_capped": 0, "no_object_type": 0, "with_style": 0, "tier": defaultdict(int)}
+    stats = {
+        "n": 0,
+        "price_capped": 0,
+        "no_object_type": 0,
+        "with_style": 0,
+        "with_location": 0,
+        "no_location": 0,
+        "tier": defaultdict(int),
+    }
 
     for f in sorted(glob.glob(HOTELS_GLOB)):
         hotel = json.load(open(f, encoding="utf-8"))
         key = f"acc_{hotel.get('hotel_id')}"
         obj = build_object(hotel, tags_all.get(key, []), meta_all.get(key, {}),
-                           prof_all.get(key, {}), facets, loc_setting)
+                           prof_all.get(key, {}), facets, loc_setting, loc_index)
         objects[key] = obj
         stats["n"] += 1
         if obj["semantic_metadata"].get("style"):
@@ -197,6 +317,10 @@ def run() -> dict:
             stats["price_capped"] += 1
         if obj["semantic_metadata"].get("object_type") is None:
             stats["no_object_type"] += 1
+        if obj["semantic_metadata"].get("location"):
+            stats["with_location"] += 1
+        else:
+            stats["no_location"] += 1
         stats["tier"][obj["semantic_metadata"].get("price_tier")] += 1
 
     json.dump(objects, open(OUT_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
@@ -206,6 +330,7 @@ def run() -> dict:
 if __name__ == "__main__":
     s = run()
     print(f"Objects: {s['n']} -> {OUT_JSON}")
+    print(f"location LOC_*: {s['with_location']} | missing: {s['no_location']}")
     print(f"price_capped (giá min=5tr, gắn cờ): {s['price_capped']}")
     print(f"thiếu object_type: {s['no_object_type']}")
     print(f"có style (SOFT từ profile): {s['with_style']}")
