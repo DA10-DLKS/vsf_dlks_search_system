@@ -77,12 +77,16 @@ evaluation/reports/*
 !evaluation/reports/.gitkeep
 
 # ===== KE derived outputs (tái sinh bằng script — không commit) =====
-knowledge_engineering/enrichment/hotel_tags.json
-knowledge_engineering/enrichment/hotel_metadata.json
-knowledge_engineering/enrichment/knowledge_objects.json
-knowledge_engineering/enrichment/hotel_profiles.json
+# knowledge_engineering/enrichment/hotel_tags.json
+# knowledge_engineering/enrichment/hotel_metadata.json
+# knowledge_engineering/enrichment/knowledge_objects.json
+# knowledge_engineering/enrichment/hotel_profiles.json
 knowledge_engineering/enrichment/.llm_cache/
-knowledge_engineering/enrichment/review_evidence/
+# knowledge_engineering/enrichment/review_evidence/
+knowledge_engineering/enrichment/.norm_cache.pkl
+# knowledge_engineering/enrichment/candidate_queue.json
+# knowledge_engineering/enrichment/raw_discovery.jsonl
+# knowledge_engineering/enrichment/clusters.json
 
 # ===== Jupyter =====
 .ipynb_checkpoints/

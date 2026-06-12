@@ -37,15 +37,30 @@ knowledge_object:
       review_reputation: ref(metadata.md#layer-6)                # rating_breakdown, topics (ranking)
       semantic: semantic_metadata                                # Layer 8 — dùng concept_id (xem dưới)
 
-    # tags: semantic tag KE gắn. concept TRUNG TÍNH; mỗi tag có confidence + provenance.
+    # tags: semantic tag PRESENCE (HARD) KE gắn. concept TRUNG TÍNH; mỗi tag có confidence + provenance.
+    # QUAN TRỌNG (semantics): `confidence` = ĐỘ CHẮC TAG ĐÚNG (presence từ structured/rule), 0..1.
+    #   KHÔNG phải điểm trải nghiệm review. Tín hiệu review (yên tĩnh tới mức nào) nằm RIÊNG ở
+    #   `semantic_profile[concept].score` — KHÔNG đổ vào tags (tránh ranking hiểu nhầm score thấp =
+    #   "bằng chứng yếu rằng tag đúng"). review_profile KHÔNG còn là source hợp lệ của tags.
     tags:
       type: list
       item:
         required: [concept, confidence, sources]
         fields:
           concept: str       # concept_id thuộc ontology/core/*.yaml
-          confidence: float  # 0..1
-          sources: [str]     # source_tag | rule | embedding | llm | review_profile (provenance tầng nào gắn)
+          confidence: float  # 0..1 — độ chắc TAG ĐÚNG (presence), KHÔNG phải score trải nghiệm
+          sources: [str]     # source_tag | rule | embedding | llm (provenance tầng nào gắn presence)
+
+    # semantic_profile: điểm SOFT/trải nghiệm từ review (Bước 5). KHÔNG lọc cứng — ranking boost
+    # + giải thích. Tách khỏi tags để semantics rõ: `score` = mức MẠNH/YẾU (Wilson), KHÁC confidence.
+    semantic_profile:
+      type: map            # concept_id -> {score, evidence_count, source}
+      value:
+        required: [score, evidence_count, source]
+        fields:
+          score: float            # 0..1 — mức độ MẠNH/YẾU của trải nghiệm (KHÔNG phải confidence)
+          evidence_count: int     # số review/lượt nhắc làm bằng chứng
+          source: str             # agoda_grades | agoda_review_tags | absa
 
 # -----------------------------------------------------------------------------
 # SEMANTIC METADATA (Layer 8) — dùng concept_id, KHÔNG chuỗi phẳng. Mỗi key ánh xạ 1 facet.
@@ -78,12 +93,19 @@ review_extra:
 # -----------------------------------------------------------------------------
 # RANGE FILTERS — attribute SỐ (filter cứng), khớp facets.yaml > range_filters + metadata.md Layer 1.
 # Liệt kê kiểu/đơn vị để pydantic + DA09 thống nhất. KHÔNG phải concept.
+#
+# ⚠ ĐƠN VỊ GIÁ (chốt với DA09 — mục 11 review thiết kế): price_vnd = VND / ĐÊM / phòng rẻ nhất.
+#   Slot-filling DA09 phải trả CÙNG đơn vị: "dưới 3tr" -> 3_000_000 (VND/đêm), KHÔNG phải /người,
+#   /tổng kỳ nghỉ, hay nghìn-đồng. Lệch đơn vị ở filter cứng = loại nhầm cả loạt kết quả mà không
+#   ai thấy lỗi. DA09 owner xác nhận đơn vị slot price trước khi nối filter.
+#   CAVEAT DATA: hiện giá nguồn bị cap 5tr (placeholder) -> object gắn cờ `price_capped`; tầng
+#   search thấy cờ thì KHÔNG lọc-giá cứng cho hotel đó (xem build_objects.py). Chờ DQ crawl giá thật.
 # -----------------------------------------------------------------------------
 range_filters:
   star_rating:  {type: int,   min: 1, max: 5,  metadata_field: core_metadata.star_rating}
   review_score: {type: float, min: 0, max: 10, metadata_field: core_metadata.review_score}
-  price_vnd:    {type: int,   min: 0,          metadata_field: room_metadata.cheapest_price, nullable: true}
-  distance_km:  {type: float, min: 0,          metadata_field: nearby_geo_metadata.nearby_summary}
+  price_vnd:    {type: int,   min: 0,          unit: "VND/đêm/phòng rẻ nhất", metadata_field: room_metadata.cheapest_price, nullable: true}
+  distance_km:  {type: float, min: 0,          unit: "km",                    metadata_field: nearby_geo_metadata.nearby_summary}
 
 # -----------------------------------------------------------------------------
 # SCHEMA CHANGE PROTOCOL (mentor yêu cầu): đổi schema -> GitHub Issue -> họp 24h ->

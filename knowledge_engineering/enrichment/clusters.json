@@ -1,0 +1,1022 @@
+{
+  "version": "1.0",
+  "threshold": 0.7,
+  "model": "bge-m3",
+  "n_phrases": 54,
+  "n_clusters": 20,
+  "clusters": [
+    {
+      "cluster_id": "c001",
+      "members": [
+        "yên tĩnh",
+        "hiện đại",
+        "thư giãn",
+        "đẳng cấp",
+        "cổ điển",
+        "luxurious",
+        "STYLE_QUIET",
+        "sôi động",
+        "sang trọng",
+        "ồn ào",
+        "luxury",
+        "quiet",
+        "modern",
+        "relaxing",
+        "kiến trúc hiện đại",
+        "lively",
+        "STYLE_MODERN",
+        "kiến trúc cổ điển",
+        "hơi ồn",
+        "tranquil",
+        "luxe",
+        "nhộn nhịp",
+        "thư giãn và đẳng cấp",
+        "cổ điển Pháp",
+        "noisy"
+      ],
+      "label_hint": "yên tĩnh",
+      "hotel_count": 270,
+      "freq": 641,
+      "sentiment_dist": {
+        "positive": 546,
+        "negative": 73,
+        "neutral": 19,
+        "mixed": 3
+      },
+      "neg_ratio": 0.11,
+      "examples": [
+        "Ranta rauhallinen, niin kuin hotellin ilmapiiri muutenkin.",
+        "roligt ved vandet ( ingen høj musik eller sælgere)",
+        "I wanted to swim and relax quietly.",
+        "静か",
+        "落ち着いた雰囲気の部屋でゆっくりできます",
+        "một kỳ nghỉ yên tĩnh thư giãn",
+        "enjoy a quiet and confortable stay",
+        "quiet area"
+      ],
+      "hotels": [
+        9195,
+        9698,
+        10961,
+        10962,
+        10964,
+        10976,
+        11002,
+        11013,
+        12132,
+        43384,
+        43411,
+        48363,
+        48364,
+        65153,
+        70624,
+        73279,
+        73282,
+        108286,
+        109119,
+        159186,
+        161676,
+        161729,
+        165511,
+        173622,
+        179080,
+        182167,
+        185968,
+        210187,
+        239482,
+        263516,
+        271561,
+        281497,
+        284713,
+        289451,
+        290212,
+        296330,
+        305316,
+        315667,
+        317796,
+        336669,
+        338255,
+        338256,
+        344975,
+        399935,
+        407839,
+        410128,
+        412707,
+        433003,
+        444892,
+        462837,
+        463095,
+        488373,
+        488842,
+        502099,
+        523102,
+        529354,
+        533079,
+        548445,
+        666232,
+        706033,
+        729579,
+        736941,
+        745965,
+        766807,
+        772347,
+        859981,
+        860887,
+        894894,
+        907601,
+        926818,
+        926872,
+        926899,
+        926909,
+        963857,
+        995573,
+        1015998,
+        1030347,
+        1032041,
+        1061364,
+        1062253,
+        1122443,
+        1122450,
+        1155111,
+        1158176,
+        1158643,
+        1160137,
+        1174345,
+        1189049,
+        1193207,
+        1195868,
+        1285662,
+        1519798,
+        1576565,
+        1602545,
+        1602693,
+        1624474,
+        1639502,
+        1730434,
+        1803429,
+        1809347,
+        1985160,
+        1985199,
+        1994625,
+        2114938,
+        2163076,
+        2190907,
+        2577124,
+        2614365,
+        2985143,
+        3664358,
+        4128513,
+        4459783,
+        4462454,
+        4593719,
+        4942635,
+        4947690,
+        5663774,
+        5663879,
+        5663891,
+        5685860,
+        5686721,
+        5780775,
+        5873574,
+        5877654,
+        5930920,
+        6163849,
+        6255260,
+        6359030,
+        6363024,
+        6377853,
+        6393486,
+        6421211,
+        6428322,
+        6542427,
+        6593570,
+        6868294,
+        6945065,
+        7394734,
+        8213119,
+        9065853,
+        9554406,
+        9776735,
+        10185656,
+        10247322,
+        10665115,
+        10670772,
+        10954459,
+        11024791,
+        11081947,
+        15535123,
+        16093065,
+        16209810,
+        16282119,
+        16366479,
+        16375525,
+        18264628,
+        21971824,
+        22642078,
+        23071123,
+        23125329,
+        23386003,
+        23780986,
+        25688522,
+        25773171,
+        28201768,
+        29459054,
+        29464613,
+        30196571,
+        30804222,
+        30897715,
+        31038749,
+        31039863,
+        31461091,
+        31561179,
+        31642453,
+        32680041,
+        32914376,
+        33425968,
+        33550196,
+        33941483,
+        34066654,
+        34198470,
+        34309695,
+        34557033,
+        34561841,
+        35039383,
+        35054716,
+        35354312,
+        35958304,
+        36122972,
+        36224135,
+        36697714,
+        36709877,
+        37181026,
+        37244894,
+        37344485,
+        37353978,
+        37474732,
+        37697306,
+        37712446,
+        37718747,
+        37817493,
+        38037213,
+        38583105,
+        38684158,
+        38692610,
+        38722254,
+        38746777,
+        39532985,
+        39665334,
+        41591306,
+        41926154,
+        42109640,
+        42391445,
+        43320993,
+        44184739,
+        44205914,
+        44314482,
+        44777877,
+        45658596,
+        45888608,
+        45912624,
+        46567202,
+        46727693,
+        46871000,
+        46886612,
+        46992320,
+        47615938,
+        47817934,
+        48029813,
+        48561897,
+        49450184,
+        49682296,
+        49851722,
+        51060966,
+        51620224,
+        52133786,
+        52495000,
+        54795553,
+        55270044,
+        55717853,
+        58686039,
+        58958232,
+        59037669,
+        60155401,
+        61638631,
+        62547913,
+        63314499,
+        63347126,
+        63942689,
+        64005963,
+        64060008,
+        64242078,
+        64327220,
+        64608699,
+        65513469,
+        65867796,
+        67155442,
+        67247416,
+        67267096,
+        67703642,
+        67707562,
+        68092779,
+        68299826,
+        70410096,
+        71105731,
+        73004500,
+        73809693,
+        74577726,
+        75796646
+      ]
+    },
+    {
+      "cluster_id": "c002",
+      "members": [
+        "thân thiện",
+        "thân thiện với môi trường",
+        "family-friendly",
+        "phong cách gia đình",
+        "thân thiện với trẻ em",
+        "thiết kế đẹp",
+        "đẹp",
+        "kiến trúc độc đáo",
+        "dễ thương"
+      ],
+      "label_hint": "thân thiện",
+      "hotel_count": 104,
+      "freq": 131,
+      "sentiment_dist": {
+        "positive": 122,
+        "negative": 5,
+        "neutral": 4,
+        "mixed": 0
+      },
+      "neg_ratio": 0.04,
+      "examples": [
+        "スタッフさんも皆さんフレンドリーで心地よい滞在でした",
+        "Such an amazing time here!",
+        "Cleaning staff very nice and helpful.",
+        "Personnel accueillant",
+        "friendly and Good wellcome",
+        "cozy and relaxing, beautiful scenery!",
+        "Accueil sympathique",
+        "The staff is friendly and helpful"
+      ],
+      "hotels": [
+        9195,
+        10961,
+        10962,
+        10964,
+        10976,
+        43384,
+        48363,
+        73279,
+        165247,
+        165511,
+        173622,
+        178195,
+        185968,
+        194445,
+        210187,
+        287957,
+        296330,
+        338255,
+        399935,
+        410128,
+        412707,
+        488373,
+        625168,
+        666232,
+        729579,
+        736941,
+        869046,
+        907601,
+        1032420,
+        1193207,
+        1602545,
+        1624474,
+        1985160,
+        1994625,
+        2114938,
+        2402683,
+        4128513,
+        4593719,
+        4974064,
+        5161316,
+        5663774,
+        5663891,
+        5808626,
+        6363024,
+        6377313,
+        6377853,
+        6421211,
+        6945065,
+        9776735,
+        10247322,
+        11024791,
+        11081947,
+        16157788,
+        16209810,
+        16260062,
+        16282119,
+        16784780,
+        18264628,
+        21971824,
+        23386003,
+        30196571,
+        31038749,
+        31039863,
+        31127662,
+        31461091,
+        31561179,
+        31642453,
+        32260660,
+        33550196,
+        33589745,
+        34198470,
+        34309695,
+        34557033,
+        34768604,
+        35354312,
+        36697714,
+        37710972,
+        37719704,
+        37817493,
+        37911814,
+        39532985,
+        46992320,
+        47780653,
+        48561897,
+        49450184,
+        50138938,
+        50146107,
+        52133786,
+        54795553,
+        54967082,
+        56358742,
+        58958232,
+        63447487,
+        64005963,
+        64608699,
+        65513469,
+        65913216,
+        67155442,
+        67267096,
+        70410096,
+        71105731,
+        74577726,
+        75796646,
+        79095712
+      ]
+    },
+    {
+      "cluster_id": "c003",
+      "members": [
+        "lãng mạn"
+      ],
+      "label_hint": "lãng mạn",
+      "hotel_count": 27,
+      "freq": 32,
+      "sentiment_dist": {
+        "positive": 29,
+        "negative": 2,
+        "neutral": 1,
+        "mixed": 0
+      },
+      "neg_ratio": 0.06,
+      "examples": [
+        "i can have a romantic dinner on the boat and enjoy the saigon river view.",
+        "It was very romantic.",
+        "make the balcony looks more romantic.",
+        "đề xuất nên decor trang trí thêm 1 số hình ảnh hoặc vật trang trí mang tính chất địa phương, văn hóa của Đà Nẵng thêm sẽ tuyệt vời hơn",
+        "装飾はロマンチックで",
+        "とてもロマンチックでした。",
+        "Perfect location for a romantic getaway.",
+        "lovely being outside in the evening lit by lanterns"
+      ],
+      "hotels": [
+        9195,
+        10964,
+        271561,
+        289451,
+        296330,
+        338255,
+        338256,
+        548445,
+        926899,
+        1015998,
+        4593719,
+        4942635,
+        6359030,
+        9776735,
+        25539435,
+        30804222,
+        31039863,
+        31642453,
+        34309695,
+        41926154,
+        44314482,
+        46886612,
+        47780653,
+        61137452,
+        63314499,
+        64060008,
+        64242078
+      ]
+    },
+    {
+      "cluster_id": "c004",
+      "members": [
+        "kiểu châu Âu",
+        "kiểu Nhật"
+      ],
+      "label_hint": "kiểu châu Âu",
+      "hotel_count": 9,
+      "freq": 10,
+      "sentiment_dist": {
+        "positive": 6,
+        "negative": 2,
+        "neutral": 2,
+        "mixed": 0
+      },
+      "neg_ratio": 0.2,
+      "examples": [
+        "this is not equal to 5 Stars in Europe, more like 3 Stars.",
+        "If you like European style, this will satisfy you.",
+        "Well decorated with European style.",
+        "ils ont essayer de recréer l’Europe, cependant si nous sommes au vietnam, ce n’est pas pour avoir l’impression d’être en Europe?!",
+        "very look like the hotel in Toyko",
+        "Gối quá mềm nhưng resort có sẵn các loại gối khác như gối cao su nếu cần.",
+        "Nhà vệ sinh như bên Nhật",
+        "The room has a feel similar to a Japanese hotel."
+      ],
+      "hotels": [
+        43384,
+        161676,
+        178195,
+        31642453,
+        36122972,
+        37712446,
+        42109640,
+        47615938,
+        70410096
+      ]
+    },
+    {
+      "cluster_id": "c005",
+      "members": [
+        "mới"
+      ],
+      "label_hint": "mới",
+      "hotel_count": 7,
+      "freq": 7,
+      "sentiment_dist": {
+        "positive": 5,
+        "negative": 1,
+        "neutral": 1,
+        "mixed": 0
+      },
+      "neg_ratio": 0.14,
+      "examples": [
+        "New hotel",
+        "Khách sạn mới nên rất ok",
+        "and new",
+        "새집 냄새가 나는게 아쉬웠지만",
+        "The new hotel is beautiful",
+        "this new hotel",
+        "the hotel is new"
+      ],
+      "hotels": [
+        182167,
+        28985333,
+        35958304,
+        39665334,
+        55913050,
+        67267096,
+        75796646
+      ]
+    },
+    {
+      "cluster_id": "c006",
+      "members": [
+        "đáng giá",
+        "đắt đỏ"
+      ],
+      "label_hint": "đáng giá",
+      "hotel_count": 7,
+      "freq": 8,
+      "sentiment_dist": {
+        "positive": 4,
+        "negative": 3,
+        "neutral": 1,
+        "mixed": 0
+      },
+      "neg_ratio": 0.38,
+      "examples": [
+        "Staff could be more trained to advise tourists.",
+        "really good value",
+        "great experience overall",
+        "có thêm buffet sáng trong giá luôn thì quá tốt cho cả nhà",
+        "this place is great value for the price",
+        "一泊で３万円超えなので、ちょっと高いかなと思います",
+        "宿泊費が高いこと",
+        "I felt it was a bit overpriced for a small town in Vietnam"
+      ],
+      "hotels": [
+        9195,
+        2577124,
+        6421211,
+        9776735,
+        30622516,
+        58958232,
+        64005963
+      ]
+    },
+    {
+      "cluster_id": "c007",
+      "members": [
+        "vintage"
+      ],
+      "label_hint": "vintage",
+      "hotel_count": 6,
+      "freq": 6,
+      "sentiment_dist": {
+        "positive": 6,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "It is a vintage hotel with a history",
+        "following a slightly vintage trend",
+        "Clean & friendly",
+        "The room has vintage style",
+        "the decor is cute and vintage.",
+        "The hotel is literally vintage"
+      ],
+      "hotels": [
+        10964,
+        462837,
+        1984611,
+        30196571,
+        31127662,
+        49450184
+      ]
+    },
+    {
+      "cluster_id": "c008",
+      "members": [
+        "chill"
+      ],
+      "label_hint": "chill",
+      "hotel_count": 6,
+      "freq": 6,
+      "sentiment_dist": {
+        "positive": 6,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "the pool is still very nice, right next to beach and clean & Chill",
+        "The view of the Nhat Le River is very chill",
+        "view biển khá chill",
+        "rất chill và hợp túi tiền",
+        "Cảm giác thoải mái như ở nhà.",
+        "very chill, perfect for a true vacation"
+      ],
+      "hotels": [
+        736941,
+        5663774,
+        10670772,
+        27874314,
+        37148082,
+        58354137
+      ]
+    },
+    {
+      "cluster_id": "c009",
+      "members": [
+        "tropical"
+      ],
+      "label_hint": "tropical",
+      "hotel_count": 5,
+      "freq": 5,
+      "sentiment_dist": {
+        "positive": 5,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "Having a beautiful beach view and Eye of VinpearLand when the lights switch on.",
+        "the best opportunity to catch the sunrise at 5.30am rising from the horizon of South China Sea.",
+        "Beautiful, tropical setting, stunning local architecture",
+        "hermosísimas.",
+        "khu vực yên tĩnh nhưng lại rất gần các nhà hàng ăn uống và cà phê sát bờ biển"
+      ],
+      "hotels": [
+        65153,
+        182167,
+        338256,
+        9776735,
+        52133786
+      ]
+    },
+    {
+      "cluster_id": "c010",
+      "members": [
+        "thẩm mỹ"
+      ],
+      "label_hint": "thẩm mỹ",
+      "hotel_count": 5,
+      "freq": 5,
+      "sentiment_dist": {
+        "positive": 5,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "we got aesthetic vibe there.",
+        "the house is not fully enclosed; there are hollow openings for aesthetics and ventilation, which may let in some insects",
+        "the hotel is beautiful, clean",
+        "the property is really aesthetic",
+        "the hotel is new, aesthetically pleasing"
+      ],
+      "hotels": [
+        16784780,
+        21978371,
+        25773171,
+        64005963,
+        64327220
+      ]
+    },
+    {
+      "cluster_id": "c011",
+      "members": [
+        "view"
+      ],
+      "label_hint": "view",
+      "hotel_count": 4,
+      "freq": 4,
+      "sentiment_dist": {
+        "positive": 4,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "i like the view",
+        "such a beautiful view",
+        "Breathtaking view",
+        "シティビューの部屋からの眺めがとても良かったです！"
+      ],
+      "hotels": [
+        247789,
+        5873574,
+        6428322,
+        63447487
+      ]
+    },
+    {
+      "cluster_id": "c012",
+      "members": [
+        "oasis"
+      ],
+      "label_hint": "oasis",
+      "hotel_count": 4,
+      "freq": 4,
+      "sentiment_dist": {
+        "positive": 4,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "a beautiful luxury oasis in Hue",
+        "Es un Oasis ya que Hannoi es una ciudad muy ruidosa y caótica",
+        "the hotel - little oasis in the middle of the busy city.",
+        "It felt like a little oasis."
+      ],
+      "hotels": [
+        5663891,
+        16366479,
+        33550196,
+        62547913
+      ]
+    },
+    {
+      "cluster_id": "c013",
+      "members": [
+        "vibe"
+      ],
+      "label_hint": "vibe",
+      "hotel_count": 4,
+      "freq": 4,
+      "sentiment_dist": {
+        "positive": 4,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "The vibe (not crowded even in summer)",
+        "The homestay has a great vibe.",
+        "The place the view the vibe so ohsem",
+        "Great stay, Great vibes."
+      ],
+      "hotels": [
+        5686721,
+        31127662,
+        37712446,
+        66680429
+      ]
+    },
+    {
+      "cluster_id": "c014",
+      "members": [
+        "magical"
+      ],
+      "label_hint": "magical",
+      "hotel_count": 3,
+      "freq": 3,
+      "sentiment_dist": {
+        "positive": 3,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "the most magical and wonderful stay here",
+        "the most incredible part is being in the Park alone, in the night the fog/clouds cover eveything and it feels absolutely magical",
+        "The sunrise from the balcony was simply magical."
+      ],
+      "hotels": [
+        263516,
+        1062253,
+        22420717
+      ]
+    },
+    {
+      "cluster_id": "c015",
+      "members": [
+        "boutique"
+      ],
+      "label_hint": "boutique",
+      "hotel_count": 3,
+      "freq": 3,
+      "sentiment_dist": {
+        "positive": 3,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "boutique hotel.",
+        "feels more like a boutique hotel",
+        "the decorations and interior are cute like a boutique hotel."
+      ],
+      "hotels": [
+        894894,
+        29459054,
+        38692610
+      ]
+    },
+    {
+      "cluster_id": "c016",
+      "members": [
+        "tối giản"
+      ],
+      "label_hint": "tối giản",
+      "hotel_count": 3,
+      "freq": 3,
+      "sentiment_dist": {
+        "positive": 3,
+        "negative": 0,
+        "neutral": 0,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "phòng ốc ga trắng tối giản đúng gu tôi ^^",
+        "with a minimalist color scheme.",
+        "beautifully designed with a minimalist style"
+      ],
+      "hotels": [
+        9065853,
+        16784780,
+        64060008
+      ]
+    },
+    {
+      "cluster_id": "c017",
+      "members": [
+        "homestay"
+      ],
+      "label_hint": "homestay",
+      "hotel_count": 3,
+      "freq": 3,
+      "sentiment_dist": {
+        "positive": 2,
+        "negative": 0,
+        "neutral": 1,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "felt more like a homestay than a hotel",
+        "This hotel follows a very cute homestay model,",
+        "This like a homestay"
+      ],
+      "hotels": [
+        9065853,
+        34066654,
+        46867956
+      ]
+    },
+    {
+      "cluster_id": "c018",
+      "members": [
+        "zen"
+      ],
+      "label_hint": "zen",
+      "hotel_count": 2,
+      "freq": 4,
+      "sentiment_dist": {
+        "positive": 1,
+        "negative": 1,
+        "neutral": 2,
+        "mixed": 0
+      },
+      "neg_ratio": 0.25,
+      "examples": [
+        "Zen theme on every floor.",
+        "zen at every angles.",
+        "a Zen style theme ideal for couple stay.",
+        "very zen like ,almost too zen for me."
+      ],
+      "hotels": [
+        159186,
+        2577124
+      ]
+    },
+    {
+      "cluster_id": "c019",
+      "members": [
+        "hợp lệ"
+      ],
+      "label_hint": "hợp lệ",
+      "hotel_count": 2,
+      "freq": 3,
+      "sentiment_dist": {
+        "positive": 1,
+        "negative": 0,
+        "neutral": 2,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "부킹닷컴으로 예약한 숙박료는 세금 미포함이라고 하서 추가 결제가 진행되었어요.",
+        "Fajny widok z okna",
+        "Breakfast was quite small"
+      ],
+      "hotels": [
+        182167,
+        77976778
+      ]
+    },
+    {
+      "cluster_id": "c020",
+      "members": [
+        "hơi xa"
+      ],
+      "label_hint": "hơi xa",
+      "hotel_count": 2,
+      "freq": 3,
+      "sentiment_dist": {
+        "positive": 0,
+        "negative": 0,
+        "neutral": 3,
+        "mixed": 0
+      },
+      "neg_ratio": 0.0,
+      "examples": [
+        "A little far from the old quarter",
+        "a bit far from Old Town",
+        "It was a bit away from the old town"
+      ],
+      "hotels": [
+        1122443,
+        44777877
+      ]
+    }
+  ]
+}

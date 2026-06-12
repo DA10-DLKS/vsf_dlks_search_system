@@ -39,7 +39,12 @@ class Sentiment(str, Enum):
 
 
 class Tag(BaseModel):
-    """Semantic tag KE gắn cho object. concept TRUNG TÍNH + confidence + provenance."""
+    """Semantic tag PRESENCE (HARD) KE gắn cho object. concept TRUNG TÍNH + confidence + provenance.
+
+    QUAN TRỌNG (semantics): `confidence` = ĐỘ CHẮC TAG ĐÚNG (presence từ structured/rule), KHÔNG
+    phải điểm trải nghiệm review. Tín hiệu review (yên tĩnh tới mức nào) thuộc `semantic_profile`
+    với trường `score` — KHÔNG đổ vào đây. Vì vậy `review_profile` KHÔNG phải source hợp lệ của tag.
+    """
 
     concept: str
     confidence: float = Field(ge=0.0, le=1.0)
@@ -50,6 +55,17 @@ class Tag(BaseModel):
     def concept_must_exist(cls, v: str) -> str:
         if v not in CONCEPT_IDS:
             raise ValueError(f"concept '{v}' không có trong ontology/core/*.yaml")
+        return v
+
+    @field_validator("sources")
+    @classmethod
+    def sources_are_presence(cls, v: list[str]) -> list[str]:
+        # tag = presence; tín hiệu review đi vào semantic_profile, KHÔNG vào tags.
+        if "review_profile" in v:
+            raise ValueError(
+                "source 'review_profile' không hợp lệ cho tag (presence). "
+                "Điểm review thuộc semantic_profile.score, không phải tags.confidence."
+            )
         return v
 
 
@@ -76,6 +92,17 @@ class ReviewExtra(BaseModel):
     aspects: list[AspectSentiment] = Field(default_factory=list)
 
 
+class ProfileEntry(BaseModel):
+    """1 mục semantic_profile — điểm SOFT/trải nghiệm review (Bước 5). KHÔNG lọc cứng.
+
+    `score` = mức MẠNH/YẾU của trải nghiệm (Wilson), KHÁC `confidence` của Tag (độ chắc tag đúng).
+    """
+
+    score: float = Field(ge=0.0, le=1.0)
+    evidence_count: int = Field(ge=0)
+    source: str
+
+
 class KnowledgeObject(BaseModel):
     """Đơn vị tài liệu cuối (rút gọn cho contract Sprint 1; mở rộng metadata ở Sprint 3)."""
 
@@ -85,7 +112,16 @@ class KnowledgeObject(BaseModel):
     source: str
     content: Optional[str] = None
     tags: list[Tag] = Field(default_factory=list)
+    semantic_profile: dict[str, ProfileEntry] = Field(default_factory=dict)
     review_extra: Optional[ReviewExtra] = None
+
+    @field_validator("semantic_profile")
+    @classmethod
+    def profile_concepts_exist(cls, v: dict[str, ProfileEntry]) -> dict[str, ProfileEntry]:
+        for cid in v:
+            if cid not in CONCEPT_IDS:
+                raise ValueError(f"semantic_profile concept '{cid}' không có trong ontology")
+        return v
 
 
 # --- self-test với object mẫu dựng từ data thật ------------------------------
@@ -99,8 +135,12 @@ def _sample() -> dict:
         "tags": [
             {"concept": "AMEN_BEACHFRONT", "confidence": 0.98, "sources": ["source_tag", "rule"]},
             {"concept": "OBJ_RESORT", "confidence": 1.0, "sources": ["source_tag"]},
-            {"concept": "STYLE_QUIET", "confidence": 0.40, "sources": ["review_profile"]},
         ],
+        # điểm review (yên tĩnh tới mức nào) -> semantic_profile.score, KHÔNG phải tags.confidence
+        "semantic_profile": {
+            "ASPECT_CLEANLINESS": {"score": 0.90, "evidence_count": 8123, "source": "agoda_grades"},
+            "STYLE_QUIET": {"score": 0.40, "evidence_count": 12, "source": "absa"},
+        },
         "review_extra": {
             "overall_sentiment": "mixed",
             "aspects": [
@@ -133,3 +173,12 @@ if __name__ == "__main__":
         print("[FAIL] đáng lẽ phải báo lỗi aspect sai facet")
     except Exception as e:
         print("[OK] bắt đúng aspect sai facet:", str(e).splitlines()[-1][:70])
+
+    # negative test: review_profile làm source của tag (trộn score vào confidence) -> phải raise
+    bad3 = _sample()
+    bad3["tags"].append({"concept": "STYLE_QUIET", "confidence": 0.40, "sources": ["review_profile"]})
+    try:
+        KnowledgeObject.model_validate(bad3)
+        print("[FAIL] đáng lẽ phải từ chối source review_profile trong tag")
+    except Exception as e:
+        print("[OK] bắt đúng review_profile trong tag:", str(e).splitlines()[-1][:70])
