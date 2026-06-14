@@ -46,6 +46,32 @@ MANY_FACETS = {"amenity", "setting", "purpose", "style", "aspect"}
 
 LOC_YAML = "ontology/core/location.generated.yaml"
 LOC_SETTING_YAML = "ontology/core/location_setting.generated.yaml"
+RELATIONS_NEAR_YAML = "ontology/relations_near.generated.yaml"  # hotel <-> LMK_* (near + km)
+
+
+def load_near_landmarks() -> dict[str, list[dict]]:
+    """Map acc_id -> [{concept: LMK_*, distance_km}], sắp theo km gần->xa.
+
+    Nguồn: relations_near.generated.yaml (sinh bởi entity_extraction/build_relations.py từ
+    nearby_places.distance_km). Đây là cầu nối đưa quan hệ near (đã có sẵn trong ontology)
+    vào knowledge_object — trước đây object chỉ giữ nearby_places RAW, không có LMK_*.
+    """
+    import os
+    if not os.path.exists(RELATIONS_NEAR_YAML):
+        return {}
+    data = yaml.safe_load(open(RELATIONS_NEAR_YAML, encoding="utf-8")) or {}
+    out: dict[str, list[dict]] = defaultdict(list)
+    for r in data.get("relations", []) or []:
+        if r.get("rel") != "near":
+            continue
+        acc = r.get("from")
+        cid = r.get("to")
+        if not acc or not cid or not str(cid).startswith("LMK_"):
+            continue
+        out[acc].append({"concept": cid, "distance_km": r.get("distance_km")})
+    for acc in out:
+        out[acc].sort(key=lambda x: (x["distance_km"] is None, x["distance_km"] or 0))
+    return dict(out)
 
 
 def _location_text_forms(text: str | None) -> list[str]:
@@ -214,7 +240,8 @@ def build_semantic_metadata(by_facet: dict[str, list[dict]]) -> dict:
 
 
 def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
-                 facets: dict[str, str], loc_setting: dict[str, list[str]], loc_index: dict) -> dict:
+                 facets: dict[str, str], loc_setting: dict[str, list[str]], loc_index: dict,
+                 near_landmarks: list[dict] | None = None) -> dict:
     hid = hotel.get("hotel_id")
     negative_style_profile = profile.get("negative_style_profile", {}) or {}
     concept_profile = {
@@ -242,6 +269,12 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
         if c.startswith("STYLE_") and v["score"] >= SOFT_STYLE_MIN_SCORE
     )
 
+    # NEARBY LANDMARK (LMK_*) từ relations_near (đã sinh bởi build_relations). Đưa vào
+    # semantic_metadata để tầng search nhặt được như mọi concept khác (many facet); giữ thêm
+    # field nearby_landmarks (có distance_km) để rank theo khoảng cách + giải thích.
+    near_lmk = near_landmarks or []
+    sm["nearby_landmark"] = [x["concept"] for x in near_lmk]
+
     # range_filters + cờ giá
     rf = dict(meta.get("range_filters", {}))
     price = rf.get("price_min_vnd")
@@ -266,6 +299,9 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
         "range_filters": rf,
         "location": meta.get("location"),
         "nearby_places": meta.get("nearby_places", []),
+        # nearby_landmarks: LMK_* đã map (từ relations_near) + km, gần->xa. nearby_places ở trên
+        # giữ RAW (hiển thị); đây là phần đã chuẩn hóa về ontology để lọc/rank theo địa danh.
+        "nearby_landmarks": near_lmk,
         # semantic_profile (Bước 5): điểm SOFT trải nghiệm/cảm nhận từ review (score/evidence/source).
         # KHÔNG lọc cứng — dùng để rank/boost + giải thích. aspect ở đây, style cũng giữ đầy đủ.
         "semantic_profile": {
@@ -293,6 +329,7 @@ def run() -> dict:
     prof_all = json.load(open(PROFILE_JSON, encoding="utf-8")) if os.path.exists(PROFILE_JSON) else {}
     loc_setting = load_location_setting()
     loc_index = load_location_index()
+    near_all = load_near_landmarks()
     objects: dict[str, dict] = {}
     stats = {
         "n": 0,
@@ -301,6 +338,7 @@ def run() -> dict:
         "with_style": 0,
         "with_location": 0,
         "no_location": 0,
+        "with_landmark": 0,
         "tier": defaultdict(int),
     }
 
@@ -308,7 +346,8 @@ def run() -> dict:
         hotel = json.load(open(f, encoding="utf-8"))
         key = f"acc_{hotel.get('hotel_id')}"
         obj = build_object(hotel, tags_all.get(key, []), meta_all.get(key, {}),
-                           prof_all.get(key, {}), facets, loc_setting, loc_index)
+                           prof_all.get(key, {}), facets, loc_setting, loc_index,
+                           near_all.get(key, []))
         objects[key] = obj
         stats["n"] += 1
         if obj["semantic_metadata"].get("style"):
@@ -321,6 +360,8 @@ def run() -> dict:
             stats["with_location"] += 1
         else:
             stats["no_location"] += 1
+        if obj.get("nearby_landmarks"):
+            stats["with_landmark"] += 1
         stats["tier"][obj["semantic_metadata"].get("price_tier")] += 1
 
     json.dump(objects, open(OUT_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
@@ -331,6 +372,7 @@ if __name__ == "__main__":
     s = run()
     print(f"Objects: {s['n']} -> {OUT_JSON}")
     print(f"location LOC_*: {s['with_location']} | missing: {s['no_location']}")
+    print(f"có nearby_landmarks (LMK_* từ relations_near): {s['with_landmark']}")
     print(f"price_capped (giá min=5tr, gắn cờ): {s['price_capped']}")
     print(f"thiếu object_type: {s['no_object_type']}")
     print(f"có style (SOFT từ profile): {s['with_style']}")

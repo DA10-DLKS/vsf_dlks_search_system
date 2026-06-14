@@ -229,6 +229,10 @@ def search(q: str, limit: int = 15) -> dict:
     # góp vào ranking (xem _LIVE_FEEL). vd STYLE_LUXURY/STYLE_ROMANTIC chưa hotel nào đạt.
     feel = [c for c in feel_all if c in _LIVE_FEEL]
     feel_skipped = [c for c in feel_all if c not in _LIVE_FEEL]
+    # ĐỊA DANH GẦN (LMK_*): SOFT — không lọc cứng (landmark chỉ ở vài hotel; lọc cứng dễ ra
+    # "0 kết quả giả", cùng tinh thần giá/setting). Hotel khớp được ưu tiên lên top, gần hơn (km
+    # nhỏ) xếp trên. Object mang LMK ở semantic_metadata.nearby_landmark + km ở nearby_landmarks.
+    lmk = [c for c in concepts if c.startswith("LMK_")]
 
     hits = []
     for obj in _objs.values():
@@ -274,9 +278,21 @@ def search(q: str, limit: int = 15) -> dict:
     #       mức giá -> ưu tiên hotel giá GẦN mức đó (dù giá fake, vẫn là proxy); rồi review_score.
     target_price = rng.get("price_max") or rng.get("price_min")
 
+    def lmk_match(o: dict):
+        """Trả (số LMK yêu cầu khớp, km tới LMK gần nhất trong số khớp)."""
+        if not lmk:
+            return 0, 10**12
+        want = set(lmk)
+        dists = [x.get("distance_km") for x in o.get("nearby_landmarks", [])
+                 if x.get("concept") in want and x.get("distance_km") is not None]
+        n_hit = sum(1 for x in o.get("nearby_landmarks", []) if x.get("concept") in want)
+        return n_hit, (min(dists) if dists else 10**12)
+
     def score(o: dict):
         oc = _all_concepts(o)
         soft_hit = sum(1 for c in soft if c in oc)
+        # ĐỊA DANH: hotel khớp nhiều LMK yêu cầu lên trước; trong cùng mức, gần (km nhỏ) lên trước.
+        lmk_hit, lmk_km = lmk_match(o)
         purpose_hit = len(purpose_amen & oc)  # số amenity khớp mục đích chuyến đi
         # Tổng điểm cảm nhận (kể cả feel skip), đã trừ nhẹ negative_style_profile để hotel bị chê
         # cùng STYLE (vd "không yên tĩnh") tụt hạng thay vì bị loại cứng.
@@ -287,11 +303,13 @@ def search(q: str, limit: int = 15) -> dict:
             price_gap = abs(p - target_price)
         else:
             price_gap = 10**12
-        return (-soft_hit, -purpose_hit, -feel_score, price_gap, -(rf.get("review_score") or 0))
+        # LMK đứng ĐẦU khóa sort khi câu nêu địa danh: khớp nhiều LMK + gần hơn lên top.
+        return (-lmk_hit, lmk_km, -soft_hit, -purpose_hit, -feel_score, price_gap,
+                -(rf.get("review_score") or 0))
     hits.sort(key=score)
     return {"concepts": concepts, "implicit": implicit, "hard": hard, "soft": soft, "feel": feel,
             "hard_skipped": hard_skipped, "feel_skipped": feel_skipped,
-            "loc_concepts": loc_concepts,
+            "loc_concepts": loc_concepts, "lmk": lmk,
             "purpose_amen": sorted(purpose_amen),
             "range": rng, "location": loc, "n": len(hits), "hits": hits[:limit]}
 
@@ -373,6 +391,8 @@ def show(q: str) -> None:
     print(f"   → CẢM NHẬN (từ review, lọc theo profile≥0.6): {r['feel'] or '—'}")
     loc_label = r["loc_concepts"] or r["location"] or "—"
     print(f"   → range: {r['range'] or '—'} | location: {loc_label}")
+    if r.get("lmk"):
+        print(f"   → ĐỊA DANH gần (ưu tiên, gần hơn lên top): {r['lmk']}")
     if "price_max" in r["range"] or "price_min" in r["range"]:
         print("   ⚠ GIÁ là placeholder (fake) — KHÔNG lọc cứng theo giá, chỉ ưu tiên hotel giá gần mức yêu cầu.")
     print(f"   → {r['n']} hotel khớp. Top (ưu tiên khớp nhiều tiêu chí + gần giá + điểm cao; trừ nhẹ negative style):")
@@ -397,9 +417,23 @@ def show(q: str) -> None:
         # đánh dấu hotel có tiện ích hợp mục đích chuyến đi (lý do được ưu tiên lên top)
         matched = sorted(set(r["purpose_amen"]) & _all_concepts(o))
         purpose_str = f" | ✓hợp mục đích: {', '.join(c.split('_', 1)[1].lower() for c in matched)}" if matched else ""
+        # khoảng cách tới (các) địa danh yêu cầu — lý do hotel được đẩy lên top
+        lmk_str = ""
+        if r.get("lmk"):
+            want = set(r["lmk"])
+            near = sorted(
+                ((x["concept"], x.get("distance_km")) for x in o.get("nearby_landmarks", [])
+                 if x["concept"] in want),
+                key=lambda t: (t[1] is None, t[1] or 0),
+            )
+            if near:
+                lmk_str = " | 📍" + ", ".join(
+                    f"{c.split('_', 1)[1].lower()} {km:g}km" if km is not None
+                    else c.split('_', 1)[1].lower() for c, km in near
+                )
         hotel_id = o.get("hotel_id") or o.get("id") or "?"
         print(f"      • {o['title'][:42]:42s} | id={hotel_id} | {o['location'].get('city')} "
-              f"| {star} | review {score}{feel_str} | {price}{cap}{purpose_str}")
+              f"| {star} | review {score}{feel_str} | {price}{cap}{purpose_str}{lmk_str}")
 
 
 if __name__ == "__main__":

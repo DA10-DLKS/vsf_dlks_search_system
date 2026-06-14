@@ -36,6 +36,28 @@ def test_query_demo_keeps_pure_place_intent():
     assert not query_demo.is_hotel_intent(q)
 
 
+def test_query_demo_ranks_hotels_near_requested_landmark_first():
+    q = "Tìm khách sạn ở Nha Trang gần công viên giải trí VinWonders Nha Trang"
+
+    r = query_demo.search(q)
+    assert "LMK_VINWONDERS_NHA_TRANG" in r["lmk"]
+
+    def near_km(o):
+        for x in o.get("nearby_landmarks", []):
+            if x["concept"] == "LMK_VINWONDERS_NHA_TRANG":
+                return x["distance_km"]
+        return None
+
+    # Hotel gần landmark phải đứng TRƯỚC hotel không gần; trong nhóm gần, km tăng dần.
+    flags = [near_km(o) is not None for o in r["hits"]]
+    assert flags[0], "hotel gần VinWonders phải đứng đầu, không bị hotel chung chung chen lên"
+    # mọi hotel có LMK đứng liền khối ở đầu (không bị xen kẽ bởi hotel không có LMK)
+    last_near = max(i for i, f in enumerate(flags) if f)
+    assert all(flags[: last_near + 1]), "hotel có/không LMK bị xen kẽ — LMK chưa ưu tiên đúng"
+    near_dists = [near_km(o) for o in r["hits"][: last_near + 1]]
+    assert near_dists == sorted(near_dists), "hotel gần landmark chưa sắp theo km tăng dần"
+
+
 def test_mapper_fuses_source_tag_and_rule_evidence():
     hotel = {
         "hotel_id": 1,
