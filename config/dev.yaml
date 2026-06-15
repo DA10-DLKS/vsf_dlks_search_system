@@ -7,8 +7,10 @@ embedding:
   model: BAAI/bge-m3
 
 vector_store:
-  url: http://localhost:6333
-  collection: vsf_travel
+  provider: pgvector
+  table: text_chunks
+  dimension: 1024
+  top_k: 10
 
 keyword_store:
   url: http://localhost:9200
