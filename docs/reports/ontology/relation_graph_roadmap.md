@@ -649,18 +649,30 @@ Input:
 knowledge_engineering/enrichment/knowledge_objects.json
 ```
 
-Cách lấy concept cho mỗi hotel:
+Cách lấy concept cho mỗi hotel (đọc TỪ `knowledge_objects.json`, hai loại tín hiệu):
 
 ```text
-semantic_metadata.object_type
-semantic_metadata.location
-semantic_metadata.amenity
-semantic_metadata.setting
-semantic_metadata.purpose
-semantic_metadata.price_tier
-semantic_metadata.style
-semantic_profile concept có score >= 0.6
+# semantic_metadata (nhãn có/không) — provenance=metadata:
+semantic_metadata.object_type / amenity / setting / purpose / price_tier / style
+# semantic_profile (cảm nhận review) — provenance=profile:
+semantic_profile concept có score >= 0.6   (aspect/style/amenity...)
+# BỎ: semantic_metadata.location (LOC_*) và nearby_landmarks (LMK_*)
 ```
+
+> ✅ **ĐÃ CHỐT nguồn (cập nhật sau thực nghiệm):** generator đọc `knowledge_objects.json`, KHÔNG dùng
+> `hotel_tags.json` nữa. Lý do: kiểm tra thật cho thấy `hotel_tags.json` chỉ có 47 concept (thiếu toàn
+> bộ LMK/LOC/ASPECT/price_tier, và chỉ 1 style), còn `knowledge_objects.json` có 794 (đủ 7 style,
+> price_tier, aspect). Hard tag nghèo tín hiệu chính là lý do trước đây chỉ ra ~16 candidate.
+>
+> - Mặc định `--source=both`: gộp `semantic_metadata` + `semantic_profile`, mỗi cạnh ghi `provenance`
+>   (`metadata` | `profile` | `metadata+profile`) thay cho `source_type` để biết nguồn — KHÔNG trộn thầm.
+> - **LMK_*/LOC_* bị loại tường minh** (`SKIP_PREFIXES`): là quan hệ object-level (hotel gần landmark /
+>   ở location), không phải concept↔concept; đi đường `generated_near`/`generated_location` riêng. Nếu
+>   nhét vào sẽ sinh hàng trăm cạnh rác kiểu `LMK_CHO_BEN_THANH -> AMEN_POOL`.
+> - `price_tier` vẫn block ở bảng 8.3 (price là range_filter, không nên thành relation cảm nhận).
+> - Thực nghiệm 520 hotel: metadata ~30, profile thêm style→*, gộp `both` ~39 candidate (gấp ~2.4×
+>   so với hard tag), trong đó nhóm `metadata+profile` (hai nguồn đồng thuận) đáng duyệt trước.
+> - Baseline `query_expansion.yaml` cũ vẫn đã được chụp ở Bước 1 (relation_audit.md) để đối chiếu.
 
 Chỉ số cần tính:
 
@@ -668,16 +680,15 @@ Chỉ số cần tính:
 support(A,B) = số hotel có cả A và B
 probability(A->B) = P(B|A)
 lift(A,B) = P(B|A) / P(B)
-```
-
-Ngưỡng khởi điểm đề xuất:
-
-```text
-support >= 8
-probability >= 0.35
-lift >= 1.5
 max edges per source = 5
 ```
+
+Ngưỡng: **dùng bộ per-facet ở mục 8.3 làm chuẩn duy nhất.** Không dùng một ngưỡng phẳng cho mọi facet
+(quan hệ `purpose -> amenity` khác hẳn `style -> style` sparse). Xem bảng ngưỡng ở [8.3 Per-facet threshold](#83-per-facet-threshold).
+
+> Lưu ý chốt: code hiện tại đang dùng `support>=15, prob>=0.5, lift>=1.3`. Đừng để ba bộ số đá nhau
+> (code cũ / một-ngưỡng-phẳng / per-facet). **Per-facet ở 8.3 là nguồn chân lý**; code candidate generator
+> phải đọc đúng bộ đó.
 
 Rule lọc rác:
 
@@ -729,20 +740,25 @@ Luồng:
 candidates.yaml -> người duyệt -> promote vào curated.yaml hoặc reject
 ```
 
-Cách duyệt ban đầu:
+Cách duyệt (giống luồng STYLE — sửa YAML tại chỗ, KHÔNG sửa code):
 
-1. Mở `ontology/relations/candidates.yaml`.
-2. Với mỗi relation:
-   - nếu hợp lý: đổi `status: verified` hoặc dùng script promote.
-   - nếu nhiễu: `status: rejected`, thêm `reject_reason`.
-3. Promote relation verified vào `curated.yaml`.
-4. Giữ rejected để generator không đề xuất lại.
+1. Mở `ontology/relations/candidates.yaml` (candidate sinh ra mang `status: pending`).
+2. Với mỗi relation, đổi NGAY tại chỗ:
+   - nếu hợp lý: `status: approved`.
+   - nếu nhiễu: `status: rejected` + thêm dòng `reject_reason: "..."`.
+   - chưa chắc: để `pending`, duyệt vòng sau.
+3. Chạy script apply: chuyển `approved` -> `curated.yaml` (verified, boost-only),
+   `rejected` -> `rejected.yaml`, giữ `pending` lại.
+4. Rejected được giữ để generator không đề xuất lại.
 
-File script đề xuất sau này:
+File script:
 
 ```text
-knowledge_engineering/entity_extraction/promote_relation_candidate.py
+knowledge_engineering/entity_extraction/apply_relation_review.py
 ```
+
+> KHÔNG còn dict quyết định trong code. Quyết định nằm trong YAML, đúng pattern STYLE
+> (pending -> approved/rejected -> chạy apply).
 
 Tiêu chí duyệt:
 
@@ -953,23 +969,34 @@ Relation gây nhiễu bị hạ use_as hoặc reject.
 
 ## 7. Lộ trình MVP đề xuất
 
-### MVP 1: Chuẩn hóa relation, chưa đổi search
+> ⚠ **Blocker quan trọng:** `golden_query_concepts.md` hiện đã có (32 câu) nhưng phần
+> `expansion_should_help` / nhãn để đo recall còn mỏng. **MVP 4 (filter) bị chặn cho tới khi golden set
+> đủ mạnh để A/B retrieval.** Đừng xây toàn bộ bộ máy schema/loader/registry rồi mới phát hiện phần
+> *chứng minh search tốt hơn* vẫn treo. Thứ tự an toàn: MVP 1-3 cho ra giá trị quan sát được (boost +
+> explanation trace) mà KHÔNG phụ thuộc golden set; chỉ MVP 4 mới cần golden set hoàn chỉnh.
 
-Thời lượng ước tính: 1-2 ngày làm việc.
+### MVP 1: Chuẩn hóa relation, chưa đổi search (siết tối thiểu)
+
+Thời lượng ước tính: 1 ngày làm việc.
+
+> MVP 1 cố tình giữ NHỎ: chỉ tạo schema + nơi lưu quyết định + 1 loader đọc được. KHÔNG generator,
+> KHÔNG đổi `build_expansion.py`, KHÔNG đụng query layer. Mục tiêu là có khung mà pipeline cũ vẫn chạy y nguyên.
 
 Việc làm:
 
-1. Audit legacy `related`.
-2. Viết `ontology/relations/README.md`.
-3. Tạo `ontology/relations/curated.yaml` với relation chắc.
-4. Viết `relation_loader.py`.
-5. Thêm pytest validator.
+1. Audit legacy `related` + chụp **baseline** `query_expansion.yaml` (số concept khóa / số cạnh hiện tại,
+   để MVP 2 so sánh — xem cảnh báo "đổi nguồn data" ở Bước 6).
+2. Viết `ontology/relations/README.md` (schema + enum + ví dụ đúng/sai).
+3. Tạo `ontology/relations/curated.yaml` với 10-30 relation chắc.
+4. Viết `relation_loader.py` đọc curated + legacy `related` (chưa cần candidates/rejected nếu chưa có file).
+5. Thêm pytest validator (target tồn tại, enum hợp lệ, precedence curated > legacy).
 
 Kết quả:
 
 ```text
-Relation graph có schema.
-Không phá pipeline hiện tại.
+Relation graph có schema + nơi lưu quyết định bền vững.
+Có baseline để so sánh khi MVP 2 sinh candidate.
+Không phá pipeline hiện tại (build_expansion.py giữ nguyên).
 ```
 
 ### MVP 2: Sinh candidate từ object
@@ -979,10 +1006,15 @@ Thời lượng ước tính: 1-2 ngày làm việc.
 Việc làm:
 
 1. Viết `build_relation_candidates.py`.
-2. Đọc `knowledge_objects.json`.
-3. Tính support/probability/lift.
+2. **Mặc định `--source=both`**, đọc TỪ `knowledge_objects.json` (KHÔNG dùng `hotel_tags.json`):
+   gộp `semantic_metadata` (nhãn có/không) + `semantic_profile` (cảm nhận review ≥0.6). Mỗi cạnh ghi
+   `provenance` (metadata|profile|metadata+profile), KHÔNG trộn thầm. LMK_*/LOC_* bị loại tường minh.
+   Thực nghiệm 520 hotel: hard tag cũ chỉ ra ~16 (nghèo, gần như không style); knowledge_objects ra
+   ~39 candidate (gấp ~2.4×, giàu style→*/setting→*), nhóm `metadata+profile` (hai nguồn đồng thuận)
+   đáng duyệt trước. Vẫn chạy được `--source=metadata` hoặc `--source=profile` riêng để so.
+3. Tính support/probability/lift theo **bộ ngưỡng per-facet ở mục 8.3** (không dùng ngưỡng phẳng).
 4. Ghi `generated.cooccurrence.yaml` và `candidates.yaml`.
-5. Viết `relation_quality.md`.
+5. Viết `relation_quality.md` (kèm so sánh với baseline MVP 1).
 
 Kết quả:
 
@@ -1031,7 +1063,7 @@ Search dùng relation mạnh hơn nhưng vẫn kiểm soát được.
 
 ## 8. Những cải thiện thêm so với luồng ban đầu
 
-### 7.1 Thêm rejected registry
+### 8.1 Thêm rejected registry
 
 Nên giữ relation rejected thay vì xóa.
 
@@ -1050,7 +1082,7 @@ relations:
     reject_reason: "price tier không đồng nghĩa với cảm nhận luxury từ review"
 ```
 
-### 7.2 Tính confidence theo type
+### 8.2 Tính confidence theo type
 
 Không nên dùng cùng công thức confidence cho mọi relation.
 
@@ -1063,19 +1095,26 @@ generated_lift: combine support/probability/lift
 llm_suggested: <=0.5, luôn candidate
 ```
 
-### 7.3 Per-facet threshold
+### 8.3 Per-facet threshold (BỘ NGƯỠNG CHUẨN)
 
-Relation giữa `purpose -> amenity` dễ hữu ích hơn `style -> style` sparse. Vì vậy threshold nên khác nhau:
+> Đây là **nguồn chân lý duy nhất** về ngưỡng cho candidate generator (Bước 6). Mọi chỗ khác trong
+> document nếu nhắc tới một con số ngưỡng phẳng đều phải trỏ về bảng này.
 
-```text
-purpose -> amenity: support >= 5, lift >= 1.3
-object_type -> amenity: support >= 8, lift >= 1.5
-location -> setting: dùng generated_location riêng
-style -> amenity/style: support >= 3 nhưng status candidate, không filter
-price -> style: mặc định block hoặc manual only
-```
+Relation giữa `purpose -> amenity` dễ hữu ích hơn `style -> style` sparse. Vì vậy threshold khác nhau theo cặp facet:
 
-### 7.4 Relation direction rõ ràng
+| Cặp facet (source -> target) | support | probability | lift | status mặc định | ghi chú |
+|---|---|---|---|---|---|
+| `purpose -> amenity` | >= 5 | >= 0.35 | >= 1.3 | candidate | quan hệ hữu ích nhất, ngưỡng nới |
+| `object_type -> amenity` | >= 8 | >= 0.35 | >= 1.5 | candidate | object_type phổ biến, siết lift |
+| `setting -> amenity` | >= 8 | >= 0.35 | >= 1.5 | candidate | |
+| `location -> setting` | — | — | — | — | KHÔNG đi qua generator này; dùng `generated_location` riêng (đã có `location_setting.generated.yaml`) |
+| `style -> amenity/style` | >= 3 | >= 0.35 | >= 1.3 | candidate | sparse → giữ candidate, **không bao giờ filter** |
+| `price -> style` | — | — | — | blocked | mặc định block, chỉ manual curated |
+
+Quy ước chung cho mọi cặp: `max edges per source = 5`, sort theo `lift` giảm dần. Cặp facet không có trong
+bảng → mặc định **block** (không sinh candidate cho tới khi bổ sung dòng vào bảng này).
+
+### 8.4 Relation direction rõ ràng
 
 `AMEN_SPA -> PURPOSE_WELLNESS` và `PURPOSE_WELLNESS -> AMEN_SPA` không giống nhau.
 
@@ -1086,7 +1125,7 @@ Trong query:
 
 Vì vậy relation nên directed mặc định.
 
-### 7.5 Không để relation graph thay thế profile score
+### 8.5 Không để relation graph thay thế profile score
 
 Relation chỉ giúp mở rộng/gợi ý. Điểm review vẫn phải là nguồn chính cho cảm nhận.
 
@@ -1098,7 +1137,7 @@ AMEN_SPA -> STYLE_RELAXING
 
 Không có nghĩa hotel chắc chắn relaxing. Nó chỉ boost nhẹ nếu query hỏi relaxing. Muốn khẳng định relaxing vẫn cần `semantic_profile.STYLE_RELAXING >= 0.6`.
 
-### 7.6 Thêm explanation trace
+### 8.6 Thêm explanation trace
 
 Query demo/search nên có trace:
 
@@ -1125,6 +1164,7 @@ Trace này cực quan trọng khi demo và debug.
 ### Audit
 
 - [ ] Sinh `relation_audit.md`.
+- [ ] Chụp **baseline** `query_expansion.yaml` (số concept khóa + số cạnh) để MVP 2 so sánh.
 - [ ] Kiểm target/source thiếu.
 - [ ] Phân loại relation legacy.
 - [ ] So sánh legacy `related` với rule đang có trong `query_expansion.yaml`.

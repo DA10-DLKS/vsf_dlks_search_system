@@ -132,6 +132,40 @@ def load_rules(path: Path = EXPANSION_YAML) -> dict[str, set[str]]:
     return {src: set((rule or {}).get("expands_to", []) or []) for src, rule in rules.items()}
 
 
+def load_typed_expansions(path: Path = EXPANSION_YAML) -> dict[str, dict[str, dict]]:
+    """Đọc metadata typed (relation_type/source_type/use_as/status) cho mỗi cạnh src->tgt.
+
+    Backward-compatible: nếu rule chưa có `expansions` (format cũ), trả metadata rỗng.
+    """
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    rules = data.get("rules", {}) or {}
+    out: dict[str, dict[str, dict]] = {}
+    for src, rule in rules.items():
+        edges: dict[str, dict] = {}
+        for exp in (rule or {}).get("expansions", []) or []:
+            tgt = exp.get("target")
+            if tgt:
+                edges[tgt] = {
+                    "relation_type": exp.get("relation_type", ""),
+                    "source_type": exp.get("source_type", ""),
+                    "use_as": exp.get("use_as", ""),
+                    "status": exp.get("status", ""),
+                }
+        out[src] = edges
+    return out
+
+
+def recommend(hits: int, noise: int, has_meta: bool, use_as: str) -> str:
+    """Gợi ý hành động cho một cạnh relation dựa hit/noise (mục Bước 9 roadmap)."""
+    if hits > 0 and noise == 0:
+        return "keep/promote"
+    if hits > 0 and noise > 0:
+        return "keep as boost, not filter"
+    if hits == 0 and noise > 0:
+        return "reject" if use_as == "filter" else "downgrade"
+    return "needs_retrieval_test"
+
+
 def expand_once(concepts: set[str], rules: dict[str, set[str]]) -> set[str]:
     out: set[str] = set()
     for concept in concepts:
@@ -294,17 +328,74 @@ def print_summary(report: dict[str, Any], show_all: bool = False) -> None:
         print(f"- {src}: triggers={sorted(set(stat['trigger_queries']))} hits={hits or '{}'} noise={noise or '[]'}")
 
 
+REPORT_MD = ROOT / "docs/reports/ontology/query_expansion_evaluation.md"
+
+
+def write_markdown_report(report: dict[str, Any], path: Path = REPORT_MD) -> None:
+    """Bước 9 roadmap: report per-edge với relation_type/source_type/use_as/status + recommendation."""
+    meta = load_typed_expansions()
+    from datetime import date as _date
+
+    L: list[str] = []
+    L.append("# Query Expansion Evaluation (Bước 9 roadmap)")
+    L.append("")
+    L.append("> Sinh bởi `knowledge_engineering/governance/evaluate_query_expansion.py --report`. Read-only.")
+    L.append(f"> Ngày: {_date.today().isoformat()}. Golden: {report['n_queries']} câu, {report['n_rules']} rule.")
+    L.append("")
+    L.append("Evaluator KHÔNG tự sửa ontology. Quyết định cuối ghi vào "
+             "`curated.yaml` / `candidates.yaml` / `rejected.yaml`.")
+    L.append("")
+    L.append("## Per-edge (source -> target) đánh giá trên golden set")
+    L.append("")
+    L.append("| source | target | relation_type | source_type | use_as | status | hits | noise | recommendation |")
+    L.append("|---|---|---|---|---|---|---|---|---|")
+    rows = []
+    for src, stat in report["rule_stats"].items():
+        if not stat["trigger_queries"]:
+            continue
+        src_meta = meta.get(src, {})
+        targets = set(stat["target_hits"]) | set(src_meta)
+        noise = len(set(stat["noise_queries"]))
+        for tgt in sorted(targets):
+            hits = stat["target_hits"].get(tgt, 0)
+            m = src_meta.get(tgt, {})
+            use_as = m.get("use_as", "")
+            rec = recommend(hits, noise, bool(m), use_as)
+            rows.append((src, tgt, m.get("relation_type", "—"), m.get("source_type", "—"),
+                         use_as or "—", m.get("status", "—"), hits, noise, rec))
+    for r in sorted(rows, key=lambda x: (x[0], x[1])):
+        L.append(f"| `{r[0]}` | `{r[1]}` | {r[2]} | {r[3]} | {r[4]} | {r[5]} | {r[6]} | {r[7]} | {r[8]} |")
+    L.append("")
+    L.append("## Phân loại câu golden")
+    L.append("")
+    counts: dict[str, int] = {}
+    for row in report["queries"]:
+        counts[row["classification"]] = counts.get(row["classification"], 0) + 1
+    L.append("| classification | số câu |")
+    L.append("|---|---|")
+    for k, v in sorted(counts.items()):
+        L.append(f"| {k} | {v} |")
+    L.append("")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(L), encoding="utf-8")
+
+
 def main() -> None:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
     parser.add_argument("--json", action="store_true", help="print machine-readable JSON")
     parser.add_argument("--all", action="store_true", help="show all noisy negative queries")
+    parser.add_argument("--report", action="store_true",
+                        help="ghi docs/reports/ontology/query_expansion_evaluation.md")
     args = parser.parse_args()
     report = evaluate()
+    if args.report:
+        write_markdown_report(report)
+        print(f"Đã ghi report -> {REPORT_MD.relative_to(ROOT)}")
     if args.json:
         print(json.dumps(report, ensure_ascii=False, indent=2))
-    else:
+    elif not args.report:
         print_summary(report, show_all=args.all)
 
 

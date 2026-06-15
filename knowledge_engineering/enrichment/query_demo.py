@@ -26,14 +26,47 @@ from knowledge_engineering.common.normalize import normalize
 
 # PURPOSE -> amenity "minh chứng" cho mục đích đó. Khi suy ra PURPOSE (từ surface form HOẶC
 # intent ngầm), hotel có các amenity này được ƯU TIÊN lên top (không lọc cứng — soft fact).
-# Khớp query_expansion.yaml (PURPOSE_FAMILY -> AMEN_KIDS_*).
-PURPOSE_EVIDENCE = {
+#
+# Bước 11 roadmap: nguồn boost giờ là RELATION GRAPH verified (use_as=boost) thay vì hard-code.
+# Fallback giữ bảng tĩnh nếu loader lỗi (query_demo là tool hay chạy, không được vỡ).
+# Giai đoạn 1: CHỈ dùng use_as=boost (không filter bằng generated relation).
+_PURPOSE_EVIDENCE_FALLBACK = {
     "PURPOSE_FAMILY": {"AMEN_KIDS_CLUB", "AMEN_KIDS_POOL", "AMEN_BABYSITTING"},
     "PURPOSE_ROMANTIC": {"AMEN_SEA_VIEW", "AMEN_PRIVATE_POOL", "STYLE_ROMANTIC"},
     "PURPOSE_BUSINESS": {"AMEN_MEETING_ROOM", "AMEN_WIFI"},
     "PURPOSE_WELLNESS": {"AMEN_SPA", "STYLE_QUIET"},
     "PURPOSE_GROUP": {"AMEN_KARAOKE", "AMEN_GAME_ROOM", "AMEN_MEETING_ROOM"},
 }
+
+
+def _load_boost_relations() -> dict[str, list]:
+    """Load cạnh boost verified từ relation graph: {source: [Relation,...]}. Fallback nếu lỗi."""
+    try:
+        from knowledge_engineering.common.relation_loader import load_relations
+        rels = load_relations(status={"verified"}, use_as={"boost"})
+        out: dict[str, list] = {}
+        for r in rels:
+            out.setdefault(r.source, []).append(r)
+        return out
+    except Exception:
+        return {}
+
+
+_BOOST_RELATIONS = _load_boost_relations()
+
+
+def _purpose_evidence() -> dict[str, set]:
+    """PURPOSE_* -> set target từ relation graph (boost), fallback bảng tĩnh khi rỗng."""
+    if not _BOOST_RELATIONS:
+        return _PURPOSE_EVIDENCE_FALLBACK
+    out: dict[str, set] = {}
+    for src, rels in _BOOST_RELATIONS.items():
+        if src.startswith("PURPOSE_"):
+            out[src] = {r.target for r in rels}
+    return out or _PURPOSE_EVIDENCE_FALLBACK
+
+
+PURPOSE_EVIDENCE = _purpose_evidence()
 
 OBJ_JSON = "knowledge_engineering/enrichment/knowledge_objects.json"
 SYN_YAML = "ontology/synonym_dictionary.yaml"
@@ -244,9 +277,11 @@ def search(q: str, limit: int = 15) -> dict:
         # CẢM NHẬN: hotel phải có profile score đủ cao cho MỌI concept feel yêu cầu
         if not all((prof.get(c, {}).get("score", 0) >= FEEL_MIN) for c in feel):
             continue
-        # object_type: nếu câu nói loại hình cụ thể (resort/villa...) thì lọc, trừ OBJ_HOTEL (hiểu rộng)
+        # object_type: nếu câu nói loại hình cụ thể (resort/villa...) thì lọc, trừ OBJ_HOTEL (hiểu rộng).
+        # NHƯNG nếu câu có CẢ OBJ_HOTEL ("khách sạn") lẫn loại cụ thể -> người dùng nói "khách sạn HOẶC
+        # resort" = MỞ RỘNG (chấp nhận mọi lưu trú), KHÔNG lọc cứng. Chỉ lọc khi câu CHỈ nêu loại cụ thể.
         want_obj = [c for c in soft if c.startswith("OBJ_") and c != "OBJ_HOTEL"]
-        if want_obj and oc.isdisjoint(want_obj):
+        if want_obj and "OBJ_HOTEL" not in concepts and oc.isdisjoint(want_obj):
             continue
         # location concept: LOC city/place matches its area descendants; text is fallback only.
         if loc_concepts:
@@ -273,6 +308,15 @@ def search(q: str, limit: int = 15) -> dict:
     purpose_amen = set()
     for p in purposes:
         purpose_amen |= PURPOSE_EVIDENCE.get(p, set())
+
+    # EXPANSION TRACE (Bước 11/8.6 roadmap): cạnh boost relation graph áp cho concept trong câu.
+    # Chỉ giải thích/debug — không lọc cứng. Mọi concept parse được, không chỉ purpose.
+    expansion_trace = []
+    for c in concepts:
+        for r in _BOOST_RELATIONS.get(c, []):
+            expansion_trace.append(
+                f"{r.source} -> {r.target} [{r.source_type}/{r.type}/use_as={r.use_as}/conf={r.confidence}]"
+            )
 
     # sort: ưu tiên hotel khớp nhiều concept SOFT + có amenity minh chứng PURPOSE; nếu câu có
     #       mức giá -> ưu tiên hotel giá GẦN mức đó (dù giá fake, vẫn là proxy); rồi review_score.
@@ -310,7 +354,7 @@ def search(q: str, limit: int = 15) -> dict:
     return {"concepts": concepts, "implicit": implicit, "hard": hard, "soft": soft, "feel": feel,
             "hard_skipped": hard_skipped, "feel_skipped": feel_skipped,
             "loc_concepts": loc_concepts, "lmk": lmk,
-            "purpose_amen": sorted(purpose_amen),
+            "purpose_amen": sorted(purpose_amen), "expansion_trace": expansion_trace,
             "range": rng, "location": loc, "n": len(hits), "hits": hits[:limit]}
 
 
@@ -383,6 +427,10 @@ def show(q: str) -> None:
         print(f"   → intent NGẦM suy ra (từ mô tả hoàn cảnh): {impl}")
     if r["purpose_amen"]:
         print(f"   → ưu tiên hotel có tiện ích hợp mục đích: {r['purpose_amen']}")
+    if r.get("expansion_trace"):
+        print("   → expansion boost (relation graph verified, chỉ ưu tiên ranking, KHÔNG lọc cứng):")
+        for line in r["expansion_trace"]:
+            print(f"        ↳ {line}")
     print(f"   → lọc CỨNG (amenity/setting): {r['hard'] or '—'} | nới lỏng: {r['soft'] or '—'}")
     if r["hard_skipped"]:
         print(f"   ⚠ bỏ qua hard concept 0 hotel (Bước 4 chưa gắn nhãn): {r['hard_skipped']}")
