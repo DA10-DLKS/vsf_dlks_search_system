@@ -1,1235 +1,772 @@
-{
-  "metadata": {
-    "description": "Golden dataset đánh giá SearchAPI (VuDucKien_api_schema_proposal.md). Gồm 5 nhóm, mỗi nhóm 10 query intent hotel_search, phân theo NGUỒN chứa câu trả lời: (1) GS-DESC-* lấy từ hotel description (không suy ra được từ amenities); (2) GS-FAQ-* lấy từ phần faq; (3) GS-ACT-* lấy từ phần activities; (4) GS-POL-* lấy từ policies (secondary.hotel_policy.policyNotes); (5) GS-AMEN-* lấy từ trường amenities.",
-    "intent_type_note": "Tất cả query đều mang intent hotel_search (tìm khách sạn/resort), không phải destination_info / comparison / faq.",
-    "group_note": "GS-DESC (1-10): description. GS-FAQ (1-10): faq. GS-ACT (1-10): activities. GS-POL (1-10): policies (secondary). GS-AMEN (1-10): amenities. Tất cả nhóm FAQ/ACT/POL/AMEN đều nêu rõ city.",
-    "ground_truth_note": "relevant_hotel_ids chứa DANH SÁCH hotel_id (đã map từ tên qua hotel_corpus.jsonl), ĐÃ SẮP XẾP THEO ĐỘ LIÊN QUAN GIẢM DẦN. top_k = 5 (GS-ACT-008/Huế chỉ có 4 KS thoả trong corpus). Nhóm POL/AMEN: xếp theo review_score giảm dần trong số KS thoả điều kiện.",
-    "source_corpus": "data/ (520 hotels) -> evaluation/corpus/hotel_corpus.jsonl + faq_activities_corpus.jsonl + policies_corpus.jsonl",
+[
+  {
+    "query_id": "GS-001",
+    "query": "Tìm khách sạn ở Quy Nhơn gần Bãi biển Quy Nhơn",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Quy Nhơn (Bình Định)"},
+    "soft_signals": ["Bãi biển Quy Nhơn", "bãi biển", "LMK_BAI_BIEN_QUY_NHON"],
+    "relevant_hotel_ids": [18264628, 78112429, 67703642, 49682296, 77976778, 35308672, 28201768, 22406185, 22420717, 44205914],
+    "relevant_chunk_ids": [],
     "labeler": "Kiên",
-    "version": "v1",
-    "total_queries": 49
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Quy Nhơn + landmark Bãi biển Quy Nhơn (ontology LMK_BAI_BIEN_QUY_NHON, type=beach). relevant_hotel_ids = hotel cùng city có landmark này trong nearby_places, sắp theo distance_km tăng dần (gần→xa); distance chi tiết xem _nearby_index.json. Tổng 15 hotel, lấy top 10."
   },
-  "queries": [
-    {
-      "query_id": "GS-DESC-001",
-      "query": "Tìm khách sạn mới xây dựng gần đây, cơ sở vật chất còn mới",
-      "intent_type": "hotel_search",
-      "hard_filters": {},
-      "soft_signals": [
-        "mới xây dựng",
-        "mới khai trương",
-        "khách sạn mới",
-        "hiện đại",
-        "STYLE_NEWLY_BUILT"
-      ],
-      "relevant_hotel_ids": [
-        67703642,
-        64608699,
-        63314499,
-        58354137,
-        49851722
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: năm xây dựng / 'mới xây dựng' chỉ có trong description (và useful_info), KHÔNG có trong amenities. Xếp hạng ưu tiên năm mới (2025 > 2024) rồi review_score."
-    },
-    {
-      "query_id": "GS-DESC-002",
-      "query": "Tìm resort nằm trên đảo, không gian biệt lập hoang sơ tách biệt",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "accommodation_type": [
-          "Resort"
-        ]
-      },
-      "soft_signals": [
-        "trên đảo",
-        "biệt lập",
-        "hoang sơ",
-        "tách biệt",
-        "riêng tư",
-        "LOC_ISLAND",
-        "STYLE_SECLUDED"
-      ],
-      "relevant_hotel_ids": [
-        1624474,
-        65153,
-        16282119,
-        21971824,
-        2577124
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: tính 'biệt lập / hoang sơ / nằm trên đảo (vị trí, Hòn Tre...)' là narrative trong description, không phải tag amenities. Vinpearl Nha Trang nằm trên đảo Hòn Tre."
-    },
-    {
-      "query_id": "GS-DESC-003",
-      "query": "Tìm khách sạn nằm ngay trong khu phố cổ Hội An",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hội An"
-      },
-      "soft_signals": [
-        "phố cổ",
-        "trung tâm phố cổ",
-        "khu phố cổ Hội An",
-        "LOC_OLD_TOWN"
-      ],
-      "relevant_hotel_ids": [
-        63917222,
-        32713399,
-        36697714,
-        38692610,
-        1193207
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: 'nằm ngay trung tâm phố cổ' là vị trí mô tả trong description, không phải amenities. Thứ tự giảm dần theo độ gần lõi phố cổ (3 đầu rõ nhất, 2 sau là trung tâm/ven phố cổ)."
-    },
-    {
-      "query_id": "GS-DESC-004",
-      "query": "Tìm khách sạn nằm ngay bên bờ sông, view sông thơ mộng",
-      "intent_type": "hotel_search",
-      "hard_filters": {},
-      "soft_signals": [
-        "ven sông",
-        "bên bờ sông",
-        "view sông",
-        "riverside",
-        "LOC_RIVERSIDE"
-      ],
-      "relevant_hotel_ids": [
-        70922994,
-        65913216,
-        399935,
-        9195,
-        2163076
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: vị trí 'ngay bên bờ sông Hàn/Sài Gòn/sông Hậu...' chỉ có trong description, không phải amenities. Tên các KS đều xác nhận đặc tính riverside."
-    },
-    {
-      "query_id": "GS-DESC-005",
-      "query": "Tìm khách sạn phong cách boutique nhỏ xinh ấm cúng",
-      "intent_type": "hotel_search",
-      "hard_filters": {},
-      "soft_signals": [
-        "boutique",
-        "ấm cúng",
-        "nhỏ xinh",
-        "phong cách boutique",
-        "STYLE_BOUTIQUE"
-      ],
-      "relevant_hotel_ids": [
-        63917222,
-        46886612,
-        36697714,
-        70922994,
-        65913216
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: phong cách 'boutique / ấm cúng' là cảm nhận mô tả trong description, không có dạng tag trong amenities. Tất cả KS đều tự nhận boutique."
-    },
-    {
-      "query_id": "GS-DESC-006",
-      "query": "Tìm khách sạn gần sân bay, chỉ mất vài phút di chuyển",
-      "intent_type": "hotel_search",
-      "hard_filters": {},
-      "soft_signals": [
-        "gần sân bay",
-        "cách sân bay 5 phút",
-        "cách sân bay 10 phút",
-        "di chuyển nhanh",
-        "LOC_NEAR_AIRPORT"
-      ],
-      "relevant_hotel_ids": [
-        399935,
-        502099,
-        5663774,
-        6163849,
-        4518434
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: khoảng cách cụ thể tới sân bay ('cách sân bay 5/10/15 phút') nằm trong description (và useful_info), KHÔNG có trong amenities. Xếp hạng theo khoảng cách tăng dần rồi review_score."
-    },
-    {
-      "query_id": "GS-DESC-007",
-      "query": "Tìm resort có khu vườn xanh nhiệt đới rộng rãi để thư giãn",
-      "intent_type": "hotel_search",
-      "hard_filters": {},
-      "soft_signals": [
-        "khu vườn xanh",
-        "vườn nhiệt đới",
-        "vườn rộng",
-        "không gian xanh",
-        "FEAT_GARDEN"
-      ],
-      "relevant_hotel_ids": [
-        38722254,
-        25773171,
-        30196571,
-        6945065,
-        344975
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: 'khu vườn xanh rộng lớn / vườn nhiệt đới' của chính khuôn viên KS được kể trong description; amenities không mô tả quy mô/đặc điểm khu vườn. Hòa Bình Rạch Giá nói rõ 'khu vườn nhiệt đới'."
-    },
-    {
-      "query_id": "GS-DESC-008",
-      "query": "Tìm khách sạn ngắm được bình minh hoặc hoàng hôn trên biển",
-      "intent_type": "hotel_search",
-      "hard_filters": {},
-      "soft_signals": [
-        "bình minh",
-        "hoàng hôn",
-        "ngắm hoàng hôn",
-        "ban công view biển",
-        "VIEW_SUNRISE_SUNSET"
-      ],
-      "relevant_hotel_ids": [
-        41591306,
-        51457192,
-        47679488,
-        1015998,
-        63347126
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: trải nghiệm 'ngắm bình minh/hoàng hôn từ ban công/vị trí KS' là narrative trong description, không phải tag amenities. Ưu tiên KS nói rõ ngắm từ chính phòng/vị trí KS."
-    },
-    {
-      "query_id": "GS-DESC-009",
-      "query": "Tìm khách sạn trên vùng cao nguyên đồi núi, không khí trong lành",
-      "intent_type": "hotel_search",
-      "hard_filters": {},
-      "soft_signals": [
-        "cao nguyên",
-        "đồi núi",
-        "trên đồi",
-        "không khí trong lành",
-        "LOC_HIGHLAND"
-      ],
-      "relevant_hotel_ids": [
-        57145256,
-        35039383,
-        33035367,
-        46871000,
-        63314499
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: bối cảnh 'nằm giữa cao nguyên / trên đồi nhìn ra thung lũng, núi rừng' là mô tả trong description, không phải amenities."
-    },
-    {
-      "query_id": "GS-DESC-010",
-      "query": "Tìm resort yên tĩnh tách biệt khỏi ồn ào phố thị để nghỉ dưỡng",
-      "intent_type": "hotel_search",
-      "hard_filters": {},
-      "soft_signals": [
-        "yên tĩnh",
-        "tĩnh lặng",
-        "tách biệt",
-        "tránh xa ồn ào",
-        "riêng tư",
-        "STYLE_SECLUDED"
-      ],
-      "relevant_hotel_ids": [
-        1639502,
-        1624474,
-        4462454,
-        1576565,
-        2577124
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "DESCRIPTION-ONLY: cảm nhận 'yên tĩnh, tĩnh lặng, tách biệt khỏi ồn ào thành phố' là narrative mô tả không gian KS trong description, không thể suy ra từ tag amenities."
-    },
-    {
-      "query_id": "GS-FAQ-001",
-      "query": "Tìm khách sạn ở Nha Trang có bãi đỗ xe cho khách",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Nha Trang"
-      },
-      "soft_signals": [
-        "bãi đỗ xe",
-        "chỗ đỗ xe",
-        "đỗ xe trong khuôn viên",
-        "FAQ_PARKING"
-      ],
-      "relevant_hotel_ids": [
-        48363,
-        5685860,
-        6421211,
-        6906462,
-        869046
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: câu trả lời về bãi đỗ xe nằm trong faq category 'hotel_facilities_parking'. Xếp theo review_score giảm dần."
-    },
-    {
-      "query_id": "GS-FAQ-002",
-      "query": "Tìm khách sạn ở Hà Nội có dịch vụ giặt là, giặt khô",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hà Nội"
-      },
-      "soft_signals": [
-        "dịch vụ giặt là",
-        "giặt khô",
-        "giặt ủi",
-        "FAQ_LAUNDRY"
-      ],
-      "relevant_hotel_ids": [
-        1122443,
-        5305073,
-        6542427,
-        10665115,
-        289726
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: câu trả lời nằm trong faq category 'hotel_facilities_cleaning' (dịch vụ giặt là/giặt khô). Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-FAQ-003",
-      "query": "Tìm khách sạn ở Hồ Chí Minh chấp nhận thanh toán bằng thẻ Visa, MasterCard",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hồ Chí Minh"
-      },
-      "soft_signals": [
-        "thẻ thanh toán",
-        "Visa",
-        "MasterCard",
-        "American Express",
-        "FAQ_PAYMENT"
-      ],
-      "relevant_hotel_ids": [
-        33550196,
-        10976,
-        1602693,
-        1189049,
-        159186
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: danh sách loại thẻ thanh toán nằm trong faq category 'property_info_payment'. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-FAQ-004",
-      "query": "Tìm khách sạn ở Hội An có dịch vụ đưa đón sân bay",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hội An"
-      },
-      "soft_signals": [
-        "đưa đón sân bay",
-        "xe đưa đón",
-        "shuttle sân bay",
-        "FAQ_AIRPORT_SHUTTLE"
-      ],
-      "relevant_hotel_ids": [
-        6255260,
-        1193207,
-        1803429,
-        32713399,
-        3664358
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: câu trả lời 'có dịch vụ đưa đón sân bay (theo yêu cầu, phụ thu...)' nằm trong faq. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-FAQ-005",
-      "query": "Tìm khách sạn ở Hồ Chí Minh có bể bơi",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hồ Chí Minh"
-      },
-      "soft_signals": [
-        "bể bơi",
-        "hồ bơi",
-        "bơi lội",
-        "FAQ_POOL"
-      ],
-      "relevant_hotel_ids": [
-        6428322,
-        12132,
-        666232,
-        1602693,
-        488444
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: câu trả lời 'có bể bơi' nằm trong faq category 'hotel_facilities_things-to-do'. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-FAQ-006",
-      "query": "Tìm khách sạn ở Đà Nẵng có quán bar trong khuôn viên",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đà Nẵng"
-      },
-      "soft_signals": [
-        "quán bar",
-        "bar trong khuôn viên",
-        "bar cạnh hồ bơi",
-        "FAQ_BAR"
-      ],
-      "relevant_hotel_ids": [
-        182167,
-        399935,
-        1062253,
-        6185262,
-        517713
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: câu trả lời 'có quán bar trong khuôn viên' nằm trong faq category 'hotel_facilities_food and drink'. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-FAQ-007",
-      "query": "Tìm khách sạn ở Hà Nội phù hợp cho gia đình có trẻ em",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hà Nội",
-        "suitable_for": [
-          "Gia đình có trẻ nhỏ"
-        ]
-      },
-      "soft_signals": [
-        "chính sách trẻ em",
-        "giường phụ cho trẻ",
-        "gia đình",
-        "FAQ_FAMILY_POLICY"
-      ],
-      "relevant_hotel_ids": [
-        35354312,
-        237603,
-        6868294,
-        5305073,
-        289726
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: chính sách giường ngủ/độ tuổi trẻ em nằm trong faq category 'property_policies_family'. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-FAQ-008",
-      "query": "Tìm khách sạn ở Nha Trang có mức giá phòng trung bình hợp lý",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Nha Trang"
-      },
-      "soft_signals": [
-        "giá phòng trung bình",
-        "giá so với thành phố",
-        "đáng tiền",
-        "FAQ_AVG_PRICE"
-      ],
-      "relevant_hotel_ids": [
-        263516,
-        33589745,
-        5685860,
-        6359030,
-        6421211
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: 'giá phòng trung bình ... so với giá trung bình thành phố' chỉ có trong faq category 'property_info_price'. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-FAQ-010",
-      "query": "Tìm khách sạn ở Hạ Long có nhân viên nói được tiếng Anh",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hạ Long"
-      },
-      "soft_signals": [
-        "nhân viên nói tiếng Anh",
-        "đa ngôn ngữ",
-        "ngôn ngữ giao tiếp",
-        "FAQ_LANGUAGES"
-      ],
-      "relevant_hotel_ids": [
-        31461091,
-        6593570,
-        1160137,
-        16360312,
-        10185656
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "FAQ-ONLY: ngôn ngữ nhân viên giao tiếp nằm trong faq category 'property_info_languages spoken'. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-ACT-001",
-      "query": "Tìm khách sạn ở Nha Trang có thể đặt vé VinWonders, công viên giải trí Vinpearl",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Nha Trang"
-      },
-      "soft_signals": [
-        "VinWonders",
-        "Vinpearl Harbour",
-        "công viên giải trí",
-        "ACT_THEMEPARK"
-      ],
-      "relevant_hotel_ids": [
-        6359030,
-        869046,
-        239482,
-        31039863,
-        463095
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: vé VinWonders/Vinpearl Harbour nằm trong activities. Xếp theo số lượng activity khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-002",
-      "query": "Tìm khách sạn ở Hạ Long có thể đặt tour du thuyền tham quan vịnh",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hạ Long"
-      },
-      "soft_signals": [
-        "du thuyền",
-        "cruise vịnh Hạ Long",
-        "tham quan vịnh",
-        "ACT_CRUISE"
-      ],
-      "relevant_hotel_ids": [
-        1015998,
-        11081745,
-        16360312,
-        32914376,
-        247789
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: các tour du thuyền vịnh Hạ Long nằm trong activities. Xếp theo số lượng tour du thuyền khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-003",
-      "query": "Tìm khách sạn ở Đà Nẵng có thể đặt vé cáp treo Bà Nà Hills, Sun World",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đà Nẵng"
-      },
-      "soft_signals": [
-        "Bà Nà Hills",
-        "Sun World",
-        "cáp treo",
-        "ACT_CABLECAR"
-      ],
-      "relevant_hotel_ids": [
-        74957819,
-        59714076,
-        31998515,
-        517713,
-        533079
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: vé Sun World Bà Nà Hills & cáp treo nằm trong activities. Xếp theo số lượng activity khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-004",
-      "query": "Tìm khách sạn ở Hội An có thể đặt trải nghiệm thuyền thúng rừng dừa Bảy Mẫu",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hội An"
-      },
-      "soft_signals": [
-        "thuyền thúng",
-        "rừng dừa Bảy Mẫu",
-        "basket boat",
-        "ACT_BASKET_BOAT"
-      ],
-      "relevant_hotel_ids": [
-        44777877,
-        6255260,
-        36975063,
-        31561179,
-        3664358
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: tour thuyền thúng rừng dừa Bảy Mẫu nằm trong activities. Xếp theo số lượng activity khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-005",
-      "query": "Tìm khách sạn ở Đà Lạt có thể đặt trải nghiệm máng trượt Alpine Coaster Datanla",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đà Lạt"
-      },
-      "soft_signals": [
-        "Alpine Coaster",
-        "máng trượt",
-        "Datanla",
-        "xe trượt",
-        "ACT_ALPINE_COASTER"
-      ],
-      "relevant_hotel_ids": [
-        168993,
-        49851722,
-        32680041,
-        41926154,
-        23388080
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: trải nghiệm Alpine Coaster/xe trượt tại Datanla nằm trong activities. Xếp theo số lượng activity khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-006",
-      "query": "Tìm khách sạn ở Đảo Phú Quốc có thể đặt vé VinWonders, Safari, Grand World",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đảo Phú Quốc"
-      },
-      "soft_signals": [
-        "VinWonders Phú Quốc",
-        "Vinpearl Safari",
-        "Grand World",
-        "Hòn Thơm",
-        "ACT_THEMEPARK"
-      ],
-      "relevant_hotel_ids": [
-        35958304,
-        6377313,
-        1985199,
-        34118773,
-        58866380
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: vé VinWonders/Safari/Grand World/Sun World Hòn Thơm nằm trong activities. Xếp theo số lượng activity khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-007",
-      "query": "Tìm khách sạn ở Hà Nội có thể đặt vé xem múa rối nước Thăng Long",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hà Nội"
-      },
-      "soft_signals": [
-        "múa rối nước",
-        "Thăng Long",
-        "water puppet",
-        "ACT_SHOW"
-      ],
-      "relevant_hotel_ids": [
-        37181026,
-        61425173,
-        86658383,
-        10964,
-        38583105
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: vé show múa rối nước Thăng Long/Lotus nằm trong activities. Xếp theo số lượng activity khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-008",
-      "query": "Tìm khách sạn ở Huế có thể đặt tour tham quan Đại Nội, nghe ca Huế trên sông Hương",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Huế"
-      },
-      "soft_signals": [
-        "Đại Nội",
-        "ca Huế",
-        "sông Hương",
-        "city tour Huế",
-        "ACT_CITY_TOUR"
-      ],
-      "relevant_hotel_ids": [
-        70624,
-        16209810,
-        11002,
-        5663891
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: tour Đại Nội / ca Huế trên sông Hương nằm trong activities. Corpus chỉ có 4 KS Huế thoả (ít hơn top_k=5). Xếp theo số lượng activity khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-009",
-      "query": "Tìm khách sạn ở Đà Nẵng có thể đặt vé Công viên suối khoáng nóng Núi Thần Tài",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đà Nẵng"
-      },
-      "soft_signals": [
-        "suối khoáng nóng",
-        "Núi Thần Tài",
-        "tắm khoáng",
-        "ACT_HOTSPRING"
-      ],
-      "relevant_hotel_ids": [
-        33100210,
-        64242078,
-        2190907,
-        74957819,
-        149036
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: vé Công viên suối khoáng nóng Núi Thần Tài nằm trong activities. Xếp theo số lượng activity khớp rồi review_score."
-    },
-    {
-      "query_id": "GS-ACT-010",
-      "query": "Tìm khách sạn ở Hà Nội có thể đặt tour Ninh Bình (Tràng An, Bái Đính, Tam Cốc) trong ngày",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hà Nội"
-      },
-      "soft_signals": [
-        "Ninh Bình",
-        "Tràng An",
-        "Bái Đính",
-        "Tam Cốc",
-        "Hoa Lư",
-        "ACT_DAYTOUR"
-      ],
-      "relevant_hotel_ids": [
-        73179078,
-        58686039,
-        35054716,
-        729579,
-        247372
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "ACTIVITY-ONLY: tour trong ngày Ninh Bình (Tràng An/Bái Đính/Tam Cốc/Hoa Lư) khởi hành từ Hà Nội nằm trong activities. Xếp theo review_score (đa số hits=1)."
-    },
-    {
-      "query_id": "GS-POL-001",
-      "query": "Tìm khách sạn ở Hà Nội cho trẻ em ở miễn phí khi dùng giường có sẵn",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hà Nội",
-        "suitable_for": [
-          "Gia đình có trẻ nhỏ"
-        ]
-      },
-      "soft_signals": [
-        "trẻ em ở miễn phí",
-        "miễn phí giường có sẵn",
-        "chính sách trẻ em",
-        "POL_CHILD_FREE"
-      ],
-      "relevant_hotel_ids": [
-        66680429,
-        86658383,
-        35354312,
-        529354,
-        73179078
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: 'Ở miễn phí nếu sử dụng giường có sẵn' nằm trong secondary.hotel_policy.policyNotes. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-002",
-      "query": "Tìm khách sạn ở Hồ Chí Minh cho trẻ em ở miễn phí khi dùng giường có sẵn",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hồ Chí Minh",
-        "suitable_for": [
-          "Gia đình có trẻ nhỏ"
-        ]
-      },
-      "soft_signals": [
-        "trẻ em ở miễn phí",
-        "miễn phí giường có sẵn",
-        "chính sách trẻ em",
-        "POL_CHILD_FREE"
-      ],
-      "relevant_hotel_ids": [
-        33550196,
-        6428322,
-        47843559,
-        165511,
-        54795553
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: chính sách trẻ em ở miễn phí nằm trong policyNotes. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-003",
-      "query": "Tìm khách sạn ở Đà Nẵng cho trẻ em ở miễn phí khi dùng giường có sẵn",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đà Nẵng",
-        "suitable_for": [
-          "Gia đình có trẻ nhỏ"
-        ]
-      },
-      "soft_signals": [
-        "trẻ em ở miễn phí",
-        "trẻ dưới 12 tuổi miễn phí",
-        "chính sách trẻ em",
-        "POL_CHILD_FREE"
-      ],
-      "relevant_hotel_ids": [
-        83464709,
-        338256,
-        73359010,
-        73809693,
-        182167
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: chính sách trẻ em ở miễn phí nằm trong policyNotes. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-004",
-      "query": "Tìm khách sạn ở Hà Nội có chính sách giường phụ (extra bed)",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hà Nội"
-      },
-      "soft_signals": [
-        "giường phụ",
-        "extra bed",
-        "phụ phí giường phụ",
-        "POL_EXTRA_BED"
-      ],
-      "relevant_hotel_ids": [
-        66680429,
-        86658383,
-        10964,
-        35354312,
-        38583105
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: chính sách giường phụ nằm trong policyNotes (extrabedPolicies/policyNotes). Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-005",
-      "query": "Tìm khách sạn ở Hồ Chí Minh có chính sách giường phụ (extra bed)",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hồ Chí Minh"
-      },
-      "soft_signals": [
-        "giường phụ",
-        "extra bed",
-        "phụ phí giường phụ",
-        "POL_EXTRA_BED"
-      ],
-      "relevant_hotel_ids": [
-        65513469,
-        33550196,
-        6428322,
-        47843559,
-        12132
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: chính sách giường phụ nằm trong policyNotes. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-006",
-      "query": "Tìm khách sạn ở Đà Nẵng có chính sách giường phụ (extra bed)",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đà Nẵng"
-      },
-      "soft_signals": [
-        "giường phụ",
-        "extra bed",
-        "phụ phí giường phụ",
-        "POL_EXTRA_BED"
-      ],
-      "relevant_hotel_ids": [
-        83464709,
-        82014402,
-        338256,
-        73359010,
-        73809693
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: chính sách giường phụ nằm trong policyNotes. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-007",
-      "query": "Tìm khách sạn ở Vũng Tàu yêu cầu xuất trình giấy tờ tùy thân khi nhận phòng",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Vũng Tàu"
-      },
-      "soft_signals": [
-        "giấy tờ tùy thân",
-        "hộ chiếu",
-        "căn cước công dân",
-        "chứng minh nhân dân",
-        "POL_ID_REQUIRED"
-      ],
-      "relevant_hotel_ids": [
-        25773171,
-        6363024,
-        11024791,
-        37244894,
-        39665334
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: yêu cầu giấy tờ tùy thân khi nhận phòng nằm trong policyNotes. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-008",
-      "query": "Tìm khách sạn ở Nha Trang yêu cầu xuất trình giấy tờ tùy thân khi nhận phòng",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Nha Trang"
-      },
-      "soft_signals": [
-        "giấy tờ tùy thân",
-        "hộ chiếu",
-        "căn cước",
-        "chứng minh nhân dân",
-        "POL_ID_REQUIRED"
-      ],
-      "relevant_hotel_ids": [
-        239482,
-        5930920,
-        65153,
-        263516,
-        5685860
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: yêu cầu giấy tờ tùy thân khi nhận phòng nằm trong policyNotes. Ưu tiên KS nêu rõ yêu cầu giấy tờ (TTC-Michelia, Anrizon) rồi tới các KS Vinpearl (policyNotes dài có nêu); trong nhóm xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-009",
-      "query": "Tìm khách sạn ở Đảo Phú Quốc yêu cầu xuất trình giấy tờ tùy thân khi nhận phòng",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đảo Phú Quốc"
-      },
-      "soft_signals": [
-        "giấy tờ tùy thân",
-        "hộ chiếu",
-        "chứng minh nhân dân",
-        "giấy khai sinh",
-        "POL_ID_REQUIRED"
-      ],
-      "relevant_hotel_ids": [
-        1032420,
-        1985199,
-        17242876,
-        625168,
-        6377313
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: yêu cầu giấy tờ tùy thân/giấy khai sinh khi nhận phòng nằm trong policyNotes. Ưu tiên KS nêu rõ (Sheraton PQ, Melia Vinpearl PQ) rồi tới các KS còn lại; trong nhóm xếp theo review_score."
-    },
-    {
-      "query_id": "GS-POL-010",
-      "query": "Tìm khách sạn ở Hồ Chí Minh yêu cầu khách nhận phòng phải từ 18 tuổi trở lên",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hồ Chí Minh"
-      },
-      "soft_signals": [
-        "độ tuổi tối thiểu nhận phòng",
-        "từ 18 tuổi trở lên",
-        "18 tuổi",
-        "POL_MIN_AGE"
-      ],
-      "relevant_hotel_ids": [
-        33550196,
-        666232,
-        45888608,
-        488444,
-        165247
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "POLICY-ONLY: quy định 'độ tuổi tối thiểu để nhận phòng là 18 tuổi' nằm trong policyNotes. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-001",
-      "query": "Tìm khách sạn ở Nha Trang có bể bơi ngoài trời",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Nha Trang",
-        "amenities": [
-          "Bể bơi ngoài trời"
-        ]
-      },
-      "soft_signals": [
-        "bể bơi ngoài trời",
-        "hồ bơi ngoài trời",
-        "AMEN_OUTDOOR_POOL"
-      ],
-      "relevant_hotel_ids": [
-        263516,
-        38775535,
-        210187,
-        33589745,
-        78340310
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Bể bơi ngoài trời' trong trường amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-002",
-      "query": "Tìm resort ở Đảo Phú Quốc có quán bar cạnh bể bơi",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đảo Phú Quốc",
-        "amenities": [
-          "Quán bar cạnh bể bơi"
-        ]
-      },
-      "soft_signals": [
-        "quán bar cạnh bể bơi",
-        "pool bar",
-        "bar bên hồ bơi",
-        "AMEN_POOL_BAR"
-      ],
-      "relevant_hotel_ids": [
-        2577124,
-        4462454,
-        46992320,
-        17242876,
-        39532985
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Quán bar cạnh bể bơi' trong amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-003",
-      "query": "Tìm khách sạn ở Vũng Tàu có bể bơi trẻ em",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Vũng Tàu",
-        "amenities": [
-          "Bể bơi trẻ em"
-        ]
-      },
-      "soft_signals": [
-        "bể bơi trẻ em",
-        "hồ bơi trẻ em",
-        "AMEN_KIDS_POOL"
-      ],
-      "relevant_hotel_ids": [
-        25773171,
-        6363024,
-        11024791,
-        2114938,
-        37244894
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Bể bơi trẻ em' trong amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-004",
-      "query": "Tìm khách sạn ở Hà Nội có phòng tập gym",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hà Nội",
-        "amenities": [
-          "Phòng tập"
-        ]
-      },
-      "soft_signals": [
-        "phòng tập",
-        "gym",
-        "trung tâm thể dục",
-        "AMEN_GYM"
-      ],
-      "relevant_hotel_ids": [
-        66680429,
-        10964,
-        35354312,
-        38583105,
-        529354
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Phòng tập' trong amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-005",
-      "query": "Tìm khách sạn ở Đà Nẵng có dịch vụ spa, mát-xa",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đà Nẵng",
-        "amenities": [
-          "Mát-xa"
-        ]
-      },
-      "soft_signals": [
-        "mát-xa",
-        "spa",
-        "spa xông khô",
-        "AMEN_SPA_MASSAGE"
-      ],
-      "relevant_hotel_ids": [
-        338256,
-        182167,
-        1985160,
-        271561,
-        4947690
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Mát-xa'/'Spa xông khô' trong amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-006",
-      "query": "Tìm khách sạn ở Hội An có khu vườn",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hội An",
-        "amenities": [
-          "Vườn"
-        ]
-      },
-      "soft_signals": [
-        "vườn",
-        "khu vườn",
-        "không gian xanh",
-        "AMEN_GARDEN"
-      ],
-      "relevant_hotel_ids": [
-        44777877,
-        1639502,
-        6255260,
-        6945065,
-        1193207
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Vườn' trong amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-007",
-      "query": "Tìm resort ở Đảo Phú Quốc có bãi biển riêng",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Đảo Phú Quốc",
-        "amenities": [
-          "Bãi biển riêng"
-        ]
-      },
-      "soft_signals": [
-        "bãi biển riêng",
-        "private beach",
-        "AMEN_PRIVATE_BEACH"
-      ],
-      "relevant_hotel_ids": [
-        1624474,
-        4462454,
-        39532985,
-        10247322,
-        1032420
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Bãi biển riêng' trong amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-008",
-      "query": "Tìm khách sạn ở Hồ Chí Minh có nhà hàng trong khuôn viên",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hồ Chí Minh",
-        "amenities": [
-          "Nhà hàng"
-        ]
-      },
-      "soft_signals": [
-        "nhà hàng",
-        "nhà hàng tại chỗ",
-        "ẩm thực",
-        "AMEN_RESTAURANT"
-      ],
-      "relevant_hotel_ids": [
-        6428322,
-        47843559,
-        12132,
-        165511,
-        54795553
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Nhà hàng' (và biến thể Nhà hàng bữa sáng...) trong amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-009",
-      "query": "Tìm khách sạn ở Hồ Chí Minh hoàn toàn không hút thuốc",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Hồ Chí Minh",
-        "amenities": [
-          "Hoàn toàn không hút thuốc"
-        ]
-      },
-      "soft_signals": [
-        "không hút thuốc",
-        "hoàn toàn không hút thuốc",
-        "phòng không hút thuốc",
-        "AMEN_NON_SMOKING"
-      ],
-      "relevant_hotel_ids": [
-        65513469,
-        33550196,
-        6428322,
-        47843559,
-        12132
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Hoàn toàn không hút thuốc'/'Phòng không hút thuốc' trong amenities. Xếp theo review_score."
-    },
-    {
-      "query_id": "GS-AMEN-010",
-      "query": "Tìm khách sạn ở Nha Trang có sân chơi cho trẻ em",
-      "intent_type": "hotel_search",
-      "hard_filters": {
-        "city": "Nha Trang",
-        "amenities": [
-          "Sân chơi"
-        ]
-      },
-      "soft_signals": [
-        "sân chơi",
-        "sân chơi trẻ em",
-        "khu vui chơi trẻ em",
-        "AMEN_PLAYGROUND"
-      ],
-      "relevant_hotel_ids": [
-        210187,
-        33589745,
-        78340310,
-        109119,
-        1986410
-      ],
-      "relevant_chunk_ids": [],
-      "labeler": "Kiên",
-      "notes": "AMENITY-ONLY: tag 'Sân chơi' trong amenities. Xếp theo review_score."
-    }
-  ]
-}
+  {
+    "query_id": "GS-002",
+    "query": "Tìm khách sạn ở Phú Quốc gần bãi biển Long Beach (Bãi Trường)",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đảo Phú Quốc"},
+    "soft_signals": ["Long Beach", "bãi biển", "LMK_LONG_BEACH"],
+    "relevant_hotel_ids": [4462454, 30897715, 11013, 62547913, 9776735, 2577124, 44314482, 37712446, 58866380, 51060966],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Đảo Phú Quốc + landmark Long Beach (ontology LMK_LONG_BEACH, type=beach). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Tổng 14 hotel, lấy top 10."
+  },
+  {
+    "query_id": "GS-003",
+    "query": "Tìm khách sạn ở Đà Nẵng gần biển Mỹ Khê",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Nẵng"},
+    "soft_signals": ["Biển Mỹ Khê", "bãi biển", "LMK_BIEN_MY_KHE"],
+    "relevant_hotel_ids": [74957819, 85723058, 87755467, 84901473, 24112682, 46045575, 2167475, 4139218, 48029813, 6185262],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Đà Nẵng + landmark Biển Mỹ Khê (ontology LMK_BIEN_MY_KHE, type=beach). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Tổng 13 hotel, lấy top 10."
+  },
+  {
+    "query_id": "GS-004",
+    "query": "Tìm khách sạn ở Vũng Tàu gần Bãi Sau",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Vũng Tàu"},
+    "soft_signals": ["Bãi sau", "bãi biển", "LMK_BAI_SAU"],
+    "relevant_hotel_ids": [22642078, 11024791, 161729, 2114938, 1370955, 41591306, 33941483, 36643921, 44184739, 1122450],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Vũng Tàu + landmark Bãi Sau (ontology LMK_BAI_SAU, type=beach). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Tổng 12 hotel, lấy top 10."
+  },
+  {
+    "query_id": "GS-005",
+    "query": "Tìm khách sạn ở Hạ Long gần khu vui chơi giải trí Sun World Hạ Long",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hạ Long"},
+    "soft_signals": ["Khu vui chơi giải trí Sun World Hạ Long", "công viên giải trí", "LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG"],
+    "relevant_hotel_ids": [32914376, 5920941, 35444743, 16360312, 58958232, 11081745, 108286, 1160137, 36224135, 31461091],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Hạ Long + landmark Khu vui chơi giải trí Sun World Hạ Long (ontology LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG, type=park). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Tổng 10 hotel."
+  },
+  {
+    "query_id": "GS-006",
+    "query": "Tìm khách sạn ở Nha Trang gần biển Nha Trang",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["Biển Nha Trang", "bãi biển", "LMK_BIEN_NHA_TRANG"],
+    "relevant_hotel_ids": [37911814, 75690457, 6906462, 66810496, 10670772, 6359030, 83464707, 77591426, 805030],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Nha Trang + landmark Biển Nha Trang (ontology LMK_BIEN_NHA_TRANG, type=beach). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Có 9 hotel cùng city (lấy hết)."
+  },
+  {
+    "query_id": "GS-007",
+    "query": "Tìm khách sạn ở Phan Rang - Tháp Chàm gần Công Viên 16/4",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Phan Rang - Tháp Chàm (Ninh Thuận)"},
+    "soft_signals": ["Công Viên 16/4", "công viên", "LMK_CONG_VIEN_16_4"],
+    "relevant_hotel_ids": [2614365, 30753458, 31127662, 55913050, 45912624, 23386003, 23125329, 73279],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Phan Rang - Tháp Chàm + landmark Công Viên 16/4 (ontology LMK_CONG_VIEN_16_4, type=park). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Có 8 hotel cùng city (lấy hết)."
+  },
+  {
+    "query_id": "GS-008",
+    "query": "Tìm khách sạn ở Tuy Hòa gần Đình Hồ Sơn Cổ Tự",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Tuy Hòa (Phú Yên)"},
+    "soft_signals": ["Đình Hồ Sơn Cổ Tự", "di tích", "LMK_DINH_HO_SON_CO_TU"],
+    "relevant_hotel_ids": [47679488, 47780653, 76677098, 31038749, 60691667, 33425968, 6163849],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Tuy Hòa + landmark Đình Hồ Sơn Cổ Tự (ontology LMK_DINH_HO_SON_CO_TU, type=attraction). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Có 7 hotel cùng city (lấy hết)."
+  },
+  {
+    "query_id": "GS-009",
+    "query": "Tìm khách sạn ở Sầm Sơn gần Núi Trường Lệ",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Thanh Hoá / Bãi biển Sầm Sơn"},
+    "soft_signals": ["Núi Trường Lệ", "núi", "LMK_NUI_TRUONG_LE"],
+    "relevant_hotel_ids": [926899, 32260660, 37817493, 926909, 25455208, 2265300],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Sầm Sơn (chuỗi gốc 'Thanh Hoá / Bãi biển Sầm Sơn') + landmark Núi Trường Lệ (ontology LMK_NUI_TRUONG_LE, type=mountain). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Có 6 hotel cùng city (lấy hết)."
+  },
+  {
+    "query_id": "GS-010",
+    "query": "Tìm khách sạn ở Đà Lạt gần Bảo tàng Lâm Đồng",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Lạt"},
+    "soft_signals": ["Bảo tàng Lâm Đồng", "bảo tàng", "LMK_BAO_TANG_LAM_DONG"],
+    "relevant_hotel_ids": [42109640, 55256505, 31642453, 32680041, 49385769, 74577726],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Nearby-place test (corpus 520 hotel, top_k=10): city Đà Lạt + landmark Bảo tàng Lâm Đồng (ontology LMK_BAO_TANG_LAM_DONG, type=museum). Sắp theo distance_km tăng dần; chi tiết xem _nearby_index.json. Có 6 hotel cùng city (lấy hết)."
+  },
+  {
+    "query_id": "GS-011",
+    "query": "Tìm khách sạn yên tĩnh, ít ồn ào để nghỉ dưỡng",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["yên tĩnh", "ít ồn", "thanh bình", "STYLE_QUIET"],
+    "relevant_hotel_ids": [2577124, 263516, 1193207, 33550196, 63917222, 31561179, 548445, 16784780, 36975063, 64005963],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_QUIET (Yên tĩnh). Ground truth từ review (reviews_detail.sample_comments), rank theo số review nhắc tích cực về yên tĩnh: 2577124=67, 263516=61, 1193207=58, 33550196=54, 63917222=51, 31561179=50, 548445=50, 16784780=45, 36975063=42, 64005963=41."
+  },
+  {
+    "query_id": "GS-012",
+    "query": "Tìm khách sạn cho cảm giác thư giãn, thoải mái dễ chịu",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["thư giãn", "thoải mái", "dễ chịu", "STYLE_RELAXING"],
+    "relevant_hotel_ids": [271561, 1986410, 10247322, 263516, 44777877, 338255, 4128513, 165511, 433003, 182167],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_RELAXING (Thư giãn). Rank theo số review nhắc thư giãn/thoải mái: 271561=94, 1986410=93, 10247322=89, 263516=88, 44777877=87, 338255=86, 4128513=85, 165511=84, 433003=79, 182167=75."
+  },
+  {
+    "query_id": "GS-013",
+    "query": "Tìm khách sạn sang trọng, đẳng cấp xa hoa",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["sang trọng", "đẳng cấp", "xa hoa", "STYLE_LUXURY"],
+    "relevant_hotel_ids": [263516, 10964, 1015998, 46871000, 338256, 6428322, 5663891, 1624474, 5663774, 16375525],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_LUXURY (Đẳng cấp - cảm nhận từ review, khác PRICE_LUXURY). Rank theo số review nhắc sang trọng/đẳng cấp: 263516=58, 10964=54, 1015998=42, 46871000=33, 338256=32, 6428322=32, 5663891=31, 1624474=28, 5663774=28, 16375525=28."
+  },
+  {
+    "query_id": "GS-014",
+    "query": "Tìm khách sạn thiết kế hiện đại, trẻ trung tiện nghi",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["hiện đại", "thiết kế hiện đại", "trẻ trung", "STYLE_MODERN"],
+    "relevant_hotel_ids": [64504871, 4942635, 38583105, 38722254, 67267096, 315667, 34198470, 109119, 11024791, 29464613],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_MODERN (Hiện đại). Rank theo số review nhắc hiện đại: 64504871=32, 4942635=31, 38583105=26, 38722254=24, 67267096=24, 315667=23, 34198470=21, 109119=20, 11024791=20, 29464613=20."
+  },
+  {
+    "query_id": "GS-015",
+    "query": "Tìm khách sạn sôi động, nhộn nhịp, nhiều hoạt động vui chơi",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["sôi động", "nhộn nhịp", "nhiều hoạt động", "STYLE_LIVELY"],
+    "relevant_hotel_ids": [37244894, 338255, 6363024, 1624474, 25773171, 65153, 410128, 1032420, 48561897, 338256],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_LIVELY (Sôi động). Rank theo số review nhắc sôi động/nhiều hoạt động: 37244894=34, 338255=26, 6363024=18, 1624474=17, 25773171=16, 65153=15, 410128=13, 1032420=12, 48561897=12, 338256=11."
+  },
+  {
+    "query_id": "GS-016",
+    "query": "Tìm khách sạn trang trí đẹp mắt, decor thẩm mỹ",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["thẩm mỹ", "đẹp mắt", "thiết kế đẹp mắt", "STYLE_AESTHETIC"],
+    "relevant_hotel_ids": [10964, 31642453, 44777877, 338256, 16375525, 1803429, 49851722, 46992320, 64005963, 42109640],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_AESTHETIC (Thẩm mỹ). Rank theo số review nhắc đẹp mắt/thẩm mỹ: 10964=15, 31642453=12, 44777877=10, 338256=8, 16375525=8, 1803429=7, 49851722=6, 46992320=6, 64005963=6, 42109640=6."
+  },
+  {
+    "query_id": "GS-017",
+    "query": "Tìm khách sạn lãng mạn, tình tứ cho cặp đôi đi tuần trăng mật",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["lãng mạn", "tuần trăng mật", "không gian lãng mạn", "STYLE_ROMANTIC"],
+    "relevant_hotel_ids": [263516, 31642453, 338256, 10964, 46992320, 1639502, 11002, 1624474, 39532985, 1032420],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_ROMANTIC (Lãng mạn). Rank theo số review nhắc lãng mạn: 263516=12, 31642453=10, 338256=9, 10964=8, 46992320=7, 1639502=6, 11002=6, 1624474=5, 39532985=5, 1032420=5."
+  },
+  {
+    "query_id": "GS-018",
+    "query": "Tìm khách sạn mới xây, cơ sở vật chất mới tinh",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["khách sạn mới", "mới xây", "mới tinh", "STYLE_NEW"],
+    "relevant_hotel_ids": [41591306, 67267096, 9554406, 52133786, 74577726, 47843559, 64060008, 41926154, 49385769, 4942635],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_NEW (Mới). Rank theo số review nhắc khách sạn mới/mới tinh: 41591306=20, 67267096=12, 9554406=12, 52133786=11, 74577726=11, 47843559=10, 64060008=10, 41926154=9, 49385769=8, 4942635=8."
+  },
+  {
+    "query_id": "GS-019",
+    "query": "Tìm khách sạn phong cách cổ điển, vintage",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["cổ điển", "vintage", "phong cách retro", "STYLE_VINTAGE"],
+    "relevant_hotel_ids": [49450184, 161729, 44777877, 10964, 63917222, 32713399, 48363, 59037669, 33815684, 149036],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_VINTAGE (Phong cách cổ điển). Rank theo số review nhắc cổ điển/vintage: 49450184=16, 161729=4, 44777877=3, 10964=3, 63917222=2, 32713399=2, 48363=2, 59037669=2, 33815684=2, 149036=2. (Sau hotel top-1, count rớt nhanh xuống 2 — style review thưa.)"
+  },
+  {
+    "query_id": "GS-020",
+    "query": "Tìm khách sạn boutique thiết kế độc đáo",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["boutique", "khách sạn boutique", "phong cách boutique", "STYLE_BOUTIQUE"],
+    "relevant_hotel_ids": [63917222, 6593570, 46886612, 44777877, 36697714, 30804222, 54967082, 894894, 2577124, 70624],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-style test (corpus 520 hotel, top_k=10): ontology STYLE_BOUTIQUE (Khách sạn boutique). Rank theo số review nhắc boutique: 63917222=9, 6593570=8, 46886612=7, 44777877=6, 36697714=6, 30804222=5, 54967082=4, 894894=4, 2577124=2, 70624=2."
+  },
+  {
+    "query_id": "GS-021",
+    "query": "Tìm khách sạn ở Hồ Chí Minh cho gia đình có trẻ nhỏ",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hồ Chí Minh"},
+    "soft_signals": ["gia đình", "gia đình có trẻ nhỏ", "có con nhỏ", "PURPOSE_FAMILY"],
+    "relevant_hotel_ids": [1602693, 488444, 666232, 16260062, 165247, 315667, 10987, 159186, 488373, 1032041],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Hồ Chí Minh + PURPOSE_FAMILY (Gia đình). Ground truth từ reviews_detail.demographics, rank theo tổng count nhóm 'Gia đình': 1602693=2305, 488444=914, 666232=913, 16260062=728, 165247=723, 315667=588, 10987=501, 159186=496, 488373=416, 1032041=408."
+  },
+  {
+    "query_id": "GS-022",
+    "query": "Tìm khách sạn ở Đà Nẵng cho cả gia đình đưa con đi nghỉ",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Nẵng"},
+    "soft_signals": ["gia đình", "cả nhà", "đưa con đi", "PURPOSE_FAMILY"],
+    "relevant_hotel_ids": [1062253, 399935, 1985160, 2190907, 4947690, 502099, 182167, 6377853, 338255, 271561],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Đà Nẵng + PURPOSE_FAMILY (Gia đình). Rank theo tổng count nhóm 'Gia đình': 1062253=5661, 399935=1634, 1985160=1445, 2190907=1408, 4947690=1366, 502099=1123, 182167=1089, 6377853=1059, 338255=1054, 271561=962."
+  },
+  {
+    "query_id": "GS-023",
+    "query": "Tìm khách sạn ở Nha Trang cho cặp đôi đi hẹn hò",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["cặp đôi", "hai người", "hẹn hò", "PURPOSE_ROMANTIC"],
+    "relevant_hotel_ids": [5685860, 869046, 48363, 4459783, 65153, 805030, 263516, 706033, 6906462, 210187],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Nha Trang + PURPOSE_ROMANTIC (Cặp đôi). Rank theo tổng count nhóm 'Cặp đôi': 5685860=2905, 869046=2644, 48363=2543, 4459783=2113, 65153=2099, 805030=2039, 263516=1934, 706033=1678, 6906462=1597, 210187=1594."
+  },
+  {
+    "query_id": "GS-024",
+    "query": "Tìm khách sạn ở Phú Quốc cho hai vợ chồng đi tuần trăng mật",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đảo Phú Quốc"},
+    "soft_signals": ["cặp đôi", "vợ chồng", "tuần trăng mật", "PURPOSE_ROMANTIC"],
+    "relevant_hotel_ids": [17242876, 625168, 2577124, 1157572, 9776735, 11013, 46992320, 10247322, 296330, 4462454],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Đảo Phú Quốc + PURPOSE_ROMANTIC (Cặp đôi). Rank theo tổng count nhóm 'Cặp đôi': 17242876=2929, 625168=2856, 2577124=2295, 1157572=1590, 9776735=1455, 11013=1276, 46992320=1233, 10247322=1191, 296330=1154, 4462454=988."
+  },
+  {
+    "query_id": "GS-025",
+    "query": "Tìm khách sạn ở Hà Nội cho khách đi du lịch một mình",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hà Nội"},
+    "soft_signals": ["đi một mình", "khách du lịch một mình", "solo", "PURPOSE_SOLO"],
+    "relevant_hotel_ids": [45084233, 38583105, 35054716, 194445, 9757717, 10961, 32909358, 66680429, 10964, 729579],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Hà Nội + PURPOSE_SOLO (Đi một mình). Rank theo tổng count nhóm 'Khách du lịch một mình': 45084233=825, 38583105=644, 35054716=601, 194445=487, 9757717=485, 10961=417, 32909358=366, 66680429=360, 10964=353, 729579=335."
+  },
+  {
+    "query_id": "GS-026",
+    "query": "Tìm khách sạn ở Hội An cho khách đi du lịch một mình",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hội An"},
+    "soft_signals": ["đi một mình", "một mình", "tự đi", "PURPOSE_SOLO"],
+    "relevant_hotel_ids": [44777877, 1803429, 34054260, 63917222, 1193207, 3664358, 16375525, 36697714, 859981, 4593719],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Hội An + PURPOSE_SOLO (Đi một mình). Rank theo tổng count nhóm 'Khách du lịch một mình': 44777877=859, 1803429=422, 34054260=389, 63917222=301, 1193207=267, 3664358=264, 16375525=239, 36697714=182, 859981=172, 4593719=153."
+  },
+  {
+    "query_id": "GS-027",
+    "query": "Tìm khách sạn ở Hạ Long cho nhóm bạn đi chơi",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hạ Long"},
+    "soft_signals": ["nhóm", "nhóm bạn", "nhóm du khách", "PURPOSE_GROUP"],
+    "relevant_hotel_ids": [6492371, 1015998, 6593570, 32914376, 108286, 1160137, 36224135, 10185656, 247789, 11081745],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Hạ Long + PURPOSE_GROUP (Nhóm). Rank theo tổng count nhóm 'Nhóm du khách': 6492371=995, 1015998=646, 6593570=645, 32914376=537, 108286=416, 1160137=354, 36224135=320, 10185656=208, 247789=203, 11081745=156."
+  },
+  {
+    "query_id": "GS-028",
+    "query": "Tìm khách sạn ở Đà Lạt cho cả nhóm đi đoàn đông người",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Lạt"},
+    "soft_signals": ["nhóm", "đi đoàn", "cả nhóm", "PURPOSE_GROUP"],
+    "relevant_hotel_ids": [4942635, 179080, 42109640, 16784780, 10954459, 9698, 1984283, 168993, 31642453, 55256505],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Đà Lạt + PURPOSE_GROUP (Nhóm). Rank theo tổng count nhóm 'Nhóm du khách': 4942635=633, 179080=574, 42109640=441, 16784780=437, 10954459=402, 9698=384, 1984283=346, 168993=295, 31642453=249, 55256505=193."
+  },
+  {
+    "query_id": "GS-029",
+    "query": "Tìm khách sạn ở Hồ Chí Minh cho khách đi công tác",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hồ Chí Minh"},
+    "soft_signals": ["công tác", "đi công tác", "đi họp", "PURPOSE_BUSINESS"],
+    "relevant_hotel_ids": [165247, 666232, 488444, 1602693, 315667, 407839, 488373, 16260062, 10987, 317796],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Hồ Chí Minh + PURPOSE_BUSINESS (Công tác). Rank theo tổng count nhóm 'Khách đi công tác': 165247=1692, 666232=1368, 488444=1350, 1602693=1311, 315667=1153, 407839=988, 488373=869, 16260062=758, 10987=745, 317796=739."
+  },
+  {
+    "query_id": "GS-030",
+    "query": "Tìm khách sạn ở Vũng Tàu cho khách đi công tác",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Vũng Tàu"},
+    "soft_signals": ["công tác", "đi công tác", "dự hội nghị", "PURPOSE_BUSINESS"],
+    "relevant_hotel_ids": [1122450, 161729, 412707, 11024791, 22642078, 33941483, 6363024, 1370955, 36643921, 25773171],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Demographics-purpose test (corpus 520 hotel, top_k=10): city Vũng Tàu + PURPOSE_BUSINESS (Công tác). Rank theo tổng count nhóm 'Khách đi công tác': 1122450=342, 161729=303, 412707=169, 11024791=81, 22642078=68, 33941483=63, 6363024=49, 1370955=38, 36643921=35, 25773171=22."
+  },
+  {
+    "query_id": "GS-031",
+    "query": "Tìm khách sạn ở Đà Nẵng có hồ bơi",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Nẵng"},
+    "soft_signals": ["hồ bơi", "bể bơi", "AMEN_POOL"],
+    "relevant_hotel_ids": [83464709, 338256, 73359010, 73809693, 4947690, 399935, 6377853, 182167, 271561, 1985160],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Đà Nẵng + AMEN_POOL (Hồ bơi). Ground truth = hotel ở Đà Nẵng CÓ hồ bơi (match field amenities), rank thuần review_score: 83464709=10.0, 338256=9.2, 73359010=9.2, 73809693=9.1, 4947690=8.9, 399935=8.9, 6377853=8.9, 182167=8.9, 271561=8.9, 1985160=8.9."
+  },
+  {
+    "query_id": "GS-032",
+    "query": "Tìm resort ở Phú Quốc sát biển, có lối ra bãi biển",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đảo Phú Quốc"},
+    "soft_signals": ["sát biển", "gần biển", "bãi biển riêng", "AMEN_BEACHFRONT"],
+    "relevant_hotel_ids": [4462454, 625168, 10247322, 1032420, 6377313, 11013, 1158643, 296330],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10) — query RESORT nên CHỈ gồm accommodation_type=Resort: city Đảo Phú Quốc + AMEN_BEACHFRONT (sát biển). Rank thuần review_score: 4462454=9.1, 625168=8.8, 10247322=8.8, 1032420=8.8, 6377313=8.7, 11013=8.4, 1158643=8.4, 296330=7.2. (Chỉ 8 resort ở Phú Quốc có tiện nghi sát biển → lấy hết.)"
+  },
+  {
+    "query_id": "GS-033",
+    "query": "Tìm khách sạn ở Hà Nội có spa massage xông hơi",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hà Nội"},
+    "soft_signals": ["spa", "massage", "xông hơi", "AMEN_SPA"],
+    "relevant_hotel_ids": [10964, 38583105, 529354, 16366479, 6868294, 237603, 1122443, 6542427, 10665115, 303011],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Hà Nội + AMEN_SPA (Spa). Rank thuần review_score: 10964=9.2, 38583105=9.1, 529354=9.1, 16366479=9.0, 6868294=8.8, 237603=8.8, 1122443=8.7, 6542427=8.7, 10665115=8.6, 303011=8.6."
+  },
+  {
+    "query_id": "GS-034",
+    "query": "Tìm khách sạn ở Hồ Chí Minh có phòng gym",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hồ Chí Minh"},
+    "soft_signals": ["phòng gym", "phòng tập", "gym", "AMEN_GYM"],
+    "relevant_hotel_ids": [6428322, 47843559, 165511, 12132, 75824399, 666232, 10976, 1602693, 488444, 488373],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Hồ Chí Minh + AMEN_GYM (Phòng tập). Rank thuần review_score: 6428322=9.1, 47843559=9.0, 165511=8.9, 12132=8.9, 75824399=8.9, 666232=8.8, 10976=8.7, 1602693=8.6, 488444=8.6, 488373=8.6."
+  },
+  {
+    "query_id": "GS-035",
+    "query": "Tìm khách sạn ở Hồ Chí Minh có sân golf",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hồ Chí Minh"},
+    "soft_signals": ["sân golf", "chơi golf", "AMEN_GOLF"],
+    "relevant_hotel_ids": [666232, 10976, 1602693, 159186, 16260062, 407839, 9195, 317796, 31679160, 55745075],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Hồ Chí Minh + AMEN_GOLF (Sân golf, tại chỗ/gần kề). Rank thuần review_score: 666232=8.8, 10976=8.7, 1602693=8.6, 159186=8.5, 16260062=8.5, 407839=8.5, 9195=8.5, 317796=8.0, 31679160=7.7, 55745075=5.0. (HCM có đúng 10 ks gắn golf.)"
+  },
+  {
+    "query_id": "GS-036",
+    "query": "Tìm khách sạn ở Nha Trang có khu vui chơi cho trẻ em",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["khu vui chơi trẻ em", "câu lạc bộ trẻ em", "sân chơi", "AMEN_KIDS_CLUB"],
+    "relevant_hotel_ids": [38775535, 210187, 33589745, 78340310, 5685860, 4459783, 48363, 109119, 6359030, 1986410],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Nha Trang + AMEN_KIDS_CLUB (Câu lạc bộ / khu vui chơi trẻ em). Rank thuần review_score: 38775535=9.1, 210187=9.0, 33589745=9.0, 78340310=9.0, 5685860=8.9, 4459783=8.9, 48363=8.9, 109119=8.9, 6359030=8.9, 1986410=8.9."
+  },
+  {
+    "query_id": "GS-037",
+    "query": "Tìm khách sạn ở Hà Nội cho phép mang theo thú cưng",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hà Nội"},
+    "soft_signals": ["cho phép thú cưng", "mang theo thú cưng", "pet", "AMEN_PET_FRIENDLY"],
+    "relevant_hotel_ids": [73179078, 5305073, 303011, 617191, 5368161, 9372539, 289726, 161676, 33907335, 64058128],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Hà Nội + AMEN_PET_FRIENDLY (Cho phép thú cưng). Rank thuần review_score: 73179078=9.1, 5305073=8.7, 303011=8.6, 617191=8.5, 5368161=8.5, 9372539=8.5, 289726=8.5, 161676=8.4, 33907335=8.4, 64058128=8.2."
+  },
+  {
+    "query_id": "GS-038",
+    "query": "Tìm khách sạn ở Nha Trang có hồ bơi vô cực",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["hồ bơi vô cực", "bể bơi vô cực", "AMEN_INFINITY_POOL"],
+    "relevant_hotel_ids": [38775535, 75690457, 210187, 33589745, 78340310, 5685860, 4459783, 869046, 6421211, 65153],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Nha Trang + AMEN_INFINITY_POOL (Hồ bơi vô cực). Rank thuần review_score: 38775535=9.1, 75690457=9.1, 210187=9.0, 33589745=9.0, 78340310=9.0, 5685860=8.9, 4459783=8.9, 869046=8.9, 6421211=8.9, 65153=8.7."
+  },
+  {
+    "query_id": "GS-039",
+    "query": "Tìm khách sạn ở Hồ Chí Minh có cho thuê xe đạp",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hồ Chí Minh"},
+    "soft_signals": ["xe đạp", "thuê xe đạp", "cho thuê xe đạp", "AMEN_BIKE"],
+    "relevant_hotel_ids": [33550196, 64327220, 45888608, 315667, 9195, 47615938, 38037213, 25539435, 336669, 173622],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Hồ Chí Minh + AMEN_BIKE (Xe đạp / cho thuê xe đạp). Rank thuần review_score: 33550196=9.1, 64327220=8.8, 45888608=8.7, 315667=8.5, 9195=8.5, 47615938=8.4, 38037213=8.4, 25539435=8.4, 336669=8.2, 173622=8.1."
+  },
+  {
+    "query_id": "GS-040",
+    "query": "Tìm khách sạn ở Hà Nội có phòng họp hội nghị",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hà Nội"},
+    "soft_signals": ["phòng họp", "phòng hội nghị", "trung tâm hội nghị", "AMEN_MEETING_ROOM"],
+    "relevant_hotel_ids": [66680429, 10964, 38583105, 529354, 73179078, 16366479, 6868294, 237603, 1122443, 6542427],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Amenity test (corpus 520 hotel, top_k=10): city Hà Nội + AMEN_MEETING_ROOM (Phòng họp / hội nghị). Rank thuần review_score: 66680429=9.5, 10964=9.2, 38583105=9.1, 529354=9.1, 73179078=9.1, 16366479=9.0, 6868294=8.8, 237603=8.8, 1122443=8.7, 6542427=8.7."
+  },
+  {
+    "query_id": "GS-041",
+    "query": "Tìm khách sạn giá rẻ, bình dân vừa túi tiền",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["giá rẻ", "bình dân", "vừa túi tiền", "PRICE_BUDGET"],
+    "relevant_hotel_ids": [2114938, 1370955, 61890911, 31935748, 4846574, 194445, 33088465, 24247480, 34557033, 51457192],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (toàn quốc, corpus 520 hotel, top_k=10): PRICE_BUDGET (Bình dân). Tier suy từ price_from=min(rooms.price_per_night), quartile corpus Q1=0.60tr/Q2=1.46tr/Q3=3.00tr → BUDGET = price_from ≤ Q1. Rank giá tăng dần (rẻ nhất trước), tiebreak review_score: 2114938=0.20tr, 1370955=0.20tr, 61890911=0.20tr, 31935748=0.20tr, 4846574=0.20tr, 194445=0.20tr, 33088465=0.20tr(0 review), 24247480=0.24tr, 34557033=0.26tr, 51457192=0.30tr."
+  },
+  {
+    "query_id": "GS-042",
+    "query": "Tìm khách sạn giá rẻ ở Hà Nội cho sinh viên",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hà Nội"},
+    "soft_signals": ["giá rẻ", "giá sinh viên", "tiết kiệm", "PRICE_BUDGET"],
+    "relevant_hotel_ids": [194445, 5305073, 289726, 289832, 32909358, 42154394, 7911593, 61167500, 88056589, 73179078],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (corpus 520 hotel, top_k=10): city Hà Nội + PRICE_BUDGET (price_from ≤ Q1=0.60tr). Rank giá tăng dần, tiebreak review_score: 194445=0.20tr, 5305073=0.30tr, 289726=0.30tr, 289832=0.30tr, 32909358=0.30tr, 42154394=0.37tr, 7911593=0.40tr(0 review), 61167500=0.44tr, 88056589=0.44tr(0 review), 73179078=0.60tr."
+  },
+  {
+    "query_id": "GS-043",
+    "query": "Tìm khách sạn tầm trung, giá hợp lý vừa phải",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["tầm trung", "giá hợp lý", "giá vừa phải", "PRICE_MID"],
+    "relevant_hotel_ids": [41926154, 54967082, 32680041, 31461091, 64060008, 24112682, 44314482, 38037213, 59714076, 517713],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (toàn quốc, corpus 520 hotel, top_k=10): PRICE_MID (Tầm trung) = Q1 < price_from ≤ Q2 (0.60tr–1.46tr). Rank giá tăng dần, tiebreak review_score: 41926154=0.61tr, 54967082=0.62tr, 32680041=0.62tr, 31461091=0.62tr, 64060008=0.62tr, 24112682=0.62tr, 44314482=0.62tr, 38037213=0.62tr, 59714076=0.62tr, 517713=0.62tr."
+  },
+  {
+    "query_id": "GS-044",
+    "query": "Tìm khách sạn tầm trung ở Đà Lạt",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Lạt"},
+    "soft_signals": ["tầm trung", "giá vừa", "hạng trung", "PRICE_MID"],
+    "relevant_hotel_ids": [41926154, 32680041, 23388080, 55256505, 63447487, 49385769, 4942635, 78233733, 9698, 74577726],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (corpus 520 hotel, top_k=10): city Đà Lạt + PRICE_MID (0.60tr<price_from≤1.46tr) — đổi city từ HCM (chỉ 6 ks) sang Đà Lạt (11 ks) để đủ 10. Rank giá tăng dần, tiebreak review_score: 41926154=0.61tr, 32680041=0.62tr, 23388080=0.69tr, 55256505=0.69tr, 63447487=0.72tr, 49385769=0.77tr, 4942635=0.77tr, 78233733=0.83tr, 9698=0.83tr, 74577726=1.20tr."
+  },
+  {
+    "query_id": "GS-045",
+    "query": "Tìm khách sạn cao cấp, hạng sang premium",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["cao cấp", "hạng sang", "premium", "PRICE_UPSCALE"],
+    "relevant_hotel_ids": [46698614, 73359010, 1160137, 2265300, 34118773, 463095, 247372, 462837, 58875018, 34513919],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (toàn quốc, corpus 520 hotel, top_k=10): PRICE_UPSCALE (Cao cấp) = Q2 < price_from ≤ Q3 (1.46tr–3.00tr). Rank giá giảm dần (đắt nhất trước), tiebreak review_score: 46698614=3.00tr(s9.2), 73359010=3.00tr(s9.2), 1160137=3.00tr(s8.9), 2265300=3.00tr(s8.8), 34118773=3.00tr(s8.8), 463095=3.00tr(s8.5), 247372=3.00tr(s8.2), 462837=3.00tr(s7.9), 58875018=3.00tr(s7.8), 34513919=3.00tr(s7.7)."
+  },
+  {
+    "query_id": "GS-046",
+    "query": "Tìm khách sạn cao cấp ở Nha Trang",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["cao cấp", "hạng sang", "khá sang", "PRICE_UPSCALE"],
+    "relevant_hotel_ids": [463095, 36919571, 869046, 109119, 706033, 75690457, 30804222, 6906462, 5930920, 4973904],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (corpus 520 hotel, top_k=10): city Nha Trang + PRICE_UPSCALE (1.46tr<price_from≤3.00tr). Rank giá giảm dần, tiebreak review_score: 463095=3.00tr, 36919571=2.87tr, 869046=2.55tr, 109119=2.36tr, 706033=2.18tr, 75690457=1.82tr, 30804222=1.82tr, 6906462=1.75tr, 5930920=1.75tr, 4973904=1.60tr."
+  },
+  {
+    "query_id": "GS-047",
+    "query": "Tìm khách sạn sang trọng, xa hoa đẳng cấp",
+    "intent_type": "hotel_search",
+    "hard_filters": {},
+    "soft_signals": ["sang trọng", "xa hoa", "đẳng cấp", "PRICE_LUXURY"],
+    "relevant_hotel_ids": [5663891, 263516, 2811560, 338256, 5663774, 5877654, 36709877, 38775535, 4462454, 529354],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (toàn quốc, corpus 520 hotel, top_k=10): PRICE_LUXURY (Sang trọng) = price_from > Q3 (3.00tr). Nhiều hotel đụng trần giá 5.00tr nên rank giá giảm dần + tiebreak review_score: 5663891=9.4, 263516=9.3, 2811560=9.2, 338256=9.2, 5663774=9.2, 5877654=9.2, 36709877=9.1, 38775535=9.1, 4462454=9.1, 529354=9.1 (đều price_from=5.00tr, 5*)."
+  },
+  {
+    "query_id": "GS-048",
+    "query": "Tìm resort sang trọng ở Nha Trang để nghỉ dưỡng cao cấp",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["sang trọng", "xa hoa", "siêu sang", "PRICE_LUXURY"],
+    "relevant_hotel_ids": [263516, 38775535, 1986410, 805030, 6251087, 65153],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (corpus 520 hotel, top_k=10) — query RESORT nên CHỈ gồm accommodation_type=Resort: city Nha Trang + PRICE_LUXURY (price_from > Q3=3.00tr, đa số =5.00tr). Rank giá giảm dần + tiebreak review_score: 263516=9.3, 38775535=9.1, 1986410=8.9, 805030=8.8, 6251087=8.7, 65153=8.7. (Chỉ 6 resort Nha Trang ở tier LUXURY → lấy hết.)"
+  },
+  {
+    "query_id": "GS-049",
+    "query": "Tìm khách sạn sang trọng ở Đà Nẵng",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Nẵng"},
+    "soft_signals": ["sang trọng", "xa hoa", "đẳng cấp quốc tế", "PRICE_LUXURY"],
+    "relevant_hotel_ids": [338256, 4947690, 338255, 149036, 1985160, 271561, 55270044, 74957819, 4128513, 73809693],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (corpus 520 hotel, top_k=10): city Đà Nẵng + PRICE_LUXURY (price_from > Q3=3.00tr). Rank giá giảm dần, tiebreak review_score: 338256=5.00tr(s9.2), 4947690=5.00tr(s8.9), 338255=5.00tr(s8.8), 149036=5.00tr(s8.2), 1985160=4.93tr(s8.9), 271561=4.93tr(s8.9), 55270044=4.93tr(s8.8), 74957819=4.89tr(s8.4), 4128513=4.83tr(s8.7), 73809693=4.62tr(s9.1)."
+  },
+  {
+    "query_id": "GS-050",
+    "query": "Tìm khách sạn giá rẻ ở Hồ Chí Minh",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hồ Chí Minh"},
+    "soft_signals": ["giá rẻ", "bình dân", "phải chăng", "PRICE_BUDGET"],
+    "relevant_hotel_ids": [61890911, 31935748, 54795553, 1189049, 47615938, 2163076, 31679160, 523102, 65513469, 64327220],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Price-tier test (corpus 520 hotel, top_k=10): city Hồ Chí Minh + PRICE_BUDGET (price_from ≤ Q1=0.60tr). Rank giá tăng dần, tiebreak review_score: 61890911=0.20tr, 31935748=0.20tr, 54795553=0.30tr, 1189049=0.30tr, 47615938=0.30tr, 2163076=0.30tr, 31679160=0.30tr, 523102=0.30tr, 65513469=0.60tr, 64327220=0.60tr."
+  },
+  {
+    "query_id": "GS-051",
+    "query": "Tìm khách sạn ở Đà Nẵng cho gia đình, không gian thư giãn thoải mái",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Nẵng"},
+    "soft_signals": ["gia đình", "có con nhỏ", "thư giãn", "thoải mái", "PURPOSE_FAMILY", "STYLE_RELAXING"],
+    "relevant_hotel_ids": [399935, 182167, 271561, 338255, 4128513],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Purpose∩Style test (corpus 520 hotel, top_k=5): city Đà Nẵng + PURPOSE_FAMILY (demographics) ∩ STYLE_RELAXING (review). Ground truth = hotel cùng city thỏa CẢ 2, rank theo rank-sum (hạng demographics 'Gia đình' + hạng review 'thư giãn'). Giao=41, lấy top 5: 399935(rs7), 182167(rs9), 271561(rs9), 338255(rs9), 4128513(rs14)."
+  },
+  {
+    "query_id": "GS-052",
+    "query": "Tìm khách sạn sang trọng đẳng cấp ở Nha Trang cho cặp đôi",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["cặp đôi", "hai người", "sang trọng", "đẳng cấp", "PURPOSE_ROMANTIC", "STYLE_LUXURY"],
+    "relevant_hotel_ids": [48363, 263516, 4459783, 65153, 210187],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Purpose∩Style test (corpus 520 hotel, top_k=5): city Nha Trang + PURPOSE_ROMANTIC (demographics) ∩ STYLE_LUXURY (review 'đẳng cấp', khác PRICE_LUXURY). Rank rank-sum. Giao=30, top 5: 48363(rs4), 263516(rs6), 4459783(rs8), 65153(rs12), 210187(rs12)."
+  },
+  {
+    "query_id": "GS-053",
+    "query": "Tìm khách sạn ở Đà Lạt cho nhóm bạn, decor đẹp mắt thẩm mỹ",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Lạt"},
+    "soft_signals": ["nhóm", "nhóm bạn", "thẩm mỹ", "đẹp mắt", "PURPOSE_GROUP", "STYLE_AESTHETIC"],
+    "relevant_hotel_ids": [42109640, 4942635, 10954459, 31642453, 16784780],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Purpose∩Style test (corpus 520 hotel, top_k=5): city Đà Lạt + PURPOSE_GROUP (demographics) ∩ STYLE_AESTHETIC (review). Rank rank-sum. Giao=8, top 5: 42109640(rs4), 4942635(rs6), 10954459(rs7), 31642453(rs8), 16784780(rs10)."
+  },
+  {
+    "query_id": "GS-054",
+    "query": "Tìm khách sạn yên tĩnh ở Hội An cho khách đi du lịch một mình",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hội An"},
+    "soft_signals": ["đi một mình", "khách du lịch một mình", "yên tĩnh", "thanh bình", "PURPOSE_SOLO", "STYLE_QUIET"],
+    "relevant_hotel_ids": [63917222, 1193207, 1803429, 44777877, 859981],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Purpose∩Style test (corpus 520 hotel, top_k=5): city Hội An + PURPOSE_SOLO (demographics) ∩ STYLE_QUIET (review). Rank rank-sum. Giao=22, top 5: 63917222(rs4), 1193207(rs4), 1803429(rs5), 44777877(rs8), 859981(rs14)."
+  },
+  {
+    "query_id": "GS-055",
+    "query": "Tìm resort ở Phú Quốc cho cặp đôi nghỉ dưỡng thư giãn",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đảo Phú Quốc"},
+    "soft_signals": ["cặp đôi", "tuần trăng mật", "thư giãn", "nghỉ dưỡng", "PURPOSE_ROMANTIC", "STYLE_RELAXING"],
+    "relevant_hotel_ids": [11013, 10247322, 2577124, 625168, 4462454],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Purpose∩Style test (corpus 520 hotel, top_k=5) — query RESORT nên CHỈ gồm accommodation_type=Resort: city Đảo Phú Quốc + PURPOSE_ROMANTIC ∩ STYLE_RELAXING. Rank rank-sum (đã lọc resort). Giao(resort)=10, top 5: 11013(rs7), 10247322(rs7), 2577124(rs9), 625168(rs12), 4462454(rs14)."
+  },
+  {
+    "query_id": "GS-056",
+    "query": "Tìm khách sạn giá rẻ ở Hồ Chí Minh cho khách đi du lịch một mình",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hồ Chí Minh"},
+    "soft_signals": ["giá rẻ", "bình dân", "đi một mình", "khách du lịch một mình", "PRICE_BUDGET", "PURPOSE_SOLO"],
+    "relevant_hotel_ids": [2163076, 65513469, 47615938, 317796, 1189049],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Price∩Purpose test (corpus 520 hotel, top_k=5): city Hồ Chí Minh + PRICE_BUDGET (giá) ∩ PURPOSE_SOLO (demographics). Ground truth = hotel cùng city thỏa CẢ 2, rank rank-sum (hạng giá tăng dần + hạng demographics 'một mình'). Giao=22, top 5: 2163076(rs21), 65513469(rs27), 47615938(rs28), 317796(rs30), 1189049(rs36)."
+  },
+  {
+    "query_id": "GS-057",
+    "query": "Tìm khách sạn sang trọng ở Nha Trang cho gia đình có trẻ nhỏ",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["sang trọng", "xa hoa", "gia đình có trẻ nhỏ", "có con nhỏ", "PRICE_LUXURY", "PURPOSE_FAMILY"],
+    "relevant_hotel_ids": [5685860, 805030, 4459783, 65153, 1986410],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Price∩Purpose test (corpus 520 hotel, top_k=5): city Nha Trang + PRICE_LUXURY (giá, đa số 5tr) ∩ PURPOSE_FAMILY (demographics). Rank rank-sum. Giao=18, top 5: 5685860(rs8), 805030(rs8), 4459783(rs9), 65153(rs12), 1986410(rs13)."
+  },
+  {
+    "query_id": "GS-058",
+    "query": "Tìm khách sạn tầm trung ở Hà Nội cho khách đi công tác",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hà Nội"},
+    "soft_signals": ["tầm trung", "giá hợp lý", "đi công tác", "dự hội nghị", "PRICE_MID", "PURPOSE_BUSINESS"],
+    "relevant_hotel_ids": [161676, 446043, 2985143, 9757717, 617191],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Price∩Purpose test (corpus 520 hotel, top_k=5): city Hà Nội + PRICE_MID (giá 0.60tr–1.46tr) ∩ PURPOSE_BUSINESS (demographics). Rank rank-sum. Giao=14, top 5: 161676(rs11), 446043(rs19), 2985143(rs21), 9757717(rs22), 617191(rs25)."
+  },
+  {
+    "query_id": "GS-059",
+    "query": "Tìm khách sạn cao cấp ở Đà Nẵng cho nhóm đông người",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Nẵng"},
+    "soft_signals": ["cao cấp", "hạng sang", "nhóm", "đi đoàn", "PRICE_UPSCALE", "PURPOSE_GROUP"],
+    "relevant_hotel_ids": [399935, 502099, 6377853, 37718747, 281497],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Price∩Purpose test (corpus 520 hotel, top_k=5): city Đà Nẵng + PRICE_UPSCALE (giá 1.46tr–3.00tr) ∩ PURPOSE_GROUP (demographics). Rank rank-sum. Giao=15, top 5: 399935(rs7), 502099(rs11), 6377853(rs11), 37718747(rs21), 281497(rs24)."
+  },
+  {
+    "query_id": "GS-060",
+    "query": "Tìm resort sang trọng ở Phú Quốc cho cặp đôi đi tuần trăng mật",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đảo Phú Quốc"},
+    "soft_signals": ["sang trọng", "xa hoa", "cặp đôi", "tuần trăng mật", "PRICE_LUXURY", "PURPOSE_ROMANTIC"],
+    "relevant_hotel_ids": [625168, 4462454, 1032420, 6377313],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Combo Price∩Purpose test (corpus 520 hotel, top_k=5) — query RESORT nên CHỈ gồm accommodation_type=Resort: city Đảo Phú Quốc + PRICE_LUXURY (giá 5tr) ∩ PURPOSE_ROMANTIC (demographics). Rank rank-sum (đã lọc resort). Giao(resort)=4 → lấy hết 4: 625168(rs3), 4462454(rs9), 1032420(rs19), 6377313(rs26)."
+  },
+  {
+    "query_id": "GS-061",
+    "query": "Tìm khách sạn ở Đà Nẵng có dịch vụ tốt, nhân viên phục vụ chu đáo",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Nẵng"},
+    "soft_signals": ["dịch vụ tốt", "nhân viên chu đáo", "phục vụ tận tình", "GRADE_DICH_VU"],
+    "relevant_hotel_ids": [338256, 82014402, 1985160, 73359010, 73809693, 338255, 55270044, 46045575, 9755468, 4128513],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10): city Đà Nẵng + grade 'Dịch vụ' (reviews_detail.grades, KHÔNG dùng amenities, KHÔNG dùng style.yaml). Rank theo grade_score giảm dần → tiebreak review_score → review_count. pool=43, top 10: 338256(g9.6), 82014402(g9.5), 1985160(g9.4), 73359010(g9.3/s9.2), 73809693(g9.3/s9.1), 338255(g9.3/s8.8/rc2770), 55270044(g9.3/s8.8/rc722), 46045575(g9.3/s8.8/rc628), 9755468(g9.3/s8.8/rc192), 4128513(g9.3/s8.7)."
+  },
+  {
+    "query_id": "GS-062",
+    "query": "Tìm khách sạn ở Hà Nội sạch sẽ, vệ sinh tốt",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hà Nội"},
+    "soft_signals": ["sạch sẽ", "vệ sinh tốt", "phòng sạch", "GRADE_DO_SACH_SE"],
+    "relevant_hotel_ids": [66680429, 86658383, 10964, 38583105, 16366479, 35354312, 73179078, 529354, 6542427, 6868294],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10): city Hà Nội + grade 'Độ sạch sẽ' (reviews_detail.grades). Rank grade_score giảm dần → tiebreak review_score → review_count. pool=53, top 10: 66680429(g9.7), 86658383(g9.6/s9.3), 10964(g9.6/s9.2), 38583105(g9.6/s9.1), 16366479(g9.6/s9.0), 35354312(g9.5/s9.1/rc767), 73179078(g9.5/s9.1/rc157), 529354(g9.4), 6542427(g9.2), 6868294(g9.1)."
+  },
+  {
+    "query_id": "GS-063",
+    "query": "Tìm khách sạn ở Hồ Chí Minh đáng đồng tiền, giá tốt so với chất lượng",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hồ Chí Minh"},
+    "soft_signals": ["đáng đồng tiền", "đáng tiền", "xứng đáng với giá", "GRADE_DANG_TIEN"],
+    "relevant_hotel_ids": [65513469, 33550196, 64327220, 54795553, 6428322, 47843559, 16260062, 47615938, 165511, 45888608],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10): city Hồ Chí Minh + grade 'Đáng tiền' (reviews_detail.grades, value-for-money từ review — KHÁC PRICE tier). Rank grade_score giảm dần → tiebreak review_score → review_count. pool=49, top 10: 65513469(g9.5), 33550196(g9.3), 64327220(g9.1), 54795553(g9.0), 6428322(g8.8/s9.1), 47843559(g8.8/s9.0), 16260062(g8.8/s8.5), 47615938(g8.8/s8.4), 165511(g8.7/s8.9), 45888608(g8.7/s8.7)."
+  },
+  {
+    "query_id": "GS-064",
+    "query": "Tìm khách sạn ở Đà Lạt có vị trí thuận tiện, dễ di chuyển",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đà Lạt"},
+    "soft_signals": ["vị trí thuận tiện", "dễ di chuyển", "vị trí trung tâm", "GRADE_VI_TRI"],
+    "relevant_hotel_ids": [49851722, 32680041, 78233733, 15896111, 179080, 41926154, 23388080, 55256505, 9698, 63447487],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10): city Đà Lạt + grade 'Vị trí' (reviews_detail.grades). Rank grade_score giảm dần → tiebreak review_score → review_count. pool=23, top 10: 49851722(g9.6), 32680041(g9.4/s9.2), 78233733(g9.4/s8.3), 15896111(g9.3/s8.7/rc281), 179080(g9.3/s8.3), 41926154(g9.2/s9.2), 23388080(g9.2/s9.0), 55256505(g9.2/s8.9), 9698(g9.2/s8.3), 63447487(g9.1)."
+  },
+  {
+    "query_id": "GS-065",
+    "query": "Tìm khách sạn ở Hạ Long có cơ sở vật chất tốt, trang thiết bị đầy đủ",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hạ Long"},
+    "soft_signals": ["cơ sở vật chất tốt", "trang thiết bị đầy đủ", "cơ sở vật chất khang trang", "GRADE_CO_SO_VAT_CHAT"],
+    "relevant_hotel_ids": [35444743, 65343180, 38722254, 42152643, 27874314, 58958232, 31461091, 1015998, 46741090, 16360312],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10): city Hạ Long + grade 'Cơ sở vật chất' (reviews_detail.grades). Rank grade_score giảm dần → tiebreak review_score → review_count. pool=22, top 10: 35444743(g9.6), 65343180(g9.5), 38722254(g9.4), 42152643(g9.3/s8.9), 27874314(g9.3/s8.6), 58958232(g9.2/s9.2), 31461091(g9.2/s9.1), 1015998(g9.2/s9.0), 46741090(g9.0/s9.0), 16360312(g9.0/s8.9)."
+  },
+  {
+    "query_id": "GS-066",
+    "query": "Tìm khách sạn ở Vũng Tàu có chất lượng phòng tốt, phòng rộng rãi",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Vũng Tàu"},
+    "soft_signals": ["chất lượng phòng tốt", "phòng rộng rãi", "phòng ốc chất lượng", "GRADE_CHAT_LUONG_PHONG"],
+    "relevant_hotel_ids": [25773171, 6363024, 2114938, 48561897, 1122450, 161729, 462837, 412707],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10): city Vũng Tàu + grade 'Sự thoải mái và chất lượng phòng' (reviews_detail.grades). Query CỐ TÌNH tránh từ 'thoải mái/dễ chịu' (surface form STYLE_RELAXING), chỉ dùng 'chất lượng phòng/rộng rãi'. Rank grade_score giảm dần → tiebreak review_score → review_count. pool=8 (lấy hết): 25773171(g9.5), 6363024(g9.4), 2114938(g9.3), 48561897(g9.1), 1122450(g9.0), 161729(g8.6), 462837(g8.0), 412707(g7.6)."
+  },
+  {
+    "query_id": "GS-067",
+    "query": "Tìm khách sạn ở Hội An có dịch vụ chăm sóc khách hàng tốt",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Hội An"},
+    "soft_signals": ["dịch vụ tốt", "chăm sóc khách hàng", "nhân viên nhiệt tình", "GRADE_DICH_VU"],
+    "relevant_hotel_ids": [44777877, 63917222, 6255260, 1639502, 1193207, 36697714, 1803429, 6945065, 16375525, 38692610],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10): city Hội An + grade 'Dịch vụ' (reviews_detail.grades). Rank grade_score giảm dần → tiebreak review_score → review_count. pool=22, top 10: 44777877(g9.9/s9.7/rc10551), 63917222(g9.9/s9.7/rc1114), 6255260(g9.8), 1639502(g9.7), 1193207(g9.6), 36697714(g9.5/s9.1), 1803429(g9.5/s9.0), 6945065(g9.4/s9.1), 16375525(g9.4/s9.0/rc2101), 38692610(g9.4/s9.0/rc723)."
+  },
+  {
+    "query_id": "GS-068",
+    "query": "Tìm khách sạn ở Nha Trang sạch sẽ, phòng ốc gọn gàng sạch",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["sạch sẽ", "gọn gàng", "vệ sinh sạch", "GRADE_DO_SACH_SE"],
+    "relevant_hotel_ids": [33589745, 263516, 38775535, 75690457, 78340310, 83464707, 6421211, 6359030, 1986410, 210187],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10): city Nha Trang + grade 'Độ sạch sẽ' (reviews_detail.grades). Rank grade_score giảm dần → tiebreak review_score → review_count. pool=38, top 10: 33589745(g9.6), 263516(g9.5/s9.3), 38775535(g9.5/s9.1), 75690457(g9.4/s9.1), 78340310(g9.4/s9.0), 83464707(g9.3), 6421211(g9.2/s8.9/rc3997), 6359030(g9.2/s8.9/rc3579), 1986410(g9.2/s8.9/rc3549), 210187(g9.1)."
+  },
+  {
+    "query_id": "GS-069",
+    "query": "Tìm resort ở Phú Quốc đáng đồng tiền, xứng đáng với chi phí",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Đảo Phú Quốc"},
+    "soft_signals": ["đáng đồng tiền", "đáng tiền", "xứng đáng chi phí", "GRADE_DANG_TIEN"],
+    "relevant_hotel_ids": [2577124, 4462454, 10247322, 6377313, 625168, 1032420, 1158643, 11013, 30897715, 296330],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10) — query RESORT nên CHỈ gồm accommodation_type=Resort: city Đảo Phú Quốc + grade 'Đáng tiền' (reviews_detail.grades). Rank grade_score giảm dần → tiebreak review_score → review_count. pool(resort)=10 (lấy hết): 2577124(g9.2), 4462454(g9.1), 10247322(g9.0), 6377313(g8.9), 625168(g8.8), 1032420(g8.6), 1158643(g8.4), 11013(g8.3), 30897715(g7.4), 296330(g7.2)."
+  },
+  {
+    "query_id": "GS-070",
+    "query": "Tìm resort ở Nha Trang có dịch vụ tốt, nhân viên thân thiện",
+    "intent_type": "hotel_search",
+    "hard_filters": {"city": "Nha Trang"},
+    "soft_signals": ["dịch vụ tốt", "nhân viên thân thiện", "phục vụ chu đáo", "GRADE_DICH_VU"],
+    "relevant_hotel_ids": [263516, 1986410, 38775535, 805030, 65153, 6251087],
+    "relevant_chunk_ids": [],
+    "labeler": "Kiên",
+    "notes": "Review-grade test (corpus 520 hotel, top_k=10) — query RESORT nên CHỈ gồm accommodation_type=Resort: city Nha Trang + grade 'Dịch vụ' (reviews_detail.grades). Rank grade_score giảm dần → tiebreak review_score → review_count. pool(resort)=6 (lấy hết): 263516(g9.7), 1986410(g9.3), 38775535(g9.1/s9.1), 805030(g9.1/s8.8), 65153(g8.9/s8.7/rc8281), 6251087(g8.9/s8.7/rc3429)."
+  }
+]
