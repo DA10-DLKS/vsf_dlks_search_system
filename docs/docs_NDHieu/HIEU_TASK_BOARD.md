@@ -33,16 +33,16 @@ Status values:
 | Sprint | Planned Tasks | Completed Tasks | Partial Tasks | Estimated Completion % |
 | ------ | ------------- | --------------- | ------------- | ---------------------- |
 | Sprint 1 | 8 | 7 | 1 | 94% |
-| Sprint 2 | 8 | 0 | 6 | 38% |
+| Sprint 2 | 10 | 2 | 6 | 50% |
 | Sprint 3 | 6 | 0 | 4 | 33% |
-| Total Frontend Roadmap | 22 | 7 | 11 | 57% |
+| Total Frontend Roadmap | 24 | 9 | 11 | 60% |
 
 Cách tính:
 
 - DONE = 1.0 điểm.
 - IN_PROGRESS/partial artifact = 0.5 điểm.
 - TODO/BLOCKED/CANCELLED = 0 điểm.
-- Total frontend roadmap = `(7 DONE + 11 partial * 0.5) / 22 = 56.8%`, làm tròn thành 57%.
+- Total frontend roadmap = `(9 DONE + 11 partial * 0.5) / 24 = 60.4%`, làm tròn thành 60%.
 
 ## Task Registry
 
@@ -64,6 +64,8 @@ Cách tính:
 | HIEU-S2-006 | Xây UI state components | Sprint 2 | IN_PROGRESS | Nguyễn Duy Hiếu | 2026-06-03 |  | Đảm bảo demo không bị trống hoặc vỡ UI khi loading, lỗi API hoặc không có kết quả. | `LoadingState.jsx`, `ErrorState.jsx`, `EmptyState.jsx` |
 | HIEU-S2-007 | Quyết định setup React/Vite runtime | Sprint 2 | TODO | Nguyễn Duy Hiếu + Team | 2026-06-03 |  | Quyết định có biến React-ready components thành app chạy được trong Sprint 2 không. | Team decision, possible `package.json`/Vite setup |
 | HIEU-S2-008 | Smoke test tích hợp React components | Sprint 2 | TODO | Nguyễn Duy Hiếu | 2026-06-03 |  | Xác nhận components hoạt động cùng nhau trong runtime thật. | Smoke test notes hoặc test result |
+| HIEU-S2-009 | Update React-ready components for Kien API schema v1 | Sprint 2 | DONE | Nguyễn Duy Hiếu | 2026-06-11 | 2026-06-11 | Chuẩn bị React-ready UI cho flow mới: Search API trả HotelCard, Context API tải citations/chunks theo từng `hotel_id`. | `SearchInterface.jsx`, `ResultList.jsx`, `ResultCard.jsx`, `MetadataCard.jsx`, `CitationList.jsx`, `ContextPreview.jsx`, `ErrorState.jsx` |
+| HIEU-S2-010 | Create standalone Search UI v2 demo for Kien API schema v1 | Sprint 2 | DONE | Nguyễn Duy Hiếu | 2026-06-11 | 2026-06-11 | Tạo demo browser-runnable cho Search -> Context split theo Kien schema v1 mà không cần React/Vite/runtime backend. | `frontend/search_ui_v2.html` |
 | HIEU-S3-001 | Hoàn thiện Final Dashboard | Sprint 3 | IN_PROGRESS | Nguyễn Duy Hiếu | 2026-06-03 |  | Tạo màn hình demo cuối để trình bày flow, metric target và kết quả Search/RAG. | `Dashboard.jsx`, final dashboard integration |
 | HIEU-S3-002 | E2E Testing | Sprint 3 | IN_PROGRESS | Nguyễn Duy Hiếu | 2026-06-03 |  | Kiểm tra flow query -> result -> metadata -> citation -> context. | `frontend/tests/e2e_test.js` |
 | HIEU-S3-003 | UX Optimization | Sprint 3 | IN_PROGRESS | Nguyễn Duy Hiếu | 2026-06-03 |  | Cải thiện khả năng đọc, demo usability và responsive behavior. | `frontend/ux_report.md` |
@@ -83,7 +85,8 @@ Cách tính:
 | Mentor Q&A | Prepare for mentor review and common technical/product questions. | `MENTOR_QA.md` | Sprint 1 | DONE |
 | Mock data explanation | Explain ranking, scores, metadata, citations, documents and chunks. | `MOCK_DATA_EXPLAINED.md` | Sprint 1 | DONE |
 | API client abstraction | Support mock mode and future real backend mode. | `frontend/src/api/api_client.js`, `frontend/src/config/config.js` | Sprint 2 | IN_PROGRESS |
-| React component set | Prepare reusable UI components for future React/Vite app. | `frontend/src/components/*.jsx`, `frontend/src/dashboard/Dashboard.jsx` | Sprint 2 | IN_PROGRESS |
+| React component set | Prepare reusable UI components for future React/Vite app. | `frontend/src/components/*.jsx`, `frontend/src/dashboard/Dashboard.jsx` | Sprint 2 | DONE for Kien schema v1 display flow; runtime pending |
+| Standalone Search UI v2 demo | Demonstrate Kien schema v1 Search -> Context split without React/Vite/backend. | `frontend/search_ui_v2.html` | Sprint 2 | DONE |
 | UI state handling | Handle loading, error, empty and missing citation/context states. | `LoadingState.jsx`, `ErrorState.jsx`, `EmptyState.jsx`, `search_ui.html` | Sprint 2 | IN_PROGRESS |
 | E2E checklist | Document expected end-to-end behavior before automated tests exist. | `frontend/tests/e2e_test.js` | Sprint 3 | IN_PROGRESS |
 | UX report | Track demo usability, limitations and mentor feedback. | `frontend/ux_report.md` | Sprint 3 | IN_PROGRESS |
@@ -102,6 +105,8 @@ Cách tính:
 | `MENTOR_QA.md` completed | Prepares answers for mentor review questions. | Sprint 1 |
 | `MOCK_DATA_EXPLAINED.md` completed | Explains ranking, hardcoded scores, documents and chunks. | Sprint 1 |
 | React-ready components created | Reduces Sprint 2 implementation effort even though runtime is not set up yet. | Sprint 2 |
+| React-ready components updated for Kien API schema v1 | Prepares the future React UI for `SearchInterface -> searchV2 -> ResultCard -> getContextV2 -> Metadata/Citation/Context display`. | Sprint 2 |
+| `frontend/search_ui_v2.html` completed | Allows mentor/team to review Kien schema v1 Search -> Context split directly in browser without React/Vite. | Sprint 2 |
 | `frontend/tests/e2e_test.js` checklist created | Defines what must be verified later with automated tests. | Sprint 3 |
 | `frontend/ux_report.md` created | Provides a place to record UX feedback and next iteration notes. | Sprint 3 |
 
@@ -128,11 +133,13 @@ Tối đa 10 item, chỉ gồm việc đã xong, việc tiếp theo và việc �
 | Completed | Standalone Search/RAG HTML demo is ready for functional mentor review. | DONE |
 | Completed | Mock API data and demo scenarios are ready. | DONE |
 | Completed | Mentor Q&A and mock data explanation are ready. | DONE |
-| Completed | React-ready component foundation exists. | IN_PROGRESS |
+| Completed | React-ready components support Kien schema v1 flow through `searchV2()` and `getContextV2()`. | DONE |
+| Completed | Standalone Search UI v2 demo exists for Kien schema v1 Search -> Context flow. | DONE |
 | Next | Open `frontend/search_ui.html` on actual laptop/projector and do a visual review. | TODO |
 | Next | Run 3 demo queries with mentor/team and collect feedback. | IN_PROGRESS |
 | Next | Update `frontend/ux_report.md` with feedback and UX limitations. | TODO |
-| Next | Confirm whether Sprint 2 should add React/Vite runtime. | TODO |
+| Next | Verify `frontend/search_ui_v2.html` on actual laptop/projector. | TODO |
+| Next | Decide whether React/Vite runtime is still needed after standalone v2 demo review. | TODO |
 | Blocked | Align `api_client.js` with real `/search` and `/context` schemas. | BLOCKED by API contract |
 | Blocked | Verify real backend integration. | BLOCKED by backend availability |
 
@@ -142,6 +149,8 @@ Tối đa 10 item, chỉ gồm việc đã xong, việc tiếp theo và việc �
 | -------- | ---- | ------ | ---------- | -------- | ------ |
 | High | Review Sprint 1 và nhận feedback mentor | Sprint 1 | Buổi review với mentor | 0.5 ngày | IN_PROGRESS |
 | High | Quyết định setup React/Vite runtime | Sprint 2 | Quyết định của team | 0.5 ngày | TODO |
+| High | Verify standalone Search UI v2 demo | Sprint 2 | `frontend/search_ui_v2.html` | 0.5 ngày | TODO |
+| High | Decide whether React/Vite runtime is still needed | Sprint 2 | Mentor/team feedback on standalone v2 demo | 0.5 ngày | TODO |
 | High | Align API Client với backend contract | Sprint 2 | API contract chính thức | 1 ngày | IN_PROGRESS |
 | High | Smoke test tích hợp React components | Sprint 2 | React app runtime setup | 1 ngày | TODO |
 | High | Tích hợp backend thật | Sprint 3 | Backend availability, Search API, Context API | 1-2 ngày | TODO |
@@ -158,7 +167,7 @@ Những việc Nguyễn Duy Hiếu nên thực tế làm tiếp trong tuần nà
 1. Mở `frontend/search_ui.html` trên laptop/màn chiếu thật để kiểm tra trực quan.
 2. Chạy 3 demo query với mentor hoặc teammate.
 3. Ghi feedback vào `frontend/ux_report.md`.
-4. Hỏi team có cần thêm React/Vite trong Sprint 2 không.
+4. Mở `frontend/search_ui_v2.html` trên laptop/màn chiếu để kiểm tra schema v1 demo.
 5. Hỏi API/backend owner schema chính thức của `/search` và `/context`.
 6. Soát lại `MENTOR_QA.md` và `MOCK_DATA_EXPLAINED.md` trước buổi review.
 
@@ -189,10 +198,10 @@ Các task đang bị chặn bởi API contract, backend availability hoặc quy�
 ## Current Management Summary
 
 - Sprint 1 progress: 94%
-- Sprint 2 progress: 38%
+- Sprint 2 progress: 50%
 - Sprint 3 progress: 33%
-- Total frontend roadmap progress: 57%
-- Recommended next task: review trực quan `frontend/search_ui.html` trên laptop/màn chiếu thật và lấy feedback mentor.
+- Total frontend roadmap progress: 60%
+- Recommended next task: verify `frontend/search_ui_v2.html` on actual laptop/projector.
 - Highest risk item: API contract/backend chưa ổn định, ảnh hưởng trực tiếp tới `api_client.js` và real backend integration.
 ## Task Registry Addendum - 2026-06-05
 
@@ -200,16 +209,20 @@ Note: This addendum is temporary until the main Task Registry table is normalize
 
 | ID | Task | Sprint | Status | Owner | Added Date | Completed Date | Purpose | Deliverables |
 | -- | ---- | ------ | ------ | ----- | ---------- | -------------- | ------- | ------------ |
-| HIEU-S3-007 | Design Evaluation Dashboard Display Layer | Sprint 3 | IN_PROGRESS | Nguyen Duy Hieu | 2026-06-05 |  | Display Search API and Context API evaluation metrics produced by API/Evaluation team. Hieu displays; Kien calculates. | `frontend/evaluation_dashboard_design.md`, `frontend/mock_evaluation_results.json`, `frontend/evaluation_dashboard.html`, `frontend/src/dashboard/EvaluationDashboard.jsx` |
+| HIEU-S3-007 | Design Evaluation Dashboard Display Layer | Sprint 3 | DONE | Nguyen Duy Hieu | 2026-06-05 | 2026-06-10 | Display Search API and Context API evaluation metrics produced by API/Evaluation team. Hieu displays; Kien calculates. | `frontend/evaluation_dashboard_design.md`, `frontend/mock_evaluation_results.json`, `frontend/evaluation_dashboard.html`, `frontend/src/dashboard/EvaluationDashboard.jsx` |
 
 ## Deliverables Mapping Addendum - 2026-06-05
 
 | Deliverable | Purpose | Related Files | Sprint | Status |
 | ----------- | ------- | ------------- | ------ | ------ |
-| Evaluation Dashboard Display Layer | Display mock/demo evaluation metrics now and Kien-provided evaluation outputs later. | `frontend/evaluation_dashboard_design.md`, `frontend/mock_evaluation_results.json`, `frontend/evaluation_dashboard.html`, `frontend/src/dashboard/EvaluationDashboard.jsx` | Sprint 3 | IN_PROGRESS |
+| Evaluation Dashboard Display Layer | Display mock/demo evaluation metrics now and Kien-provided evaluation outputs later. | `frontend/evaluation_dashboard_design.md`, `frontend/mock_evaluation_results.json`, `frontend/evaluation_dashboard.html`, `frontend/src/dashboard/EvaluationDashboard.jsx` | Sprint 3 | DONE |
 
 ## New Requests / Scope Changes Addendum - 2026-06-05
 
 | Date | Request | Source | Impact | Status |
 | ---- | ------- | ------ | ------ | ------ |
-| 2026-06-05 | Add Evaluation Dashboard Display Layer. | User request | Adds display-only evaluation metrics dashboard; Kien owns calculation, Hieu owns frontend display. | IN_PROGRESS |
+| 2026-06-05 | Add Evaluation Dashboard Display Layer. | User request | Adds display-only evaluation metrics dashboard; Kien owns calculation, Hieu owns frontend display. | DONE |
+| 2026-06-10 | New Search API and Context API schema from Kien received. Frontend needs schema mapping and normalization plan. | Kien API schema proposal / user request | Requires frontend impact analysis before updating `api_client.js`, `searchTypes.js`, mocks, standalone HTML and React-ready components. | IN_PROGRESS |
+| 2026-06-10 | Create mock API v2 based on Kien Search API and Context API schema. | User request | Adds schema-compatible mock Search/Context data for frontend normalizer work without changing current standalone demo. | DONE |
+| 2026-06-11 | Update React-ready components for Kien API schema v1. | User request | React-ready components now follow `SearchInterface -> searchV2 -> ResultCard -> getContextV2 -> Metadata/Citation/Context display`; `search_ui.html` remains old embedded mock. | DONE |
+| 2026-06-11 | Create standalone Search UI v2 demo for Kien API schema v1. | User request | Adds browser-runnable demo for Search -> Context split without modifying old `search_ui.html` or adding React/Vite. | DONE |
