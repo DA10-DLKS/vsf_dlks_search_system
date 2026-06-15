@@ -482,6 +482,16 @@ review_extra:
 
 # SPRINT 2 — Semantic Enrichment
 
+> ## ✅ TRẠNG THÁI (2026-06-15): Sprint 2 ĐÃ XONG ở mức bàn giao kỹ thuật
+>
+> Chi tiết: [BACKLOG.md](sprint2/BACKLOG.md) + [step5_6_soft_enrichment_handover.md](sprint2/step5_6_soft_enrichment_handover.md).
+> Đã đạt done-criteria: 520 object HARD validate sạch, 502 file ABSA evidence, 520 hotel profile
+> (seed Agoda + ABSA), style discovery có luồng candidate→promote→backfill, `negative_style_profile`,
+> relation graph (boost). **Một điểm CHƯA làm, có chủ đích:** **Tầng 2 embedding của ontology_mapper
+> CHƯA bật** (chờ team chốt model embedding — Khánh Duy; xem `BACKLOG.md` mục 7). Tagger hiện chạy
+> Tầng 0 (source_tag) + Tầng 1 (rule) + Tầng 3 (LLM), bỏ qua Tầng 2 — đủ dùng cho HARD tag + ABSA.
+> Phần thân dưới đây mô tả thiết kế **đủ 3 tầng** làm tham chiếu; đọc với lưu ý tầng 2 là việc vòng sau.
+
 > **Mục tiêu:** Tự động gắn semantic info + xử lý review → hotel semantic profile. Nguyên tắc: **cascade** rẻ→đắt; **mọi nhãn có `confidence` + `source`**. **Làm trên mock data**; thiết kế sẵn cho data thật.
 > **Khung thời gian team:** trùng **Sprint 2 (Tuần 3–4)** — walking skeleton chạy với mock; golden set gán nhãn xong cuối Tuần 1.
 
@@ -652,10 +662,38 @@ ontology_candidate_queue       (candidate_keyword, suggested_concept_id, frequen
 
 # SPRINT 3 — Knowledge Object Generation
 
-> **Mục tiêu:** Đóng gói dữ liệu đã làm giàu thành knowledge object **chunk-aware** + định nghĩa **contract chunking/contextual** cho Khánh Duy. **Đây cũng là sprint chuyển sang real data (vd Agoda).**
+> ## ⚠ CẬP NHẬT RANH GIỚI (2026-06-15) — đọc trước cả phần thân Sprint 3
+>
+> Bản thiết kế gốc dưới đây (Task 3.1–3.3) cho rằng **KE sở hữu chunking** (`chunking_strategy.yaml`,
+> `context_prefix`, object chunk-aware). **Điều này đã LỖI THỜI.** Theo phân vai team đã thống nhất
+> ([TEAM_DEPENDENCY_MAP.md](../../../docs_NDHieu/TEAM_DEPENDENCY_MAP.md), `docs/05_knowledge_engineering.md`),
+> **"Chunking & Embedding" là role riêng của Nguyễn Ngọc Khánh Duy** (output `chunk_service.py`,
+> `embedding_service.py`, `chunking_report.md`). KE (bạn) **KHÔNG** sở hữu việc chia chunk.
+>
+> **Ranh giới ĐÚNG hiện tại:**
+>
+> | Việc | Ai sở hữu |
+> |---|---|
+> | `knowledge_objects.json` cấp hotel (metadata/tags/range_filters/semantic_profile/relation) | **Bạn (KE)** ✅ đã xong 520 object |
+> | `synonym_dictionary.yaml`, `query_expansion.yaml` → Anh Tài | **Bạn (KE)** ✅ |
+> | Chia chunk + `context_prefix` + `embed_text` + `chunk_service.py` | **Khánh Duy** |
+> | Embedding + `embedding_service.py` | **Khánh Duy** |
+>
+> **Hệ quả với Task 3.1–3.3 dưới đây:**
+> - **Task 3.1 (`chunking_strategy.yaml`) và Task 3.2 (`context_prefix`): KHÔNG còn là deliverable của bạn.**
+>   Đọc để hiểu *cái gì hạ nguồn cần*, nhưng đừng coi là việc phải làm/tick.
+> - **Task 3.3 vẫn của bạn**, NHƯNG ở mức object **cấp hotel** (không nhúng `chunks[]`/`embed_text`).
+>   Khánh Duy tự chunk từ object + clean data. Việc còn lại của bạn chỉ là **đảm bảo object đủ field để
+>   Khánh Duy chunk và để Đạt index** (xem "Việc còn lại để nối hạ nguồn" cuối Sprint 3).
+> - Thư mục `knowledge_engineering/chunking/` trong repo (nếu còn) là code dùng chung repo theo layout
+>   Layer 3, **không** đổi quyền sở hữu — coi như thuộc Khánh Duy, không phải nợ KE.
+>
+> Phần thân gốc giữ nguyên bên dưới làm tham chiếu thiết kế lịch sử.
+
+> **Mục tiêu (bản gốc — tham chiếu):** Đóng gói dữ liệu đã làm giàu thành knowledge object **chunk-aware** + định nghĩa **contract chunking/contextual** cho Khánh Duy. **Đây cũng là sprint chuyển sang real data (vd Agoda).**
 > **Khung thời gian team:** trùng cuối **Sprint 2** (build trên mock) → **Sprint 3 (Tuần 5–6)** (real data + demo).
 
-> **Ranh giới:** **Khánh Duy** code việc cắt chunk + embed. **Bạn** định nghĩa *cái gì* cần chunk, metadata nào kế thừa, câu ngữ cảnh dựng ra sao, và xuất `knowledge_objects.json`.
+> **Ranh giới (bản gốc — ĐÃ ĐIỀU CHỈNH, xem cảnh báo phía trên):** **Khánh Duy** code việc cắt chunk + embed. **Bạn** định nghĩa *cái gì* cần chunk, metadata nào kế thừa, câu ngữ cảnh dựng ra sao, và xuất `knowledge_objects.json`.
 
 ## Task 3.1 — Chunking Strategy · [BẠN tạo → Khánh Duy]
 
@@ -750,6 +788,25 @@ def build_embed_text(obj, chunk):
 2. **Đây chỉ là nửa "structured".** Nửa kia là **hybrid vector+BM25 trên chunk** (của Khánh Duy + Anh Tài). Concept-matching đơn thuần thì giòn → chunk-aware + contextual của bạn (Task 3.1–3.3) là thứ nuôi nửa vector. Cả hai **fuse** bằng RRF.
 3. **Score đến từ nhiều nguồn**, không chỉ review (xem Task 2.4b): tiện ích/sự thật từ structured; trải nghiệm từ review profile.
 
+## Task 3.5 — Việc CÒN LẠI để nối hạ nguồn (2026-06-15) · [BẠN ↔ team]
+
+> Phần ontology/enrichment/relation của KE coi như **xong ở mức bàn giao kỹ thuật** (520 object,
+> query_demo trả kết quả). Việc còn lại **KHÔNG phải code KE**, mà là **chốt 3 contract** với hạ nguồn —
+> đây là blocker tích hợp thật, đang đứng vì *chưa ai chốt*, không phải vì thiếu code.
+
+**Schema `knowledge_objects.json` hiện tại (cấp hotel)** — top-level keys:
+`id, type, title, source, ontology_version, content, semantic_metadata, tags, range_filters,
+location, nearby_places, nearby_landmarks, semantic_profile, negative_style_profile, provenance`.
+(KHÔNG có `chunks[]`/`embed_text` — đúng theo phân vai mới: Khánh Duy chunk.)
+
+| # | Chốt với ai | Câu hỏi cần trả lời | Trạng thái |
+|---|---|---|---|
+| 1 | **Khánh Duy** (Chunking & Embedding) | Object cấp-hotel hiện tại đã đủ field để anh ấy chunk + dựng `embed_text` chưa? Field nào của KE (description/semantic_profile/tags) nên đi vào `embed_text`, field nào chỉ vào `payload`? | ⬜ chưa chốt |
+| 2 | **Lê Hoàng Đạt** (Search Infra) | Map `knowledge_objects.json` → `index_mapping.json`: payload index cần field filter nào (location.{province,city,area}, price_tier, amenity[], object_type, range_filters.{star,review_score,price_min})? `search_architecture.md` của Đạt hiện chưa nhắc tới schema KE. | ⬜ chưa chốt |
+| 3 | **Nguyễn Anh Tài** (Retrieval) | Chốt phiên bản bàn giao của `synonym_dictionary.yaml` + `query_expansion.yaml` + `semantic_profile`. Lưu ý `query_expansion.yaml` đang giữa cuộc nâng cấp relation graph (một số cạnh `unverified`/`candidate`) — bàn giao bản nào, dùng `use_as=boost` hay cả `filter`? | ⬜ chưa chốt |
+
+**Done khi:** 3 dòng trên đều ✅; có 1 handover doc mô tả schema object + 3 điểm chốt để mang đi họp.
+
 ---
 
 # SPRINT 4 — Evaluation & Feedback
@@ -834,19 +891,22 @@ output/  domain_analysis.md · knowledge_objects.json · hotel_semantic_profiles
 - [~] `query_expansion.yaml` ≥ 20 rule → Anh Tài — **21 rule ĐỦ số nhưng `unverified`**; phần "đã kiểm golden set" CHỜ golden set DA09
 - [x] `metadata_schema.yaml` chốt CONTRACT v1.0, đồng bộ DA09 — + pydantic validate; metadata.md đồng bộ concept_id
 
-**Sprint 2 — Enrichment**
-- [ ] `ontology_mapper.py` 3 tầng + fuse, tag có confidence + sources, xử lý phủ định
-- [ ] `source_tag_map.yaml` map vocabulary nguồn (Agoda...) → concept
-- [ ] `metadata_pipeline.py` map/validate/đối chiếu (xử lý mâu thuẫn kiểu `is_luxury`)
-- [ ] ABSA trích đúng cặp khía cạnh–cảm xúc; concept TRUNG TÍNH + sentiment riêng
-- [ ] `hotel_semantic_profiles.json` có score + smoothing (Wilson) + evidence_count; phân biệt presence vs sentiment; seed từ crawl aggregates
-- [ ] Lớp dữ liệu tách (evidence / profile / candidate_queue); ngưỡng review
+**Sprint 2 — Enrichment** _(cập nhật 2026-06-15 — chi tiết: `sprint2/BACKLOG.md` + `sprint2/step5_6_soft_enrichment_handover.md`)_
+- [~] `ontology_mapper.py` + fuse, tag có confidence + sources, xử lý phủ định — **Tầng 0 (source_tag) + Tầng 1 (rule) + Tầng 3 (LLM) xong**; **Tầng 2 embedding CHƯA bật** (chờ model embedding team chốt — xem `BACKLOG.md` mục 7)
+- [x] `source_tag_map.yaml` map vocabulary nguồn (Agoda...) → concept — `ontology/source_tag_map.yaml` (Bước 1)
+- [x] `metadata_pipeline.py` map/validate/đối chiếu (xử lý mâu thuẫn kiểu `is_luxury`) — Bước 3, reconcile luxury/price/range
+- [x] ABSA trích đúng cặp khía cạnh–cảm xúc; concept TRUNG TÍNH + sentiment riêng — **502 file `review_evidence`** (Bước 5)
+- [x] hotel profile có score + smoothing + evidence_count; phân biệt presence vs sentiment; seed từ crawl aggregates — `knowledge_engineering/enrichment/hotel_profiles.json` (520 hotel; seed từ Agoda grades + merge ABSA). _Tên file thực tế là `hotel_profiles.json`, không phải `hotel_semantic_profiles.json` như bản gốc._
+- [x] Lớp dữ liệu tách (evidence / profile / candidate_queue); ngưỡng review — evidence + profile + `ontology/candidate/candidate_concepts.yaml`
+- [x] **(bổ sung, ngoài thiết kế gốc)** Style discovery candidate→approve→promote→backfill; `negative_style_profile` (139 hotel); loại concept nhiễu `STYLE_FAMILY_FRIENDLY`
+- [x] **(bổ sung)** Relation graph: schema + `ontology/relations/{curated,candidates,rejected,generated.cooccurrence}.yaml` + loader + 28 relation verified (boost) — xem `relation_graph_roadmap.md`
 
-**Sprint 3 — Knowledge Object**
-- [ ] `chunking_strategy.yaml` theo loại → bàn giao Khánh Duy
-- [ ] Logic `context_prefix` rẻ từ metadata → bàn giao Khánh Duy
-- [ ] `knowledge_objects.json` đúng schema: `embed_text` (≠ `text`) + `payload` + `parent_id` + tag/profile
-- [ ] Hiểu luồng search (filter≠score, hybrid, multi-source) để cấp đúng payload/vocabulary
+**Sprint 3 — Knowledge Object** _(cập nhật 2026-06-15 theo phân vai team — xem cảnh báo đầu Sprint 3)_
+- [~] ~~`chunking_strategy.yaml` theo loại~~ → **CHUYỂN sang Khánh Duy** (role Chunking & Embedding), không còn deliverable KE
+- [~] ~~Logic `context_prefix` rẻ từ metadata~~ → **CHUYỂN sang Khánh Duy**, không còn deliverable KE
+- [x] `knowledge_objects.json` đúng schema **cấp hotel** (semantic_metadata/tags/range_filters/profile/relation) — 520 object, validate sạch. (Không nhúng `chunks[]`/`embed_text` — Khánh Duy chunk.)
+- [x] Hiểu luồng search (filter≠score, hybrid, multi-source) để cấp đúng payload/vocabulary
+- [ ] **Task 3.5** — chốt 3 contract nối hạ nguồn (Khánh Duy chunk / Đạt index_mapping / Anh Tài expansion version)
 - [ ] Chạy thử end-to-end 1 object với Khánh Duy + Anh Tài
 
 **Sprint 4 — Evaluation**

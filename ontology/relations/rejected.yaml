@@ -1,0 +1,163 @@
+# rejected.yaml — Relation đã TỪ CHỐI (giữ để generator không đề xuất lại). Mỗi cái có reject_reason.
+version: 1.0.0
+relations:
+- source: PRICE_LUXURY
+  target: STYLE_LUXURY
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: price tier không đồng nghĩa với cảm nhận luxury từ review; muốn khẳng
+    định luxury phải dựa semantic_profile
+- source: STYLE_LUXURY
+  target: PRICE_LUXURY
+  type: cooccurs_with
+  source_type: legacy_related
+  status: rejected
+  reject_reason: style luxury (cảm nhận) không kéo theo price tier; tách hai chiều
+    ý nghĩa khác nhau
+- source: OBJ_APARTMENT
+  target: AMEN_BEACHFRONT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'corpus bias: apartment ven biển do mẫu, không phải đặc trưng apartment'
+- source: SETTING_NATURE
+  target: AMEN_SEA_VIEW
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'corpus bias: như trên'
+- source: OBJ_APARTMENT
+  target: AMEN_SEA_VIEW
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'corpus bias: như trên'
+- source: SETTING_NATURE
+  target: AMEN_BEACHFRONT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'corpus bias: nature corpus nghiêng resort biển, không phải bản chất
+    nature'
+- source: SETTING_NATURE
+  target: AMEN_KIDS_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: nature không liên quan hồ bơi trẻ em, trùng corpus
+- source: OBJ_HOMESTAY
+  target: AMEN_BEACHFRONT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'lift thấp + corpus-bias: homestay không đặc trưng sát biển'
+- source: PURPOSE_FAMILY
+  target: AMEN_BEACHFRONT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'corpus-bias: corpus toàn resort biển, không phải đặc trưng gia đình'
+- source: SETTING_COASTAL
+  target: AMEN_KIDS_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: ven biển không kéo theo hồ bơi trẻ em; corpus-bias
+- source: SETTING_ISLAND
+  target: AMEN_KIDS_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: đảo không kéo theo hồ bơi trẻ em; corpus-bias
+- source: SETTING_NATURE
+  target: AMEN_WATERSPORT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: nature lẫn resort biển trong corpus, không phải bản chất nature
+- source: SETTING_NATURE
+  target: AMEN_GOLF
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: golf phá vibe thiên nhiên; corpus-bias
+- source: STYLE_LUXURY
+  target: AMEN_BABYSITTING
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: sang trọng không đặc trưng giữ trẻ; corpus-bias resort
+- source: STYLE_MODERN
+  target: AMEN_KITCHEN
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: support=9 quá nhỏ, chưa đủ tin
+- source: STYLE_MODERN
+  target: AMEN_BAR
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: support=9 quá nhỏ, chưa đủ tin
+- source: STYLE_MODERN
+  target: AMEN_GYM
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: support=9 quá nhỏ, chưa đủ tin
+- source: STYLE_MODERN
+  target: AMEN_WHEELCHAIR
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'vô nghĩa + support=9: hiện đại không liên quan lối đi xe lăn'
+- source: STYLE_MODERN
+  target: AMEN_MEETING_ROOM
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'gượng + support=9: hiện đại không kéo theo phòng họp'
+- source: STYLE_QUIET
+  target: AMEN_BEACHFRONT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: yên tĩnh không kéo theo sát biển; corpus-bias
+- source: STYLE_QUIET
+  target: AMEN_KIDS_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'mâu thuẫn vibe: yên tĩnh không kéo theo hồ bơi trẻ em; do resort
+    cao cấp lẫn cả hai tín hiệu'
+- source: STYLE_QUIET
+  target: AMEN_BABYSITTING
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'vô nghĩa: yên tĩnh không liên quan giữ trẻ'
+- source: STYLE_QUIET
+  target: AMEN_GOLF
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'corpus-bias: yên tĩnh không kéo theo golf'
+- source: STYLE_QUIET
+  target: AMEN_WATERSPORT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'mâu thuẫn vibe: yên tĩnh vs thể thao nước; corpus-bias resort biển'
+- source: STYLE_RELAXING
+  target: AMEN_WATERSPORT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'lệch vibe: thư giãn không phải thể thao nước'
+- source: STYLE_RELAXING
+  target: AMEN_KIDS_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'mâu thuẫn vibe: thư giãn vs hồ bơi trẻ em'

@@ -38,6 +38,8 @@ TAG_MAP = _map["review_tags"]
 #   - STYLE + span  : LẤY TỪ ABSA (seed/Agoda không có tag style). Chỉ cần sự HIỆN DIỆN,
 #                     không cần tỷ lệ cân bằng -> mẫu crawl dùng được.
 ABSA_MIN_EVIDENCE = 3   # cần >=3 review nhắc style mới đưa vào profile (tránh 1 review lẻ)
+NEG_STYLE_MIN_EVIDENCE = 3  # cần >=3 review chê để expose negative_style_profile
+NEG_STYLE_MAX_SPANS = 5
 
 
 def wilson_lower_bound(pos: int, n: int, z: float = 1.96) -> float:
@@ -117,6 +119,7 @@ def merge_absa(hotel_id: int, prof: dict[str, dict]) -> None:
     pos: dict[str, int] = {}
     neg: dict[str, int] = {}
     span: dict[str, str] = {}     # span TÍCH CỰC (ưu tiên) làm dẫn chứng
+    neg_spans: dict[str, list[str]] = defaultdict(list)
     for e in ev.values():
         seen = set()
         for it in e.get("items", []):
@@ -129,6 +132,25 @@ def merge_absa(hotel_id: int, prof: dict[str, dict]) -> None:
                 span.setdefault(c, it.get("span", ""))
             elif it.get("sentiment") == "negative":
                 neg[c] = neg.get(c, 0) + 1
+                if c.startswith("STYLE_") and it.get("span") and len(neg_spans[c]) < NEG_STYLE_MAX_SPANS:
+                    neg_spans[c].append(it["span"])
+
+    negative_style_profile = {}
+    for c, n_neg in neg.items():
+        if not c.startswith("STYLE_") or n_neg < NEG_STYLE_MIN_EVIDENCE:
+            continue
+        n_pos = pos.get(c, 0)
+        n_total = n_pos + n_neg
+        negative_style_profile[c] = {
+            "negative_score": round(wilson_lower_bound(n_neg, n_total), 3),
+            "neg": n_neg,
+            "pos": n_pos,
+            "evidence_count": n_total,
+            "top_spans": neg_spans.get(c, []),
+            "source": "absa",
+        }
+    if negative_style_profile:
+        prof["negative_style_profile"] = negative_style_profile
 
     for c in set(pos) | set(neg) | set(span):
         # ASPECT: chỉ thêm span (nếu seed có concept đó), KHÔNG đụng score.
@@ -173,6 +195,8 @@ def run() -> dict:
         else:
             stats["no_data"] += 1
         for c in prof:
+            if c == "negative_style_profile":
+                continue
             stats["concept_hits"][c] += 1
     json.dump(profiles, open(OUT_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     return stats

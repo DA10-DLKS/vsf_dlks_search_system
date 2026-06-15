@@ -1,0 +1,7 @@
+# candidates.yaml — Relation CHỜ DUYỆT (hàng đợi). Do build_relation_candidates.py sinh.
+# DUYỆT TAY (giống luồng STYLE): đổi `status: pending` -> `approved` hoặc `rejected`
+#   (rejected thì thêm dòng `reject_reason: "..."`), rồi chạy:
+#   python -m knowledge_engineering.entity_extraction.apply_relation_review
+# Relation đã approved/rejected được GIỮ NGUYÊN khi chạy lại generator (không ghi đè quyết định).
+version: 1.0.0
+relations: []

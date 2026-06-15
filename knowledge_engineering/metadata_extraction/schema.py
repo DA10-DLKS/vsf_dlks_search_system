@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import glob
 from enum import Enum
-from typing import Optional
+from typing import Any, Optional
 
 import yaml
 from pydantic import BaseModel, Field, field_validator
@@ -103,6 +103,20 @@ class ProfileEntry(BaseModel):
     source: str
 
 
+class NegativeStyleEntry(BaseModel):
+    """Negative evidence riêng cho STYLE_* (vd STYLE_QUIET bị chê ồn).
+
+    Không tạo concept đối nghịch kiểu STYLE_NOT_QUIET; vẫn giữ concept trung tính và sentiment riêng.
+    """
+
+    negative_score: float = Field(ge=0.0, le=1.0)
+    neg: int = Field(ge=0)
+    pos: int = Field(ge=0)
+    evidence_count: int = Field(ge=0)
+    top_spans: list[str] = Field(default_factory=list)
+    source: str
+
+
 class KnowledgeObject(BaseModel):
     """Đơn vị tài liệu cuối (rút gọn cho contract Sprint 1; mở rộng metadata ở Sprint 3)."""
 
@@ -112,8 +126,31 @@ class KnowledgeObject(BaseModel):
     source: str
     content: Optional[str] = None
     tags: list[Tag] = Field(default_factory=list)
+    semantic_metadata: dict[str, Any] = Field(default_factory=dict)
     semantic_profile: dict[str, ProfileEntry] = Field(default_factory=dict)
+    negative_style_profile: dict[str, NegativeStyleEntry] = Field(default_factory=dict)
     review_extra: Optional[ReviewExtra] = None
+
+    @field_validator("semantic_metadata")
+    @classmethod
+    def semantic_metadata_concepts_exist(cls, v: dict[str, Any]) -> dict[str, Any]:
+        def check_concept(value: Any, path: str) -> None:
+            if value is None:
+                return
+            if isinstance(value, str):
+                if value not in CONCEPT_IDS:
+                    raise ValueError(f"semantic_metadata.{path} concept '{value}' khÃ´ng cÃ³ trong ontology")
+                return
+            if isinstance(value, list):
+                for i, item in enumerate(value):
+                    check_concept(item, f"{path}[{i}]")
+
+        for facet, value in v.items():
+            check_concept(value, facet)
+        loc = v.get("location")
+        if loc is not None and (not isinstance(loc, str) or not loc.startswith("LOC_")):
+            raise ValueError("semantic_metadata.location pháº£i lÃ  LOC_* concept_id")
+        return v
 
     @field_validator("semantic_profile")
     @classmethod
@@ -121,6 +158,16 @@ class KnowledgeObject(BaseModel):
         for cid in v:
             if cid not in CONCEPT_IDS:
                 raise ValueError(f"semantic_profile concept '{cid}' không có trong ontology")
+        return v
+
+    @field_validator("negative_style_profile")
+    @classmethod
+    def negative_style_concepts_exist(cls, v: dict[str, NegativeStyleEntry]) -> dict[str, NegativeStyleEntry]:
+        for cid in v:
+            if cid not in CONCEPT_IDS:
+                raise ValueError(f"negative_style_profile concept '{cid}' không có trong ontology")
+            if not cid.startswith("STYLE_"):
+                raise ValueError(f"negative_style_profile concept '{cid}' phải là STYLE_*")
         return v
 
 
@@ -136,10 +183,29 @@ def _sample() -> dict:
             {"concept": "AMEN_BEACHFRONT", "confidence": 0.98, "sources": ["source_tag", "rule"]},
             {"concept": "OBJ_RESORT", "confidence": 1.0, "sources": ["source_tag"]},
         ],
+        "semantic_metadata": {
+            "object_type": "OBJ_RESORT",
+            "location": "LOC_HON_TRE",
+            "amenity": ["AMEN_BEACHFRONT"],
+            "setting": ["SETTING_ISLAND"],
+            "purpose": ["PURPOSE_ROMANTIC"],
+            "price_tier": "PRICE_LUXURY",
+            "style": [],
+        },
         # điểm review (yên tĩnh tới mức nào) -> semantic_profile.score, KHÔNG phải tags.confidence
         "semantic_profile": {
             "ASPECT_CLEANLINESS": {"score": 0.90, "evidence_count": 8123, "source": "agoda_grades"},
             "STYLE_QUIET": {"score": 0.40, "evidence_count": 12, "source": "absa"},
+        },
+        "negative_style_profile": {
+            "STYLE_QUIET": {
+                "negative_score": 0.55,
+                "neg": 8,
+                "pos": 2,
+                "evidence_count": 10,
+                "top_spans": ["hơi ồn"],
+                "source": "absa",
+            }
         },
         "review_extra": {
             "overall_sentiment": "mixed",

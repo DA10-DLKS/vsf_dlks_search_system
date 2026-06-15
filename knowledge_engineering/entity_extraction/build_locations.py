@@ -18,7 +18,7 @@ crawl province==city và district==area gần 100% -> sinh đủ sẽ trùng; gi
 
 LANDMARK (LMK_*): cũng TỰ SINH từ field `nearby_places[].name/type/distance_km`. Lọc theo
     LMK_TYPE_KEEP (chỉ loại có giá trị du lịch/định vị: bãi biển, theme park, bảo tàng, sân bay...)
-    + ngưỡng LMK_MIN_HOTELS (>=4 hotel). located_in = city xuất hiện nhiều nhất trong các hotel
+    + ngưỡng số-hotel THEO TYPE (type du lịch cứng>=1; type mềm>=2). located_in = city nhiều nhất trong các hotel
     chứa landmark đó (data không có vị trí landmark trực tiếp -> suy gián tiếp, không đoán).
     Quan hệ near (hotel<->landmark+km) vẫn ở relations_near.generated.yaml (build_relations).
 
@@ -97,7 +97,45 @@ def province_id(prov_label: str) -> str:
     return f"LOC_{slug(prov_label)}_TINH"
 
 # ── LANDMARK (LMK_*) tự sinh từ nearby_places ───────────────────────────────────
-LMK_MIN_HOTELS = 4          # chỉ sinh landmark xuất hiện ở >= 4 hotel (lọc nhiễu)
+# NGƯỠNG ĐỘNG THEO TYPE (thay cho ngưỡng cứng >=4 cũ — nó giết oan landmark du lịch thật ở vùng
+# ít hotel: VinWonders Nam Hội An, Bãi biển Nhật Lệ, Bảo tàng Chăm, Quảng trường Lâm Viên...).
+# Lý do: "phổ biến toàn cục (đếm hotel)" KHÔNG đo đúng "có đáng là landmark". Một địa danh đặc sản
+# vùng vốn chỉ gần vài hotel. TYPE mới là tín hiệu mạnh: type du lịch "cứng" gần như luôn là thật
+# kể cả 1 hotel; vài type "mềm" (công viên/hồ/giải trí) lẫn rác cục bộ -> vẫn cần ngưỡng nhẹ.
+LMK_HARD_MIN_HOTELS = 1     # type du lịch CỨNG: giữ ngay cả khi chỉ 1 hotel gần
+LMK_SOFT_MIN_HOTELS = 2     # type MỀM (dễ lẫn rác): cần >= 2 hotel mới sinh
+
+# Type MỀM: 1-hotel hay lẫn rác cục bộ (ao/rạch/miếu lặt vặt, café/bar/CLB gán nhầm type,
+# sân vận động/trường học...). Mọi type KHÁC trong LMK_TYPE_KEEP coi là CỨNG (giữ từ 1 hotel).
+LMK_SOFT_TYPES = {
+    "Công Viên Công Cộng",        # lẫn tượng đài/miếu/công viên tổ dân phố
+    "Sông và Hồ",                 # lẫn rạch/ao/hồ điều hòa vô danh
+    "Địa điểm giải trí",          # lẫn nhà hàng/công ty tour/điểm vô danh
+    "Nơi Biểu Diễn Văn Nghệ",     # lẫn café/bar/CLB thể hình/nhà thi đấu
+    "Các Sân Thể Thao",
+    "Sân Bay",                    # phần lớn 1-hotel là sân bay nước ngoài/lệch
+}
+
+def _lmk_min_hotels(type_counter) -> int:
+    """Ngưỡng số-hotel tối thiểu của 1 landmark, tùy type chiếm đa số của nó.
+
+    type_counter: Counter các `type` Agoda đã thấy cho landmark này (lmk_type[nm]). Lấy type phổ
+    biến nhất; nếu nó nằm LMK_SOFT_TYPES -> ngưỡng MỀM (chặt hơn), ngược lại -> ngưỡng CỨNG (lỏng).
+    """
+    if not type_counter:
+        return LMK_SOFT_MIN_HOTELS
+    top_type = type_counter.most_common(1)[0][0]
+    return LMK_SOFT_MIN_HOTELS if top_type in LMK_SOFT_TYPES else LMK_HARD_MIN_HOTELS
+
+
+# PATTERN BLACKLIST (#5c): rác XUYÊN type (Agoda gán nhầm type cho café/bar/CLB/ngân hàng...).
+# Khác LMK_NAME_BLACKLIST (khớp tên ĐẦY ĐỦ): đây khớp theo CỤM (regex, tên đã bỏ dấu+lower).
+# Chặn rác ngay ở scan() trước khi đếm hotel, để type CỨNG không vô tình kéo rác lên.
+LMK_NAME_PATTERN_DROP = re.compile(
+    r"\b(?:cafe|ca phe|quan ca phe|bar|pub|club|clb|cau lac bo|karaoke|nha hang|"
+    r"nha thi dau|san van dong|truong (?:hoc|dan toc|cao dang|dai hoc|tieu hoc)|"
+    r"benh vien|ngan hang|vietcombank|cong ty|tour|spa|tiem|cua hang|sieu thi)\b"
+)
 
 # Lọc theo `type` (Agoda, tiếng Việt) -> landmark_type (en). CHỈ giữ loại có giá trị du lịch/
 # định vị; BỎ tiện ích đời thường (bệnh viện, ngân hàng, siêu thị, bãi đỗ xe, đại sứ quán...).
@@ -239,7 +277,10 @@ def scan(hotels_glob: str = HOTELS_GLOB):
             ty = (p.get("type") or "").strip()
             if not nm or ty not in LMK_TYPE_KEEP or nm in seen:
                 continue
-            if to_nfc(nm).lower().strip() in LMK_NAME_BLACKLIST:    # #5a: bỏ tên generic
+            low = to_nfc(nm).lower().strip()
+            if low in LMK_NAME_BLACKLIST:                          # #5a: bỏ tên generic
+                continue
+            if LMK_NAME_PATTERN_DROP.search(strip_diacritics(low)):  # #5c: rác xuyên type
                 continue
             seen.add(nm)
             lmk_hotels[nm] += 1
@@ -498,12 +539,13 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
 
     # 5) LANDMARK (kind: landmark) — tự sinh từ nearby_places. located_in = city nhiều nhất.
     lmk_hotels, lmk_type, lmk_city = landmarks
-    out.append("  # ===== LANDMARK (kind: landmark) — TỰ SINH từ nearby_places (>=%d hotel) =====" % LMK_MIN_HOTELS)
+    out.append("  # ===== LANDMARK (kind: landmark) — TỰ SINH từ nearby_places (ngưỡng theo type: "
+               "CỨNG>=%d, MỀM>=%d) =====" % (LMK_HARD_MIN_HOTELS, LMK_SOFT_MIN_HOTELS))
     out.append("  # located_in = city xuất hiện nhiều nhất; landmark_type map từ `type` Agoda.")
     out.append("  # ID vài landmark ép theo LMK_ID_OVERRIDE để khớp ID quen (VinWonders, Bãi Dài...).")
     seen_lmk_id = {}      # id -> name (chống trùng ID)
     lmk_list = sorted(
-        ((nm, c) for nm, c in lmk_hotels.items() if c >= LMK_MIN_HOTELS),
+        ((nm, c) for nm, c in lmk_hotels.items() if c >= _lmk_min_hotels(lmk_type[nm])),
         key=lambda x: (-x[1], x[0]),
     )
     for nm, n in lmk_list:
@@ -576,11 +618,12 @@ def main():
         fh.write(text)
     country_n, city_n, area_n, unknown, landmarks, _ = scan()
     n_cand = write_candidates(country_n, unknown)
-    n_lmk = sum(1 for c in landmarks[0].values() if c >= LMK_MIN_HOTELS)
+    lmk_hotels, lmk_type, _ = landmarks
+    n_lmk = sum(1 for nm, c in lmk_hotels.items() if c >= _lmk_min_hotels(lmk_type[nm]))
     reg = getattr(build, "last_registry", None)
     print(f"Đã ghi {OUT_YAML}")
     print(f"  country={len(country_n)}  city={len(city_n)}  area={len(area_n)}  "
-          f"landmark={n_lmk} (>={LMK_MIN_HOTELS} hotel)  "
+          f"landmark={n_lmk} (ngưỡng type: cứng>={LMK_HARD_MIN_HOTELS}, mềm>={LMK_SOFT_MIN_HOTELS})  "
           f"(hotel có country={sum(country_n.values())})")
     if reg is not None:
         new = reg.newly_assigned
