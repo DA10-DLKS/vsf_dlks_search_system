@@ -1,306 +1,122 @@
 # Technical Onboarding
 
-Generated date: 2026-06-15  
-Audience: ChatGPT Plus, AI Engineer, or new engineer taking over DA10/Frontend work.
+Generated date: 2026-06-15
 
-## Repository Structure
+## Tech Stack
 
-Important top-level modules:
+Backend API uses FastAPI and Uvicorn. Evidence: `requirements.txt:2-3`, `api/main.py:9`, `api/main.py:44`, `Dockerfile:17`.
 
-| Path | Purpose | Current Status |
-| ---- | ------- | -------------- |
-| `api/` | FastAPI platform service layer | Real baseline `/search` exists; target routers not registered |
-| `crawler/` | Agoda crawler/browser/parser pipeline | Code exists |
-| `data/` | Raw, cleaned, processed, quarantine data | 520 raw hotels, 520 cleaned hotels, 518 review files |
-| `ingestion/` | Cleaning, translation, deduplication helpers | Code exists |
-| `knowledge_engineering/` | Chunking and common ontology/query helpers | Chunking code exists |
-| `indexing/` | BM25, embedding, vector/metadata index modules | BM25 indexer and embedding model code exist |
-| `retrieval/` | Query processing, lexical/vector/hybrid/filtering/reranking modules | Mostly skeleton/design docs |
-| `context/` | Context selection/aggregation/citation/compression/token budget | Mostly skeleton |
-| `ontology/` | Ontology YAML, synonym dictionary, query expansion | Assets exist |
-| `evaluation/` | Retrieval/RAG evaluation folders | Skeleton; real harness not implemented |
-| `frontend/` | Hieu frontend demo/display layer | Standalone demos and React-ready components exist |
-| `docs/` | Architecture, evaluation, audit, planning docs | Many docs, some planned state differs from code |
-| `docs/docs_NDHieu/` | Hieu-specific handover/task/status/architecture docs | Main frontend handover source |
+Search uses OpenSearch Python client and OpenSearch Docker service. Evidence: `requirements.txt:32`, `api/main.py:10`, `api/main.py:17-21`, `docker-compose.yml:31-38`.
 
-## Search Flow
+Crawler stack includes Scrapy, BeautifulSoup, lxml, httpx and Playwright. Evidence: `requirements.txt:12-16`, `crawler/README.md:12-17`, `crawler/README.md:134`.
 
-Current implemented backend flow:
+Data/DB stack includes pandas, SQLAlchemy, Alembic and psycopg2-binary. Evidence: `requirements.txt:19-24`, `db/models.py:3-8`, `migrations/versions/53b4d4b91081_create_initial_tables.py`.
+
+Embedding stack includes sentence-transformers and BAAI/bge-m3 default model. Evidence: `requirements.txt:27`, `indexing/embedding/models.py:3-4`, `indexing/embedding/models.py:15-32`.
+
+Vector infrastructure includes Qdrant Docker service and qdrant-client dependency, but runtime vector search is not verified from repository. Evidence: `docker-compose.yml:24-28`, `requirements.txt:31`.
+
+Frontend uses standalone HTML/CSS/JS demos plus React-ready JSX modules. Evidence: `frontend/README.md:14-24`, `frontend/search_ui_v2.html:422`, `docs/docs_NDHieu/HIEU_CURRENT_STATUS.md:94-98`.
+
+Testing uses pytest and FastAPI TestClient for health route. Evidence: `requirements.txt:44`, `tests/test_api.py:1-11`.
+
+## Programming Languages
+
+Python is used for backend, crawler, ingestion, indexing, chunking, embedding, scripts and tests. Evidence: `api/main.py`, `crawler/main.py`, `scripts/run_ingest.py`, `indexing/bm25_index/index_bm25.py`, `knowledge_engineering/chunking/strategies.py`.
+
+JavaScript/JSX is used for frontend modules. Evidence: `frontend/src/api/api_client.js`, `frontend/src/components/SearchInterface.jsx`, `frontend/src/dashboard/EvaluationDashboard.jsx`.
+
+HTML/CSS/JS are used for standalone demos. Evidence: `frontend/search_ui.html`, `frontend/search_ui_v2.html`, `frontend/evaluation_dashboard.html`.
+
+YAML is used for ontology/config assets. Evidence: `ontology/*.yaml`, `config/dev.yaml`, `config/prod.yaml`.
+
+JSON is used for data, mock responses and schema. Evidence: `data/cleaned/*.json`, `frontend/mock_api_responses_v2.json`, `contracts/data_schema.json`.
+
+## Frameworks
+
+FastAPI app is created in `api/main.py`. Evidence: `api/main.py:9`, `api/main.py:44`.
+
+OpenSearch is used for BM25 baseline. Evidence: `api/main.py:10`, `api/main.py:17-21`, `indexing/bm25_index/index_mapping.json`.
+
+SQLAlchemy models define hotels, rooms, nearby places and activities. Evidence: `db/models.py:12-75`.
+
+React components exist but no React/Vite runtime exists. Evidence: `frontend/README.md:18-24`, `docs/docs_NDHieu/HIEU_CURRENT_STATUS.md:94-98`.
+
+## Infrastructure
+
+Docker Compose defines services: `api`, `postgres`, `qdrant`, `opensearch`, `opensearch-dashboard`. Evidence: `docker-compose.yml:1-48`.
+
+The API container exposes port 8000. Evidence: `docker-compose.yml:2-5`, `Dockerfile:15-17`.
+
+Postgres maps port 5432. Evidence: `docker-compose.yml:13-20`.
+
+Qdrant maps port 6333. Evidence: `docker-compose.yml:24-28`.
+
+OpenSearch maps port 9200 and Dashboards maps 5601. Evidence: `docker-compose.yml:31-48`.
+
+Environment variables include `DATABASE_URL`, `QDRANT_URL`, `QDRANT_COLLECTION`, `OPENSEARCH_URL`, `BM25_INDEX`, and `CLEANED_DATA_DIR`. Evidence: `.env.example:6-22`.
+
+## Services
+
+### Current Runtime Service
+
+FastAPI service in `api/main.py` is the current API entry point. Evidence: `api/main.py:44-58`.
+
+### Current Search Service
+
+The current search service is a direct endpoint inside `api/main.py`, not a separate retrieval package service. Evidence: `api/main.py:58-106`; retrieval package runtime integration not verified from repository.
+
+### Planned Services
+
+Search API, Context API and Knowledge API are described as platform services. Evidence: `README.md:5`, `docs/08_api_contract.md:5-15`.
+
+Kien proposal specifies `POST /api/v1/search` and `POST /api/v1/context`. Evidence: `VuDucKien_api_schema_proposal.md:29`, `VuDucKien_api_schema_proposal.md:313`.
+
+These planned services are not registered in current FastAPI code. Evidence: `api/main.py:113-117`.
+
+## How Components Communicate
+
+Current real search communication:
 
 ```text
-User Query
--> FastAPI GET /search?q=<query>
+Browser or client
+-> GET /search?q=<query>
+-> FastAPI api/main.py
+-> OpenSearch client
 -> OpenSearch index travel_bm25
--> multi_match over name^2, description, city, address, amenities
--> ranked hotel results
+-> JSON response
 ```
 
-Current response shape from `api/main.py`:
+Evidence: `api/main.py:17-21`, `api/main.py:58-106`.
 
-```json
-{
-  "query": "user query",
-  "results": [
-    {
-      "id": 123,
-      "name": "Hotel name",
-      "accommodation_type": "Khách sạn",
-      "star_rating": 5.0,
-      "review_score": 9.0,
-      "address": "...",
-      "city": "...",
-      "description": "...",
-      "score": 12.34
-    }
-  ],
-  "took_ms": 123,
-  "total_hits": 10
-}
-```
-
-Important mismatch:
-
-- Current code: `GET /search?q=<query>`.
-- Older docs: `POST /search`.
-- Kien proposal/frontend v2 mock: `POST /api/v1/search`.
-
-For real backend work, prioritize `api/main.py` unless the team formally changes the API contract.
-
-## Planned RAG Flow
-
-Target RAG flow:
+Current frontend real BM25 communication:
 
 ```text
-User Query
--> Search API
--> Retrieval
--> Context API
--> LLM-ready Context Package
+frontend/search_ui_v2.html REAL_BM25 mode
+-> fetch("http://127.0.0.1:8000/search?q=...")
+-> normalized UI result cards
 ```
 
-More detailed target:
+Evidence: `frontend/search_ui_v2.html:422`, `frontend/search_ui_v2.html:823`, `frontend/search_ui_v2.html:974`.
+
+Current frontend mock v2 communication:
 
 ```text
-query
--> parse intent / filters
--> BM25 + vector retrieval
--> hybrid ranking / reranking
--> selected hotel/document/chunks
--> Context API
--> context_text + chunks + citations + metadata + token_info
+frontend/search_ui_v2.html MOCK_SCHEMA_V1 mode
+-> embedded mock Search API data
+-> button loads embedded mock Context API data by hotel_id
 ```
 
-Current reality:
+Evidence: `frontend/search_ui_v2.html:415`, `frontend/search_ui_v2.html:461`, `frontend/search_ui_v2.html:622`, `frontend/search_ui_v2.html:893-924`.
 
-- Chunking code exists in `knowledge_engineering/chunking/`.
-- Embedding model code exists in `indexing/embedding/`.
-- Qdrant service exists in `docker-compose.yml`.
-- `context/` modules are mostly placeholders.
-- `data/processed` has no chunk output.
-- No backend Context API route is registered.
-
-## Frontend Flow
-
-### `frontend/search_ui.html`
-
-Stable standalone old demo.
-
-- Runs directly in browser.
-- Uses embedded mock data.
-- Demonstrates:
-  - User Query
-  - Top-K Results
-  - Metadata
-  - Citation
-  - Source Documents
-  - Context Chunks
-  - LLM Consumption Preview
-
-### `frontend/search_ui_v2.html`
-
-Standalone v2 demo for Kien schema v1 and real BM25 mode.
-
-Modes:
-
-- `MOCK_SCHEMA_V1`: embedded mock Search -> Context flow.
-- `REAL_BM25`: calls `GET http://127.0.0.1:8000/search?q=<query>`.
-
-Important:
-
-- In `REAL_BM25` mode, only real search results are available.
-- Real Context API is not implemented yet, so citations/chunks/LLM context are disabled or shown as unavailable.
-
-### React-ready components
-
-Location:
+React-ready communication:
 
 ```text
-frontend/src/components/
-frontend/src/dashboard/
-frontend/src/api/api_client.js
-frontend/src/config/config.js
-frontend/src/types/searchTypes.js
+SearchInterface.jsx
+-> api_client.searchV2()
+-> ResultCard.jsx
+-> api_client.getContextV2()
 ```
 
-Current status:
-
-- Components exist.
-- `SearchInterface.jsx` uses `searchV2()`.
-- `ResultCard.jsx` is expected to call `getContextV2()` on expansion.
-- `MetadataCard`, `CitationList`, `ContextPreview` render normalized context/search data.
-- No React/Vite runtime exists.
-
-### `api_client.js`
-
-Supports:
-
-- Old mock API via `mock_api_responses.json`.
-- Kien schema v1 mock via `mock_api_responses_v2.json`.
-- Normalizers:
-  - `normalizeSearchResponse`
-  - `normalizeSearchResult`
-  - `normalizeContextResponse`
-  - `normalizeApiError`
-- New functions:
-  - `searchV2(query, options)`
-  - `getContextV2({ hotel_id, query, query_id, options })`
-
-Important mismatch:
-
-- For non-mock mode, `searchV2()` calls `POST /api/v1/search`.
-- Real backend currently exposes `GET /search`.
-- `search_ui_v2.html` already handles the real GET endpoint separately.
-
-## Backend Flow
-
-### `api/main.py`
-
-Implemented endpoints:
-
-- `GET /health`
-- `GET /metrics`
-- `GET /search?q=<query>`
-
-`GET /search`:
-
-- Connects to OpenSearch URL from `OPENSEARCH_URL`, default `http://localhost:9200`.
-- Uses index name from `BM25_INDEX`, default `travel_bm25`.
-- Runs OpenSearch `multi_match`.
-- Returns real BM25 search results.
-
-Not registered:
-
-- `POST /api/v1/search`
-- `POST /api/v1/context`
-- `Knowledge API`
-
-### Indexing
-
-Important files:
-
-- `indexing/bm25_index/index_mapping.json`
-- `indexing/bm25_index/index_bm25.py`
-
-Flow:
-
-```text
-data/cleaned/*.json
--> index_bm25.py
--> OpenSearch index travel_bm25
-```
-
-### Retrieval
-
-Folders exist:
-
-- `retrieval/lexical_search`
-- `retrieval/vector_search`
-- `retrieval/hybrid_search`
-- `retrieval/filtering`
-- `retrieval/reranking`
-- `retrieval/query_processing`
-
-Current code status:
-
-- Mostly README/init placeholders and design docs.
-- Real search baseline is directly in `api/main.py`.
-
-### Context
-
-Folders exist:
-
-- `context/selection`
-- `context/aggregation`
-- `context/ordering`
-- `context/compression`
-- `context/citation_builder`
-- `context/token_budget`
-
-Current code status:
-
-- Mostly placeholders.
-- No real Context API endpoint yet.
-
-## Data Flow
-
-Current data flow:
-
-```text
-data/raw/hotels
--> cleaning scripts / ingestion
--> data/cleaned
--> indexing/bm25_index/index_bm25.py
--> OpenSearch
--> FastAPI GET /search
-```
-
-Known counts:
-
-- `data/raw/hotels`: 520 files.
-- `data/raw/reviews`: 518 files.
-- `data/cleaned`: 520 files.
-- `data/processed`: only `.gitkeep`.
-
-Data quality summary from `docs/DATASET_QUALITY_AUDIT_REPORT.md`:
-
-- Audit scope: first 100 cleaned records.
-- Score: 82/100, Good.
-- Good for BM25 v1 and mentor demo.
-- Not production-ready due to schema drift, location hierarchy issue, ontology mapping gap and missing RAG processed chunks.
-
-## Important Decisions
-
-1. DA10 is the knowledge/retrieval platform, not the DA09 chatbot.
-2. DA09 consumes DA10 APIs; DA09 should not access data sources directly.
-3. Hieu frontend is a DA10 display/demo layer, not a chatbot.
-4. Kien owns API schema/evaluation calculation; Hieu displays outputs.
-5. Current real backend search is `GET /search`.
-6. Kien target schema is `POST /api/v1/search` and `POST /api/v1/context`.
-7. Standalone HTML demos are used because React/Vite runtime is not set up.
-8. Mock evaluation metrics must always be labeled mock/demo.
-9. Frontend should not calculate official evaluation metrics.
-10. Code reality should override older docs when they disagree.
-
-## Technical Debt
-
-- No `api_contract.yaml`.
-- `docs/08_api_contract.md`, `frontend/README.md`, Kien schema proposal and `api/main.py` describe different API shapes.
-- React-ready components exist without a runnable React/Vite project.
-- `data/processed` lacks chunks.
-- `scripts/run_eval.py` is not implemented.
-- Context API is missing.
-- Retrieval modules are mostly skeletons.
-- Ontology assets are not fully mapped into cleaned records.
-- `province` field quality is weak according to data audit.
-- Some docs/mock text shows mojibake in terminal output and should be checked before mentor presentation.
-
-## Known Risks
-
-1. Frontend/backend API drift.
-2. Mock demos being mistaken for real API outputs.
-3. Real search works only if OpenSearch index is built and running.
-4. Context/citation UI cannot be real until Context API exists.
-5. Evaluation dashboard is mock-only until Kien provides real output.
-6. Vector/Qdrant pipeline may look present because Docker/config exists, but integration is not verified.
-7. Production readiness may be overstated if using docs only; inspect code before claims.
+Evidence: `docs/docs_NDHieu/HIEU_CURRENT_STATUS.md:231-239`, `frontend/src/api/api_client.js:305-365`.
 

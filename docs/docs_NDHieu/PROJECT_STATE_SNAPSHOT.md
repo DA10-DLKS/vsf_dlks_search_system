@@ -1,186 +1,86 @@
 # Project State Snapshot
 
-Generated date: 2026-06-15  
-Purpose: one-page operational snapshot for handover and AI review.
+Generated date: 2026-06-15
 
-## Completed
+## What Is Currently Working
 
-### Frontend
+FastAPI app exists and implements `GET /health`, `GET /metrics`, and `GET /search`. Evidence: `api/main.py:44-58`.
 
-- `frontend/search_ui.html` exists as standalone mock Search/RAG demo.
-- `frontend/search_ui_v2.html` exists as standalone v2 demo.
-- `frontend/search_ui_v2.html` supports:
-  - `MOCK_SCHEMA_V1`
-  - `REAL_BM25`
-  - real `GET http://127.0.0.1:8000/search?q=<query>`
-- `frontend/evaluation_dashboard.html` exists as standalone mock/demo evaluation dashboard.
-- React-ready components exist under `frontend/src/components`.
-- `frontend/src/api/api_client.js` supports old mock and Kien schema v1 mock normalization.
+`GET /search` executes an OpenSearch BM25-style `multi_match` query and returns ranked hotel result fields. Evidence: `api/main.py:58-106`.
 
-### Backend
+OpenSearch infrastructure is declared in Docker Compose. Evidence: `docker-compose.yml:31-38`.
 
-- `api/main.py` implements FastAPI app.
-- Implemented endpoints:
-  - `GET /health`
-  - `GET /metrics`
-  - `GET /search?q=<query>`
-- `/search` uses OpenSearch BM25 multi-match.
+BM25 index mapping and indexing code exist. Evidence: `indexing/bm25_index/index_mapping.json`, `indexing/bm25_index/index_bm25.py:44-55`, `indexing/bm25_index/index_bm25.py:110-154`.
 
-### Search
+The crawler entry point supports Agoda URL and keyword crawl modes. Evidence: `crawler/main.py:1-12`, `crawler/main.py:287-293`, `crawler/README.md:12-17`.
 
-- OpenSearch service exists in `docker-compose.yml`.
-- BM25 mapping exists: `indexing/bm25_index/index_mapping.json`.
-- BM25 indexing script exists: `indexing/bm25_index/index_bm25.py`.
+Ingestion runner describes and invokes clean, dedup, validate and translate steps. Evidence: `scripts/run_ingest.py:1-14`, `scripts/run_ingest.py:31-36`, `scripts/run_ingest.py:152-175`.
 
-### Data
+Chunking functions exist for hotel, review and CMS documents. Evidence: `knowledge_engineering/chunking/__init__.py:2-10`, `knowledge_engineering/chunking/strategies.py:143-283`, `tests/test_chunking.py:1-58`.
 
-- `data/raw/hotels`: 520 files.
-- `data/raw/reviews`: 518 files.
-- `data/cleaned`: 520 files.
-- `data/quarantine` exists for removed/problematic records.
-- Data quality audit exists: `docs/DATASET_QUALITY_AUDIT_REPORT.md`.
+Embedding model registry exists with BAAI/bge-m3 as production default and hash embeddings for offline tests. Evidence: `indexing/embedding/models.py:3-4`, `indexing/embedding/models.py:15-32`, `indexing/embedding/models.py:53`, `indexing/embedding/registry.py:11-14`.
 
-### Ontology
+Standalone frontend demos exist for search and evaluation. Evidence: `frontend/README.md:14-16`, `frontend/search_ui_v2.html:422`, `frontend/evaluation_dashboard.html:267-278`.
 
-- Ontology YAML assets exist under `ontology/`.
-- Synonym and query expansion files exist.
-- Location/amenity/purpose/style/object type assets exist.
+React-ready frontend modules exist but are not a runnable app. Evidence: `frontend/README.md:18-24`, `docs/docs_NDHieu/HIEU_CURRENT_STATUS.md:94-98`.
 
-### Dashboard
+## What Partially Works
 
-- Standalone evaluation dashboard exists.
-- React-ready `EvaluationDashboard.jsx` exists.
-- Mock evaluation data exists in `frontend/mock_evaluation_results.json`.
+Frontend API client supports mock and planned v2 API normalizers, but its non-mock mode calls POST endpoints that do not match current backend `GET /search`. Evidence: `frontend/src/api/api_client.js:252-365`, `api/main.py:58`, `frontend/search_ui_v2.html:974`.
 
-## Partial
+Search UI v2 can call real BM25 backend, but real Context API is unavailable. Evidence: `frontend/search_ui_v2.html:422`, `frontend/search_ui_v2.html:807`, `frontend/search_ui_v2.html:861-869`.
 
-### Frontend
+Ontology assets exist, but mapping into cleaned records is not verified from repository. Evidence: `ontology/core/amenity.yaml`, `ontology/synonym_dictionary.yaml`, `ontology/query_expansion.yaml`; concept mapping into cleaned records: Not verified from repository.
 
-- React components are implemented but not runnable because there is no React/Vite runtime.
-- `api_client.js` real mode does not match current backend `GET /search`; it targets planned POST endpoints.
-- `search_ui_v2.html` is the current bridge to real backend search.
+Vector search stack is partially present through Qdrant service and embedding code, but actual vector index population/runtime search is not verified from repository. Evidence: `docker-compose.yml:24-28`, `indexing/embedding/models.py:15-32`; runtime vector integration: Not verified from repository.
 
-### Backend
+Evaluation display exists as mock/demo, but evaluation calculation is not implemented. Evidence: `frontend/mock_evaluation_results.json:1-41`, `frontend/evaluation_dashboard.html:345-348`, `scripts/run_eval.py:5`.
 
-- FastAPI app exists but only baseline search route is implemented.
-- API route folders exist but are not registered.
-- Kien schema proposal exists but is not implemented in backend.
+## What Is Not Implemented
 
-### Search
+Backend `POST /api/v1/search` is proposed/planned, not implemented in `api/main.py`. Evidence: `VuDucKien_api_schema_proposal.md:29`, `api/main.py:58`, `api/main.py:113-117`.
 
-- BM25 search code exists.
-- OpenSearch must be running and indexed before real search works.
-- Hybrid search/reranking are not implemented as runtime services.
+Backend `POST /api/v1/context` is proposed/planned, not implemented in `api/main.py`. Evidence: `VuDucKien_api_schema_proposal.md:313`, `api/main.py:113-117`.
 
-### Context
+Knowledge API routes are not registered. Evidence: `api/main.py:113-117`, `docs/08_api_contract.md:14-15`.
 
-- Context package folders exist.
-- Frontend mock context display exists.
-- Backend Context API is not implemented.
+The generic indexing pipeline script is not implemented. Evidence: `scripts/run_index.py:1-5`.
 
-### Data
+The evaluation harness is not implemented. Evidence: `scripts/run_eval.py:1-5`.
 
-- Cleaned data exists.
-- `data/processed` has no real processed chunk export.
-- Data quality audit only re-scored the first 100 cleaned records in the latest report.
+Retrieval and context tests are placeholders. Evidence: `tests/test_retrieval.py:1-5`, `tests/test_context.py:1-5`.
 
-### Ontology
+React/Vite runtime is not present. Evidence: `docs/docs_NDHieu/HIEU_CURRENT_STATUS.md:94-98`, `frontend/README.md:18-24`.
 
-- Ontology assets exist.
-- Cleaned records are not confirmed to contain ontology concept IDs.
+`api_contract.yaml` is not found in current repo status docs. Evidence: `docs/docs_NDHieu/HIEU_CURRENT_STATUS.md:80-84`, `docs/docs_NDHieu/HIEU_CURRENT_STATUS.md:346`.
 
-### Infrastructure
+## Known Blockers
 
-- Docker Compose includes API, Postgres, Qdrant, OpenSearch and OpenSearch Dashboards.
-- Runtime status was not verified as part of this handover document.
+API contract mismatch blocks clean frontend/backend integration. Evidence: current code `api/main.py:58`; planned schema `VuDucKien_api_schema_proposal.md:29`, `VuDucKien_api_schema_proposal.md:313`; frontend real mode docs `frontend/README.md:50-64`.
 
-## Blocked
+Context API is missing, blocking real citation/context display. Evidence: `api/main.py:113-117`, `frontend/search_ui_v2.html:861-869`.
 
-### Frontend
+React runtime decision blocks running React-ready components as an app. Evidence: `frontend/README.md:18-24`, `docs/docs_NDHieu/HIEU_TASK_BOARD.md:65-66`.
 
-- Real Context API integration is blocked by missing backend Context API.
-- React smoke testing is blocked until React/Vite setup decision.
-- Final dashboard with real evaluation data is blocked by real evaluation output.
+Real evaluation output is missing, blocking production evaluation dashboard. Evidence: `scripts/run_eval.py:5`, `frontend/mock_evaluation_results.json:4-6`, `frontend/mock_evaluation_results.json:41`.
 
-### Backend
+Processed RAG artifacts are not verified from repository. Evidence: `data/processed/.gitkeep`; no generated chunk files found in `data/processed`.
 
-- `POST /api/v1/search` and `POST /api/v1/context` are blocked until implementation and final contract.
-- Knowledge API is planned but not implemented.
+## Technical Debt
 
-### Search
+Multiple API shapes exist across docs/code: current `GET /search`, older `POST /search`, and proposed `POST /api/v1/search`. Evidence: `api/main.py:58`, `docs/08_api_contract.md:5-12`, `VuDucKien_api_schema_proposal.md:29`, `frontend/README.md:61-64`.
 
-- Real demo depends on OpenSearch index being created and populated.
-- Hybrid/vector/rerank search is blocked by incomplete retrieval runtime integration.
+The repo contains planned skeleton directories for retrieval/context/evaluation with little runtime implementation. Evidence: `retrieval/*/README.md`, `context/*/README.md`, `evaluation/*/README.md`, `tests/test_retrieval.py:1-5`, `tests/test_context.py:1-5`.
 
-### Context
+The root docs previously generated under `docs/docs_NDHieu/` may be untracked in git status. Evidence: `git status --short` output showed `?? docs/docs_NDHieu/...`; exact persistence depends on git workflow.
 
-- Context API is blocked by missing processed chunks, retrieval selection and citation builder integration.
+## Open Questions
 
-### Dashboard
+Should the team keep current `GET /search` as MVP or implement Kien's `POST /api/v1/search` immediately? Evidence: `api/main.py:58`, `VuDucKien_api_schema_proposal.md:29`.
 
-- Evaluation dashboard remains mock/demo until Kien provides real evaluation report/API output.
+What is the final Context API response shape and source of chunks? Evidence: `VuDucKien_api_schema_proposal.md:313-383`; backend implementation not present in `api/main.py:113-117`.
 
-### Data
+Will evaluation be delivered as JSON report or API endpoint? Evidence: frontend mock expects JSON values `frontend/mock_evaluation_results.json:1-41`; real evaluation harness not implemented `scripts/run_eval.py:5`.
 
-- RAG readiness is blocked by missing processed chunks and chunk-level provenance.
-
-### Ontology
-
-- Ontology readiness is blocked by missing concept mapping into cleaned/indexed records.
-
-### Infrastructure
-
-- API/frontend integration is blocked by contract mismatch:
-  - current backend: `GET /search`
-  - target schema: `POST /api/v1/search`, `POST /api/v1/context`
-
-## Current Next Task
-
-Recommended immediate task:
-
-```text
-Start OpenSearch + FastAPI, build/index cleaned data, then verify frontend/search_ui_v2.html REAL_BM25 mode against GET /search.
-```
-
-After that:
-
-1. Decide whether the team keeps `GET /search` for MVP or implements Kien's `POST /api/v1/search`.
-2. Generate processed chunks from cleaned hotel data.
-3. Define and implement real Context API.
-
-## Do Not Repeat Work
-
-Do not recreate these from scratch unless intentionally replacing them:
-
-- `frontend/search_ui.html`
-- `frontend/search_ui_v2.html`
-- `frontend/evaluation_dashboard.html`
-- `frontend/mock_api_responses.json`
-- `frontend/mock_api_responses_v2.json`
-- `frontend/mock_evaluation_results.json`
-- `frontend/src/api/api_client.js`
-- `frontend/src/components/*.jsx`
-- `docs/docs_NDHieu/HIEU_TASK_BOARD.md`
-- `docs/docs_NDHieu/HIEU_FRONTEND_ARCHITECTURE.md`
-- `docs/docs_NDHieu/API_SCHEMA_IMPACT_HIEU.md`
-- `docs/DATASET_QUALITY_AUDIT_REPORT.md`
-
-## Recent Decisions
-
-- Use standalone HTML demos because React/Vite runtime is not set up.
-- Keep `frontend/search_ui.html` unchanged as stable old mock demo.
-- Add `frontend/search_ui_v2.html` for Kien schema v1 and real BM25 mode.
-- Clearly label mock evaluation dashboard values as MOCK / DEMO.
-- Hieu owns display layer only; Kien owns evaluation calculation.
-- Current data audit report is based on the first 100 cleaned records, not all 520.
-
-## Code Reality vs Existing Docs
-
-| Topic | Existing Docs May Say | Current Code Reality |
-| ----- | --------------------- | -------------------- |
-| Search API | `POST /search` or `POST /api/v1/search` | `GET /search?q=<query>` in `api/main.py` |
-| Context API | `POST /context` or `POST /api/v1/context` | Not implemented/registered |
-| React frontend | Components ready | No `package.json`, no Vite runtime |
-| Evaluation | `scripts/run_eval.py` command documented | `scripts/run_eval.py` raises `NotImplementedError` |
-| Processed RAG data | Planned chunks/context | `data/processed` only has `.gitkeep` |
+Should React/Vite be added, or should standalone HTML remain the demo path? Evidence: `frontend/README.md:18-24`, `docs/docs_NDHieu/HIEU_TASK_BOARD.md:65`.
 
