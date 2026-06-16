@@ -76,6 +76,12 @@ _objs = json.load(open(OBJ_JSON, encoding="utf-8"))
 _syn = yaml.safe_load(open(SYN_YAML, encoding="utf-8"))["synonyms"]
 _loc_concepts = yaml.safe_load(open(LOC_YAML, encoding="utf-8"))["concepts"]
 
+# Cửa sổ n-gram lớn nhất khi tra surface form. Nhiều địa danh/bảo tàng có TÊN DÀI
+# ("khu vui chơi giải trí sun world hạ long" = 8 từ, "quần thể di tích..." = 10 từ).
+# Nếu cố định max=4 thì 300+ surface form ≥5 từ KHÔNG BAO GIỜ khớp -> mất concept (vd
+# LMK_*). Lấy theo key dài nhất thực tế trong dictionary để tự đúng khi dictionary lớn lên.
+_MAX_GRAM = max((len(k.split()) for k in _syn), default=4)
+
 
 # ---------------------------------------------------------------------------
 # Parse câu hỏi -> concept + range + location
@@ -94,15 +100,40 @@ def parse_concepts(q: str) -> tuple[list[str], dict[str, str]]:
     norm = normalize(q)
     normf = normalize(q, fold=True)
     found: set[str] = set()
+    # Thu THÊM span (vị trí token) của mỗi match để xử lý xung đột "tên riêng đè thuộc tính chung":
+    # cụm "gần núi" sinh SETTING_MOUNTAIN nhưng nếu nó NẰM TRONG cụm "gần núi trường lệ" (= LMK),
+    # thì người dùng đang nói TÊN RIÊNG, không phải setting -> bỏ setting. So span theo token-index
+    # TRONG CÙNG một text (norm vs fold tách token khác nhau, không so chéo được).
+    # Một SETTING_* CHỈ bị bỏ nếu trong MỌI text nó xuất hiện đều bị một LMK_* phủ (giữ khi có
+    # cách hiểu setting độc lập ở đâu đó). Gom theo từng text rồi giao kết quả.
+    setting_covered: set[str] | None = None    # giao dần: setting bị phủ ở mọi text đã xét
     for text in (norm, normf):
         toks = text.split()
-        for n in (4, 3, 2, 1):
+        text_matches: list[tuple[str, int, int]] = []   # (concept, start_tok, end_tok)
+        for n in range(_MAX_GRAM, 0, -1):
             for i in range(len(toks) - n + 1):
                 gram = " ".join(toks[i:i + n])
                 if len(gram) < 3:
                     continue
                 if gram in _syn:
-                    found.update(_syn[gram])
+                    cs = _syn[gram]
+                    found.update(cs)
+                    for c in cs:
+                        text_matches.append((c, i, i + n))
+        # XUNG ĐỘT SPAN (cùng text): SETTING_* coi như "bị phủ" nếu MỌI lần nó khớp đều GIAO span một
+        # LMK_*. Tín hiệu là token địa hình ("núi") bị DÙNG CHUNG: "gần núi"[5:7] giao "núi trường
+        # lệ"[6:8] ở token "núi" -> đó là tên riêng landmark, không phải setting -> bỏ setting. Dùng
+        # GIAO (không đòi lồng kín) vì giới từ "gần/view" của setting luôn lòi ra ngoài span LMK.
+        lmk_spans = [(s, e) for c, s, e in text_matches if c.startswith("LMK_")]
+        settings = {c for c, _, _ in text_matches if c.startswith("SETTING_")}
+        covered = {
+            c for c in settings
+            if all(any(s < le and ls < e for ls, le in lmk_spans)
+                   for cc, s, e in text_matches if cc == c)
+        }
+        setting_covered = covered if setting_covered is None else (setting_covered & covered)
+    for c in setting_covered or set():
+        found.discard(c)
     implicit = parse_implicit_intent(q)
     found.update(implicit)
     # NGỮ CẢNH "ngân sách": "budget/ngân sách" + một SỐ TIỀN ("budget 10 triệu") là khai báo
@@ -215,6 +246,9 @@ for _o in _objs.values():
 FEEL_MIN = 0.6  # hotel phải đạt profile score >= ngưỡng cho concept cảm nhận mới tính "khớp"
 # Negative style không lọc cứng để tránh loại hotel mixed-signal; chỉ trừ ranking.
 NEG_STYLE_PENALTY_WEIGHT = 0.5
+# Trọng số NHỎ cho các STYLE phụ trong ranking (xem _feel_scores). Đủ để hotel đạt nhiều style
+# nhỉnh hơn khi cùng mức style mạnh nhất, nhưng KHÔNG đủ để 1 style phụ lật ngược style chính.
+STYLE_RANK_EPS = 0.15
 
 # Tập concept CẢM NHẬN có ít nhất 1 hotel đạt ngưỡng FEEL_MIN. Nhiều STYLE_* (LUXURY,
 # ROMANTIC, MODERN...) chưa hotel nào đạt -> nếu đưa vào lọc feel thì LUÔN 0 kết quả giả
@@ -228,10 +262,24 @@ for _o in _objs.values():
 
 
 def _feel_scores(obj: dict, concepts: list[str]) -> tuple[float, float, float]:
-    """(positive, negative_penalty, adjusted) cho concept cảm nhận trong query."""
+    """(positive, negative_penalty, adjusted) cho concept cảm nhận trong query.
+
+    STYLE và ASPECT góp điểm KHÁC nhau (cùng lý do tách ở khâu lọc):
+      - ASPECT_*: cộng dồn (câu "sạch + dịch vụ" muốn cả hai mạnh).
+      - STYLE_*: ưu tiên style MẠNH NHẤT (max) + đóng góp NHỎ của các style còn lại
+        (STYLE_RANK_EPS). Tránh "yên tĩnh ĐỂ nghỉ dưỡng": nếu cộng dồn thì hotel relaxing-cao
+        vượt hotel yên-tĩnh-nhất (golden) -> sai top. Lấy max -> hotel mạnh-style-chính lên trên;
+        eps -> hotel đạt CẢ HAI vẫn nhỉnh hơn hotel chỉ đạt một ở cùng mức max (tie-break đúng).
+    """
     prof = obj.get("semantic_profile", {})
     neg_prof = obj.get("negative_style_profile", {})
-    positive = sum(prof.get(c, {}).get("score", 0) for c in concepts)
+    aspect_pos = sum(prof.get(c, {}).get("score", 0)
+                     for c in concepts if c.startswith("ASPECT_"))
+    style_scores = [prof.get(c, {}).get("score", 0)
+                    for c in concepts if c.startswith("STYLE_")]
+    style_pos = (max(style_scores) + STYLE_RANK_EPS * (sum(style_scores) - max(style_scores))
+                 if style_scores else 0)
+    positive = aspect_pos + style_pos
     negative = sum(
         neg_prof.get(c, {}).get("negative_score", 0)
         for c in concepts
@@ -274,8 +322,21 @@ def search(q: str, limit: int = 15) -> dict:
         # AND mọi concept HARD (amenity/setting)
         if not all(c in oc for c in hard):
             continue
-        # CẢM NHẬN: hotel phải có profile score đủ cao cho MỌI concept feel yêu cầu
-        if not all((prof.get(c, {}).get("score", 0) >= FEEL_MIN) for c in feel):
+        # CẢM NHẬN. Tách 2 loại vì ngữ nghĩa khác nhau:
+        #   - ASPECT_* (sạch/dịch vụ...): thang tốt-xấu, câu "sạch VÀ dịch vụ tốt" muốn CẢ HAI -> AND.
+        #   - STYLE_* (yên tĩnh/sang/thư giãn...): câu hay LỒNG nhiều style mà chỉ 1 là ý CHÍNH
+        #     (vd "yên tĩnh ĐỂ nghỉ dưỡng": QUIET chính, RELAXING phụ từ "nghỉ dưỡng" đa-concept).
+        #     AND mọi style -> loại oan hotel mạnh-1-style (yên tĩnh thuần). Giải: hotel CHỈ cần đạt
+        #     style MẠNH NHẤT trong câu (max >= ngưỡng); các style còn lại góp vào RANKING (score()
+        #     vẫn cộng dồn -> hotel đạt nhiều style vẫn lên trên). "2 style đều chính" hiếm (0 câu
+        #     golden) -> để tầng retrieval/embedding lo, không lọc cứng ở công cụ test tay này.
+        feel_aspect = [c for c in feel if c.startswith("ASPECT_")]
+        feel_style = [c for c in feel if c.startswith("STYLE_")]
+        if not all((prof.get(c, {}).get("score", 0) >= FEEL_MIN) for c in feel_aspect):
+            continue
+        if feel_style and max(
+            (prof.get(c, {}).get("score", 0) for c in feel_style), default=0
+        ) < FEEL_MIN:
             continue
         # object_type: nếu câu nói loại hình cụ thể (resort/villa...) thì lọc, trừ OBJ_HOTEL (hiểu rộng).
         # NHƯNG nếu câu có CẢ OBJ_HOTEL ("khách sạn") lẫn loại cụ thể -> người dùng nói "khách sạn HOẶC

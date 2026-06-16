@@ -232,6 +232,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Friendly service, enthusiastic staff."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern"
    }
   ],
   "novel": [
@@ -245,7 +250,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:31:15+00:00"
+  "created_at": "2026-06-11T16:31:15+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "912870825": {
   "review_id": 912870825,
@@ -272,6 +280,26 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the service here is also very professional and friendly."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "enjoy a quiet and luxurious vacation in Quy Nhon"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "providing a great relaxing space"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "designed modernly"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "enjoy a quiet and luxurious vacation in Quy Nhon"
    }
   ],
   "novel": [
@@ -285,7 +313,13 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:31:15+00:00"
+  "created_at": "2026-06-11T16:31:15+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "908680938": {
   "review_id": 908680938,
@@ -312,13 +346,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "very convenient, with many restaurants and cafes nearby."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern architecture"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:31:15+00:00"
+  "created_at": "2026-06-11T16:31:15+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "908575296": {
   "review_id": 908575296,
@@ -345,6 +387,26 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Breakfast at FLC Sea Tower is extremely abundant and delicious."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "surrounding space is extremely quiet and airy, providing an absolutely relaxing feeling"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "providing an absolutely relaxing feeling"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "very modern"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "the design of the room, which is both luxurious and very cozy"
    }
   ],
   "novel": [
@@ -364,7 +426,13 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:31:15+00:00"
+  "created_at": "2026-06-11T16:31:15+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "902985102": {
   "review_id": 902985102,

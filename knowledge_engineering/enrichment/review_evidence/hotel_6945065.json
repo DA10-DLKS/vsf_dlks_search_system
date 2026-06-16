@@ -343,13 +343,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "The room was comfortable."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "it is located in a quiet side street and you barely hear anything at night. Occasionally a dog or a rooster but it was really silent."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:54+00:00"
+  "created_at": "2026-06-11T10:59:54+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "745363119": {
   "review_id": 745363119,
@@ -565,6 +573,11 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "the bed was incredibly comfortable."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "with such a relaxing vibe"
    }
   ],
   "novel": [
@@ -578,7 +591,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "783665125": {
   "review_id": 783665125,
@@ -657,7 +673,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1023251917": {
   "review_id": 1023251917,
@@ -697,13 +716,27 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "neutral",
     "span": "Villa nên trang bị thêm bàn ủi /bàn là cho khách sẽ tiện ích hơn."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Không gian yên tĩnh, mát mẻ, rất thanh bình."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "Không gian yên tĩnh, mát mẻ, rất thanh bình"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014287119": {
   "review_id": 1014287119,
@@ -777,7 +810,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "712569849": {
   "review_id": 712569849,
@@ -846,7 +882,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "996108519": {
   "review_id": 996108519,
@@ -1112,13 +1151,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "neutral",
     "span": "L’emplacement est un peu éloigné du centre mais à pied cela ce fait rất tốt."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "dans un quartier calme où vous pouvez vous reposer tranquillement."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1079678574": {
   "review_id": 1079678574,
@@ -1331,13 +1378,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Staff was extremely helpful and nice"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "but is calm as well."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "848942152": {
   "review_id": 848942152,
@@ -1539,13 +1594,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "great value"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Located in a residential quiet area"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "776951969": {
   "review_id": 776951969,
@@ -1850,13 +1913,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "lễ tân nhiệt tình"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "khu vực yên tĩnh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "776951971": {
   "review_id": 776951971,
@@ -1940,7 +2011,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1044876701": {
   "review_id": 1044876701,
@@ -1986,7 +2060,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:55+00:00"
+  "created_at": "2026-06-11T10:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1013918641": {
   "review_id": 1013918641,
@@ -2003,13 +2080,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the area is peaceful and nice"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "the area is peaceful and nice."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:56+00:00"
+  "created_at": "2026-06-11T10:59:56+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "750773969": {
   "review_id": 750773969,
@@ -2553,13 +2638,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "we highly recommend it if you want to find a budget accommodation but good quality"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "located in a quiet location"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:56+00:00"
+  "created_at": "2026-06-11T10:59:56+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "684136774": {
   "review_id": 684136774,
@@ -2614,13 +2707,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the pool area – while the pool itself was gorgeous, the water was very cold"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "chairs for relaxing"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:56+00:00"
+  "created_at": "2026-06-11T10:59:56+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "949875858": {
   "review_id": 949875858,
@@ -2716,13 +2817,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "the breakfast in this hotel is not that great but sufficient"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "calm location"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:56+00:00"
+  "created_at": "2026-06-11T10:59:56+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "712569864": {
   "review_id": 712569864,
@@ -3012,13 +3121,22 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Lovely breakfast & staff too."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Very peaceful"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:56+00:00"
+  "created_at": "2026-06-11T10:59:56+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "755170686": {
   "review_id": 755170686,
@@ -3300,13 +3418,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "spacious room and comfort bed"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "a nice and calm place to stay"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:57+00:00"
+  "created_at": "2026-06-11T10:59:57+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "733006330": {
   "review_id": 733006330,
@@ -3804,13 +3930,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "Bikes are FREE!"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "the surroundings are quiet."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:57+00:00"
+  "created_at": "2026-06-11T10:59:57+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "791965615": {
   "review_id": 791965615,
@@ -4227,13 +4361,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "la qualité des vélos qui sont tous rouillés et pneus dégonflés."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "c’était calme"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "520389689": {
   "review_id": 520389689,
@@ -4283,13 +4425,27 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Vélos en location gratuite mais pas toujours en bon état"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "plus calme."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Chambres modernes"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "267739318": {
   "review_id": 267739318,
@@ -4306,13 +4462,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the staff is supportive"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "it only takes you about 5 mins biking to the ancient town which is perfect."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1105069693": {
   "review_id": 1105069693,
@@ -4362,13 +4526,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "The room I booked was on 4th floor, It was clean, comfy and quiet."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "It was clean, comfy and quiet."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "996517787": {
   "review_id": 996517787,
@@ -4701,13 +4873,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Das Frühstück gut und reichlich"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "moderna Ausstattung"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "506425594": {
   "review_id": 506425594,
@@ -4821,13 +5001,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "friendly and helpful staff"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "It's such a cozy and peaceful place"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "740069454": {
   "review_id": 740069454,
@@ -4882,13 +5070,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "the pool area was very nice"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "lovely and modern"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1057302423": {
   "review_id": 1057302423,
@@ -4915,13 +5111,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "La colazione è sia a buffet con frutta, caffè, tè"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "l'ambiente molto rilassante e calmo."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "225320700": {
   "review_id": 225320700,
@@ -5365,13 +5569,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Breakfast is available."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Calm"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "791965627": {
   "review_id": 791965627,
@@ -5579,13 +5791,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "my room has a slanted ceiling, making it feel a bit cramped."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "the location is quiet and relatively close to various spots."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "740069474": {
   "review_id": 740069474,
@@ -5651,7 +5871,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "726753370": {
   "review_id": 726753370,
@@ -5711,13 +5934,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "quiet area."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet area"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:59:59+00:00"
+  "created_at": "2026-06-11T10:59:59+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "702173886": {
   "review_id": 702173886,
@@ -5854,6 +6085,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Ana, the hotel’s everything, was amazing!"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "a quiet street"
    }
   ],
   "novel": [
@@ -5867,7 +6103,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:00:00+00:00"
+  "created_at": "2026-06-11T11:00:00+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "239212812": {
   "review_id": 239212812,
@@ -5945,13 +6184,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "positive",
     "span": "cleanesss and facilities are pretty reasonable."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "slow and peaceful days"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:00:00+00:00"
+  "created_at": "2026-06-11T11:00:00+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "745363118": {
   "review_id": 745363118,
@@ -5973,13 +6220,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Staff friendly."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet area"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:00:00+00:00"
+  "created_at": "2026-06-11T11:00:00+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "770915287": {
   "review_id": 770915287,
@@ -6157,7 +6412,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:00:00+00:00"
+  "created_at": "2026-06-11T11:00:00+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "783665129": {
   "review_id": 783665129,
@@ -6180,7 +6438,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:00:00+00:00"
+  "created_at": "2026-06-11T11:00:00+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1097978967": {
   "review_id": 1097978967,
@@ -6332,13 +6593,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the pool is a bit small and close to the room"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "the area is quite quiet and healing"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:00:01+00:00"
+  "created_at": "2026-06-11T11:00:01+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "726753364": {
   "review_id": 726753364,

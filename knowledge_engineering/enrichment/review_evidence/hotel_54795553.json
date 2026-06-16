@@ -811,13 +811,22 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "The overall atmosphere was peaceful, welcoming, and perfect for families"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "enjoy a quiet walk nearby"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:10:18+00:00"
+  "created_at": "2026-06-11T16:10:18+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1036439603": {
   "review_id": 1036439603,
@@ -1519,7 +1528,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:10:22+00:00"
+  "created_at": "2026-06-11T16:10:22+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "960969913": {
   "review_id": 960969913,

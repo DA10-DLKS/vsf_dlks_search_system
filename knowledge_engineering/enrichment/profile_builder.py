@@ -162,20 +162,27 @@ def merge_absa(hotel_id: int, prof: dict[str, dict]) -> None:
         # "chê ồn" (neg cho LIVELY) KHÔNG có nghĩa "hotel kém sôi động" -> nếu tính cả neg thì
         # ra STYLE_LIVELY=0.02 vô nghĩa. GIẢI: score style = sự HIỆN DIỆN TÍCH CỰC ('hotel này
         # CÓ phong cách X'); chỉ đếm positive, bỏ negative. Concept toàn negative -> LOẠI.
-        p = pos.get(c, 0)
-        if p < ABSA_MIN_EVIDENCE:        # cần >=3 phiếu KHEN mới công nhận phong cách này
+        #
+        # HỢP NHẤT 2 NGUỒN: seed Agoda (tag map -> STYLE) và ABSA đo CÙNG sự hiện diện style,
+        # nên GỘP pos/neg của cả hai rồi tính 1 Wilson chung. Nếu KHÔNG gộp (trước đây seed độc
+        # quyền giữ score) thì 1 tag Agoda thiểu số toàn-chê (vd "Cách âm" 3 chê) khóa cứng
+        # STYLE_QUIET=0.0 và vô hiệu hàng chục phiếu KHEN của ABSA — 57 hotel từng dính lỗi này.
+        seed = prof.get(c) if (c in prof and prof[c].get("source") in
+                               ("agoda_review_tags", "agoda_grades")) else None
+        seed_pos = int(seed.get("pos", 0)) if seed else 0
+        seed_neg = int(seed.get("neg", 0)) if seed else 0
+        p = pos.get(c, 0) + seed_pos       # tổng KHEN: ABSA + seed Agoda
+        if p < ABSA_MIN_EVIDENCE:          # cần >=3 phiếu KHEN (gộp) mới công nhận phong cách này
             continue
-        if c in prof and prof[c].get("source") in ("agoda_review_tags", "agoda_grades"):
-            prof[c]["span"] = span.get(c, "")   # seed giữ score, ABSA thêm span
-            continue
-        # score = tỷ lệ KHEN trên tổng nhắc; nhưng tối thiểu dựa positive (presence).
-        n = p + neg.get(c, 0)
+        n_neg = neg.get(c, 0) + seed_neg   # tổng CHÊ (chỉ để biết mẫu số, KHÔNG kéo score xuống 0)
+        n = p + n_neg
         prof[c] = {
             "score": round(wilson_lower_bound(p, n), 3),
-            "pos": p, "neg": neg.get(c, 0),
+            "pos": p, "neg": n_neg,
             "evidence_count": n,
-            "span": span.get(c, ""),
-            "source": "absa", "nature": "experience",
+            "span": span.get(c, "") or (seed.get("span", "") if seed else ""),
+            "source": "absa+agoda_review_tags" if seed else "absa",
+            "nature": "experience",
         }
 
 

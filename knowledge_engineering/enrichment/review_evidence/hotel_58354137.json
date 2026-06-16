@@ -95,7 +95,11 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:10+00:00"
+  "created_at": "2026-06-11T16:16:10+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1003805672": {
   "review_id": 1003805672,
@@ -210,13 +214,27 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "The price is quite high"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxury brand"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "brand new hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:26+00:00"
+  "created_at": "2026-06-11T16:16:26+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "960636781": {
   "review_id": 960636781,
@@ -256,13 +274,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "staff are enthusiastic and helpful"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "brand new"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:26+00:00"
+  "created_at": "2026-06-11T16:16:26+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "960543687": {
   "review_id": 960543687,
@@ -483,13 +509,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "friendly staffs"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "Newly built"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:26+00:00"
+  "created_at": "2026-06-11T16:16:26+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1075750559": {
   "review_id": 1075750559,
@@ -636,13 +670,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "A place worth trying"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Modern rooms and equipment."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:27+00:00"
+  "created_at": "2026-06-11T16:16:27+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1117631094": {
   "review_id": 1117631094,
@@ -718,13 +760,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "rooftop bar has great music and beautiful views"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "brand new hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:27+00:00"
+  "created_at": "2026-06-11T16:16:27+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1070942930": {
   "review_id": 1070942930,
@@ -856,13 +906,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Location ngay trung tâm"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "sang trọng"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:27+00:00"
+  "created_at": "2026-06-11T16:16:27+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081104838": {
   "review_id": 1081104838,
@@ -1327,7 +1385,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:27+00:00"
+  "created_at": "2026-06-11T16:16:27+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1049949336": {
   "review_id": 1049949336,
@@ -1362,13 +1423,27 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "sự chào đón nồng hậu, sự chuyên nghiệp và đầy tinh tế."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "tận hưởng sự nghỉ ngơi đúng nghĩa trọn vẹn cảm xúc"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "tiêu chuẩn dịch vụ cao cấp"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:27+00:00"
+  "created_at": "2026-06-11T16:16:27+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1049257351": {
   "review_id": 1049257351,
@@ -1449,7 +1524,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:27+00:00"
+  "created_at": "2026-06-11T16:16:27+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1047920390": {
   "review_id": 1047920390,
@@ -1489,13 +1567,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "everything is perfect"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxurious"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "933629457": {
   "review_id": 933629457,
@@ -1555,13 +1641,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "Nice rooms"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet location to relax"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "931830729": {
   "review_id": 931830729,
@@ -1611,13 +1705,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "one of the best hotels I stayed in"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "clean, quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "924412190": {
   "review_id": 924412190,
@@ -1647,13 +1749,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "neutral",
     "span": "Big room"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "New hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "922576363": {
   "review_id": 922576363,
@@ -1724,7 +1834,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "906741992": {
   "review_id": 906741992,
@@ -1870,13 +1983,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "new, modern and clean"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "the hotel itself is new, modern and clean."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "893456852": {
   "review_id": 893456852,
@@ -2439,6 +2560,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the staff were also friendly and the service was excellent"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxurious"
    }
   ],
   "novel": [
@@ -2452,7 +2578,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "961096833": {
   "review_id": 961096833,
@@ -2470,7 +2599,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1037956130": {
   "review_id": 1037956130,
@@ -2500,7 +2632,13 @@
   "hotel_id": 58354137,
   "rating": 9.0,
   "overall_sentiment": "neutral",
-  "items": [],
+  "items": [
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Sự hiện đại, trẻ trung, cao cấp của thiết kế khách sạn: nội thất, trang bị"
+   }
+  ],
   "novel": [
    {
     "phrase": "hiện đại, trẻ trung, cao cấp",
@@ -2512,7 +2650,11 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1036560842": {
   "review_id": 1036560842,
@@ -2565,7 +2707,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1021597457": {
   "review_id": 1021597457,
@@ -2589,13 +2734,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "sang trọng, rộng rãi và tiện nghi"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "đẳng cấp, sang trọng"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1017421591": {
   "review_id": 1017421591,
@@ -2800,13 +2953,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "a luxurious hotel with amenities and a bathtub"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxurious"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "988417458": {
   "review_id": 988417458,
@@ -2838,13 +2999,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "the food at the restaurant is very delicious and diverse"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "the rooms are modern and comfortable."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:30+00:00"
+  "created_at": "2026-06-11T16:16:30+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "851652407": {
   "review_id": 851652407,
@@ -2884,13 +3053,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "bed is so comfortable"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "very new hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:31+00:00"
+  "created_at": "2026-06-11T16:16:31+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1105082377": {
   "review_id": 1105082377,
@@ -2907,13 +3084,22 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "hope to return very soon, for a more calm & relaxing stay"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "more calm & relaxing stay"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:31+00:00"
+  "created_at": "2026-06-11T16:16:31+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1075750560": {
   "review_id": 1075750560,
@@ -3007,13 +3193,22 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "for the price, it's okay for families with young children"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern, and clean."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:31+00:00"
+  "created_at": "2026-06-11T16:16:31+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1111642028": {
   "review_id": 1111642028,
@@ -3048,13 +3243,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Staff is still learning but friendly"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "brand new"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:31+00:00"
+  "created_at": "2026-06-11T16:16:31+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1105037545": {
   "review_id": 1105037545,
@@ -3297,7 +3500,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:32+00:00"
+  "created_at": "2026-06-11T16:16:32+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1069698706": {
   "review_id": 1069698706,
@@ -3329,13 +3535,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Breakfast was high quality with a great variety"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern design, spacious and comfortable rooms"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:32+00:00"
+  "created_at": "2026-06-11T16:16:32+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "949851624": {
   "review_id": 949851624,
@@ -3451,13 +3665,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "hôtel récent avec chambres calmes et confortables"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "chambres calmes"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:32+00:00"
+  "created_at": "2026-06-11T16:16:32+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1038137899": {
   "review_id": 1038137899,
@@ -3572,7 +3794,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:32+00:00"
+  "created_at": "2026-06-11T16:16:32+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "966089222": {
   "review_id": 966089222,
@@ -4280,7 +4505,11 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:33+00:00"
+  "created_at": "2026-06-11T16:16:33+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1078637079": {
   "review_id": 1078637079,
@@ -4622,13 +4851,21 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "positive",
     "span": "vivre un séjour luxueux et mémorable"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "chambre était spacieuse, moderne élégamment décorée"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:34+00:00"
+  "created_at": "2026-06-11T16:16:34+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "848876824": {
   "review_id": 848876824,
@@ -4713,13 +4950,21 @@
     "concept": "STYLE_MODERN",
     "sentiment": "positive",
     "span": "practical for work and relaxing"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "practical for work and relaxing"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:34+00:00"
+  "created_at": "2026-06-11T16:16:34+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1104880894": {
   "review_id": 1104880894,
@@ -5011,7 +5256,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:16:35+00:00"
+  "created_at": "2026-06-11T16:16:35+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "921939450": {
   "review_id": 921939450,

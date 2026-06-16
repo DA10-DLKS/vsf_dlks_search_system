@@ -25,7 +25,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981374488": {
   "review_id": 981374488,
@@ -89,7 +92,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "684135529": {
   "review_id": 684135529,
@@ -140,7 +146,11 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "971072736": {
   "review_id": 971072736,
@@ -174,13 +184,27 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Mặt giường đệm cũ, đệm đã lõm lưng nhưng vẫn còn sử dụng."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "thiếu thoải mái"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Cơ sở vật chất hơi xuống cấp."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1129603640": {
   "review_id": 1129603640,
@@ -332,13 +356,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Món ăn mong sẽ đa dạng hơn"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "yên bình"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014001303": {
   "review_id": 1014001303,
@@ -536,7 +568,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1104610071": {
   "review_id": 1104610071,
@@ -587,7 +622,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "987921256": {
   "review_id": 987921256,
@@ -627,7 +665,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1124500745": {
   "review_id": 1124500745,
@@ -649,13 +690,22 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "mixed",
     "span": "Về ẩm thực, nhà hàng nấu ăn phong độ thất thường"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "phòng ốc đã cũ, vệ sinh kém, tivi hỏng, điều hòa yếu và kêu to"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+  }
  },
  "816763042": {
   "review_id": 816763042,
@@ -731,7 +781,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "783664532": {
   "review_id": 783664532,
@@ -782,7 +835,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "720137489": {
   "review_id": 720137489,
@@ -845,7 +901,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "783664556": {
   "review_id": 783664556,
@@ -877,13 +936,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "nhân viên thân thiện"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "tiện nghi khách sạn hơi cũ nhưng phù hợp với giá cả"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1078900529": {
   "review_id": 1078900529,
@@ -918,13 +985,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "mình đặt phòng view thẳng biển nhưng khi nhận phòng thì phòng tầm nhìn bị vướng cây nhiều ko nhìn rõ biển lắm"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "không gian ở Casa rộng rãi thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1072745928": {
   "review_id": 1072745928,
@@ -1008,13 +1083,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "biển trong veo ít sóng tắm rất thoải mái"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "tắm rất thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "676840478": {
   "review_id": 676840478,
@@ -1134,7 +1217,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1003810307": {
   "review_id": 1003810307,
@@ -1272,7 +1358,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:36+00:00"
+  "created_at": "2026-06-11T16:46:36+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "988693213": {
   "review_id": 988693213,
@@ -1392,7 +1481,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:38+00:00"
+  "created_at": "2026-06-11T16:46:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "693535300": {
   "review_id": 693535300,
@@ -1512,7 +1604,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:38+00:00"
+  "created_at": "2026-06-11T16:46:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "970671953": {
   "review_id": 970671953,
@@ -1563,7 +1658,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:38+00:00"
+  "created_at": "2026-06-11T16:46:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "960863488": {
   "review_id": 960863488,
@@ -1700,13 +1798,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "Buffe sáng từ 7-9h mà 7:30 ra hết đồ ăn, hết nước.",
     "span": ""
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Phòng xuống cấp quá nhiều"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:38+00:00"
+  "created_at": "2026-06-11T16:46:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1004179996": {
   "review_id": 1004179996,
@@ -1764,13 +1870,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "a pool and a private beach.",
     "span": ""
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Quiet resort"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:38+00:00"
+  "created_at": "2026-06-11T16:46:38+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "669937060": {
   "review_id": 669937060,
@@ -1782,13 +1896,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "nhà ăn rất nhiều ruồi"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "Nội thất phòng rất có phong cách"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "949744520": {
   "review_id": 949744520,
@@ -1857,7 +1979,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "662584363": {
   "review_id": 662584363,
@@ -1981,13 +2106,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "bãi biển không còn là của chung, mà đã bị ngăn lại"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "yên tĩnh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "980417309": {
   "review_id": 980417309,
@@ -2040,7 +2173,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1062479276": {
   "review_id": 1062479276,
@@ -2285,7 +2421,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "960710724": {
   "review_id": 960710724,
@@ -2308,7 +2447,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "662584384": {
   "review_id": 662584384,
@@ -2331,7 +2473,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1021396726": {
   "review_id": 1021396726,
@@ -2395,7 +2540,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081141683": {
   "review_id": 1081141683,
@@ -2436,7 +2584,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1043295996": {
   "review_id": 1043295996,
@@ -2466,13 +2617,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "Tiện nghi ko tốt lắm"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "yên tĩnh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014130144": {
   "review_id": 1014130144,
@@ -2490,7 +2649,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1004594001": {
   "review_id": 1004594001,
@@ -2517,13 +2679,27 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Phòng tắm toilet hướng vào giường ngủ, chưa có bờ biển đẹp"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "yên tĩnh"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "biển sạch, yên tĩnh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "993803437": {
   "review_id": 993803437,
@@ -2673,13 +2849,22 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "chủ đầu tư co vẻ không quan tâm việc duy tu bảo dưỡng."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "nên gọi là nhà nghỉ thay vì resort"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "954124542": {
   "review_id": 954124542,
@@ -2701,13 +2886,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "mình thấy với giá tiền thì ok"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "khá yên bình"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:39+00:00"
+  "created_at": "2026-06-11T16:46:39+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "838877238": {
   "review_id": 838877238,
@@ -2752,13 +2945,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Nhân viên thân thiện, hỗ trợ mình check out muộn."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "mixed",
+    "span": "nếu nâng cấp cơ sở vật chất thì có thể đạt mức 4.5 tới 5 sao!"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "693535304": {
   "review_id": 693535304,
@@ -2880,6 +3081,11 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "there's easy access to great food"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet rest"
    }
   ],
   "novel": [
@@ -2893,7 +3099,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "816763038": {
   "review_id": 816763038,
@@ -3120,7 +3329,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981722323": {
   "review_id": 981722323,
@@ -3165,13 +3377,27 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "phòng tắm và nhà vệ sinh tối ẩm thấp ko đc sạch sẽ làm mình ko thoải mái."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "yên tĩnh hợp nghỉ nghơi"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "không đc sạch sẽ làm mình ko thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "952139792": {
   "review_id": 952139792,
@@ -3278,7 +3504,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1007485530": {
   "review_id": 1007485530,
@@ -3476,13 +3705,22 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "vệ sinh làm rất ẩu"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "Khá yên tĩnh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "992191217": {
   "review_id": 992191217,
@@ -3601,13 +3839,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "trải nghiệm đi lại 10p lên bè ăn uống và 10p là lên đảo chơi rất là thú vị nha"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "mixed",
+    "span": "mặc dù resort có tên là “resort” nhưng phòng ốc hơi cũ"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "848942991": {
   "review_id": 848942991,
@@ -3683,13 +3929,22 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "neutral",
     "span": "Ổn ạ, thích hợp nghỉ ngơi chờ sáng hôm sau đi Bình Hưng"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "thích hợp nghỉ ngơi"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "978026600": {
   "review_id": 978026600,
@@ -3706,13 +3961,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "tiện nghi"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "thoải mái và tiện nghi"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "988693221": {
   "review_id": 988693221,
@@ -3739,13 +4002,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "nhân viên hỗ trợ nhiệt tình"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "cảnh quan rất đẹp, phòng mình ở cũng rất ok"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:40+00:00"
+  "created_at": "2026-06-11T16:46:40+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "969006254": {
   "review_id": 969006254,
@@ -4043,7 +4314,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:42+00:00"
+  "created_at": "2026-06-11T16:46:42+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014132317": {
   "review_id": 1014132317,
@@ -4188,13 +4462,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Many flies and mosquitoes, poor buffet, few restaurants nearby."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "not soundproof, very noisy"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:42+00:00"
+  "created_at": "2026-06-11T16:46:42+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "720137480": {
   "review_id": 720137480,
@@ -4267,13 +4549,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "nhà tắm và tường nhà nên nâng cấp để sạch sẽ và cao cấp hơn."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "vị trí của KS thì tuyệt vời, biển sạch và êm"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:44+00:00"
+  "created_at": "2026-06-11T16:46:44+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "970417485": {
   "review_id": 970417485,
@@ -4352,7 +4642,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:44+00:00"
+  "created_at": "2026-06-11T16:46:44+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "838877237": {
   "review_id": 838877237,
@@ -4369,13 +4662,22 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "cơ sở vật chất xuống cấp, thấm- dột nhiều chỗ"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "cảm giác ẩm thấp"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:44+00:00"
+  "created_at": "2026-06-11T16:46:44+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1047582860": {
   "review_id": 1047582860,
@@ -4446,13 +4748,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Tiện nghi có chút xuống cấp"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "neutral",
+    "span": "Vị trí phù hợp cho nghỉ dưỡng"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:44+00:00"
+  "created_at": "2026-06-11T16:46:44+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "988259346": {
   "review_id": 988259346,
@@ -4538,13 +4848,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Kiến trúc xây hơi kì.."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "neutral",
+    "span": "thích hợp gia đình nghĩ dưỡng"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:44+00:00"
+  "created_at": "2026-06-11T16:46:44+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981420515": {
   "review_id": 981420515,
@@ -4595,7 +4913,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:44+00:00"
+  "created_at": "2026-06-11T16:46:44+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "971406223": {
   "review_id": 971406223,
@@ -4672,7 +4993,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:52+00:00"
+  "created_at": "2026-06-11T16:46:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014002231": {
   "review_id": 1014002231,
@@ -4723,7 +5047,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:52+00:00"
+  "created_at": "2026-06-11T16:46:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1003833004": {
   "review_id": 1003833004,
@@ -4783,13 +5110,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "đồ ăn sáng cũng kém so vs giá tiền."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "chất lượng phòng quá tệ"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:52+00:00"
+  "created_at": "2026-06-11T16:46:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "951614306": {
   "review_id": 951614306,
@@ -4829,13 +5164,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "khách sạn xuống cấp , Không có phục vụ ăn sáng buffer như đã quảng cáo , có những vật dụng bị hư không sử dụng được"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Khách sạn xuống cấp"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:52+00:00"
+  "created_at": "2026-06-11T16:46:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "938666717": {
   "review_id": 938666717,
@@ -4880,13 +5223,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "Nhà vệ sinh thiết kế không hợp lý, bất tiện và không sạch sẽ."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Nhà vệ sinh thiết kế không hợp lý, bất tiện và không sạch sẽ"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:52+00:00"
+  "created_at": "2026-06-11T16:46:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1037917259": {
   "review_id": 1037917259,
@@ -5038,13 +5389,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Nhà bếp của ks đòi hỏi phí phụ thu quá cao."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "không được thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:52+00:00"
+  "created_at": "2026-06-11T16:46:52+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "955720159": {
   "review_id": 955720159,
@@ -5140,13 +5499,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Nước lẩu hải sản gia vị khá lạt, gần như m.ng đều không dùng được nước lẩu."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "cảm giác 1 sự vô tâm rất lớn từ khách sạn này"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:52+00:00"
+  "created_at": "2026-06-11T16:46:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1056192932": {
   "review_id": 1056192932,
@@ -5173,13 +5540,27 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "mixed",
     "span": "Tuy nhiên nói chung khách sạn đã hơi cũ, phòng mình thì khá ổn chỉ có cái quạt hơi ồn thui."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "khá thoải mái"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "khách sạn đã hơi cũ"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:52+00:00"
+  "created_at": "2026-06-11T16:46:52+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014414162": {
   "review_id": 1014414162,
@@ -5196,13 +5577,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Đồ ăn sáng lèo tèo, ko ngon"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Nhà vệ sinh không sạch lắm"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:53+00:00"
+  "created_at": "2026-06-11T16:46:53+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1065384450": {
   "review_id": 1065384450,
@@ -5344,13 +5733,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "Giá cả hơi đắt so với điều kiện phòng"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "giường nệm thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:53+00:00"
+  "created_at": "2026-06-11T16:46:53+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1021498190": {
   "review_id": 1021498190,
@@ -5403,13 +5800,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "khách thuê resort là để nghỉ dưỡng"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "khách thuê resort là để nghỉ dưỡng , đâu phải tốn tiền rồi vô chỗ 9 , 10g đêm vẫn không được ngủ"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:53+00:00"
+  "created_at": "2026-06-11T16:46:53+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "816763044": {
   "review_id": 816763044,
@@ -5533,13 +5938,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "Không thanh toán bằng thẻ tín dụng"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Trang thiết bị cũ kỹ, sơ sài"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:53+00:00"
+  "created_at": "2026-06-11T16:46:53+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "980748775": {
   "review_id": 980748775,

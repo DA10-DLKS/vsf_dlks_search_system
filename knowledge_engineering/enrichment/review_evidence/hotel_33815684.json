@@ -1701,13 +1701,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "newly remodeled"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly remodeled"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:11+00:00"
+  "created_at": "2026-06-11T14:28:11+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "575138259": {
   "review_id": 575138259,
@@ -2098,7 +2106,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:13+00:00"
+  "created_at": "2026-06-11T14:28:13+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "566528937": {
   "review_id": 566528937,
@@ -2126,7 +2137,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:13+00:00"
+  "created_at": "2026-06-11T14:28:13+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "578089222": {
   "review_id": 578089222,
@@ -2203,7 +2217,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:13+00:00"
+  "created_at": "2026-06-11T14:28:13+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "552613524": {
   "review_id": 552613524,
@@ -2422,7 +2439,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:13+00:00"
+  "created_at": "2026-06-11T14:28:13+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "938767055": {
   "review_id": 938767055,
@@ -2490,7 +2510,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:13+00:00"
+  "created_at": "2026-06-11T14:28:13+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "933037224": {
   "review_id": 933037224,
@@ -2699,7 +2722,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:13+00:00"
+  "created_at": "2026-06-11T14:28:13+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1099835148": {
   "review_id": 1099835148,
@@ -4409,7 +4435,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:33+00:00"
+  "created_at": "2026-06-11T14:28:33+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1071033949": {
   "review_id": 1071033949,
@@ -4455,7 +4484,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:28:33+00:00"
+  "created_at": "2026-06-11T14:28:33+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1068347528": {
   "review_id": 1068347528,
@@ -4540,6 +4572,11 @@
     "concept": "STYLE_VINTAGE",
     "sentiment": "positive",
     "span": "phong cách cổ điển"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "phong cách cổ điển"
    }
   ],
   "novel": [],
@@ -4550,7 +4587,8 @@
   "backfilled_versions": {
    "STYLE_MINIMALIST": "v5-novel-style-only+343d0bc4",
    "STYLE_VINTAGE": "v5-novel-style-only+343d0bc4",
-   "STYLE_BOUTIQUE": "v5-novel-style-only+343d0bc4"
+   "STYLE_BOUTIQUE": "v5-novel-style-only+343d0bc4",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
   }
  },
  "936488743": {

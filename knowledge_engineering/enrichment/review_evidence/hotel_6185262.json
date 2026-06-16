@@ -401,7 +401,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:46:56+00:00"
+  "created_at": "2026-06-11T10:46:56+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "246693524": {
   "review_id": 246693524,
@@ -669,7 +672,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:46:57+00:00"
+  "created_at": "2026-06-11T10:46:57+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "193782529": {
   "review_id": 193782529,
@@ -804,7 +810,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:46:57+00:00"
+  "created_at": "2026-06-11T10:46:57+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1027624294": {
   "review_id": 1027624294,
@@ -1025,13 +1034,22 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "making it easy to unwind after a long day."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet and peaceful at night"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:46:57+00:00"
+  "created_at": "2026-06-11T10:46:57+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1013413529": {
   "review_id": 1013413529,
@@ -1106,13 +1124,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Location is perfect."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "brand new"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:46:57+00:00"
+  "created_at": "2026-06-11T10:46:57+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "196590169": {
   "review_id": 196590169,
@@ -1654,7 +1680,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:46:59+00:00"
+  "created_at": "2026-06-11T10:46:59+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "662588118": {
   "review_id": 662588118,
@@ -1975,13 +2004,27 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the staff was extremely helpful, can’t express my gratitude for such a good service."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet neighborhood"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern bathroom"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:00+00:00"
+  "created_at": "2026-06-11T10:47:00+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1072046301": {
   "review_id": 1072046301,
@@ -2205,13 +2248,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "the room and amenities are good for this price."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "it is quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:00+00:00"
+  "created_at": "2026-06-11T10:47:00+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "953070913": {
   "review_id": 953070913,
@@ -2444,13 +2495,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Owners are lovely"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "Brand new"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:08+00:00"
+  "created_at": "2026-06-11T10:47:08+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1050169752": {
   "review_id": 1050169752,
@@ -2565,13 +2624,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "hot water for a shower was less in the morning"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet rooms"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:08+00:00"
+  "created_at": "2026-06-11T10:47:08+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "189668785": {
   "review_id": 189668785,
@@ -2598,13 +2665,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Location is not bad"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "brand new"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:08+00:00"
+  "created_at": "2026-06-11T10:47:08+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1104694923": {
   "review_id": 1104694923,
@@ -2703,12 +2778,20 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "fully functional, very clean, and modern"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:08+00:00"
+  "created_at": "2026-06-11T10:47:08+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  }
 }

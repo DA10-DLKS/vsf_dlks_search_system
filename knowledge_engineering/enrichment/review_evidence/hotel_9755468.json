@@ -275,7 +275,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:04:01+00:00"
+  "created_at": "2026-06-11T11:04:01+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "648114555": {
   "review_id": 648114555,
@@ -442,13 +445,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "it has all the amenities, including bath gel, TRESemmé shampoo, facial cleanser, hand wash, an iron, and a hairdryer."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "the TV is new and modern"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:04:06+00:00"
+  "created_at": "2026-06-11T11:04:06+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "980831320": {
   "review_id": 980831320,
@@ -755,7 +766,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:04:06+00:00"
+  "created_at": "2026-06-11T11:04:06+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "985099149": {
   "review_id": 985099149,
@@ -1009,13 +1023,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the neighborhood offers a more local, everyday side of Da Nang"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "negative",
+    "span": "this is not a stylish or modern hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:04:07+00:00"
+  "created_at": "2026-06-11T11:04:07+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081174453": {
   "review_id": 1081174453,
@@ -1222,7 +1244,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:04:07+00:00"
+  "created_at": "2026-06-11T11:04:07+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014428867": {
   "review_id": 1014428867,

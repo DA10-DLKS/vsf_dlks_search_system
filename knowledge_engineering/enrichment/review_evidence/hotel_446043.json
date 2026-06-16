@@ -185,7 +185,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:40:55+00:00"
+  "created_at": "2026-06-11T07:40:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "927057542": {
   "review_id": 927057542,
@@ -487,7 +490,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:40:55+00:00"
+  "created_at": "2026-06-11T07:40:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "810526243": {
   "review_id": 810526243,
@@ -668,13 +674,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Le petit déjeuner est parfait."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "le calme"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:04+00:00"
+  "created_at": "2026-06-11T07:41:04+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "933953350": {
   "review_id": 933953350,
@@ -691,13 +705,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "not what you expect from the Hilton but charging Hilton prices"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "negative",
+    "span": "needs modernization"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:04+00:00"
+  "created_at": "2026-06-11T07:41:04+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014432089": {
   "review_id": 1014432089,

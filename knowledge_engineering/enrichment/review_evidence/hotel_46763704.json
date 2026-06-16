@@ -227,7 +227,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:28:28+00:00"
+  "created_at": "2026-06-11T15:28:28+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "782977341": {
   "review_id": 782977341,
@@ -1516,13 +1519,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "neutral",
     "span": "when the cleaners clean the room they only provide towels and toilet roll"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "very quiet at night"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:28:37+00:00"
+  "created_at": "2026-06-11T15:28:37+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "966360550": {
   "review_id": 966360550,
@@ -2487,13 +2498,22 @@
     "concept": "STYLE_QUIET",
     "sentiment": "positive",
     "span": "Đủ yên tĩnh để nghỉ ngơi."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "Đủ yên tĩnh để nghỉ ngơi"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:28:43+00:00"
+  "created_at": "2026-06-11T15:28:43+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1108112995": {
   "review_id": 1108112995,
@@ -2559,7 +2579,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:28:43+00:00"
+  "created_at": "2026-06-11T15:28:43+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1061453415": {
   "review_id": 1061453415,
@@ -2875,7 +2898,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:28:43+00:00"
+  "created_at": "2026-06-11T15:28:43+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "870851598": {
   "review_id": 870851598,
@@ -3798,13 +3824,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Room was being cleaned a little late but we could leave our bags in there so no problem"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Clean and modern"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:28:45+00:00"
+  "created_at": "2026-06-11T15:28:45+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "939403732": {
   "review_id": 939403732,

@@ -38,7 +38,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:34+00:00"
+  "created_at": "2026-06-11T13:51:34+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "995386198": {
   "review_id": 995386198,
@@ -234,13 +237,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "Hơi quá xa địa điểm Đền Hùng"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "Khách sạn sạch sẽ, đẹp, nhiều ánh sáng"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:34+00:00"
+  "created_at": "2026-06-11T13:51:34+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "996062448": {
   "review_id": 996062448,
@@ -308,6 +319,11 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Good location also"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "quite modern hotel"
    }
   ],
   "novel": [
@@ -321,7 +337,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:34+00:00"
+  "created_at": "2026-06-11T13:51:34+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "712553630": {
   "review_id": 712553630,
@@ -356,13 +375,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Please upgrade the complimentary water bottle, two mini bottles are simply not enough"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "your profit margin is higher than luxury hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:34+00:00"
+  "created_at": "2026-06-11T13:51:34+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1099628431": {
   "review_id": 1099628431,
@@ -379,13 +406,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "I didn’t liked the breakfast that much"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "very modern"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:34+00:00"
+  "created_at": "2026-06-11T13:51:34+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "914698418": {
   "review_id": 914698418,
@@ -430,6 +465,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Staff was very friendly and willing to help"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "very modern"
    }
   ],
   "novel": [
@@ -443,7 +483,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:34+00:00"
+  "created_at": "2026-06-11T13:51:34+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1021470340": {
   "review_id": 1021470340,
@@ -501,6 +544,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "great service."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Modern hotel"
    }
   ],
   "novel": [
@@ -514,7 +562,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:37+00:00"
+  "created_at": "2026-06-11T13:51:37+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1035918522": {
   "review_id": 1035918522,
@@ -622,6 +673,11 @@
     "concept": "STYLE_BOUTIQUE",
     "sentiment": "positive",
     "span": "the property feels more like a boutique hotel, offering a cozy yet modern atmosphere"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern atmosphere"
    }
   ],
   "novel": [
@@ -639,7 +695,8 @@
   "backfilled_versions": {
    "STYLE_MINIMALIST": "v5-novel-style-only+343d0bc4",
    "STYLE_VINTAGE": "v5-novel-style-only+343d0bc4",
-   "STYLE_BOUTIQUE": "v5-novel-style-only+343d0bc4"
+   "STYLE_BOUTIQUE": "v5-novel-style-only+343d0bc4",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
   }
  },
  "776940545": {
@@ -784,6 +841,11 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Phòng khá nhỏ, ko có cửa sổ hay ban công nên ko có thoáng mát tự nhiên."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "nội thất hiện đại"
    }
   ],
   "novel": [
@@ -797,7 +859,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:37+00:00"
+  "created_at": "2026-06-11T13:51:37+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "939414702": {
   "review_id": 939414702,
@@ -860,7 +925,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:37+00:00"
+  "created_at": "2026-06-11T13:51:37+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1004165198": {
   "review_id": 1004165198,
@@ -900,6 +968,16 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Giá cao mà ko kèm ăn sáng"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "negative",
+    "span": "thiết kế hiện đại"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Giá cao mà ko kèm ăn sáng"
    }
   ],
   "novel": [
@@ -913,6 +991,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T13:51:37+00:00"
+  "created_at": "2026-06-11T13:51:37+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  }
 }

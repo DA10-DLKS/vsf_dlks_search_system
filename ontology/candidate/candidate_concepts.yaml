@@ -388,7 +388,8 @@ concepts:
     description:
       vi: Một không gian mang lại cảm giác thoải mái và dễ chịu.
       en: A space that provides a comfortable and relaxed feeling.
-    status: approved
+    status: rejected
+    reject_reason: "Hạ khỏi core 2026-06-16: trùng STYLE_RELAXING (cảm nhận thoải mái/dễ chịu), không phải bối cảnh; fact_type=hard sai. discovery chỉ 6 hotel."
     discovery:
       cluster_id: c008
       hotel_count: 6
@@ -432,7 +433,8 @@ concepts:
     description:
       vi: Một khung cảnh nhiệt đới với thiên nhiên tươi đẹp và khí hậu ấm áp.
       en: A tropical setting with beautiful nature and warm climate.
-    status: approved
+    status: rejected
+    reject_reason: "Hạ khỏi core 2026-06-16: gần như toàn bộ VN là nhiệt đới → không phân biệt/lọc được; trùng SETTING_NATURE."
     discovery:
       cluster_id: c009
       hotel_count: 5
@@ -566,7 +568,8 @@ concepts:
     description:
       vi: Một không gian yên bình giữa sự ồn ào của thành phố.
       en: A peaceful space amidst the hustle and bustle of the city.
-    status: approved
+    status: rejected
+    reject_reason: "Hạ khỏi core 2026-06-16: trùng STYLE_QUIET (yên bình); nhãn marketing, không phải fact bối cảnh. discovery chỉ 4 hotel."
     discovery:
       cluster_id: c012
       hotel_count: 4
@@ -610,7 +613,8 @@ concepts:
     description:
       vi: Một không gian thoải mái và dễ chịu.
       en: A comfortable and pleasant atmosphere.
-    status: approved
+    status: rejected
+    reject_reason: "Hạ khỏi core 2026-06-16: trùng SETTING_CHILL/STYLE_RELAXING; surface 'không khí' quá generic. discovery chỉ 4 hotel."
     discovery:
       cluster_id: c013
       hotel_count: 4
@@ -653,7 +657,8 @@ concepts:
     description:
       vi: Một bối cảnh mang lại cảm giác kỳ diệu và huyền bí.
       en: A setting that provides a magical and enchanting experience.
-    status: approved
+    status: rejected
+    reject_reason: "Hạ khỏi core 2026-06-16: nhãn marketing 'kỳ diệu/huyền bí', không phải fact có/không lọc được. discovery chỉ 3 hotel."
     discovery:
       cluster_id: c014
       hotel_count: 3
@@ -779,7 +784,8 @@ concepts:
     description:
       vi: Một loại hình lưu trú mang lại cảm giác như ở nhà.
       en: A type of accommodation that provides a home-like experience.
-    status: approved
+    status: rejected
+    reject_reason: "Hạ khỏi core 2026-06-16: SAI FACET — đây là loại hình lưu trú, trùng OBJ_HOMESTAY; không phải setting/bối cảnh."
     discovery:
       cluster_id: c017
       hotel_count: 3

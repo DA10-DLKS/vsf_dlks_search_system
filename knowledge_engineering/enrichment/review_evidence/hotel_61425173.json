@@ -144,13 +144,22 @@
     "concept": "STYLE_QUIET",
     "sentiment": "positive",
     "span": "Yên tĩnh, thoải mái"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "Yên tĩnh, thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:26:52+00:00"
+  "created_at": "2026-06-11T16:26:52+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "740045827": {
   "review_id": 740045827,
@@ -365,7 +374,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:26:52+00:00"
+  "created_at": "2026-06-11T16:26:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "761919632": {
   "review_id": 761919632,
@@ -480,13 +492,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "The bed is really, really, really hard."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "I thought it would be quiet from the street and traffic (it was) but you can hear what goes on in the building"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:26:52+00:00"
+  "created_at": "2026-06-11T16:26:52+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "750748208": {
   "review_id": 750748208,
@@ -687,13 +707,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "phòng không cách âm, nằm nghe thấy rõ tiếng dép đi trên tầng, ngoài hành lang nói gì nằm trong cũng nghe thấy, phòng bên cạnh còn di chuyển bàn ghế gì đó lúc khuya nữa."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "phòng không cách âm, nằm nghe thấy rõ tiếng dép đi trên tầng, ngoài hành lang nói gì nằm trong cũng nghe thấy"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:26:54+00:00"
+  "created_at": "2026-06-11T16:26:54+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "954262227": {
   "review_id": 954262227,
@@ -1285,7 +1313,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:26:56+00:00"
+  "created_at": "2026-06-11T16:26:56+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1109960555": {
   "review_id": 1109960555,

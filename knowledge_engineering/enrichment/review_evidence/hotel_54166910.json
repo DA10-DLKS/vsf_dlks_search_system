@@ -364,13 +364,27 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Phòng ốc thì sơ sài, không có cách âm, rất ồn vào buổi sáng."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "khách đang nghỉ ngơi mà gõ cửa ầm ầm mấy lần để làm phiền, rất thiếu tế nhị"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Phòng ốc thì sơ sài, không có cách âm, rất ồn vào buổi sáng."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:09:46+00:00"
+  "created_at": "2026-06-11T16:09:46+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "971528283": {
   "review_id": 971528283,
@@ -723,12 +737,26 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "trong phòng tóc dài khá nhiều, lẫn trong khăn tắm và chăn."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "ồn không ngủ được"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Máy lạnh phòng có vẻ rất cũ, kêu rất to, cả đêm nghe tiếng máy lạnh kêu trong phòng nhỏ ồn không ngủ được luôn."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:09:46+00:00"
+  "created_at": "2026-06-11T16:09:46+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  }
 }

@@ -206,13 +206,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "the hotel is quiet and has everything you need."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "The hotel is quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:30:40+00:00"
+  "created_at": "2026-06-11T11:30:40+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1125997598": {
   "review_id": 1125997598,
@@ -614,7 +622,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:30:44+00:00"
+  "created_at": "2026-06-11T11:30:44+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "993912308": {
   "review_id": 993912308,
@@ -751,13 +762,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "nhân viên ko chuyên nghiệp"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "Phòng ốc rộng rãi thoải mái, thiết kế nhẹ nhàng trang nhã, giương nệm êm ái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:30:44+00:00"
+  "created_at": "2026-06-11T11:30:44+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "830610227": {
   "review_id": 830610227,

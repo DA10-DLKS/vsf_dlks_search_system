@@ -52,13 +52,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "However, please note that it is quite far from downtown."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly built"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:51+00:00"
+  "created_at": "2026-06-11T17:02:51+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1124198083": {
   "review_id": 1124198083,
@@ -70,13 +78,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "very attentive staff"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "new hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:51+00:00"
+  "created_at": "2026-06-11T17:02:51+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1104752938": {
   "review_id": 1104752938,
@@ -115,13 +131,28 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Breakfast exceeded expectations as well."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "the overall atmosphere of the resort was peaceful"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "perfect for a true relaxing vacation"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:51+00:00"
+  "created_at": "2026-06-11T17:02:51+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1109275128": {
   "review_id": 1109275128,
@@ -156,7 +187,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:51+00:00"
+  "created_at": "2026-06-11T17:02:51+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1066911798": {
   "review_id": 1066911798,
@@ -202,7 +236,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:51+00:00"
+  "created_at": "2026-06-11T17:02:51+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1124021954": {
   "review_id": 1124021954,
@@ -366,13 +403,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "The resort itself is great"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly opened"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:58+00:00"
+  "created_at": "2026-06-11T17:02:58+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1070927653": {
   "review_id": 1070927653,
@@ -488,6 +533,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "xe điện thì nhiều khi gọi cũng hơi lâu mới đến"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Phòng ốc tốt nhưng hành lang chưa đẹp chưa tương xứng đẳng cấp."
    }
   ],
   "novel": [
@@ -501,7 +551,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:58+00:00"
+  "created_at": "2026-06-11T17:02:58+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081062279": {
   "review_id": 1081062279,
@@ -663,13 +716,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Gối có mùi lông vịt, mình bị dị ứng với mùi lạ nên hơi khó ngủ xíu"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "hơi khó ngủ xíu"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:58+00:00"
+  "created_at": "2026-06-11T17:02:58+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1120908667": {
   "review_id": 1120908667,
@@ -686,13 +747,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "The staff members were friendly, and it was clean and pleasant"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "not someone fitting for a luxury resort."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:58+00:00"
+  "created_at": "2026-06-11T17:02:58+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1099874652": {
   "review_id": 1099874652,
@@ -844,13 +913,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "enjoyed breakfast without getting bored"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly built"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:58+00:00"
+  "created_at": "2026-06-11T17:02:58+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1067166327": {
   "review_id": 1067166327,
@@ -890,12 +967,20 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Each breakfast item had high quality"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "it was quiet in Cam Ranh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:58+00:00"
+  "created_at": "2026-06-11T17:02:58+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  }
 }

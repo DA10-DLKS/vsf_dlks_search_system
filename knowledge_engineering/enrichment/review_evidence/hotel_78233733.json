@@ -247,7 +247,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:20+00:00"
+  "created_at": "2026-06-11T17:02:20+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1126453383": {
   "review_id": 1126453383,
@@ -297,13 +300,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "ngay chợ đêm"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:20+00:00"
+  "created_at": "2026-06-11T17:02:20+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1072299938": {
   "review_id": 1072299938,

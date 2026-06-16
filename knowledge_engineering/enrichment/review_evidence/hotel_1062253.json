@@ -378,13 +378,27 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "Giá phòng đắt gấp 2–3 lần khách sạn bình thường, nhưng chất lượng phòng và dịch vụ thua xa nhiều khách sạn giá rẻ."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "khách bỏ tiền để nghỉ dưỡng chứ không phải để tự phục vụ mọi thứ."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "không xứng đáng với giá tiền và tiêu chuẩn 4 sao"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:35:51+00:00"
+  "created_at": "2026-06-11T08:35:51+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932906803": {
   "review_id": 932906803,
@@ -1156,13 +1170,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "khach san thu them phi ???"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "khách sạn thu thêm phí"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:35:53+00:00"
+  "created_at": "2026-06-11T08:35:53+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "949886352": {
   "review_id": 949886352,
@@ -1353,13 +1375,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "the hotel was having construction work and never told me about it."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "zero relaxation at this hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:35:54+00:00"
+  "created_at": "2026-06-11T08:35:54+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "658935344": {
   "review_id": 658935344,
@@ -1699,13 +1729,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "This hotel feels overpriced for what you actually get."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "especially if you expect a relaxing, true 4-star mountain hotel experience"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:35:54+00:00"
+  "created_at": "2026-06-11T08:35:54+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932906830": {
   "review_id": 932906830,
@@ -1778,13 +1816,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "the buffet, which was overly expensive, and the food was cold."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "not worth the money"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:35:54+00:00"
+  "created_at": "2026-06-11T08:35:54+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1010000754": {
   "review_id": 1010000754,
@@ -2277,13 +2323,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "they mention complimentary water on the website yet they charge ridiculously 52000 vnd for a single bottle of water."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "not a good experience - would rate it very poorly for anyone looking for a restful holiday"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:35:55+00:00"
+  "created_at": "2026-06-11T08:35:55+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "848970638": {
   "review_id": 848970638,
@@ -2428,13 +2482,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "Not worth the money."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "not worth the money"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:35:55+00:00"
+  "created_at": "2026-06-11T08:35:55+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "169855924": {
   "review_id": 169855924,
@@ -2678,7 +2740,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:35:56+00:00"
+  "created_at": "2026-06-11T08:35:56+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "830427381": {
   "review_id": 830427381,
@@ -3629,13 +3694,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Also be prepared to take your own luggage up in the cable car and pay for it."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "the inside of the rooms let’s it down"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:00+00:00"
+  "created_at": "2026-06-11T08:36:00+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932459629": {
   "review_id": 932459629,
@@ -4203,7 +4276,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:01+00:00"
+  "created_at": "2026-06-11T08:36:01+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1111676827": {
   "review_id": 1111676827,
@@ -4725,7 +4801,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:06+00:00"
+  "created_at": "2026-06-11T08:36:06+00:00",
+  "backfilled_versions": {
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+  }
  },
  "949886348": {
   "review_id": 949886348,
@@ -5403,13 +5482,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the staff were friendly and helped us navigate what to do during our stay."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "It is much quieter once all of the day visitors leave"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:10+00:00"
+  "created_at": "2026-06-11T08:36:10+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "768102289": {
   "review_id": 768102289,
@@ -6025,13 +6112,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the rooms lack proper sound insulation, which makes it easy to hear noise from neighboring rooms and the street outside."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "the rooms lack proper sound insulation, which makes it easy to hear noise from neighboring rooms and the street outside"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:13+00:00"
+  "created_at": "2026-06-11T08:36:13+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "141434498": {
   "review_id": 141434498,
@@ -6268,7 +6363,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:13+00:00"
+  "created_at": "2026-06-11T08:36:13+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081287587": {
   "review_id": 1081287587,
@@ -6322,7 +6420,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:13+00:00"
+  "created_at": "2026-06-11T08:36:13+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "971570135": {
   "review_id": 971570135,
@@ -6973,7 +7074,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:16+00:00"
+  "created_at": "2026-06-11T08:36:16+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "667608528": {
   "review_id": 667608528,
@@ -7089,7 +7193,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:16+00:00"
+  "created_at": "2026-06-11T08:36:16+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1038185113": {
   "review_id": 1038185113,
@@ -7412,13 +7519,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "the room was very small for the price I paid"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "the rooms are not quiet, we could hear everything from the hallway and the guests next door"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:18+00:00"
+  "created_at": "2026-06-11T08:36:18+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014721236": {
   "review_id": 1014721236,
@@ -7957,13 +8072,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "Not worth the price at all."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "expected true luxury but the service was poor"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:19+00:00"
+  "created_at": "2026-06-11T08:36:19+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1111676889": {
   "review_id": 1111676889,
@@ -8133,13 +8256,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Relatively Basic room for 4 star hotel."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Relatively Basic room for 4 star hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:19+00:00"
+  "created_at": "2026-06-11T08:36:19+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "908172352": {
   "review_id": 908172352,
@@ -8271,13 +8402,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "the breakfast buffet is overcrowded with people fighting over coffee mugs."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "the food- it's terrible"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:21+00:00"
+  "created_at": "2026-06-11T08:36:21+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "626449810": {
   "review_id": 626449810,
@@ -8312,13 +8451,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "The rooms are not quiet, we could hear everything from the hallway and the guests next door."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "The rooms are not quiet, we could hear everything from the hallway and the guests next door"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:21+00:00"
+  "created_at": "2026-06-11T08:36:21+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "244807216": {
   "review_id": 244807216,
@@ -8341,7 +8488,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T08:36:21+00:00"
+  "created_at": "2026-06-11T08:36:21+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "766683751": {
   "review_id": 766683751,

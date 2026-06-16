@@ -504,7 +504,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:30:59+00:00"
+  "created_at": "2026-06-11T11:30:59+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "684123621": {
   "review_id": 684123621,
@@ -786,13 +789,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Xung quanh hotel có nhiều quán cafe va ăn vặt."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "Hotel mới xây nên mọi thứ đều mới và tiện ích."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:30:59+00:00"
+  "created_at": "2026-06-11T11:30:59+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "798194478": {
   "review_id": 798194478,

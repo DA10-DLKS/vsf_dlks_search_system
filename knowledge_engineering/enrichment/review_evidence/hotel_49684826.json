@@ -150,7 +150,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:47:32+00:00"
+  "created_at": "2026-06-11T15:47:32+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1022322864": {
   "review_id": 1022322864,
@@ -221,7 +224,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:47:32+00:00"
+  "created_at": "2026-06-11T15:47:32+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "823807692": {
   "review_id": 823807692,
@@ -774,7 +780,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:47:47+00:00"
+  "created_at": "2026-06-11T15:47:47+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1003934294": {
   "review_id": 1003934294,
@@ -827,13 +836,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "the breakfast is monotonous and unappetizing, consisting of only one savory dish and iced tea, with no coffee or fruit juice included."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "clean and quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:47:47+00:00"
+  "created_at": "2026-06-11T15:47:47+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "770788836": {
   "review_id": 770788836,
@@ -901,13 +918,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Nearby had many cafes and eateries"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "clean and modern"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:47:47+00:00"
+  "created_at": "2026-06-11T15:47:47+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "773252211": {
   "review_id": 773252211,
@@ -1074,13 +1099,27 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Đường rộng, đậu xe thoải mái, yên tĩnh."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "yên tĩnh"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "yên tĩnh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:47:47+00:00"
+  "created_at": "2026-06-11T15:47:47+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932909188": {
   "review_id": 932909188,

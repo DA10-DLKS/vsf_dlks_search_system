@@ -116,13 +116,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "hotel is located at excellent location. Walking distance to every thing."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:25:20+00:00"
+  "created_at": "2026-06-11T09:25:20+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1123570115": {
   "review_id": 1123570115,
@@ -674,13 +682,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Staff: cheerful, take good care of customers."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modernly decorated compared to the District 3 branch"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:25:39+00:00"
+  "created_at": "2026-06-11T09:25:39+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1070971203": {
   "review_id": 1070971203,
@@ -874,7 +890,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:25:39+00:00"
+  "created_at": "2026-06-11T09:25:39+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1064335565": {
   "review_id": 1064335565,
@@ -1391,6 +1410,11 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "the breakfast is excellent"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "The hotel is modern and reasonably comfortable"
    }
   ],
   "novel": [
@@ -1404,7 +1428,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:25:39+00:00"
+  "created_at": "2026-06-11T09:25:39+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "955378914": {
   "review_id": 955378914,
@@ -1636,7 +1663,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:25:45+00:00"
+  "created_at": "2026-06-11T09:25:45+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1026789491": {
   "review_id": 1026789491,
@@ -1770,13 +1800,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "Phòng: phòng hạng Superior rộng, đồ dùng đầy đủ đặc biệt là những món mà mình thường chỉ thấy khách sạn 5 sao trang bị."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "những món mà mình thường chỉ thấy khách sạn 5 sao trang bị: bàn ủi, tăm bông, dây buộc tóc, kim chỉ, dép mang trong nhà loại dùng 1 lần, áo choàng tắm."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:25:45+00:00"
+  "created_at": "2026-06-11T09:25:45+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "848948576": {
   "review_id": 848948576,

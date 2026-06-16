@@ -95,13 +95,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the private space is quiet"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "the private space is quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:35:02+00:00"
+  "created_at": "2026-06-11T16:35:02+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "939351973": {
   "review_id": 939351973,

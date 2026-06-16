@@ -174,13 +174,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Petit déjeuner très moyen : plats chauds inexistants, pain rassis proposé deux jours de suite"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "moderne"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:23:16+00:00"
+  "created_at": "2026-06-11T11:23:16+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "973997906": {
   "review_id": 973997906,
@@ -266,13 +274,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "hat viel zu bieten"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "sehr modernes schönes Zimmer"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:23:16+00:00"
+  "created_at": "2026-06-11T11:23:16+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "823904498": {
   "review_id": 823904498,
@@ -318,7 +334,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:23:16+00:00"
+  "created_at": "2026-06-11T11:23:16+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "761936246": {
   "review_id": 761936246,
@@ -335,13 +354,22 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Nếu đồ ăn sang phong phú hơn nữa thì tốt"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "neutral",
+    "span": "phong cách trẻ trung và hiện đại"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:23:16+00:00"
+  "created_at": "2026-06-11T11:23:16+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "726736738": {
   "review_id": 726736738,
@@ -400,7 +428,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:23:16+00:00"
+  "created_at": "2026-06-11T11:23:16+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981694114": {
   "review_id": 981694114,
@@ -412,12 +443,20 @@
     "concept": "STYLE_LIVELY",
     "sentiment": "positive",
     "span": "Artistic, modern and lively"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Artistic, modern and lively"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:23:16+00:00"
+  "created_at": "2026-06-11T11:23:16+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  }
 }
