@@ -506,6 +506,19 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
         return p[0] if p else f"LOC_{country_slug(co)}"
 
     out = []
+    # Tập surface form (bản BỎ DẤU) của MỌI LOC concept (country/province/city/area). Dùng ở pha 5
+    # để CHẶN alias lõi của landmark nuốt tên một vùng/nơi: "sân bay quốc tế phú quốc" -> lõi "phú
+    # quốc" trùng LOC_PHU_QUOC -> query "phú quốc" lại ra sân bay (xem báo cáo bug tên-vùng-kéo-landmark).
+    # So bằng bản bỏ dấu vì alias landmark cũng index ở dạng đó; tên đầy đủ landmark KHÔNG bị chặn.
+    loc_surface_norms: set[str] = set()
+
+    def _register_loc_surfaces(*names: str) -> None:
+        for nm in names:
+            if not nm:
+                continue
+            for sf in surface_forms(nm):
+                loc_surface_norms.add(strip_diacritics(sf))
+
     out.append("# ontology/core/location.generated.yaml — TỰ SINH bởi build_locations.py (Lớp A).")
     out.append("# KHÔNG sửa tay. Nguồn: data/cleaned/*.json (field country/city/area). PHẠM VI: Việt Nam.")
     out.append("# Cây: country > province > city > area. Landmark (LMK_*) cũng sinh ở đây.")
@@ -522,6 +535,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
     for co, n in sorted(country_n.items(), key=lambda x: (-x[1], x[0])):
         cid = reg.resolve("country", co, f"LOC_{country_slug(co)}")
         label_en = COUNTRY_LABEL_EN.get(co, co)
+        _register_loc_surfaces(co)
         out.append(concept_block(cid, "country", co, label_en, None,
                                  surface_forms(co), f"{co} ({n} hotel trong corpus)"))
         out.append("")
@@ -538,6 +552,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
         out.append("  # ===== PROVINCE (kind: place) — TÁCH tự động từ 'City (Tỉnh)' trong data =====")
         for pid, (plabel, co) in sorted(used_provinces.items()):
             rid = reg.resolve("place", plabel, pid)
+            _register_loc_surfaces(plabel)
             out.append(concept_block(rid, "place", plabel, plabel, f"LOC_{country_slug(co)}",
                                      surface_forms(plabel), f"Tỉnh {plabel}, {co}"))
             out.append("")
@@ -556,6 +571,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
         sf = surface_forms(cc)
         for ex in ov.get("extra", []):                    # thêm cách gõ trần (bỏ tiền tố Đảo/Biển)
             sf += [s for s in surface_forms(ex) if s not in sf]
+        _register_loc_surfaces(cc, *ov.get("extra", []))
         out.append(concept_block(cid, "place", cc, cc, city_parent(co, ci),
                                  sf, f"{cc}, {co} ({n} hotel)", related=ov.get("related")))
         out.append("")
@@ -573,6 +589,7 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
             proposed = f"{parent}__{slug(ar)}"   # area id = <city_id>__<area_slug> tránh trùng toàn cục
             related = None
         cid = reg.resolve("area", ar, proposed, context=parent)   # context=city -> area trùng tên khác city không gộp
+        _register_loc_surfaces(ar)
         out.append(concept_block(cid, "area", ar, ar, parent,
                                  surface_forms(ar), f"{ar} (thuộc {ci}, {co}; {n} hotel)", related=related))
         out.append("")
@@ -626,9 +643,14 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
         if ltype == "airport":
             loc_in = None
         label = clean_text(nm)
-        # alias lõi (bỏ tiền tố loại) — chỉ thêm nếu KHÔNG nhập nhằng với landmark khác.
+        # alias lõi (bỏ tiền tố loại) — chỉ thêm nếu KHÔNG nhập nhằng với landmark khác (PASS 1) VÀ
+        # KHÔNG nuốt tên một LOC (city/tỉnh/area). Lõi "phú quốc" (<- "sân bay quốc tế phú quốc") trùng
+        # LOC_PHU_QUOC -> nếu thêm, query "phú quốc" lại ra sân bay. Tên ĐẦY ĐỦ landmark vẫn tra được.
         short = _shorten_landmark(to_nfc(nm).lower().strip())
-        extra = [short] if short and strip_diacritics(short) not in _ambiguous_short else []
+        short_norm = strip_diacritics(short) if short else None
+        extra = [short] if (
+            short and short_norm not in _ambiguous_short and short_norm not in loc_surface_norms
+        ) else []
         out.append(landmark_block(cid, label, loc_in, ltype, surface_forms(nm, extra),
                                   f"{label} ({n} hotel có trong nearby)"))
         out.append("")
