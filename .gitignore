@@ -54,10 +54,7 @@ indexing/**/*.index
 embeddings/
 
 # ===== Vector store / search engine local volumes =====
-qdrant_storage/
-opensearch_data/
 elasticsearch_data/
-.docker_volumes/
 
 # ===== Crawler runtime artifacts =====
 .scrapy/
