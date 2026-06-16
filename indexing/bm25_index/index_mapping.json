@@ -265,6 +265,26 @@
                         "type": "half_float"
                     }
                 }
+            },
+            "ontology_concepts": {
+                "type": "keyword"
+            },
+            "strong_feel_concepts": {
+                "type": "keyword"
+            },
+            "location_concept": {
+                "type": "keyword"
+            },
+            "nearby_landmarks": {
+                "type": "nested",
+                "properties": {
+                    "concept": {
+                        "type": "keyword"
+                    },
+                    "distance_km": {
+                        "type": "double"
+                    }
+                }
             }
         }
     }

@@ -82,6 +82,7 @@ def load_ke_labels(ko_json: str = KO_JSON_DEFAULT) -> dict[int, dict[str, Any]]:
         if hid is None:
             continue
         sm = obj.get("semantic_metadata") or {}
+        loc = obj.get("location") or {}
         labels[hid] = {
             "ontology_concepts": _flat_concepts(obj),
             "strong_feel_concepts": _strong_feel_concepts(obj),
@@ -90,6 +91,9 @@ def load_ke_labels(ko_json: str = KO_JSON_DEFAULT) -> dict[int, dict[str, Any]]:
             "range_filters": obj.get("range_filters") or {},
             "nearby_landmarks": obj.get("nearby_landmarks") or [],
             "location_concept": sm.get("location"),
+            "city": loc.get("city"),
+            "province": loc.get("province"),
+            "title": obj.get("title"),
         }
     return labels
 

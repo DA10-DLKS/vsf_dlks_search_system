@@ -71,6 +71,47 @@ class BM25SearchService:
             },
         }
 
+    def search_for_fusion(
+        self,
+        query: str,
+        size: int | None = None,
+        candidate_hotel_ids: list[int] | None = None,
+    ) -> dict[str, Any]:
+        """BM25 search cho Node 7 fusion: output shape ĐỒNG NHẤT với vector service
+        (hotel_id/text/metadata/score/source="bm25"), lọc theo candidate hotel_ids.
+
+        Khác search() (per-hotel doc dùng cho API baseline) — bản này hợp nhất với vector.
+        """
+        limit = size or self.default_size
+        bool_query: dict[str, Any] = {
+            "must": [{"multi_match": {"query": query, "fields": self.search_fields, "fuzziness": "AUTO"}}],
+        }
+        if candidate_hotel_ids:
+            bool_query["filter"] = [{"terms": {"id": list(candidate_hotel_ids)}}]
+        body = {
+            "size": limit,
+            "track_total_hits": False,
+            "_source": self.source_fields + ["ontology_concepts", "description"],
+            "query": {"bool": bool_query},
+        }
+        response = self.client.search(index=self.index_name, body=body)
+        hits = response.get("hits", {}).get("hits", [])
+        return {
+            "query": query,
+            "results": [
+                {
+                    "chunk_id": f"bm25_hotel_{h.get('_source', {}).get('id')}",
+                    "hotel_id": h.get("_source", {}).get("id"),
+                    "text": h.get("_source", {}).get("description") or h.get("_source", {}).get("name") or "",
+                    "source_type": "hotel",
+                    "metadata": h.get("_source", {}),
+                    "score": h.get("_score"),
+                    "source": "bm25",
+                }
+                for h in hits
+            ],
+        }
+
     @staticmethod
     def _map_hit(hit: dict[str, Any]) -> dict[str, Any]:
         source = hit.get("_source", {})
