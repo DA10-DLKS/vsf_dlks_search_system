@@ -255,9 +255,28 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
     # SETTING bổ sung TỪ LOCATION (suy từ data: hotel ở Nha Trang -> COASTAL...). Gộp với
     # setting đã có từ view_types (tag). Khử trùng. -> COASTAL/ISLAND/CITY_CENTER không còn "chết".
     from knowledge_engineering.common.normalize import normalize
-    city = (meta.get("location") or {}).get("city") or ""
+    loc = meta.get("location") or {}
+    city = loc.get("city") or ""
     extra_setting = loc_setting.get(normalize(city, fold=True), [])
-    sm["setting"] = sorted(set(sm.get("setting", [])) | set(extra_setting))
+    setting_set = set(sm.get("setting", [])) | set(extra_setting)
+
+    # SETTING suy PER-HOTEL (không qua city — trong 1 city có hotel trung tâm, có hotel ngoại ô):
+    #   - SETTING_VIEW: hotel có CẢNH để nhìn -> "tầm nhìn". Nguồn = sea view (amenity) HOẶC
+    #     setting cảnh quan đã suy (núi/ven sông hồ). KHÔNG chỉ biển: Đà Lạt không có biển nhưng
+    #     hotel đều view núi/thung lũng -> phải tính, nếu không "view ở Đà Lạt" ra 0 (hard filter).
+    #     Nguồn = tín hiệu đã gắn, không gõ tay.
+    #   - SETTING_CITY_CENTER: area/district/address của HOTEL chứa "trung tâm/nội thành/phố cổ".
+    #     Đây là tín hiệu vị trí THẬT của từng hotel, khác co-occurrence theo city.
+    _view_src = {"SETTING_MOUNTAIN", "SETTING_RIVERSIDE", "SETTING_COASTAL"}
+    if "AMEN_SEA_VIEW" in set(sm.get("amenity", [])) or (_view_src & setting_set):
+        setting_set.add("SETTING_VIEW")
+    _loc_blob = normalize(
+        " ".join(str(loc.get(k) or "") for k in ("area", "district", "address")), fold=True
+    )
+    if any(w in _loc_blob for w in ("trung tam", "noi thanh", "pho co", "pho di bo")):
+        setting_set.add("SETTING_CITY_CENTER")
+
+    sm["setting"] = sorted(setting_set)
 
     # price_tier (one) từ metadata reconcile (Bước 3), KHÔNG từ tag
     sm["price_tier"] = meta.get("price_tier")
