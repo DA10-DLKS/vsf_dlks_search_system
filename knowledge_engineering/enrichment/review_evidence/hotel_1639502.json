@@ -181,6 +181,11 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "they have added restaurants since I was there last as well as upgrading their facilities"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxury, design, comfort, personalised service"
    }
   ],
   "novel": [
@@ -194,7 +199,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "628184858": {
   "review_id": 628184858,
@@ -241,13 +249,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "Super expensive, for that price I was expecting much more."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Super expensive, for that price I was expecting much more"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "555003028": {
   "review_id": 555003028,
@@ -591,13 +607,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Food is outstanding"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "Pure relaxation with great views."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "653440075": {
   "review_id": 653440075,
@@ -632,13 +656,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "Spacious, clean and pure luxury"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "pure luxury"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "492419387": {
   "review_id": 492419387,
@@ -695,13 +727,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "great food"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "most premium luxurious stays"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1117683611": {
   "review_id": 1117683611,
@@ -983,13 +1023,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "the beautifully designed room (oh my, the interior!)"
+   },
+   {
+    "concept": "STYLE_ROMANTIC",
+    "sentiment": "positive",
+    "span": "honeymoon"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+  }
  },
  "988709847": {
   "review_id": 988709847,
@@ -1016,13 +1064,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Die nähe zu Hoi An ist auch toll und trotzdem ist es sehr ruhig im Resort."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "trotzdem ist es sehr ruhig im Resort"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "914429909": {
   "review_id": 914429909,
@@ -1044,13 +1100,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "sauna and steam room along with their gym facilities."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "makes the evening really relaxing after an excursion or just to finish the day off."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1124247434": {
   "review_id": 1124247434,
@@ -1106,7 +1170,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1099600597": {
   "review_id": 1099600597,
@@ -1202,13 +1269,22 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "the resort seems really luxurious and optimized for relaxation."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "really luxurious"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "949893581": {
   "review_id": 949893581,
@@ -1361,13 +1437,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "the resort is superb"
+   },
+   {
+    "concept": "STYLE_ROMANTIC",
+    "sentiment": "positive",
+    "span": "honeymoon"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+  }
  },
  "748993152": {
   "review_id": 748993152,
@@ -1442,6 +1526,11 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "The room was spacious, clean and beautifully decorated"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxurious, comfortable and unforgettable stay"
    }
   ],
   "novel": [
@@ -1455,7 +1544,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1004615376": {
   "review_id": 1004615376,
@@ -1477,13 +1569,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "the design is Japanese and well done, with great rustic colors"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "it’s peaceful, tranquil and you have enough distance to other guests for privacy"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "684993130": {
   "review_id": 684993130,
@@ -1649,6 +1749,16 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "Spa is just amazing"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "Luxury hotel with high standards"
+   },
+   {
+    "concept": "STYLE_ROMANTIC",
+    "sentiment": "positive",
+    "span": "honeymoon"
    }
   ],
   "novel": [
@@ -1662,7 +1772,11 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:40:06+00:00"
+  "created_at": "2026-06-11T09:40:06+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+  }
  },
  "927062339": {
   "review_id": 927062339,

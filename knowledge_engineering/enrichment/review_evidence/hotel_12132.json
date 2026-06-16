@@ -692,6 +692,11 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "having to pay S$635 for two nights is ridiculous."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "there are so many luxurious hotels nearby at about nearly half the price"
    }
   ],
   "novel": [
@@ -705,7 +710,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T04:58:48+00:00"
+  "created_at": "2026-06-11T04:58:48+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "740091855": {
   "review_id": 740091855,
@@ -949,13 +957,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "The staff are very helpful, kind and always look out for the best for the guests."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "I dont think I will ever experience a luxurious room like Sheraton Saigon ever again"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T04:58:43+00:00"
+  "created_at": "2026-06-11T04:58:43+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "7238204": {
   "review_id": 7238204,
@@ -1046,13 +1062,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Excellent service. Staff was very courteous."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "Breakfast was luxurious"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T04:58:45+00:00"
+  "created_at": "2026-06-11T04:58:45+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "5102518": {
   "review_id": 5102518,
@@ -1220,13 +1244,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "I felt that the breakfast was a bit unsatisfactory."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "the breakfast was a bit unsatisfactory"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T04:58:45+00:00"
+  "created_at": "2026-06-11T04:58:45+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1078402973": {
   "review_id": 1078402973,
@@ -1672,13 +1704,27 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "excellent restaurants @ food selection"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern hotel"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "Very luxurious & modern hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T04:58:44+00:00"
+  "created_at": "2026-06-11T04:58:44+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1005299821": {
   "review_id": 1005299821,
@@ -1695,13 +1741,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "the room was also newly renovated"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly renovated"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T04:58:44+00:00"
+  "created_at": "2026-06-11T04:58:44+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "909002343": {
   "review_id": 909002343,

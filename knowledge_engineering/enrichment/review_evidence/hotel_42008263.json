@@ -205,13 +205,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "It is within walking distance to Vinhome Tran Duy Hung, taking about 15 minutes."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet surroundings"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:13:58+00:00"
+  "created_at": "2026-06-11T15:13:58+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "823506537": {
   "review_id": 823506537,

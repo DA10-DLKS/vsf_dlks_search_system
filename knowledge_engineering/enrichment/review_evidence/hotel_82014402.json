@@ -57,13 +57,22 @@
     "concept": "STYLE_QUIET",
     "sentiment": "positive",
     "span": "the neighborhood is quiet and peaceful"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "Everything is brand new"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:30+00:00"
+  "created_at": "2026-06-11T17:03:30+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1062791600": {
   "review_id": 1062791600,
@@ -154,13 +163,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "Slightly further away from everything in general"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Quiet area"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:45+00:00"
+  "created_at": "2026-06-11T17:03:45+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1069806905": {
   "review_id": 1069806905,
@@ -274,13 +291,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "The location is about a 30‑minute walk from the city center"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "the neighborhood itself is quiet and peaceful"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:45+00:00"
+  "created_at": "2026-06-11T17:03:45+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1057253772": {
   "review_id": 1057253772,
@@ -315,13 +340,27 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "There are problems with hot water"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "it's very inconvenient"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "the house feels like a brand new building"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:45+00:00"
+  "created_at": "2026-06-11T17:03:45+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1022222861": {
   "review_id": 1022222861,
@@ -344,7 +383,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:45+00:00"
+  "created_at": "2026-06-11T17:03:45+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1082357206": {
   "review_id": 1082357206,
@@ -874,13 +916,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Visi darbuotojai buvo mandagūs, paslaugūs ir rūpestingi."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modernus ir stilingas"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1059341692": {
   "review_id": 1059341692,
@@ -920,13 +970,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "pàrnàk nekünk tùl ducik voltak nên kicsit kényelmetlenek voltak az alvàshoz."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "ùj modern letisztult berendezés"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1062577797": {
   "review_id": 1062577797,
@@ -948,13 +1006,27 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "the entrance to the building is always blocked by scooters."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "there is very little quiet or comfort throughout the day"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern clean renovation"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1075735857": {
   "review_id": 1075735857,
@@ -994,13 +1066,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "Dogs barking all day long."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "Dogs barking all day long"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1117632499": {
   "review_id": 1117632499,
@@ -1061,7 +1141,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014378187": {
   "review_id": 1014378187,
@@ -1088,13 +1171,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "I personally loved that the property is located at a quieter, more suburban part of town."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "located at a quieter, more suburban part of town"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1111632918": {
   "review_id": 1111632918,
@@ -1121,13 +1212,27 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "The location was nice, not very noisy."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "very clean and modern, newly built rooms"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly built rooms"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1099875417": {
   "review_id": 1099875417,
@@ -1365,13 +1470,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the location was solid, close to the monkey mountain and not far from the Beach."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly built or renovated"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1045019886": {
   "review_id": 1045019886,
@@ -1383,13 +1496,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "Peaceful and cozy room."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Peaceful and cozy room"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1045019902": {
   "review_id": 1045019902,
@@ -1406,13 +1527,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Staff were helpful as well."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "The property is clean and quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1045019912": {
   "review_id": 1045019912,
@@ -1441,13 +1570,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "excellent bathroom, brand new automatic washing machine, a fully equipped kitchen."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "brand new automatic washing machine"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1038138139": {
   "review_id": 1038138139,
@@ -1530,12 +1667,26 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "it's a quiet area."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "it's a quiet area"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "the apartment is virtually brand new"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:52+00:00"
+  "created_at": "2026-06-11T17:03:52+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  }
 }

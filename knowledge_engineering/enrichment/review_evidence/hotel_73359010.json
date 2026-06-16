@@ -269,7 +269,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:56:24+00:00"
+  "created_at": "2026-06-11T16:56:24+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "973366277": {
   "review_id": 973366277,
@@ -368,13 +371,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "close to the beach, only 5 minutes walking"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "space for eating and relaxing"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:56:24+00:00"
+  "created_at": "2026-06-11T16:56:24+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "949852089": {
   "review_id": 949852089,
@@ -530,7 +541,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:56:24+00:00"
+  "created_at": "2026-06-11T16:56:24+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1045239861": {
   "review_id": 1045239861,
@@ -570,13 +584,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "phòng rất sang và view đẹp"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "phòng rất sang"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:56:24+00:00"
+  "created_at": "2026-06-11T16:56:24+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1021843279": {
   "review_id": 1021843279,
@@ -662,12 +684,20 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the apartment needs some maintenance"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "the apartment was quiet with no noise issues"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:56:24+00:00"
+  "created_at": "2026-06-11T16:56:24+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  }
 }

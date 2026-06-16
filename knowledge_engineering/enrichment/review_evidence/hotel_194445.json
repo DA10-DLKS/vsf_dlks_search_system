@@ -672,7 +672,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:34+00:00"
+  "created_at": "2026-06-11T07:00:34+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "783651487": {
   "review_id": 783651487,
@@ -788,6 +791,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "The staff is friendly and helpful"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet and inexpensive room"
    }
   ],
   "novel": [
@@ -801,7 +809,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:34+00:00"
+  "created_at": "2026-06-11T07:00:34+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "816081707": {
   "review_id": 816081707,
@@ -878,7 +889,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:34+00:00"
+  "created_at": "2026-06-11T07:00:34+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1062500768": {
   "review_id": 1062500768,
@@ -1068,13 +1082,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "we also noticed a few small bugs in the room"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "it can get a bit noisy until around 11 PM due to a nearby bar, but it quiets down afterward"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:33+00:00"
+  "created_at": "2026-06-11T07:00:33+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1098505439": {
   "review_id": 1098505439,
@@ -1160,13 +1182,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Room is quiet small"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Room is quiet small"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:33+00:00"
+  "created_at": "2026-06-11T07:00:33+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "914767804": {
   "review_id": 914767804,
@@ -1714,13 +1744,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "Good value for money as long as you don't expect luxury"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "don't expect luxury"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:35+00:00"
+  "created_at": "2026-06-11T07:00:35+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1050093825": {
   "review_id": 1050093825,
@@ -1742,13 +1780,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the only advantage is its location in the old city center"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "the image of a luxurious reception desk does not match reality"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:35+00:00"
+  "created_at": "2026-06-11T07:00:35+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1003188242": {
   "review_id": 1003188242,
@@ -2306,13 +2352,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "mixed",
     "span": "Staff was rude at the begining but later was vẻry kind."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "negative",
+    "span": "other new hotel with the same price"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:34+00:00"
+  "created_at": "2026-06-11T07:00:34+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "103128962": {
   "review_id": 103128962,
@@ -3278,7 +3332,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:38+00:00"
+  "created_at": "2026-06-11T07:00:38+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1111676032": {
   "review_id": 1111676032,
@@ -3867,13 +3924,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Some rooms also lack basic amenities like a hairdryer and an exhaust fan in the bathroom."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "it can get a bit noisy until around 11 PM due to a nearby bar, but it quiets down afterward"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:40+00:00"
+  "created_at": "2026-06-11T07:00:40+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1080924345": {
   "review_id": 1080924345,
@@ -4232,13 +4297,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "The female staff who checked us in was friendly and speaks good English."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "a quiet double room"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:42+00:00"
+  "created_at": "2026-06-11T07:00:42+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "117961541": {
   "review_id": 117961541,
@@ -5175,7 +5248,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:00:42+00:00"
+  "created_at": "2026-06-11T07:00:42+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "732745133": {
   "review_id": 732745133,

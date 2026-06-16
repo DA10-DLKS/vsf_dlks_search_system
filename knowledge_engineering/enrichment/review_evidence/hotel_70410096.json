@@ -234,7 +234,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:27+00:00"
+  "created_at": "2026-06-11T16:52:27+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081086418": {
   "review_id": 1081086418,
@@ -394,6 +397,11 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Very accessible location"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "making our stay relaxing"
    }
   ],
   "novel": [
@@ -407,7 +415,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:32+00:00"
+  "created_at": "2026-06-11T16:52:32+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981678206": {
   "review_id": 981678206,
@@ -684,13 +695,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Colazione terribile: la peggiore di sempre"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Hotel nuovo, pulito e moderno."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:32+00:00"
+  "created_at": "2026-06-11T16:52:32+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1103267859": {
   "review_id": 1103267859,
@@ -720,13 +739,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "bagno troppo stretto e con scarsa aspirazione"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "negative",
+    "span": "Struttura centrale, moderna e pulita."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:32+00:00"
+  "created_at": "2026-06-11T16:52:32+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1077534328": {
   "review_id": 1077534328,
@@ -850,13 +877,27 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "mixed",
     "span": "Aamupala on ihan ok tasoa näin Vietnamin tasoon verrattuna."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "huone on muutenkin erittäin moderni."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "huone on muutenkin erittäin moderni"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:37+00:00"
+  "created_at": "2026-06-11T16:52:37+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1105036891": {
   "review_id": 1105036891,
@@ -1062,13 +1103,22 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "mixed",
     "span": "Phòng rất sạch, tuy nhiên khá chật"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "khách sạn hiện đại sạch sẽ"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:37+00:00"
+  "created_at": "2026-06-11T16:52:37+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081086391": {
   "review_id": 1081086391,
@@ -1106,7 +1156,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:37+00:00"
+  "created_at": "2026-06-11T16:52:37+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "939362183": {
   "review_id": 939362183,
@@ -1124,7 +1177,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:37+00:00"
+  "created_at": "2026-06-11T16:52:37+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1057270133": {
   "review_id": 1057270133,
@@ -1165,7 +1221,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:37+00:00"
+  "created_at": "2026-06-11T16:52:37+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "996493816": {
   "review_id": 996493816,
@@ -1343,7 +1402,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:38+00:00"
+  "created_at": "2026-06-11T16:52:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081086463": {
   "review_id": 1081086463,
@@ -1541,6 +1603,11 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "spacious shower and very good breakfast."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Very modernl and well maintained."
    }
   ],
   "novel": [
@@ -1554,7 +1621,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:38+00:00"
+  "created_at": "2026-06-11T16:52:38+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1044915256": {
   "review_id": 1044915256,
@@ -1612,13 +1682,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "mixed",
     "span": "Breakfast buffet is good but there isn’t a great variety of food."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "Room is modern but quite small compared to other hotels available in Danang."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:38+00:00"
+  "created_at": "2026-06-11T16:52:38+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981678203": {
   "review_id": 981678203,
@@ -1673,13 +1751,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "The WiFi here is too weak to work."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly furnished"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:52:38+00:00"
+  "created_at": "2026-06-11T16:52:38+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981678204": {
   "review_id": 981678204,

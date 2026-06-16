@@ -114,7 +114,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:18:48+00:00"
+  "created_at": "2026-06-11T15:18:48+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "715382012": {
   "review_id": 715382012,
@@ -597,7 +600,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:18:58+00:00"
+  "created_at": "2026-06-11T15:18:58+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1124055467": {
   "review_id": 1124055467,
@@ -1246,7 +1252,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:00+00:00"
+  "created_at": "2026-06-11T15:19:00+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1003785179": {
   "review_id": 1003785179,
@@ -1318,7 +1327,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:00+00:00"
+  "created_at": "2026-06-11T15:19:00+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1112979665": {
   "review_id": 1112979665,
@@ -1523,7 +1535,11 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:04+00:00"
+  "created_at": "2026-06-11T15:19:04+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1077393985": {
   "review_id": 1077393985,
@@ -1929,6 +1945,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the staff is friendly"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "Very suitable for relaxation"
    }
   ],
   "novel": [
@@ -1942,7 +1963,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:06+00:00"
+  "created_at": "2026-06-11T15:19:06+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "771287521": {
   "review_id": 771287521,
@@ -2061,13 +2085,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "luxurious comfort, especially at an affordable price"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxurious comfort"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:06+00:00"
+  "created_at": "2026-06-11T15:19:06+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1083827540": {
   "review_id": 1083827540,
@@ -2454,13 +2486,27 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "price is reasonable compared to the quality"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "a great choice for a relaxing vacation in Quy Nhơn"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern, fully equipped"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:08+00:00"
+  "created_at": "2026-06-11T15:19:08+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "915699685": {
   "review_id": 915699685,
@@ -2482,13 +2528,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "service here is very professional and friendly"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "fully equipped with modern amenities"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:08+00:00"
+  "created_at": "2026-06-11T15:19:08+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "913784481": {
   "review_id": 913784481,
@@ -2515,6 +2569,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "Amenities such as the pool, gym, and restaurant are all of high quality"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "a relaxing, luxurious, and convenient place"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern, fully equipped"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxurious, and convenient place"
    }
   ],
   "novel": [
@@ -2528,7 +2597,12 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:08+00:00"
+  "created_at": "2026-06-11T15:19:08+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "913675839": {
   "review_id": 913675839,
@@ -2583,13 +2657,27 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "service at FLC Sea Tower is very professional and friendly"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "designed modernly"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "luxurious vacation space"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:08+00:00"
+  "created_at": "2026-06-11T15:19:08+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "908577291": {
   "review_id": 908577291,
@@ -2710,13 +2798,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "ducted split ac was very quiet and cold"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "ducted split ac was very quiet and cold"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:08+00:00"
+  "created_at": "2026-06-11T15:19:08+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "810440351": {
   "review_id": 810440351,
@@ -3424,13 +3520,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "Communication is lacking, had to contact owners several time regarding instructions for late check in."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "negative",
+    "span": "built as modern but Furniture is subpar"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:12+00:00"
+  "created_at": "2026-06-11T15:19:12+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "987937208": {
   "review_id": 987937208,
@@ -3540,7 +3644,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:19:12+00:00"
+  "created_at": "2026-06-11T15:19:12+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014177363": {
   "review_id": 1014177363,

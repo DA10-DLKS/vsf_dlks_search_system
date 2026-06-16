@@ -217,12 +217,46 @@ def country_slug(co: str) -> str:
     return COUNTRY_SLUG.get(co) or slug(co)
 
 
-def surface_forms(name: str) -> list[str]:
+# Tiền tố LOẠI ĐỊA ĐIỂM generic ở đầu tên landmark. Người dùng thường gõ phần LÕI tên (tên
+# riêng/thương hiệu) chứ không gõ cả cụm loại: "sun world hạ long" thay vì "khu vui chơi giải
+# trí sun world hạ long". Bỏ tiền tố này -> sinh alias lõi. Sắp dài-trước để khớp cụm dài nhất
+# ("khu vui chơi giải trí" trước "khu"). KHÔNG bỏ nếu phần còn lại rỗng (tên = đúng cụm loại).
+_LMK_GENERIC_PREFIX = sorted([
+    "khu vui chơi giải trí", "khu du lịch sinh thái", "quần thể di tích", "khu di tích",
+    "khu vui chơi", "khu du lịch", "công viên nước", "sân bay quốc tế",
+    "công viên", "sân bay", "bảo tàng", "bãi biển", "bãi tắm", "vườn quốc gia",
+    "nhà thờ", "nhà hát", "tượng đài", "bến cảng", "khu", "trung tâm",
+    "vườn", "hồ", "núi", "đảo", "hòn", "chùa", "đền", "đình", "dinh", "làng",
+    "phố", "đường", "cầu", "thác", "động", "suối", "cảng", "bến", "marina",
+], key=lambda s: -len(s.split()))
+
+
+def _shorten_landmark(base: str) -> str | None:
+    """Bỏ tiền tố loại generic ở đầu tên landmark -> alias lõi (đã lower, có dấu). None nếu không bỏ.
+
+    base: tên đã to_nfc().lower().strip(). Chỉ bỏ khi PHẦN CÒN LẠI có >=2 TỪ. Lõi 1 âm tiết cực
+    rủi ro sau khi bỏ dấu (đồng âm khác thanh, xem [[vietnamese-fold-homograph-trap]]): "Núi Sam"
+    -> "sam" khớp "Sầm Sơn"; "Phố Cổ"->"cổ", "Hồ nước"->"nước" khớp tràn lan trong câu bất kỳ.
+    Tên 1 từ vốn cần gõ cả cụm loại để định danh -> alias rút gọn 1 từ chỉ tổ nhiễu, không lợi.
+    Khử trùng giữa các landmark làm Ở NGOÀI (xem caller).
+    """
+    for g in _LMK_GENERIC_PREFIX:
+        if base.startswith(g + " "):
+            rest = base[len(g):].strip()
+            if rest and len(rest.split()) >= 2:
+                return rest
+    return None
+
+
+def surface_forms(name: str, extra: list[str] | None = None) -> list[str]:
     """Các cách gõ địa danh: tên gốc + bản rút gọn (bỏ '(...)' / phần sau '/') + bản không dấu.
 
     Tên Agoda hay kèm tỉnh/bang trong ngoặc ("Quy Nhơn (Bình Định)", "Anaheim (CA)") hoặc ghép
     bằng '/' ("Hua Hin / Cha-am"). Người dùng gõ phần chính ("quy nhon", "anaheim", "hua hin")
     -> sinh thêm các biến thể đó để synonym khớp.
+
+    extra: alias bổ sung (vd lõi tên landmark sau khi bỏ tiền tố loại, ĐÃ khử trùng ở caller). Mỗi
+    alias sinh kèm bản không dấu + bản viết liền (tên Tây "sun world" -> "sunworld").
     """
     base = to_nfc(name).lower().strip()
     variants = {base}
@@ -234,6 +268,12 @@ def surface_forms(name: str) -> list[str]:
             part = re.sub(r"\s*\(.*?\)\s*", " ", part).strip()
             if part:
                 variants.add(part)
+    for a in extra or []:
+        a = a.strip()
+        if a:
+            variants.add(a)
+            if " " in a:                                      # "sun world" -> "sunworld" (gõ liền)
+                variants.add(a.replace(" ", ""))
     out = set()
     for v in variants:
         out.add(v)
@@ -548,6 +588,16 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
         ((nm, c) for nm, c in lmk_hotels.items() if c >= _lmk_min_hotels(lmk_type[nm])),
         key=lambda x: (-x[1], x[0]),
     )
+    # PASS 1: đếm alias rút gọn (lõi tên, đã bỏ tiền tố loại + bỏ dấu) qua MỌI landmark. Alias nào
+    # đụng >=2 landmark khác nhau (vd "rach gia" <- Sân bay & Bến cảng Rạch Giá) là NHẬP NHẰNG ->
+    # loại khỏi tất cả; tên đầy đủ vẫn tra được. Khử ở đây vì surface_forms() xử lý từng LMK độc lập.
+    _short_count: Counter = Counter()
+    for nm, _ in lmk_list:
+        s = _shorten_landmark(to_nfc(nm).lower().strip())
+        if s:
+            _short_count[strip_diacritics(s)] += 1
+    _ambiguous_short = {k for k, c in _short_count.items() if c > 1}
+
     for nm, n in lmk_list:
         low = to_nfc(nm).lower().strip()
         # located_in = city có NHIỀU hotel chứa landmark nhất. #4: tie-break TẤT ĐỊNH khi bằng điểm
@@ -576,7 +626,10 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
         if ltype == "airport":
             loc_in = None
         label = clean_text(nm)
-        out.append(landmark_block(cid, label, loc_in, ltype, surface_forms(nm),
+        # alias lõi (bỏ tiền tố loại) — chỉ thêm nếu KHÔNG nhập nhằng với landmark khác.
+        short = _shorten_landmark(to_nfc(nm).lower().strip())
+        extra = [short] if short and strip_diacritics(short) not in _ambiguous_short else []
+        out.append(landmark_block(cid, label, loc_in, ltype, surface_forms(nm, extra),
                                   f"{label} ({n} hotel có trong nearby)"))
         out.append("")
 

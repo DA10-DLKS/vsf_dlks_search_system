@@ -469,29 +469,42 @@ def backfill_concepts(hotel_id: int, new_ids: list[str], max_workers: int = DEFA
     if not todo:
         return 0
 
-    def _work(rid):
-        text = _review_text(reviews[rid])
-        if len(text) < MIN_REVIEW_CHARS:
-            return rid, []
-        res = analyze_review(text, system=system, allowed=allowed, want_novel=False)
-        return rid, res["items"]
+    # BATCH như ABSA chính: gộp BATCH_SIZE review/request thay vì 1 call/review. Cùng prompt
+    # backfill (system rút gọn) -> giảm số request ~BATCH_SIZE lần, rẻ hơn nhiều mà KẾT QUẢ TỪNG
+    # review giữ nguyên (analyze_reviews_batch đi qua _clean_result -> giống analyze_review đơn).
+    # Review quá ngắn -> bỏ (không đáng gọi); LLM trả thiếu idx -> review đó không sửa, lần sau resume.
+    todo = [rid for rid in todo if len(_review_text(reviews[rid])) >= MIN_REVIEW_CHARS]
+    if not todo:
+        _save_evidence(hotel_id, store)
+        return 0
+    chunks = [todo[i:i + BATCH_SIZE] for i in range(0, len(todo), BATCH_SIZE)]
+
+    def _work(chunk):
+        texts = [_review_text(reviews[rid]) for rid in chunk]
+        res_map = analyze_reviews_batch(texts, system=system, allowed=allowed, want_novel=False)
+        out = []
+        for i, rid in enumerate(chunk):
+            if i in res_map:
+                out.append((rid, res_map[i]["items"]))
+        return out
 
     changed = 0
     lock = threading.Lock()
     try:
         with ThreadPoolExecutor(max_workers=max_workers) as ex:
-            for fut in as_completed({ex.submit(_work, rid): rid for rid in todo}):
-                rid, new_items = fut.result()
+            for fut in as_completed({ex.submit(_work, ch): ch for ch in chunks}):
+                batch_out = fut.result()
                 with lock:
-                    e = store[rid]
-                    have = {it["concept"] for it in e.get("items", [])}
-                    added = [it for it in new_items if it["concept"] not in have]
-                    if added:
-                        e.setdefault("items", []).extend(added)
-                        changed += 1
-                    done = e.setdefault("backfilled_versions", {})
-                    for cid in allowed:
-                        done[cid] = bf_ver   # đánh dấu đã xét version này (kể cả rỗng)
+                    for rid, new_items in batch_out:
+                        e = store[rid]
+                        have = {it["concept"] for it in e.get("items", [])}
+                        added = [it for it in new_items if it["concept"] not in have]
+                        if added:
+                            e.setdefault("items", []).extend(added)
+                            changed += 1
+                        done = e.setdefault("backfilled_versions", {})
+                        for cid in allowed:
+                            done[cid] = bf_ver   # đánh dấu đã xét version này (kể cả rỗng)
     finally:
         _save_evidence(hotel_id, store)
     return changed

@@ -359,6 +359,11 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the location was convenient for everything I needed"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "the overall atmosphere it made my stay relaxing and enjoyable"
    }
   ],
   "novel": [
@@ -372,7 +377,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:59:43+00:00"
+  "created_at": "2026-06-11T14:59:43+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "988941625": {
   "review_id": 988941625,
@@ -395,7 +403,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:59:43+00:00"
+  "created_at": "2026-06-11T14:59:43+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932403335": {
   "review_id": 932403335,
@@ -537,13 +548,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the view of the sea is really nice"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "The hotel is luxurious and beautiful"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:59:43+00:00"
+  "created_at": "2026-06-11T14:59:43+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "782107900": {
   "review_id": 782107900,
@@ -680,13 +699,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Tv did not work, my father's room had a mini fridge that didn't work, aircons that would make big shaking noises randomly."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "Very very loud, thin walls, you can hear the elevator go up and down, the ding of it hitting every floor. The main road has lots of traffic which was quieter than the hotel itself."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:59:55+00:00"
+  "created_at": "2026-06-11T14:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "960196025": {
   "review_id": 960196025,
@@ -902,7 +929,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:59:55+00:00"
+  "created_at": "2026-06-11T14:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1050456355": {
   "review_id": 1050456355,
@@ -1042,7 +1072,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:59:55+00:00"
+  "created_at": "2026-06-11T14:59:55+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1102810110": {
   "review_id": 1102810110,

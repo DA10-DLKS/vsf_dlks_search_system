@@ -100,13 +100,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "inte värt pengarna"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "inte värt pengarna"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:00:17+00:00"
+  "created_at": "2026-06-11T17:00:17+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1021681829": {
   "review_id": 1021681829,
@@ -804,13 +812,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "not far from beach, gives you panorama view of the new urbanize area of Tuy Hoa city."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly built condotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:00:29+00:00"
+  "created_at": "2026-06-11T17:00:29+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1114463270": {
   "review_id": 1114463270,
@@ -904,13 +920,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "positive",
     "span": "surrounding area has clean restaurants and coffee shops."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "relaxing after a long trip"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:00:29+00:00"
+  "created_at": "2026-06-11T17:00:29+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1064358443": {
   "review_id": 1064358443,

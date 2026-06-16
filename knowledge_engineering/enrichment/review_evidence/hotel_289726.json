@@ -417,13 +417,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "Vệ sinh phòng ko đạt chuẩn, túi hoa quả của khách trước còn nguyên trong tủ lạnh, bụi và rác còn nguyên ở các góc phòng."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Vệ sinh phòng ko đạt chuẩn, túi hoa quả của khách trước còn nguyên trong tủ lạnh, bụi và rác còn nguyên ở các góc phòng."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:08:09+00:00"
+  "created_at": "2026-06-11T07:08:09+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "712408343": {
   "review_id": 712408343,

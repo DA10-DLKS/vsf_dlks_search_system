@@ -20,7 +20,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:59:20+00:00"
+  "created_at": "2026-06-11T16:59:20+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081077636": {
   "review_id": 1081077636,
@@ -52,13 +55,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "Location was not in the center, you will need a Grab or 40mins walk to go there"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Quiet and clean overall."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:59:20+00:00"
+  "created_at": "2026-06-11T16:59:20+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1000364706": {
   "review_id": 1000364706,
@@ -232,6 +243,11 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "vị trí khách sạn thuận tiện cho việc di chuyển"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "không gian hiện đại"
    }
   ],
   "novel": [
@@ -245,7 +261,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:59:20+00:00"
+  "created_at": "2026-06-11T16:59:20+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981667825": {
   "review_id": 981667825,

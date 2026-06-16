@@ -15,7 +15,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:38+00:00"
+  "created_at": "2026-06-11T09:50:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "798212855": {
   "review_id": 798212855,
@@ -50,13 +53,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "Very bad customer service experienced."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "negative",
+    "span": "newly arrived guests"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:38+00:00"
+  "created_at": "2026-06-11T09:50:38+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1111671541": {
   "review_id": 1111671541,
@@ -160,7 +171,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:38+00:00"
+  "created_at": "2026-06-11T09:50:38+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1018863157": {
   "review_id": 1018863157,
@@ -405,13 +419,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Phòng thiết kế không có nổi một cái cửa sổ"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Rất tiếc không thể ờ view biển, mất đi trai nghiệm ca đời. Phòng thiết kế không có nổi một cái cửa sổ dù nhìn ra thành phố, thật là đáng tiếc"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:38+00:00"
+  "created_at": "2026-06-11T09:50:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "119227259": {
   "review_id": 119227259,
@@ -943,13 +965,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "very large but grubby and crowded"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Never 5* and certainly not luxury."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:41+00:00"
+  "created_at": "2026-06-11T09:50:41+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "782327389": {
   "review_id": 782327389,
@@ -1089,13 +1119,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the swimming pool is colds and empty and very ugly."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "This hotel thinks it is a luxury hotel but the staff is very incompetent and impolite."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:41+00:00"
+  "created_at": "2026-06-11T09:50:41+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "903268762": {
   "review_id": 903268762,
@@ -1199,13 +1237,27 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "room service was abysmal."
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "If you're expecting a relaxing, comfortable stay, look elsewhere."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "I booked in what I thought would be a “luxurious” experience as the name of the hotel implied. It was far from that."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:41+00:00"
+  "created_at": "2026-06-11T09:50:41+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "927049090": {
   "review_id": 927049090,
@@ -1250,13 +1302,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "it was very disappointing stay to me and my family."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "It was very disappointing stay to me and my family."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:41+00:00"
+  "created_at": "2026-06-11T09:50:41+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "702174937": {
   "review_id": 702174937,
@@ -1565,13 +1625,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "海景房 一點都不luxury，早餐很難吃"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "一點都不luxury"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:41+00:00"
+  "created_at": "2026-06-11T09:50:41+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "929702524": {
   "review_id": 929702524,
@@ -2035,13 +2103,27 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Der Service im Restaurant ist aufmerksam und freundlich."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "eine beeindruckende Kombination aus modernem Komfort"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "Das Muong Thanh Luxury Da Nang Hotel bietet eine beeindruckende Kombination aus modernem Komfort und traditioneller vietnamesischer Gastfreundschaft."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:43+00:00"
+  "created_at": "2026-06-11T09:50:43+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "120793140": {
   "review_id": 120793140,
@@ -2255,13 +2337,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "they do not want you running the lights or air conditioning when you’re not in the room"
+   },
+   {
+    "concept": "STYLE_ROMANTIC",
+    "sentiment": "negative",
+    "span": "the room is dated, burn holes in carpet/couch"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:44+00:00"
+  "created_at": "2026-06-11T09:50:44+00:00",
+  "backfilled_versions": {
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+  }
  },
  "676851691": {
   "review_id": 676851691,
@@ -2311,13 +2401,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "most menu items were unavailable"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Despite its “Luxury” branding, Mường Thanh Luxury Đà Nẵng is a fading property that nickel-and-dimes guests while offering few of the basics expected from a 5-star hotel."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:44+00:00"
+  "created_at": "2026-06-11T09:50:44+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981703891": {
   "review_id": 981703891,
@@ -2381,7 +2479,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:44+00:00"
+  "created_at": "2026-06-11T09:50:44+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1018506566": {
   "review_id": 1018506566,
@@ -2450,7 +2551,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:44+00:00"
+  "created_at": "2026-06-11T09:50:44+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "984633961": {
   "review_id": 984633961,
@@ -3173,13 +3277,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the shower in our room is poorly designed."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "That is not luxury, that is cheap nickel and dime approach."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:46+00:00"
+  "created_at": "2026-06-11T09:50:46+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1102799387": {
   "review_id": 1102799387,
@@ -3341,7 +3453,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:46+00:00"
+  "created_at": "2026-06-11T09:50:46+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981703901": {
   "review_id": 981703901,
@@ -3872,6 +3987,11 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "the hotel is accross the street from one of the loudest beach bars"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "I booked in what I thought would be a “luxurious” experience as the name of the hotel implied. It was far from that."
    }
   ],
   "novel": [
@@ -3885,7 +4005,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:47+00:00"
+  "created_at": "2026-06-11T09:50:47+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081156655": {
   "review_id": 1081156655,
@@ -4096,13 +4219,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the pool and bar area ungemütlich, ohne Auflagen auf den Sitz- und Liegestühlen"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Der Anspruch an ein 5* Hotel wird in keinster Weise erfüllt."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:47+00:00"
+  "created_at": "2026-06-11T09:50:47+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1069730925": {
   "review_id": 1069730925,
@@ -4592,7 +4723,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:49+00:00"
+  "created_at": "2026-06-11T09:50:49+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1114184688": {
   "review_id": 1114184688,
@@ -4665,13 +4799,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "the food quality and selection were below average."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "we cannot honestly recommend this hotel to others."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:49+00:00"
+  "created_at": "2026-06-11T09:50:49+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "676851674": {
   "review_id": 676851674,
@@ -4704,7 +4846,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:49+00:00"
+  "created_at": "2026-06-11T09:50:49+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "676851687": {
   "review_id": 676851687,
@@ -4867,7 +5012,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:50+00:00"
+  "created_at": "2026-06-11T09:50:50+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "908994229": {
   "review_id": 908994229,
@@ -4989,13 +5137,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "breakfast is a joke."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "This hotel has a local reputation for being really nice and luxurious but my guess is that reputation was built a long time ago."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:50+00:00"
+  "created_at": "2026-06-11T09:50:50+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1070976711": {
   "review_id": 1070976711,
@@ -5040,13 +5196,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "breakfast reflected the 2 star rating."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "A luxury Hotel that has no drinking glasses in the rooms."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:50+00:00"
+  "created_at": "2026-06-11T09:50:50+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1067232070": {
   "review_id": 1067232070,
@@ -5127,13 +5291,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Breakfast taste just normal as 3 star hotel."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Anyway,\"Moung Thang Luxury Hotel-Da Nang\" only location near Da Nang Beach is well,but you can have other far better choice."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:50+00:00"
+  "created_at": "2026-06-11T09:50:50+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1031971431": {
   "review_id": 1031971431,
@@ -5298,7 +5470,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:52+00:00"
+  "created_at": "2026-06-11T09:50:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "251104869": {
   "review_id": 251104869,
@@ -5325,13 +5500,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "definitely not a luxury hotel"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "definitely not a luxury hotel."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:52+00:00"
+  "created_at": "2026-06-11T09:50:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1124234625": {
   "review_id": 1124234625,
@@ -5446,7 +5629,11 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:52+00:00"
+  "created_at": "2026-06-11T09:50:52+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1119932321": {
   "review_id": 1119932321,
@@ -5624,7 +5811,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:52+00:00"
+  "created_at": "2026-06-11T09:50:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1078794548": {
   "review_id": 1078794548,
@@ -5685,7 +5875,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:52+00:00"
+  "created_at": "2026-06-11T09:50:52+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1063931881": {
   "review_id": 1063931881,
@@ -5749,7 +5942,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:57+00:00"
+  "created_at": "2026-06-11T09:50:57+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1075789447": {
   "review_id": 1075789447,
@@ -5892,7 +6088,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:50:57+00:00"
+  "created_at": "2026-06-11T09:50:57+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932943662": {
   "review_id": 932943662,
@@ -7080,13 +7279,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "the massage rooms were extremely hot. Not very relaxing atmosphere"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "Not very relaxing atmosphere"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:51:07+00:00"
+  "created_at": "2026-06-11T09:51:07+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1120882001": {
   "review_id": 1120882001,
@@ -7448,13 +7655,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "the breakfast is the worst"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "the inner room is quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:51:07+00:00"
+  "created_at": "2026-06-11T09:51:07+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "684142653": {
   "review_id": 684142653,
@@ -7499,13 +7714,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Swimming pool area needs some maintenance and clean"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "Breakfast quality was not good for a 5-star standard."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:51:07+00:00"
+  "created_at": "2026-06-11T09:51:07+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "662592288": {
   "review_id": 662592288,
@@ -7949,13 +8172,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "the breakfast was way too crowded and we chose to not elbow our way through the masses."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "it was in no way the feeling of luxury and care that the name of the hotwl suggests."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:51:07+00:00"
+  "created_at": "2026-06-11T09:51:07+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "245280257": {
   "review_id": 245280257,
@@ -8019,7 +8250,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:51:07+00:00"
+  "created_at": "2026-06-11T09:51:07+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "893786503": {
   "review_id": 893786503,

@@ -91,7 +91,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:21+00:00"
+  "created_at": "2026-06-11T15:02:21+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "838198434": {
   "review_id": 838198434,
@@ -276,6 +279,11 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "the whole area of Sam Son is suited to Vietnamese nationals to come on holiday."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "you WON'T get any peace and quiet...maybe between 2am-4am!!!!"
    }
   ],
   "novel": [
@@ -289,7 +297,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:44+00:00"
+  "created_at": "2026-06-11T15:02:44+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1114432332": {
   "review_id": 1114432332,
@@ -540,6 +551,11 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "The room is tidy, clean, and the mattress is comfortable."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "the second floor may not be suitable for those who prefer peace and quiet."
    }
   ],
   "novel": [
@@ -553,7 +569,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:44+00:00"
+  "created_at": "2026-06-11T15:02:44+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "798094863": {
   "review_id": 798094863,
@@ -711,7 +730,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:46+00:00"
+  "created_at": "2026-06-11T15:02:46+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "823686606": {
   "review_id": 823686606,
@@ -816,7 +838,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:46+00:00"
+  "created_at": "2026-06-11T15:02:46+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "870007174": {
   "review_id": 870007174,
@@ -867,7 +892,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:46+00:00"
+  "created_at": "2026-06-11T15:02:46+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "873361591": {
   "review_id": 873361591,
@@ -908,7 +936,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:46+00:00"
+  "created_at": "2026-06-11T15:02:46+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "981361277": {
   "review_id": 981361277,
@@ -920,13 +951,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "the night staff had a bad attitude toward customers"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "I came for relaxation, not torture, yet the neighboring room played loud music with the door aimed directly at my room while singing."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:46+00:00"
+  "created_at": "2026-06-11T15:02:46+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "803867926": {
   "review_id": 803867926,
@@ -985,7 +1024,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:46+00:00"
+  "created_at": "2026-06-11T15:02:46+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "848799469": {
   "review_id": 848799469,
@@ -1053,12 +1095,20 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "The location of the accommodation is a bit far from the main beach."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly built"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:46+00:00"
+  "created_at": "2026-06-11T15:02:46+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  }
 }

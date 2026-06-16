@@ -181,7 +181,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:38+00:00"
+  "created_at": "2026-06-11T10:38:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "502922031": {
   "review_id": 502922031,
@@ -268,7 +271,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:38+00:00"
+  "created_at": "2026-06-11T10:38:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1065027487": {
   "review_id": 1065027487,
@@ -400,7 +406,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:38+00:00"
+  "created_at": "2026-06-11T10:38:38+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "523544795": {
   "review_id": 523544795,
@@ -742,7 +751,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:41+00:00"
+  "created_at": "2026-06-11T10:38:41+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "662588854": {
   "review_id": 662588854,
@@ -1500,13 +1512,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Toilet phòng khách xuống cấp,ko thoát nước đc"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "không thoát nước đc"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:41+00:00"
+  "created_at": "2026-06-11T10:38:41+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "712566341": {
   "review_id": 712566341,
@@ -1548,13 +1568,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Vệ sinh chưa đảm bảo theo tiêu chuẩn của Ks cao cấp"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "chưa đảm bảo theo tiêu chuẩn của Ks cao cấp"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:41+00:00"
+  "created_at": "2026-06-11T10:38:41+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "494662460": {
   "review_id": 494662460,
@@ -1629,13 +1657,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "Dẻ lau trong tủ bếp ko sạch trắng"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "Mát mẻ dễ chịu"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:41+00:00"
+  "created_at": "2026-06-11T10:38:41+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "693395084": {
   "review_id": 693395084,
@@ -2057,13 +2093,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "good service"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "New hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:41+00:00"
+  "created_at": "2026-06-11T10:38:41+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1084501546": {
   "review_id": 1084501546,
@@ -2162,13 +2206,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "it's a bit inconvenient to always have to carry the room card to swipe everywhere."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "New hotel"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:41+00:00"
+  "created_at": "2026-06-11T10:38:41+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "644616646": {
   "review_id": 644616646,
@@ -2719,7 +2771,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:42+00:00"
+  "created_at": "2026-06-11T10:38:42+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "283425154": {
   "review_id": 283425154,
@@ -3036,13 +3091,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Everything is good."
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "a lot of new hotel now"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:43+00:00"
+  "created_at": "2026-06-11T10:38:43+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932683512": {
   "review_id": 932683512,
@@ -3266,13 +3329,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "There are plenty of nice food around and very close to AEON shopping mall."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet place somewhere outside of Ho Chi Minh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:43+00:00"
+  "created_at": "2026-06-11T10:38:43+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "819946711": {
   "review_id": 819946711,
@@ -3366,13 +3437,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "friendly and attentive front desk service."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet, convenient transportation location"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:43+00:00"
+  "created_at": "2026-06-11T10:38:43+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "751943410": {
   "review_id": 751943410,
@@ -3696,7 +3775,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:38:46+00:00"
+  "created_at": "2026-06-11T10:38:46+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1058398977": {
   "review_id": 1058398977,

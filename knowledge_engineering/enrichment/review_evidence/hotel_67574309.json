@@ -63,7 +63,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:47:38+00:00"
+  "created_at": "2026-06-11T16:47:38+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "939402219": {
   "review_id": 939402219,
@@ -188,7 +191,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:47:53+00:00"
+  "created_at": "2026-06-11T16:47:53+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1037310990": {
   "review_id": 1037310990,
@@ -640,7 +646,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:47:54+00:00"
+  "created_at": "2026-06-11T16:47:54+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "755289502": {
   "review_id": 755289502,
@@ -685,13 +694,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "negative",
     "span": "Giá phòng hơi cao so với mặt bằng chung"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:47:54+00:00"
+  "created_at": "2026-06-11T16:47:54+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932924897": {
   "review_id": 932924897,
@@ -777,13 +794,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Chỗ để xe oto nhỏ"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "khách sạn mới xây đẹp"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:47:54+00:00"
+  "created_at": "2026-06-11T16:47:54+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "712547788": {
   "review_id": 712547788,
@@ -801,7 +826,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:47:54+00:00"
+  "created_at": "2026-06-11T16:47:54+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "676816976": {
   "review_id": 676816976,

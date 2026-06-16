@@ -142,13 +142,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Close to harbour."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:43:45+00:00"
+  "created_at": "2026-06-11T14:43:45+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "754515998": {
   "review_id": 754515998,

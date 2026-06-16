@@ -70,13 +70,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "gan trung tam tien di lai"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "Khach san moi xay dung"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:16:32+00:00"
+  "created_at": "2026-06-11T10:16:32+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "810519194": {
   "review_id": 810519194,
@@ -259,13 +267,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "giường ngủ êm"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Không gian yên tĩnh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:16:32+00:00"
+  "created_at": "2026-06-11T10:16:32+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "172083016": {
   "review_id": 172083016,
@@ -300,13 +316,27 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "khu vực an ninh và yên tĩnh"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "yên tĩnh"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "rất thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:16:32+00:00"
+  "created_at": "2026-06-11T10:16:32+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "227364447": {
   "review_id": 227364447,
@@ -472,7 +502,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:16:32+00:00"
+  "created_at": "2026-06-11T10:16:32+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "256663837": {
   "review_id": 256663837,

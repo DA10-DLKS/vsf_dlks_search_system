@@ -111,6 +111,11 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "newly remodeled"
+   },
+   {
+    "concept": "STYLE_NEW",
+    "sentiment": "positive",
+    "span": "newly remodeled"
    }
   ],
   "novel": [
@@ -124,7 +129,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:45:47+00:00"
+  "created_at": "2026-06-11T16:45:47+00:00",
+  "backfilled_versions": {
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+  }
  },
  "750748685": {
   "review_id": 750748685,
@@ -193,7 +201,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:03+00:00"
+  "created_at": "2026-06-11T16:46:03+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "745335772": {
   "review_id": 745335772,
@@ -766,13 +777,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "positive",
     "span": "tout était parfait"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "le calme franchement parfait"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:03+00:00"
+  "created_at": "2026-06-11T16:46:03+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1070951579": {
   "review_id": 1070951579,
@@ -812,13 +831,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Le staff était très serviable"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Hôtel calme et propre"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:03+00:00"
+  "created_at": "2026-06-11T16:46:03+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1062599247": {
   "review_id": 1062599247,
@@ -1305,13 +1332,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "personnels hyper gentils."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "très calme"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:05+00:00"
+  "created_at": "2026-06-11T16:46:05+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "879844983": {
   "review_id": 879844983,
@@ -1333,13 +1368,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Le personnel est très gentil et serviable."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Hôtel excentré mais calme"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:05+00:00"
+  "created_at": "2026-06-11T16:46:05+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "830765763": {
   "review_id": 830765763,
@@ -1548,7 +1591,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:05+00:00"
+  "created_at": "2026-06-11T16:46:05+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1004576446": {
   "review_id": 1004576446,
@@ -1619,13 +1665,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "positive",
     "span": "Chỗ nghỉ sạch sẽ, thoải mái"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:05+00:00"
+  "created_at": "2026-06-11T16:46:05+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "961108018": {
   "review_id": 961108018,
@@ -1952,7 +2006,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:05+00:00"
+  "created_at": "2026-06-11T16:46:05+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1093812407": {
   "review_id": 1093812407,
@@ -3123,13 +3180,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "Le service de lavage des vêtements, très moyen, linge livré humide et froissé."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "relativement calme la nuit"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:07+00:00"
+  "created_at": "2026-06-11T16:46:07+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1022242568": {
   "review_id": 1022242568,
@@ -3208,7 +3273,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:07+00:00"
+  "created_at": "2026-06-11T16:46:07+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1066332353": {
   "review_id": 1066332353,
@@ -3418,13 +3486,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "Emplacement éloigné du centre ville, attention car pas de grab."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Endroit calme"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:09+00:00"
+  "created_at": "2026-06-11T16:46:09+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "994131501": {
   "review_id": 994131501,
@@ -3579,13 +3655,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "Phòng rất ok thoải mái sạch sẽ"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "thoải mái sạch sẽ"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:09+00:00"
+  "created_at": "2026-06-11T16:46:09+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "908967702": {
   "review_id": 908967702,
@@ -3979,13 +4063,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "mixed",
     "span": "Little far from downtown, but ok with a motorbike"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:10+00:00"
+  "created_at": "2026-06-11T16:46:10+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "953912654": {
   "review_id": 953912654,
@@ -4264,7 +4356,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:10+00:00"
+  "created_at": "2026-06-11T16:46:10+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "921064146": {
   "review_id": 921064146,
@@ -4291,13 +4386,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Didn't like the trash can for toilet paper in the bathroom, it looked cheap and out of place."
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "positive",
+    "span": "pretty comfortable and fancy-looking"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:10+00:00"
+  "created_at": "2026-06-11T16:46:10+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1005042121": {
   "review_id": 1005042121,
@@ -4617,13 +4720,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "le seul défaut est la situation géographique, un peu loin du centre"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "un véritable hôtel moderne"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:13+00:00"
+  "created_at": "2026-06-11T16:46:13+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "932923103": {
   "review_id": 932923103,
@@ -4849,13 +4960,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Le personnel est très accueillant et vous aide pour organiser le séjour."
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "au calme"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:13+00:00"
+  "created_at": "2026-06-11T16:46:13+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "908967712": {
   "review_id": 908967712,
@@ -5211,7 +5330,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:14+00:00"
+  "created_at": "2026-06-11T16:46:14+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "927020040": {
   "review_id": 927020040,
@@ -5246,13 +5368,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "Mình có nói nhân viên báo lại với chủ nhà nghĩ liên hệ để giải quyết về việc thu thêm tiền phòng nhưng vẫn ko thấy bên nhà nghĩ giải quyết."
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "negative",
+    "span": "tiện nghi hiện đại"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:14+00:00"
+  "created_at": "2026-06-11T16:46:14+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "776929298": {
   "review_id": 776929298,
@@ -5316,7 +5446,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:14+00:00"
+  "created_at": "2026-06-11T16:46:14+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1070951587": {
   "review_id": 1070951587,
@@ -5339,7 +5472,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:46:14+00:00"
+  "created_at": "2026-06-11T16:46:14+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1059355667": {
   "review_id": 1059355667,

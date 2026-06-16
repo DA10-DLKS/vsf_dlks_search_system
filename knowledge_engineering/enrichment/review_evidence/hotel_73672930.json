@@ -186,13 +186,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "Guku is the good option with good value/ price, quiet and fresh air"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:56:42+00:00"
+  "created_at": "2026-06-11T16:56:42+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1049572016": {
   "review_id": 1049572016,

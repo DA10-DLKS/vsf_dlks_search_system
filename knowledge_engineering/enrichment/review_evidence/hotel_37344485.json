@@ -126,13 +126,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "room facing the lake is quite romantic"
+   },
+   {
+    "concept": "STYLE_ROMANTIC",
+    "sentiment": "positive",
+    "span": "room facing the lake is quite romantic"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:57:16+00:00"
+  "created_at": "2026-06-11T14:57:16+00:00",
+  "backfilled_versions": {
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1059356822": {
   "review_id": 1059356822,
@@ -149,6 +157,16 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "phòng ẩm"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "negative",
+    "span": "không hề yên tĩnh"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "negative",
+    "span": "không hề yên tĩnh"
    }
   ],
   "novel": [
@@ -162,7 +180,11 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:57:16+00:00"
+  "created_at": "2026-06-11T14:57:16+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1105049556": {
   "review_id": 1105049556,
@@ -202,13 +224,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Cô chú hỗ trợ nhiệt tình"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:57:16+00:00"
+  "created_at": "2026-06-11T14:57:16+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1022244557": {
   "review_id": 1022244557,
@@ -355,13 +385,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "couldn’t get in touch with the staff"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "very picturesque and quiet at night"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:57:16+00:00"
+  "created_at": "2026-06-11T14:57:16+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1081108698": {
   "review_id": 1081108698,
@@ -416,13 +454,27 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "The hotel manager was very approachable via WhatsApp"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "Quiet location and quiet room"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "positive",
+    "span": "modern TV"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:57:16+00:00"
+  "created_at": "2026-06-11T14:57:16+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1004578823": {
   "review_id": 1004578823,
@@ -439,12 +491,20 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "very nice location, quiet but near the center"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "quiet but near the center"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:57:16+00:00"
+  "created_at": "2026-06-11T14:57:16+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  }
 }

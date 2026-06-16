@@ -76,6 +76,12 @@ _objs = json.load(open(OBJ_JSON, encoding="utf-8"))
 _syn = yaml.safe_load(open(SYN_YAML, encoding="utf-8"))["synonyms"]
 _loc_concepts = yaml.safe_load(open(LOC_YAML, encoding="utf-8"))["concepts"]
 
+# Cửa sổ n-gram lớn nhất khi tra surface form. Nhiều địa danh/bảo tàng có TÊN DÀI
+# ("khu vui chơi giải trí sun world hạ long" = 8 từ, "quần thể di tích..." = 10 từ).
+# Nếu cố định max=4 thì 300+ surface form ≥5 từ KHÔNG BAO GIỜ khớp -> mất concept (vd
+# LMK_*). Lấy theo key dài nhất thực tế trong dictionary để tự đúng khi dictionary lớn lên.
+_MAX_GRAM = max((len(k.split()) for k in _syn), default=4)
+
 
 # ---------------------------------------------------------------------------
 # Parse câu hỏi -> concept + range + location
@@ -94,15 +100,40 @@ def parse_concepts(q: str) -> tuple[list[str], dict[str, str]]:
     norm = normalize(q)
     normf = normalize(q, fold=True)
     found: set[str] = set()
+    # Thu THÊM span (vị trí token) của mỗi match để xử lý xung đột "tên riêng đè thuộc tính chung":
+    # cụm "gần núi" sinh SETTING_MOUNTAIN nhưng nếu nó NẰM TRONG cụm "gần núi trường lệ" (= LMK),
+    # thì người dùng đang nói TÊN RIÊNG, không phải setting -> bỏ setting. So span theo token-index
+    # TRONG CÙNG một text (norm vs fold tách token khác nhau, không so chéo được).
+    # Một SETTING_* CHỈ bị bỏ nếu trong MỌI text nó xuất hiện đều bị một LMK_* phủ (giữ khi có
+    # cách hiểu setting độc lập ở đâu đó). Gom theo từng text rồi giao kết quả.
+    setting_covered: set[str] | None = None    # giao dần: setting bị phủ ở mọi text đã xét
     for text in (norm, normf):
         toks = text.split()
-        for n in (4, 3, 2, 1):
+        text_matches: list[tuple[str, int, int]] = []   # (concept, start_tok, end_tok)
+        for n in range(_MAX_GRAM, 0, -1):
             for i in range(len(toks) - n + 1):
                 gram = " ".join(toks[i:i + n])
                 if len(gram) < 3:
                     continue
                 if gram in _syn:
-                    found.update(_syn[gram])
+                    cs = _syn[gram]
+                    found.update(cs)
+                    for c in cs:
+                        text_matches.append((c, i, i + n))
+        # XUNG ĐỘT SPAN (cùng text): SETTING_* coi như "bị phủ" nếu MỌI lần nó khớp đều GIAO span một
+        # LMK_*. Tín hiệu là token địa hình ("núi") bị DÙNG CHUNG: "gần núi"[5:7] giao "núi trường
+        # lệ"[6:8] ở token "núi" -> đó là tên riêng landmark, không phải setting -> bỏ setting. Dùng
+        # GIAO (không đòi lồng kín) vì giới từ "gần/view" của setting luôn lòi ra ngoài span LMK.
+        lmk_spans = [(s, e) for c, s, e in text_matches if c.startswith("LMK_")]
+        settings = {c for c, _, _ in text_matches if c.startswith("SETTING_")}
+        covered = {
+            c for c in settings
+            if all(any(s < le and ls < e for ls, le in lmk_spans)
+                   for cc, s, e in text_matches if cc == c)
+        }
+        setting_covered = covered if setting_covered is None else (setting_covered & covered)
+    for c in setting_covered or set():
+        found.discard(c)
     implicit = parse_implicit_intent(q)
     found.update(implicit)
     # NGỮ CẢNH "ngân sách": "budget/ngân sách" + một SỐ TIỀN ("budget 10 triệu") là khai báo

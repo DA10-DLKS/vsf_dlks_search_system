@@ -192,13 +192,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the facilities are a bit older and showing their age"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "negative",
+    "span": "not a modern place"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:19+00:00"
+  "created_at": "2026-06-11T17:03:19+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1062575324": {
   "review_id": 1062575324,
@@ -563,13 +571,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "vệ sinh kém, muỗi rất nhiều"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "trãi nghiệm rất tệ khi nhận được phòng, hình ảnh trên app là những gì có thể chấp nhận được khi book phòng thực tế thì mọi thứ gần như hư, kể cả nhà vệ sinh cũng hư, nước yếu, giường xếp kê tạm, vệ si"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:19+00:00"
+  "created_at": "2026-06-11T17:03:19+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1045019195": {
   "review_id": 1045019195,
@@ -604,13 +620,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Nhân viên hỗ trợ rất nhiệt tình, rất dễ chịu khi ở đây"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "rất dễ chịu khi ở đây"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:20+00:00"
+  "created_at": "2026-06-11T17:03:20+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1036935622": {
   "review_id": 1036935622,
@@ -1102,7 +1126,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:20+00:00"
+  "created_at": "2026-06-11T17:03:20+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1065473873": {
   "review_id": 1065473873,
@@ -1315,13 +1342,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the location is perfect"
+   },
+   {
+    "concept": "STYLE_MODERN",
+    "sentiment": "negative",
+    "span": "not a modern place"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:20+00:00"
+  "created_at": "2026-06-11T17:03:20+00:00",
+  "backfilled_versions": {
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1059562933": {
   "review_id": 1059562933,
@@ -1506,7 +1541,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:20+00:00"
+  "created_at": "2026-06-11T17:03:20+00:00",
+  "backfilled_versions": {
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1070052042": {
   "review_id": 1070052042,
@@ -2429,7 +2467,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:20+00:00"
+  "created_at": "2026-06-11T17:03:20+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1111631481": {
   "review_id": 1111631481,
@@ -2591,13 +2632,22 @@
     "concept": "STYLE_QUIET",
     "sentiment": "negative",
     "span": "điểm trừ duy nhất là ks nằm trên khu phố Tây có nhiều quán bar mở nhạc suốt đêm đến tận 3h sáng"
+   },
+   {
+    "concept": "STYLE_LUXURY",
+    "sentiment": "negative",
+    "span": "điểm trừ duy nhất là ks nằm trên khu phố Tây có nhiều quán bar mở nhạc suốt đêm đến tận 3h sáng."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:20+00:00"
+  "created_at": "2026-06-11T17:03:20+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1014376373": {
   "review_id": 1014376373,
@@ -3027,13 +3077,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Nhân viên nhiệt tình dễ chịu"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "dễ chịu"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:22+00:00"
+  "created_at": "2026-06-11T17:03:22+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1073020733": {
   "review_id": 1073020733,
@@ -3139,13 +3197,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "nghĩ tai trung tâm Nha Trang"
+   },
+   {
+    "concept": "STYLE_RELAXING",
+    "sentiment": "positive",
+    "span": "thoải mái"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:22+00:00"
+  "created_at": "2026-06-11T17:03:22+00:00",
+  "backfilled_versions": {
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1033945806": {
   "review_id": 1033945806,
@@ -3337,13 +3403,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Wifi yếu"
+   },
+   {
+    "concept": "STYLE_QUIET",
+    "sentiment": "positive",
+    "span": "yên tĩnh"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:03:22+00:00"
+  "created_at": "2026-06-11T17:03:22+00:00",
+  "backfilled_versions": {
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+  }
  },
  "1107210378": {
   "review_id": 1107210378,
