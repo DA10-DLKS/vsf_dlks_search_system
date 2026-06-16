@@ -29,7 +29,11 @@ class SentenceTransformerEmbeddingModel:
                 "sentence-transformers is required for BAAI/bge-m3 embeddings. "
                 "Install requirements.txt before running the production embedding pipeline."
             ) from exc
-        self._model = SentenceTransformer(self.model_name)
+        import torch
+        device = "mps" if torch.backends.mps.is_available() else "cpu"
+        if device == "mps":
+            self.batch_size = max(self.batch_size, 64)
+        self._model = SentenceTransformer(self.model_name, device=device)
 
     def embed(self, texts: list[str]) -> list[EmbeddingResult]:
         vectors = self._model.encode(

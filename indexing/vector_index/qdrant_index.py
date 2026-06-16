@@ -12,7 +12,9 @@ Chạy: .venv/Scripts/python.exe -X utf8 -m indexing.vector_index.qdrant_index
 
 from __future__ import annotations
 
+import json
 import os
+import time
 import uuid
 from pathlib import Path
 from typing import Any, Iterable
@@ -26,6 +28,7 @@ COLLECTION_DEFAULT = "vsf_travel"
 DATA_DIR_DEFAULT = "data/cleaned"
 VECTOR_DIM_DEFAULT = 1024   # bge-m3
 BATCH_DEFAULT = 64
+CHECKPOINT_FILE = "data/qdrant_index_checkpoint.json"
 
 
 def _point_id(chunk_id: str) -> str:
@@ -44,22 +47,25 @@ def ensure_collection(client, collection: str, dim: int) -> None:
         )
 
 
-def build_points(documents: Iterable[dict[str, Any]], embedding_model, batch: int = BATCH_DEFAULT):
-    """Sinh point Qdrant theo lô. Yield list[PointStruct]."""
+def _load_checkpoint() -> set[int]:
+    if not os.path.exists(CHECKPOINT_FILE):
+        return set()
+    with open(CHECKPOINT_FILE) as f:
+        return set(json.load(f))
+
+
+def _save_checkpoint(hotel_ids: set[int]) -> None:
+    with open(CHECKPOINT_FILE, "w") as f:
+        json.dump(sorted(hotel_ids), f)
+
+
+def build_points_for_hotel(document: dict[str, Any], embedding_model):
+    """Sinh point Qdrant cho 1 hotel. Trả list[PointStruct]."""
     from qdrant_client.models import PointStruct
 
-    buf_chunks = []
-    for document in documents:
-        for chunk in chunk_document(document):
-            buf_chunks.append(chunk)
-            if len(buf_chunks) >= batch:
-                yield _embed_batch(buf_chunks, embedding_model, PointStruct)
-                buf_chunks = []
-    if buf_chunks:
-        yield _embed_batch(buf_chunks, embedding_model, PointStruct)
-
-
-def _embed_batch(chunks, embedding_model, PointStruct):
+    chunks = chunk_document(document)
+    if not chunks:
+        return []
     embeddings = embedding_model.embed([c.text for c in chunks])
     points = []
     for chunk, emb in zip(chunks, embeddings, strict=True):
@@ -83,6 +89,7 @@ def index_to_qdrant(
     dim: int = VECTOR_DIM_DEFAULT,
     offline: bool = False,
     limit_docs: int | None = None,
+    resume: bool = True,
 ) -> int:
     from qdrant_client import QdrantClient
 
@@ -92,14 +99,34 @@ def index_to_qdrant(
         dim = 32   # HashEmbeddingModel
     ensure_collection(client, collection, dim)
 
-    docs = iter_clean_documents(data_dir)
-    if limit_docs:
-        docs = (d for i, d in enumerate(docs) if i < limit_docs)
-
+    done_ids = _load_checkpoint() if resume else set()
     total = 0
-    for points in build_points(docs, model):
-        client.upsert(collection_name=collection, points=points)
-        total += len(points)
+    total_docs = 0
+    skipped = 0
+    t0 = time.time()
+
+    for doc in iter_clean_documents(data_dir):
+        hid = doc.get("hotel_id")
+        if hid is None:
+            continue
+        total_docs += 1
+        if resume and hid in done_ids:
+            skipped += 1
+            continue
+
+        points = build_points_for_hotel(doc, model)
+        if points:
+            client.upsert(collection_name=collection, points=points)
+            total += len(points)
+        done_ids.add(hid)
+        _save_checkpoint(done_ids)
+
+        elapsed = time.time() - t0
+        print(f"  [{total_docs}] hotel_id={hid} -> {len(points)} chunks | total={total} | {elapsed:.0f}s", flush=True)
+
+    print(f"Indexed {total} chunks from {total_docs - skipped} hotels ({skipped} skipped).")
+    if os.path.exists(CHECKPOINT_FILE):
+        os.remove(CHECKPOINT_FILE)
     return total
 
 
@@ -108,8 +135,9 @@ def main() -> int:
     collection = os.environ.get("QDRANT_COLLECTION", COLLECTION_DEFAULT)
     data_dir = os.environ.get("CLEANED_DATA_DIR", DATA_DIR_DEFAULT)
     offline = os.environ.get("EMBED_OFFLINE", "").lower() in ("1", "true", "yes")
+    resume = os.environ.get("QDRANT_RESUME", "true").lower() in ("1", "true", "yes")
     n = index_to_qdrant(qdrant_url=qdrant_url, collection=collection,
-                        data_dir=data_dir, offline=offline)
+                        data_dir=data_dir, offline=offline, resume=resume)
     print(f"Indexed {n} chunks into Qdrant collection '{collection}'.")
     return 0
 
