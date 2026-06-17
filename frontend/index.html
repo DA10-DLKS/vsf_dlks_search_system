@@ -77,6 +77,44 @@
         line-height: 1.43;
       }
 
+      /* ── Metrics Bar ── */
+      .metrics-bar {
+        display: flex;
+        gap: 12px;
+        max-width: 720px;
+        margin: 0 auto 28px;
+        flex-wrap: wrap;
+      }
+      .metric-card {
+        flex: 1;
+        min-width: 140px;
+        background: var(--surface-soft);
+        border-radius: var(--radius-md);
+        padding: 14px 18px;
+        border: 1px solid var(--hairline-soft);
+      }
+      .metric-card .value {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .metric-card .value .highlight { color: var(--primary); }
+      .metric-card .label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .metric-card .desc {
+        font-size: 11px;
+        color: var(--muted-soft);
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+
       /* ── Search Bar ── */
       .search-section {
         max-width: 1280px;
@@ -491,6 +529,7 @@
     </div>
 
     <div class="search-section">
+      <div class="metrics-bar" id="metricsBar"></div>
       <div class="search-bar" id="searchBar">
         <div class="field">
           <label>Điểm đến</label>
@@ -687,6 +726,25 @@
           }
         }
       }
+
+      // ── Evaluation Metrics ──
+      const EVAL_METRICS = [
+        { value: "0.50", label: "Recall@10", highlight: true, desc: "41% số hotel đúng trong Top-10" },
+        { value: "0.69", label: "Precision@10", highlight: false, desc: "69% kết quả Top-10 là relevant" },
+        { value: "0.95", label: "Hit@10", highlight: true, desc: "95% câu hỏi có ≥1 kết quả đúng" },
+        { value: "0.89", label: "MRR", highlight: true, desc: "Kết quả đúng ở rank ~1.1" },
+      ];
+      function renderMetrics() {
+        const bar = document.getElementById("metricsBar");
+        bar.innerHTML = EVAL_METRICS.map(m =>
+          `<div class="metric-card">
+            <div class="value">${m.highlight ? '<span class="highlight">' : ""}${m.value}${m.highlight ? '</span>' : ""}</div>
+            <div class="label">${m.label}</div>
+            <div class="desc">${m.desc}</div>
+          </div>`
+        ).join("");
+      }
+      renderMetrics();
 
       // ── Bindings ──
       $("#searchBtn").addEventListener("click", () => search(input.value));
