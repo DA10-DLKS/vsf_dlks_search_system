@@ -6,7 +6,10 @@ TODO: register routers from api/routes/.
 
 import os
 import time
+from pathlib import Path
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from opensearchpy import OpenSearch
 from dotenv import load_dotenv
 from prometheus_client import Histogram, Counter, generate_latest, CollectorRegistry
@@ -45,6 +48,18 @@ ERRORS_TOTAL = Counter(
 )
 
 app = FastAPI(title="DA10 Knowledge & Retrieval Platform")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+frontend_dir = Path(__file__).parent.parent / "frontend"
+if frontend_dir.is_dir():
+    app.mount("/ui", StaticFiles(directory=str(frontend_dir), html=True), name="frontend")
 
 
 @app.get("/health")

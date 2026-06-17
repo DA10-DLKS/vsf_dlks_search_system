@@ -33,15 +33,17 @@ class SentenceTransformerEmbeddingModel:
         device = "mps" if torch.backends.mps.is_available() else "cpu"
         if device == "mps":
             self.batch_size = max(self.batch_size, 64)
-        self._model = SentenceTransformer(self.model_name, device=device)
+        self._model = SentenceTransformer(self.model_name, device=device, trust_remote_code=True)
 
     def embed(self, texts: list[str]) -> list[EmbeddingResult]:
-        vectors = self._model.encode(
-            texts,
-            batch_size=self.batch_size,
-            normalize_embeddings=self.normalize,
-            show_progress_bar=False,
-        )
+        import torch
+        with torch.no_grad():
+            vectors = self._model.encode(
+                texts,
+                batch_size=self.batch_size,
+                normalize_embeddings=self.normalize,
+                show_progress_bar=False,
+            )
         return [
             EmbeddingResult(
                 text=text,
