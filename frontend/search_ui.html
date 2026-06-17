@@ -114,6 +114,93 @@
         margin-top: 4px;
         line-height: 1.4;
       }
+      .metric-card {
+        cursor: pointer;
+        position: relative;
+        transition: border-color 0.15s;
+      }
+      .metric-card:hover { border-color: var(--primary-disabled); }
+
+      /* ── Popup ── */
+      .popup-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.15s ease;
+      }
+      .popup-card {
+        background: var(--canvas);
+        border-radius: var(--radius-md);
+        max-width: 480px;
+        width: 90vw;
+        padding: 28px 32px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        position: relative;
+        animation: popIn 0.2s ease;
+      }
+      @keyframes popIn {
+        from { opacity: 0; transform: scale(0.95) translateY(8px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+      }
+      .popup-card .close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: none;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+        color: var(--muted-soft);
+        line-height: 1;
+        padding: 4px;
+      }
+      .popup-card .close:hover { color: var(--ink); }
+      .popup-card h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        letter-spacing: -0.3px;
+      }
+      .popup-card h3 .hl { color: var(--primary); }
+      .popup-card .val {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 8px 0 12px;
+        line-height: 1.1;
+      }
+      .popup-card .section {
+        margin-top: 16px;
+      }
+      .popup-card .section h4 {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+      .popup-card .section p {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--body);
+      }
+      .popup-card .formula {
+        background: var(--surface-soft);
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink);
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.2px;
+        overflow-x: auto;
+      }
 
       /* ── Search Bar ── */
       .search-section {
@@ -729,20 +816,80 @@
 
       // ── Evaluation Metrics ──
       const EVAL_METRICS = [
-        { value: "0.50", label: "Recall@10", highlight: true, desc: "41% số hotel đúng trong Top-10" },
-        { value: "0.69", label: "Precision@10", highlight: false, desc: "69% kết quả Top-10 là relevant" },
-        { value: "0.95", label: "Hit@10", highlight: true, desc: "95% câu hỏi có ≥1 kết quả đúng" },
-        { value: "0.89", label: "MRR", highlight: true, desc: "Kết quả đúng ở rank ~1.1" },
+        {
+          value: "0.50", label: "Recall@10", highlight: true,
+          desc: "Tỷ lệ hotel đúng trong Top-10",
+          title: "Độ bao phủ",
+          detail: "Hệ thống trả về Top-K, trong số đó có bao nhiêu hotel đúng so với tổng số hotel đúng kỳ vọng. Cao = ít bỏ sót kết quả đúng.",
+          formula: "Recall@K = Số hotel đúng trong Top-K / Tổng số hotel đúng kỳ vọng",
+          example: "Recall@10 = 0.50 → trong 10 kết quả đầu, tìm được 50% số hotel đúng."
+        },
+        {
+          value: "0.69", label: "Precision@10", highlight: false,
+          desc: "69% kết quả Top-10 là relevant",
+          title: "Độ chính xác",
+          detail: "Trong Top-K kết quả trả về, bao nhiêu phần trăm là đúng. Cao = ít nhiễu, ít kết quả không liên quan.",
+          formula: "Precision@K = Số hotel đúng trong Top-K / K",
+          example: "Precision@10 = 0.69 → 69% kết quả trong Top-10 là relevant."
+        },
+        {
+          value: "0.95", label: "Hit@10", highlight: true,
+          desc: "95% câu hỏi có ≥1 kết quả đúng",
+          title: "Hit Rate",
+          detail: "Bao nhiêu phần trăm số câu query có ít nhất 1 kết quả đúng trong Top-K. Hữu ích cho RAG — chỉ cần 1 chunk đúng là LLM có thể trả lời.",
+          formula: "Hit@K = Số query có ≥1 kết quả đúng trong Top-K / Tổng số query",
+          example: "Hit@10 = 0.95 → 95% số câu query có ít nhất 1 hotel đúng trong Top-10."
+        },
+        {
+          value: "0.89", label: "MRR", highlight: true,
+          desc: "Kết quả đúng ở rank ~1.1",
+          title: "Mean Reciprocal Rank",
+          detail: "Thứ hạng trung bình của kết quả đúng đầu tiên. Nếu kết quả đúng xuất hiện ở vị trí rank R, reciprocal rank = 1/R. MRR là trung bình của tất cả câu. Cao = kết quả tốt lên đầu.",
+          formula: "MRR = (1/N) × Σ (1 / rank_của_kết_quả_đúng_đầu_tiên)",
+          example: "MRR = 0.89 → trung bình kết quả đúng đầu tiên xuất hiện ở rank ~1.1 (1/0.89)."
+        }
       ];
+
+      function showPopup(idx) {
+        const m = EVAL_METRICS[idx];
+        const overlay = document.createElement("div");
+        overlay.className = "popup-overlay";
+        overlay.innerHTML = `
+          <div class="popup-card">
+            <button class="close">&times;</button>
+            <h3><span class="hl">${m.label}</span> &mdash; ${esc(m.title)}</h3>
+            <div class="val">${m.value}</div>
+            <div class="section">
+              <h4>Giải thích</h4>
+              <p>${m.detail}</p>
+            </div>
+            <div class="section">
+              <h4>Công thức</h4>
+              <div class="formula">${m.formula}</div>
+            </div>
+            <div class="section">
+              <h4>Ví dụ</h4>
+              <p>${m.example}</p>
+            </div>
+          </div>`;
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay || e.target.classList.contains("close")) overlay.remove();
+        });
+        document.body.appendChild(overlay);
+      }
+
       function renderMetrics() {
         const bar = document.getElementById("metricsBar");
-        bar.innerHTML = EVAL_METRICS.map(m =>
-          `<div class="metric-card">
+        bar.innerHTML = EVAL_METRICS.map((m, i) =>
+          `<div class="metric-card" data-idx="${i}">
             <div class="value">${m.highlight ? '<span class="highlight">' : ""}${m.value}${m.highlight ? '</span>' : ""}</div>
             <div class="label">${m.label}</div>
             <div class="desc">${m.desc}</div>
           </div>`
         ).join("");
+        bar.querySelectorAll(".metric-card").forEach(el =>
+          el.addEventListener("click", () => showPopup(+el.dataset.idx))
+        );
       }
       renderMetrics();
 
