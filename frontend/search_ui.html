@@ -270,6 +270,12 @@
         position: relative;
         background: var(--surface-strong);
       }
+      .hotel-card .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
       .hotel-card .photo .placeholder {
         width: 100%;
         height: 100%;
@@ -569,6 +575,7 @@
         const accomType = m.accommodation_type || m.property_type || "";
         const chunks = h.matched_chunks || [];
         const text = h.text || chunks.map(c => c.text || "").join(" ") || "";
+        const imgUrl = m.image_urls ? m.image_urls[0] : null;
 
         const id = h.hotel_id ?? 0;
         const initial = (name.charAt(0) || "H").toUpperCase();
@@ -617,7 +624,8 @@
         return `
           <div class="hotel-card">
             <div class="photo">
-              <div class="placeholder" style="background:linear-gradient(135deg,${bgColor(id)},${bgColor(id+2)})">
+              ${imgUrl ? `<img src="${esc(imgUrl)}" alt="${esc(name)}" loading="lazy" onerror="this.style.display='none'" />` : ""}
+              <div class="placeholder" style="background:linear-gradient(135deg,${bgColor(id)},${bgColor(id+2)})${imgUrl ? ';display:none' : ''}">
                 ${initial}
               </div>
               <div class="score-badge">${fmt(h.score)}</div>
