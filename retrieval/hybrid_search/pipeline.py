@@ -85,28 +85,33 @@ def run_hybrid_search(
     )
 
     # Node 6: text retrieval trên candidate
+    # Node 6: text retrieval. Lấy NHIỀU chunk (rộng) để phủ candidate, không chỉ top-N.
     bm25_results: list[dict[str, Any]] = []
     vector_results: list[dict[str, Any]] = []
+    text_topk = max(len(candidates), 50)
     if bm25_service is not None:
         bm25_results = bm25_service.search_for_fusion(
-            query, candidate_hotel_ids=candidates
+            query, candidate_hotel_ids=candidates, size=text_topk
         )["results"]
     if vector_service is not None:
         vector_results = vector_service.search(
-            query, candidate_hotel_ids=candidates
+            query, candidate_hotel_ids=candidates, top_k=text_topk
         )["results"]
 
-    # Node 7: fusion. Nếu KHÔNG có nguồn text nào -> dựng "doc" giả từ candidate để vẫn xếp hạng
-    # bằng business score (dựa nhãn KE). Đảm bảo pipeline luôn trả kết quả.
+    # Node 7: fusion. NGUYÊN TẮC: vector/BM25 BỔ SUNG, KHÔNG thay thế candidate. Nền là TOÀN BỘ
+    # candidate (giữ recall theo multi-signal); điểm text retrieval gắn vào hotel tương ứng làm
+    # tín hiệu RERANK. Hotel candidate không có chunk text vẫn ở lại (không bị loại) -> không
+    # tụt recall. (Trước đây fused = chỉ chunk vector top-k -> bỏ sót hotel relevant -> recall ↓.)
+    fused = _candidates_as_docs(candidates)
     if bm25_results or vector_results:
-        fused = reciprocal_rank_fusion(bm25_results, vector_results)
-    else:
-        fused = _candidates_as_docs(candidates)
+        text_ranked = reciprocal_rank_fusion(bm25_results, vector_results)
+        _merge_text_signal(fused, text_ranked)
 
     fused = apply_profile_boost(fused, intent.feel_concepts)
 
-    # Node 7B
-    reranked = neural_rerank(query, fused, top_k=max(top_n * 4, 20), use_model=use_reranker_model)
+    # Node 7B: rerank GIỮ toàn bộ fused (không cắt) -> aggregate_by_hotel mới chọn top_n hotel.
+    # Cắt ở đây sẽ bỏ sót hotel relevant trước khi gom theo hotel -> tụt recall.
+    reranked = neural_rerank(query, fused, top_k=len(fused), use_model=use_reranker_model)
 
     # Node 7C
     reranked = business_rerank(
@@ -133,6 +138,27 @@ def run_hybrid_search(
         out["answer"] = _gen(pkg)
 
     return out
+
+
+def _merge_text_signal(candidate_docs: list[dict[str, Any]], text_ranked: list[dict[str, Any]]) -> None:
+    """Gắn tín hiệu text retrieval (rrf_score + text chunk) vào candidate doc theo hotel_id.
+    Mỗi hotel lấy chunk điểm CAO NHẤT. Hotel không có chunk text giữ rrf_score=0 (vẫn ở lại,
+    xếp hạng bằng business score). Sửa tại chỗ (in-place)."""
+    best: dict[Any, dict[str, Any]] = {}
+    for d in text_ranked:
+        hid = d.get("hotel_id")
+        if hid is None:
+            continue
+        if hid not in best or d.get("rrf_score", 0) > best[hid].get("rrf_score", 0):
+            best[hid] = d
+    for doc in candidate_docs:
+        t = best.get(doc.get("hotel_id"))
+        if t:
+            doc["rrf_score"] = t.get("rrf_score", 0.0)
+            if t.get("text"):
+                doc["text"] = t["text"]          # thay text rỗng bằng chunk thật (cho Node 8/9)
+            doc["bm25_rank"] = t.get("bm25_rank")
+            doc["vector_rank"] = t.get("vector_rank")
 
 
 def _candidates_as_docs(candidate_ids: list[int]) -> list[dict[str, Any]]:
