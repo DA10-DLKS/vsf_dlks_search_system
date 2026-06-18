@@ -9,14 +9,23 @@ from opensearchpy import OpenSearch
 
 
 DEFAULT_SEARCH_FIELDS = ["name", "description^2", "city", "address", "amenities"]
+# V16: _map_hit đọc `description` nhưng _source trước đây KHÔNG gồm → GET /search trả description=null
+# + thiếu metadata hiển thị. Bổ sung các field _map_hit cần + field UI hữu ích.
 DEFAULT_SOURCE_FIELDS = [
     "id",
     "name",
     "accommodation_type",
     "star_rating",
     "review_score",
+    "review_count",
     "address",
     "city",
+    "description",
+    "amenities",
+    "images",
+    "source_url",
+    "latitude",
+    "longitude",
 ]
 
 
@@ -121,9 +130,15 @@ class BM25SearchService:
             "accommodation_type": source.get("accommodation_type"),
             "star_rating": source.get("star_rating"),
             "review_score": source.get("review_score"),
+            "review_count": source.get("review_count"),
             "address": source.get("address"),
             "city": source.get("city"),
             "description": source.get("description"),
+            "amenities": source.get("amenities"),
+            "images": source.get("images"),
+            "source_url": source.get("source_url"),
+            "latitude": source.get("latitude"),
+            "longitude": source.get("longitude"),
             "score": hit.get("_score"),
         }
 

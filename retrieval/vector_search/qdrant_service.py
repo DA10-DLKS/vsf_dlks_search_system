@@ -45,6 +45,11 @@ class QdrantSearchService:
             must=[FieldCondition(key="hotel_id", match=MatchAny(any=list(hotel_ids)))]
         )
 
+    # V11 (SLA): chỉ kéo field downstream THỰC SỰ dùng. with_payload=True kéo cả 60+ field
+    # (image_urls/parent_text/...) → Qdrant ~244ms vs ~30ms (chậm 8×). Không downstream nào
+    # đọc các field nặng đó từ vector hit (đã verify). Đo: ~840ms → ~290ms/query.
+    _PAYLOAD_FIELDS = ["chunk_id", "hotel_id", "text", "raw_text", "source_type", "section"]
+
     def search(
         self,
         query: str,
@@ -59,7 +64,7 @@ class QdrantSearchService:
             query=embedding.vector,
             query_filter=self._candidate_filter(candidate_hotel_ids),
             limit=limit,
-            with_payload=True,
+            with_payload=self._PAYLOAD_FIELDS,
         )
         return {
             "query": query,

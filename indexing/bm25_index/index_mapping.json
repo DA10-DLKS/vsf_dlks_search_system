@@ -5,6 +5,23 @@
             "number_of_replicas": 0,
             "refresh_interval": "1s",
             "analysis": {
+                "filter": {
+                    "vi_ascii": {
+                        "type": "asciifolding",
+                        "preserve_original": true
+                    }
+                },
+                "analyzer": {
+                    "vietnamese_analyzer": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "filter": [
+                            "lowercase",
+                            "decimal_digit",
+                            "vi_ascii"
+                        ]
+                    }
+                },
                 "normalizer": {
                     "lowercase_normalizer": {
                         "type": "custom",
@@ -30,7 +47,7 @@
             },
             "name": {
                 "type": "text",
-                "analyzer": "standard",
+                "analyzer": "vietnamese_analyzer",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
@@ -41,7 +58,7 @@
             },
             "accommodation_type": {
                 "type": "text",
-                "analyzer": "standard",
+                "analyzer": "vietnamese_analyzer",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
@@ -64,7 +81,7 @@
             },
             "address": {
                 "type": "text",
-                "analyzer": "standard",
+                "analyzer": "vietnamese_analyzer",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
@@ -86,11 +103,11 @@
             },
             "description": {
                 "type": "text",
-                "analyzer": "standard"
+                "analyzer": "vietnamese_analyzer"
             },
             "amenities": {
                 "type": "text",
-                "analyzer": "standard",
+                "analyzer": "vietnamese_analyzer",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
@@ -104,11 +121,11 @@
             },
             "policyNotes": {
                 "type": "text",
-                "analyzer": "standard"
+                "analyzer": "vietnamese_analyzer"
             },
             "suitable_for": {
                 "type": "text",
-                "analyzer": "standard",
+                "analyzer": "vietnamese_analyzer",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
@@ -143,7 +160,7 @@
                     },
                     "name": {
                         "type": "text",
-                        "analyzer": "standard",
+                        "analyzer": "vietnamese_analyzer",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
@@ -164,7 +181,7 @@
                     },
                     "bed_type": {
                         "type": "text",
-                        "analyzer": "standard",
+                        "analyzer": "vietnamese_analyzer",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
@@ -175,7 +192,7 @@
                     },
                     "room_view": {
                         "type": "text",
-                        "analyzer": "standard",
+                        "analyzer": "vietnamese_analyzer",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
@@ -186,7 +203,7 @@
                     },
                     "room_amenities": {
                         "type": "text",
-                        "analyzer": "standard",
+                        "analyzer": "vietnamese_analyzer",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
@@ -212,7 +229,7 @@
                     },
                     "name": {
                         "type": "text",
-                        "analyzer": "standard",
+                        "analyzer": "vietnamese_analyzer",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
@@ -223,7 +240,7 @@
                     },
                     "type": {
                         "type": "text",
-                        "analyzer": "standard",
+                        "analyzer": "vietnamese_analyzer",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
@@ -245,7 +262,7 @@
                     },
                     "title": {
                         "type": "text",
-                        "analyzer": "standard",
+                        "analyzer": "vietnamese_analyzer",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
@@ -256,7 +273,7 @@
                     },
                     "description": {
                         "type": "text",
-                        "analyzer": "standard"
+                        "analyzer": "vietnamese_analyzer"
                     },
                     "price_amount": {
                         "type": "double"
