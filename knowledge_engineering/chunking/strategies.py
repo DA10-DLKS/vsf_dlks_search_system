@@ -48,6 +48,32 @@ def metadata_payload(record: dict[str, Any]) -> dict[str, Any]:
     return payload
 
 
+def attach_ke_labels(metadata: dict[str, Any], hotel_id: Any) -> dict[str, Any]:
+    """ĐÍNH nhãn ontology của KE (knowledge_objects.json) vào payload chunk theo hotel_id.
+
+    Đây là khâu nối "đứt gãy KE -> index": text chunk lấy từ data/cleaned (phong phú), còn
+    NHÃN (amenity/setting/style/aspect/landmark + profile + range) lấy từ KE. Tầng retrieval
+    đọc các field này để FILTER cứng (ontology_concepts) và RERANK (semantic_profile). Nếu KE
+    chưa có nhãn cho hotel này thì bỏ qua, không phá payload.
+    """
+    from knowledge_engineering.common.ke_labels import labels_for
+
+    ke = labels_for(hotel_id)
+    if not ke:
+        return metadata
+    metadata["ontology_concepts"] = ke["ontology_concepts"]
+    metadata["strong_feel_concepts"] = ke["strong_feel_concepts"]
+    metadata["semantic_profile"] = ke["semantic_profile"]
+    metadata["negative_style_profile"] = ke["negative_style_profile"]
+    metadata["nearby_landmarks"] = ke["nearby_landmarks"]
+    if ke.get("location_concept"):
+        metadata["location_concept"] = ke["location_concept"]
+    # range_filters: chỉ điền nếu cleaned chưa có (KE giá là placeholder; star/review_score thật)
+    for k, v in (ke.get("range_filters") or {}).items():
+        metadata.setdefault(f"ke_{k}", v)
+    return metadata
+
+
 def whole_chunk(
     *,
     text: str,
@@ -146,6 +172,7 @@ def chunk_hotel(record: dict[str, Any], config: ChunkingConfig | None = None) ->
     base_metadata = metadata_payload(record)
     base_metadata.setdefault("hotel_id", record.get("hotel_id"))
     base_metadata.setdefault("hotel_name", title)
+    attach_ke_labels(base_metadata, record.get("hotel_id"))
     chunks: list[Chunk] = []
 
     short_text = join_non_empty([record.get("description_short"), record.get("overview")])
@@ -215,6 +242,7 @@ def chunk_reviews(review_bundle: dict[str, Any], config: ChunkingConfig | None =
     base_metadata = metadata_payload(review_bundle)
     base_metadata.setdefault("hotel_id", review_bundle.get("hotel_id"))
     base_metadata.setdefault("hotel_name", title)
+    attach_ke_labels(base_metadata, review_bundle.get("hotel_id"))
     chunks: list[Chunk] = []
     seen_fingerprints: set[str] = set()
 

@@ -3,6 +3,8 @@ import json
 from opensearchpy import OpenSearch, helpers
 from opensearchpy.exceptions import NotFoundError
 
+from knowledge_engineering.common.ke_labels import labels_for
+
 OPENSEARCH_URL = os.environ.get('OPENSEARCH_URL', 'http://localhost:9200')
 RUNTIME_INDEX_NAME = os.environ.get('BM25_INDEX', 'vsf_hotels_bm25_current')
 TARGET_INDEX_NAME = os.environ.get('BM25_TARGET_INDEX') or RUNTIME_INDEX_NAME
@@ -108,6 +110,10 @@ def iter_docs(data_dir, index_name=TARGET_INDEX_NAME):
             if isinstance(suitable_for, list):
                 suitable_for = ", ".join(suitable_for)
 
+            # Nhãn ontology từ KE (knowledge_objects.json) — JOIN theo hotel_id. Để OpenSearch
+            # FILTER theo concept (terms query) ngoài match text. Cùng nguồn với pgvector (ke_labels).
+            ke = labels_for(hotel_id)
+
             # Construct index doc conforming strictly to index_mapping.json
             index_doc = {
                 "_op_type": "index",
@@ -136,6 +142,11 @@ def iter_docs(data_dir, index_name=TARGET_INDEX_NAME):
                 "rooms": rooms,
                 "nearby_places": nearby_places,
                 "activities": activities,
+                # ---- Nhãn ontology từ KE (filter theo concept) ----
+                "ontology_concepts": ke.get("ontology_concepts", []),
+                "strong_feel_concepts": ke.get("strong_feel_concepts", []),
+                "location_concept": ke.get("location_concept"),
+                "nearby_landmarks": ke.get("nearby_landmarks", []),
             }
             yield index_doc
 

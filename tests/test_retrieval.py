@@ -39,15 +39,10 @@ def test_bm25_search_service_builds_query_and_maps_results():
 
     assert client.calls[0]["index"] == "travel_bm25"
     assert client.calls[0]["body"]["size"] == 10
-    assert client.calls[0]["body"]["_source"] == [
-        "id",
-        "name",
-        "accommodation_type",
-        "star_rating",
-        "review_score",
-        "address",
-        "city",
-    ]
+    # V16: _source phải gồm description + field hiển thị (trước thiếu → GET /search trả null).
+    src = client.calls[0]["body"]["_source"]
+    for f in ("id", "name", "description", "amenities", "images", "review_count"):
+        assert f in src, f"V16: _source phải gồm '{f}'"
     assert client.calls[0]["body"]["query"]["multi_match"] == {
         "query": "khach san gan bien",
         "fields": ["name", "description^2", "city", "address", "amenities"],
@@ -55,16 +50,8 @@ def test_bm25_search_service_builds_query_and_maps_results():
     assert client.calls[0]["body"]["track_total_hits"] is False
     assert response["query"] == "khach san gan bien"
     assert response["total_hits"] == 1
-    assert response["results"] == [
-        {
-            "id": 123,
-            "name": "Test Hotel",
-            "accommodation_type": "hotel",
-            "star_rating": 5,
-            "review_score": 9.1,
-            "address": "Ha Long",
-            "city": "ha long",
-            "description": "Khach san gan bien",
-            "score": 12.5,
-        }
-    ]
+    # V16: description không null (đây là bug audit phát hiện)
+    r = response["results"][0]
+    assert r["id"] == 123 and r["name"] == "Test Hotel"
+    assert r["description"] == "Khach san gan bien"
+    assert r["score"] == 12.5

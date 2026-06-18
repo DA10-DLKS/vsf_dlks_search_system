@@ -253,6 +253,85 @@ def complete_json(system: str, user: str, temperature: float = 0.0,
                        f"({cfg['provider']}/{cfg['model']}): {last_err}")
 
 
+def complete_text(system: str, user: str, temperature: float = 0.2,
+                  use_cache: bool = True) -> str:
+    """Như complete_json nhưng trả VĂN BẢN tự nhiên (cho Node 9 sinh câu trả lời RAG, không
+    ép JSON). Tái dùng adapter/cache/retry. Bỏ response_format json bằng cách gọi adapter rồi
+    KHÔNG _extract_json. Cache lưu dưới khóa riêng (suffix :text) để không lẫn với complete_json."""
+    cfg = _cfg()
+    adapter = _ADAPTERS.get(cfg["provider"])
+    if adapter is None:
+        raise ValueError(f"LLM_PROVIDER không hỗ trợ: {cfg['provider']} (chọn: {list(_ADAPTERS)})")
+
+    key = _cache_key(cfg["provider"], cfg["model"], system, user + "::text")
+    if use_cache:
+        f = CACHE_DIR / f"{key}.json"
+        if f.exists():
+            try:
+                return json.loads(f.read_text(encoding="utf-8")).get("text", "")
+            except Exception:
+                pass
+
+    # openai json_object mode ép JSON -> với text, gọi API trực tiếp không response_format.
+    last_err = None
+    for attempt in range(MAX_RETRY):
+        try:
+            raw = _adapter_text(cfg, system, user, temperature)
+            if use_cache:
+                _cache_put(key, {"text": raw})
+            return raw
+        except FatalLLMError:
+            raise
+        except Exception as e:  # noqa: BLE001
+            last_err = e
+            time.sleep(1.5 * (attempt + 1))
+    raise RuntimeError(f"LLM (text) thất bại sau {MAX_RETRY} lần "
+                       f"({cfg['provider']}/{cfg['model']}): {last_err}")
+
+
+def _adapter_text(cfg, system, user, temperature) -> str:
+    """Gọi provider ở chế độ text (không ép JSON). Dùng lại endpoint của từng adapter."""
+    provider = cfg["provider"]
+    if provider == "openai":
+        if not cfg["openai_key"]:
+            raise FatalLLMError("Thiếu OPENAI_API_KEY trong .env")
+        r = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers={"Authorization": f"Bearer {cfg['openai_key']}"},
+            json={"model": cfg["model"],
+                  "messages": [{"role": "system", "content": system},
+                               {"role": "user", "content": user}],
+                  "temperature": temperature, "max_tokens": MAX_TOKENS},
+            timeout=TIMEOUT,
+        )
+        _raise_for_status_classified(r)
+        return r.json()["choices"][0]["message"]["content"]
+    if provider == "claude":
+        return _call_claude(cfg, system, user, temperature)
+    if provider == "gemini":
+        if not cfg["google_key"]:
+            raise FatalLLMError("Thiếu GOOGLE_API_KEY trong .env")
+        url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
+               f"{cfg['model']}:generateContent?key={cfg['google_key']}")
+        r = requests.post(url, json={
+            "system_instruction": {"parts": [{"text": system}]},
+            "contents": [{"parts": [{"text": user}]}],
+            "generationConfig": {"temperature": temperature, "maxOutputTokens": MAX_TOKENS},
+        }, timeout=TIMEOUT)
+        _raise_for_status_classified(r)
+        return r.json()["candidates"][0]["content"]["parts"][0]["text"]
+    if provider == "ollama":
+        r = requests.post(f"{cfg['ollama_host']}/api/chat", json={
+            "model": cfg["model"],
+            "messages": [{"role": "system", "content": system},
+                         {"role": "user", "content": user}],
+            "stream": False, "options": {"temperature": temperature},
+        }, timeout=TIMEOUT_OLLAMA)
+        r.raise_for_status()
+        return r.json()["message"]["content"]
+    raise ValueError(f"provider không hỗ trợ text: {provider}")
+
+
 def active_config() -> dict:
     """Trả config hiện tại (ẩn key) — để debug 'đang dùng provider/model nào'."""
     c = _cfg()

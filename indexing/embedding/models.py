@@ -29,15 +29,32 @@ class SentenceTransformerEmbeddingModel:
                 "sentence-transformers is required for BAAI/bge-m3 embeddings. "
                 "Install requirements.txt before running the production embedding pipeline."
             ) from exc
-        self._model = SentenceTransformer(self.model_name)
+        import os
+
+        import torch
+        # V15: ưu tiên CUDA (máy Windows có GPU NVIDIA trước đây luôn rơi về CPU vì chỉ check mps).
+        # Cho override qua env EMBEDDING_DEVICE.
+        device = os.environ.get("EMBEDDING_DEVICE")
+        if not device:
+            if torch.cuda.is_available():
+                device = "cuda"
+            elif torch.backends.mps.is_available():
+                device = "mps"
+            else:
+                device = "cpu"
+        if device in ("mps", "cuda"):
+            self.batch_size = max(self.batch_size, 64)
+        self._model = SentenceTransformer(self.model_name, device=device, trust_remote_code=True)
 
     def embed(self, texts: list[str]) -> list[EmbeddingResult]:
-        vectors = self._model.encode(
-            texts,
-            batch_size=self.batch_size,
-            normalize_embeddings=self.normalize,
-            show_progress_bar=False,
-        )
+        import torch
+        with torch.no_grad():
+            vectors = self._model.encode(
+                texts,
+                batch_size=self.batch_size,
+                normalize_embeddings=self.normalize,
+                show_progress_bar=False,
+            )
         return [
             EmbeddingResult(
                 text=text,
