@@ -15,7 +15,12 @@ from typing import Any
 
 RRF_K = 60
 PROFILE_BOOST_WEIGHT = 0.05   # mỗi feel-concept khớp + score, cộng nhẹ vào RRF
-BUSINESS_WEIGHTS = {"neural": 0.5, "review": 0.2, "review_count": 0.1, "price_fit": 0.1, "concept": 0.1}
+# neural=0.05: calibrate bằng sweep trên golden_set_v2 (59 câu). Sau khi chuẩn hóa text-signal
+# [0,1] (V1), trọng số cao làm text retrieval ÁP ĐẢO nhãn KE — vốn MẠNH HƠN text trên corpus này
+# (vector-only recall 0.42 < KE-only 0.51). neural_w=0.05 cho recall 0.5114 + MRR 0.9065 + Hit
+# 0.9831 (đỉnh cả 3). Text-signal đóng vai trò TINH CHỈNH thứ hạng, không phải động lực recall.
+# Xem evaluation/retrieval_metrics/sweep_neural.py để tái lập. (V1 + V9 đợt 1.)
+BUSINESS_WEIGHTS = {"neural": 0.05, "review": 0.2, "review_count": 0.1, "price_fit": 0.1, "concept": 0.1}
 
 
 def reciprocal_rank_fusion(
@@ -44,6 +49,50 @@ def reciprocal_rank_fusion(
     return fused
 
 
+def _best_rank_per_hotel(results: list[dict[str, Any]]) -> dict[Any, tuple[int, dict[str, Any]]]:
+    """Gom kết quả 1 nguồn về hotel_id, giữ rank TỐT NHẤT (nhỏ nhất) của hotel trong nguồn đó."""
+    seen: dict[Any, tuple[int, dict[str, Any]]] = {}
+    for rank, doc in enumerate(results, start=1):
+        hid = doc.get("hotel_id")
+        if hid is None:
+            continue
+        if hid not in seen or rank < seen[hid][0]:
+            seen[hid] = (rank, doc)
+    return seen
+
+
+def rrf_by_hotel(
+    bm25_results: list[dict[str, Any]],
+    vector_results: list[dict[str, Any]],
+    k: int = RRF_K,
+) -> list[dict[str, Any]]:
+    """V9 fix: RRF hợp nhất ở CẤP HOTEL thay vì chunk_id.
+
+    Vấn đề cũ: BM25 trả chunk_id `bm25_hotel_<id>` (document-level), Qdrant trả chunk_id thật
+    (chunk-level) -> dedupe theo chunk_id KHÔNG BAO GIỜ trùng -> RRF không cộng dồn điểm của
+    cùng hotel từ 2 nguồn (mất toàn bộ ý nghĩa của RRF). Giải pháp A của V9: gom mỗi nguồn về
+    hotel_id (rank tốt nhất), RRF trên hotel_id -> hotel ở cả 2 nguồn được cộng dồn đúng.
+    (Không cần reindex OpenSearch chunk-level — đảo ngược dễ, an toàn cho đợt 1.)"""
+    scores: dict[Any, float] = {}
+    details: dict[Any, dict[str, Any]] = {}
+
+    for source_name, results in (("bm25", bm25_results), ("vector", vector_results)):
+        for hid, (rank, doc) in _best_rank_per_hotel(results).items():
+            scores[hid] = scores.get(hid, 0.0) + 1.0 / (k + rank)
+            if hid not in details:
+                details[hid] = dict(doc)
+            details[hid][f"{source_name}_rank"] = rank
+
+    fused = []
+    for hid, score in scores.items():
+        item = details[hid]
+        item["hotel_id"] = hid
+        item["rrf_score"] = score
+        fused.append(item)
+    fused.sort(key=lambda d: -d["rrf_score"])
+    return fused
+
+
 def apply_profile_boost(
     fused: list[dict[str, Any]],
     feel_concepts: list[str],
@@ -65,6 +114,13 @@ def apply_profile_boost(
     return fused
 
 
+def _minmax_norm(values: list[float]) -> tuple[float, float]:
+    """Trả (lo, hi) để chuẩn hóa min-max. Port từ develop-2 calibrated_rrf_fusion."""
+    if not values:
+        return 0.0, 0.0
+    return min(values), max(values)
+
+
 def business_rerank(
     fused: list[dict[str, Any]],
     concepts: list[str] | None = None,
@@ -74,24 +130,44 @@ def business_rerank(
     """Node 7C: rerank theo tín hiệu business (review_score/count, price_fit, concept match).
 
     Dùng metadata sẵn trên doc (ke_* / range_filters / ontology_concepts). KHÔNG cần DB —
-    metadata đã đính từ Nhóm 0. neural_score = fused_score (chưa có cross-encoder thật ở đây;
-    cross-encoder là Node 7B, gọi riêng khi có model)."""
+    metadata đã đính từ Nhóm 0.
+
+    V1 fix (score scale mismatch): tín hiệu text retrieval (`rerank_score`/`fused_score`/`rrf_score`)
+    nằm trong thang RRF [0, ~0.016], trong khi review/price/concept đã ở [0,1]. Cộng thẳng làm
+    text-signal bị nuốt ~24×. -> Chuẩn hóa text-signal về [0,1] bằng min-max TRÊN TẬP candidate
+    trước khi fuse (port _minmax của develop-2 calibrated_rrf_fusion). Ưu tiên rerank_score nếu
+    cross-encoder đã chạy (Node 7B), nếu không dùng fused_score/rrf_score."""
     import math
 
     w = {**BUSINESS_WEIGHTS, **(weights or {})}
+    # Sweep-only hook (V1 calibration): cho phép override trọng số neural qua env để quét nhanh.
+    import os as _os
+    _nw = _os.environ.get("NEURAL_WEIGHT")
+    if _nw is not None:
+        w = {**w, "neural": float(_nw)}
     concepts = set(concepts or [])
     max_rc = max(
         [(d.get("metadata") or {}).get("review_count") or 0 for d in fused] + [1]
     )
+
+    def _raw_text(d: dict[str, Any]) -> float:
+        # rerank_score (cross-encoder, đã [0,1]) > fused_score > rrf_score
+        return d.get("rerank_score", d.get("fused_score", d.get("rrf_score", 0.0)))
+
+    t_lo, t_hi = _minmax_norm([_raw_text(d) for d in fused])
+    t_span = t_hi - t_lo
+
     for doc in fused:
         md = doc.get("metadata") or {}
-        neural = doc.get("fused_score", doc.get("rrf_score", 0.0))
+        raw = _raw_text(doc)
+        neural = (raw - t_lo) / t_span if t_span > 0 else 0.0
         review_score = (md.get("ke_review_score") or md.get("review_score") or 0.0) / 10.0
         review_count = math.log1p(md.get("review_count") or 0) / math.log1p(max_rc)
         price = md.get("ke_price_min_vnd") or md.get("price_min_vnd") or 0
         price_fit = 1.0 if (not intent_max_price or not price or price <= intent_max_price) else 0.0
         oc = set(md.get("ontology_concepts") or [])
         concept_match = len(concepts & oc) / max(len(concepts), 1) if concepts else 0.0
+        doc["text_signal_norm"] = neural  # debug: text-signal sau chuẩn hóa [0,1] (V8 breakdown)
         doc["business_score"] = (
             w["neural"] * neural
             + w["review"] * review_score

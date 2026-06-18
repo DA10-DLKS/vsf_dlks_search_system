@@ -33,7 +33,7 @@ from retrieval.reranking import (
     apply_profile_boost,
     business_rerank,
     neural_rerank,
-    reciprocal_rank_fusion,
+    rrf_by_hotel,
 )
 
 
@@ -81,8 +81,19 @@ def run_hybrid_search(
     # Node 4: candidate
     rs = review_scores()
     candidates = build_candidates(
-        sw or None, cw.hotel_ids or None, cap=candidate_pool, review_score_by_hotel=rs
+        sw or None, cw.hotel_ids or None, cap=candidate_pool, review_score_by_hotel=rs,
+        match_count_by_hotel=cw.match_count,
+        idf_score_by_hotel=cw.idf_score,   # V5: ưu tiên concept ĐẶC TRƯNG (IDF) khi cắt cap
     )
+
+    # V3: candidate rỗng (query không khớp city/concept nào) → KHÔNG trả màn hình trắng.
+    # Để vector quyết định (broad semantic), nếu vector vắng thì lấy top hotel theo review.
+    if not candidates:
+        if vector_service is not None:
+            vr = vector_service.search(query, candidate_hotel_ids=None, top_k=candidate_pool)["results"]
+            candidates = list(dict.fromkeys(h["hotel_id"] for h in vr if h.get("hotel_id")))
+        if not candidates:
+            candidates = [h for h, _ in sorted(rs.items(), key=lambda x: -x[1])[:candidate_pool]]
 
     # Node 6: text retrieval trên candidate
     # Node 6: text retrieval. Lấy NHIỀU chunk (rộng) để phủ candidate, không chỉ top-N.
@@ -104,14 +115,26 @@ def run_hybrid_search(
     # tụt recall. (Trước đây fused = chỉ chunk vector top-k -> bỏ sót hotel relevant -> recall ↓.)
     fused = _candidates_as_docs(candidates)
     if bm25_results or vector_results:
-        text_ranked = reciprocal_rank_fusion(bm25_results, vector_results)
+        # V9: RRF hợp nhất ở CẤP HOTEL (bm25 doc-level vs vector chunk-level không trùng chunk_id).
+        text_ranked = rrf_by_hotel(bm25_results, vector_results)
         _merge_text_signal(fused, text_ranked)
 
     fused = apply_profile_boost(fused, intent.feel_concepts)
 
     # Node 7B: rerank GIỮ toàn bộ fused (không cắt) -> aggregate_by_hotel mới chọn top_n hotel.
     # Cắt ở đây sẽ bỏ sót hotel relevant trước khi gom theo hotel -> tụt recall.
-    reranked = neural_rerank(query, fused, top_k=len(fused), use_model=use_reranker_model)
+    # V2: bật cross-encoder qua env USE_RERANKER=1 (mặc định off vì đắt + đã biết không kéo recall;
+    # mục tiêu là MRR/thứ hạng). Cross-encoder CHỈ có nghĩa với doc CÓ text thật → chỉ rerank nhóm
+    # đó, doc text rỗng (candidate thuần KE) giữ nguyên rồi gộp lại để không tụt recall.
+    import os as _os
+    use_model = use_reranker_model or _os.environ.get("USE_RERANKER", "0") == "1"
+    if use_model:
+        with_text = [d for d in fused if (d.get("text") or "").strip()]
+        without_text = [d for d in fused if not (d.get("text") or "").strip()]
+        reranked = neural_rerank(query, with_text, top_k=len(with_text), use_model=True)
+        reranked = reranked + without_text
+    else:
+        reranked = neural_rerank(query, fused, top_k=len(fused), use_model=False)
 
     # Node 7C
     reranked = business_rerank(

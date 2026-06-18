@@ -5,11 +5,13 @@ from .fusion import (
     apply_profile_boost,
     business_rerank,
     reciprocal_rank_fusion,
+    rrf_by_hotel,
 )
 from .neural_rerank import neural_rerank
 
 __all__ = [
     "reciprocal_rank_fusion",
+    "rrf_by_hotel",
     "apply_profile_boost",
     "business_rerank",
     "aggregate_by_hotel",

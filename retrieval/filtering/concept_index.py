@@ -14,6 +14,7 @@ Lookup trả candidate theo 2 chế độ:
 
 from __future__ import annotations
 
+import math
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import lru_cache
@@ -25,6 +26,7 @@ from knowledge_engineering.common.ke_labels import load_ke_labels
 class ConceptLookupResult:
     hotel_ids: list[int] = field(default_factory=list)
     match_count: dict[int, int] = field(default_factory=dict)   # hotel_id -> số concept khớp
+    idf_score: dict[int, float] = field(default_factory=dict)   # hotel_id -> tổng IDF concept khớp (V5)
 
 
 @lru_cache(maxsize=1)
@@ -65,15 +67,24 @@ def lookup_hotels_by_concepts(
     if not live:
         return ConceptLookupResult()
 
+    # V5: tổng số hotel để tính IDF. Concept hiếm (vd STYLE_LIVELY 1/520) đặc trưng hơn nhiều
+    # concept phổ thông (OBJ_HOTEL 393/520) → trọng số IDF = log(N/df) cao hơn hẳn.
+    n_total = len(load_ke_labels())
     match_count: dict[int, int] = defaultdict(int)
+    idf_score: dict[int, float] = defaultdict(float)
     for s in live:
+        idf = math.log((n_total + 1) / (len(s) + 1)) + 1.0   # smoothed IDF, luôn > 0
         for hid in s:
             match_count[hid] += 1
+            idf_score[hid] += idf
 
     if require_all:
         hotel_ids = set.intersection(*live) if live else set()
     else:
         hotel_ids = set().union(*live)
 
-    ranked = sorted(hotel_ids, key=lambda h: -match_count[h])
-    return ConceptLookupResult(hotel_ids=ranked, match_count=dict(match_count))
+    # sort theo IDF (sát query theo concept ĐẶC TRƯNG), tiebreak match_count
+    ranked = sorted(hotel_ids, key=lambda h: (-idf_score[h], -match_count[h]))
+    return ConceptLookupResult(
+        hotel_ids=ranked, match_count=dict(match_count), idf_score=dict(idf_score)
+    )

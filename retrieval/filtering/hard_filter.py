@@ -13,12 +13,23 @@ tiên (port logic file pipeline Node 4). Giới hạn kích thước tập ứng
 
 from __future__ import annotations
 
+from functools import lru_cache
 from typing import Any
 
 from knowledge_engineering.common.ke_labels import load_ke_labels
 from knowledge_engineering.common.normalize import normalize
 
 DEFAULT_CANDIDATE_CAP = 300
+
+
+@lru_cache(maxsize=1)
+def _city_blobs() -> dict[int, str]:
+    """V11: city/province blob đã normalize per hotel, cache 1 lần (bất biến giữa request).
+    Trước đây normalize lại 520 hotel MỖI request có city → ~227ms/query. Cache → ~0ms."""
+    return {
+        hid: normalize(" ".join(str(ke.get(k) or "") for k in ("city", "province")), fold=True)
+        for hid, ke in load_ke_labels().items()
+    }
 
 
 def inmemory_hard_filter(
@@ -35,6 +46,8 @@ def inmemory_hard_filter(
     """
     labels = load_ke_labels()
     city_norm = normalize(city, fold=True) if city else None
+    blobs = _city_blobs() if city_norm else {}
+    city_toks = [tok for tok in city_norm.split() if len(tok) > 2] if city_norm else []
     out: list[int] = []
     for hid, ke in labels.items():
         rf = ke.get("range_filters") or {}
@@ -43,10 +56,8 @@ def inmemory_hard_filter(
         if score_min is not None and (rf.get("review_score") or 0) < score_min:
             continue
         if city_norm:
-            blob = normalize(" ".join(str(ke.get(k) or "") for k in ("city", "province")), fold=True)
-            if city_norm not in blob and blob and not any(
-                tok in blob for tok in city_norm.split() if len(tok) > 2
-            ):
+            blob = blobs.get(hid, "")
+            if city_norm not in blob and blob and not any(tok in blob for tok in city_toks):
                 continue
         out.append(hid)
     return out
@@ -95,6 +106,8 @@ def build_candidates(
     *,
     cap: int = DEFAULT_CANDIDATE_CAP,
     review_score_by_hotel: dict[int, float] | None = None,
+    match_count_by_hotel: dict[int, int] | None = None,
+    idf_score_by_hotel: dict[int, float] | None = None,
 ) -> list[int]:
     """Node 4: giao 2 whitelist + fallback (port logic file pipeline).
 
@@ -102,7 +115,11 @@ def build_candidates(
       giao rỗng -> fallback SQL whitelist (concept soft boost để rerank lo)
       chỉ 1 whitelist -> dùng cái đó
       không có gì -> rỗng (tầng trên quyết định broad search)
-    """
+
+    V5 fix: khi câu KHÔNG có city (vd "khách sạn sôi động"), concept whitelist có thể ~400 hotel
+    > cap. Trước đây sort thuần review_score → hotel khớp NHIỀU concept query (sát ý) nhưng review
+    thấp bị hotel review-cao-chỉ-khớp-1-concept chen mất khỏi cap (vd GS-015 hotel đúng hạng 205/394
+    → rớt). Sửa: sort theo (match_count GIẢM, review_score GIẢM) — ưu tiên hotel sát query nhất."""
     sql_set = set(sql_whitelist or [])
     concept_set = set(concept_whitelist or [])
 
@@ -116,10 +133,12 @@ def build_candidates(
     else:
         candidates = set()
 
-    ranked = sorted(
-        candidates,
-        key=lambda h: -((review_score_by_hotel or {}).get(h, 0.0)),
-    )
+    # V5: ưu tiên IDF concept (concept đặc trưng như STYLE_LIVELY > OBJ_HOTEL phổ thông),
+    # rồi match_count, cuối cùng review_score. IDF kéo hotel sát ý nhất vào trong cap.
+    idf = idf_score_by_hotel or {}
+    mc = match_count_by_hotel or {}
+    rs = review_score_by_hotel or {}
+    ranked = sorted(candidates, key=lambda h: (-idf.get(h, 0.0), -mc.get(h, 0), -rs.get(h, 0.0)))
     return ranked[:cap]
 
 
