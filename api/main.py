@@ -50,6 +50,17 @@ ERRORS_TOTAL = Counter(
 
 app = FastAPI(title="DA10 Knowledge & Retrieval Platform")
 
+
+@app.on_event("startup")
+def _warmup() -> None:
+    """V12: nạp sẵn synonym (tránh cold-start ~978ms request đầu mỗi worker). An toàn nếu lỗi."""
+    try:
+        from retrieval.query_processing import warmup
+        warmup()
+    except Exception:
+        pass
+
+
 # CORS: frontend chạy ở origin khác (file:// hoặc localhost:5173...) gọi API localhost:8000.
 app.add_middleware(
     CORSMiddleware,
@@ -179,6 +190,7 @@ class SearchRequest(BaseModel):
 
 class ContextRequest(BaseModel):
     result_id: str
+    query: str | None = None   # V6: câu hỏi gốc của user để answer bám nhu cầu (tùy chọn)
 
 
 @app.post("/search")
@@ -216,7 +228,7 @@ def fe_context(req: ContextRequest) -> dict:
     REQUESTS_TOTAL.labels(endpoint=endpoint).inc()
     start = time.time()
     try:
-        out = build_hotel_context(req.result_id)
+        out = build_hotel_context(req.result_id, query=req.query)
         REQUEST_LATENCY.labels(endpoint=endpoint).observe(time.time() - start)
         return out
     except Exception as exc:

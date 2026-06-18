@@ -84,6 +84,13 @@ def _max_gram(syn_yaml: str = SYN_YAML_DEFAULT) -> int:
     return max((len(k.split()) for k in syn), default=4)
 
 
+def warmup(syn_yaml: str = SYN_YAML_DEFAULT) -> None:
+    """V12: nạp sẵn synonym (YAML 177KB) vào lru_cache lúc startup. Nếu không, request ĐẦU của
+    MỖI worker bị cold-start ~978ms (parse YAML + max_gram). Gọi 1 lần khi khởi động API."""
+    _load_synonyms(syn_yaml)
+    _max_gram(syn_yaml)
+
+
 def _lookup_concepts(q: str, syn: dict[str, list[str]], max_gram: int) -> set[str]:
     """Tra concept qua surface form, xử lý xung đột span LMK đè SETTING (port từ query_demo).
 

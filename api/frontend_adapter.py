@@ -38,6 +38,62 @@ _PRICE_VI = {
     "PRICE_BUDGET": "Bình dân", "PRICE_MID": "Tầm trung",
     "PRICE_UPSCALE": "Cao cấp", "PRICE_LUXURY": "Sang trọng",
 }
+# Nhãn aspect (ABSA) tiếng Việt — dùng dựng evidence grounding cho /context (V6).
+_ASPECT_VI = {
+    "ASPECT_SERVICE": "Dịch vụ", "ASPECT_VALUE": "Đáng tiền", "ASPECT_CLEANLINESS": "Sạch sẽ",
+    "ASPECT_FACILITIES": "Cơ sở vật chất", "ASPECT_LOCATION": "Vị trí", "ASPECT_ROOM": "Phòng",
+    "ASPECT_FOOD": "Đồ ăn", "STYLE_QUIET": "Yên tĩnh", "STYLE_LIVELY": "Sôi động",
+    "STYLE_NEW": "Mới/hiện đại", "STYLE_LUXURY": "Sang trọng", "STYLE_COZY": "Ấm cúng",
+}
+
+
+def _grounded_evidence(hotel_id: Any, max_pos: int = 5) -> dict[str, Any]:
+    """V6: rút bằng chứng THẬT từ ABSA (semantic_profile + negative_style_profile) thay vì chỉ
+    dùng content marketing. Trả mặt mạnh (aspect score cao, có evidence_count) + mặt yếu (negative
+    span review thật) để câu trả lời CÂN BẰNG, không tâng bốc, không bịa."""
+    ke = labels_for(hotel_id)
+    sp = ke.get("semantic_profile") or {}
+    neg = ke.get("negative_style_profile") or {}
+
+    positives = []
+    for c, v in sorted(sp.items(), key=lambda x: -(x[1].get("score") or 0)):
+        if (v.get("evidence_count") or 0) < 1:
+            continue
+        positives.append({
+            "aspect": _ASPECT_VI.get(c, c),
+            "score": round(float(v.get("score") or 0), 2),
+            "evidence_count": int(v.get("evidence_count") or 0),
+        })
+        if len(positives) >= max_pos:
+            break
+
+    negatives = []
+    for c, v in neg.items():
+        spans = [s for s in (v.get("top_spans") or []) if s][:2]
+        negatives.append({
+            "aspect": _ASPECT_VI.get(c, c),
+            "negative_score": round(float(v.get("negative_score") or 0), 2),
+            "spans": spans,
+        })
+
+    return {"positives": positives, "negatives": negatives}
+
+
+def _evidence_text(title: str, content: str, evidence: dict[str, Any]) -> str:
+    """Gộp content + evidence ABSA thành 1 đoạn ngữ cảnh có dẫn chứng cho LLM."""
+    parts = []
+    if content:
+        parts.append(content[:600])
+    pos = evidence.get("positives") or []
+    if pos:
+        parts.append("Điểm được khách đánh giá cao (từ review thật): " + "; ".join(
+            f"{p['aspect']} ({p['score']}, {p['evidence_count']} lượt)" for p in pos
+        ))
+    neg = evidence.get("negatives") or []
+    for n in neg:
+        if n.get("spans"):
+            parts.append(f"Lưu ý mặt hạn chế — {n['aspect']}: " + " | ".join(n["spans"]))
+    return "\n".join(parts) or "Không có mô tả chi tiết."
 
 
 @lru_cache(maxsize=1)
@@ -121,11 +177,14 @@ def to_search_response(query: str, pipeline_result: dict[str, Any]) -> dict[str,
     return {"query": query, "results": results, "total": len(results)}
 
 
-def build_hotel_context(result_id: str) -> dict[str, Any]:
+def build_hotel_context(result_id: str, query: str | None = None) -> dict[str, Any]:
     """Dựng context cho 1 hotel ĐƯỢC CHỌN (result_id='hotel_<id>') -> Node 9 sinh llm_context.
 
     KHÔNG search lại — lấy thẳng knowledge_object của hotel đó làm ngữ cảnh, để LLM giải thích
-    đúng hotel user click (tránh trả 'không tìm thấy' khi search theo tên không khớp)."""
+    đúng hotel user click (tránh trả 'không tìm thấy' khi search theo tên không khớp).
+
+    V6: grounding theo BẰNG CHỨNG THẬT (ABSA: aspect mạnh + mặt yếu từ review), không chỉ content
+    marketing → câu trả lời cân bằng, đáng tin. Truyền query gốc của user nếu có (thay câu hard-code)."""
     from context import ContextChunk, ContextPackage, generate_answer
 
     hotel_id = result_id.replace("hotel_", "")
@@ -133,19 +192,26 @@ def build_hotel_context(result_id: str) -> dict[str, Any]:
     title = obj.get("title") or result_id
     md = _hotel_metadata(hotel_id)
     content = (obj.get("content") or "").strip()
+    evidence = _grounded_evidence(hotel_id)
+    grounded_text = _evidence_text(title, content, evidence)
+    rf = labels_for(hotel_id).get("range_filters") or {}
 
     pkg = ContextPackage(
-        query=f"Vì sao {title} phù hợp? Giới thiệu ngắn gọn.",
+        query=(query or "").strip() or f"Vì sao {title} phù hợp? Giới thiệu ngắn gọn.",
         chunks=[ContextChunk(
             chunk_id=f"chunk_{hotel_id}",
             hotel_id=hotel_id,
             hotel_name=title,
-            text=content or "Không có mô tả chi tiết.",
+            text=grounded_text,
             score=1.0,
             citation_index=1,
-            metadata={"city": md["location"], "ke_star_rating": None, "ke_review_score": None},
+            metadata={
+                "city": md["location"], "ke_star_rating": rf.get("star_rating"),
+                "ke_review_score": rf.get("review_score"),
+                "absa_positives": evidence["positives"], "absa_negatives": evidence["negatives"],
+            },
         )],
-        metadata={"hotel_id": hotel_id},
+        metadata={"hotel_id": hotel_id, "grounded": True},
     )
     ans = generate_answer(pkg)
     return {
@@ -154,4 +220,5 @@ def build_hotel_context(result_id: str) -> dict[str, Any]:
         "citations": [f"cit_{hotel_id}"],
         "source_documents": [f"doc_{hotel_id}"],
         "context_chunks": [f"chunk_{hotel_id}"],
+        "evidence": evidence,
     }
