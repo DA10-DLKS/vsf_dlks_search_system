@@ -1,0 +1,750 @@
+{
+ "annotations": {
+  "list": [
+   {
+    "builtIn": 1,
+    "datasource": {
+     "type": "grafana",
+     "uid": "-- Grafana --"
+    },
+    "enable": true,
+    "hide": true,
+    "iconColor": "rgba(0, 211, 255, 1)",
+    "name": "Annotations & Alerts",
+    "type": "dashboard"
+   }
+  ]
+ },
+ "description": "DA10 API Observability — Search & Context SLO, stage breakdown, dependency health",
+ "editable": true,
+ "fiscalYearStartMonth": 0,
+ "graphTooltip": 0,
+ "links": [],
+ "panels": [
+  {
+   "id": 1,
+   "title": "Search p95 Latency (server-side)",
+   "type": "timeseries",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 0
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "histogram_quantile(0.95, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/search\"}[5m])) * 1000",
+     "legendFormat": "p95 ms",
+     "refId": "A"
+    },
+    {
+     "expr": "histogram_quantile(0.50, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/search\"}[5m])) * 1000",
+     "legendFormat": "p50 ms",
+     "refId": "B"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "ms",
+     "custom": {
+      "lineWidth": 2
+     },
+     "thresholds": {
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "red",
+        "value": 500
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "tooltip": {
+     "mode": "multi"
+    }
+   }
+  },
+  {
+   "id": 2,
+   "title": "Context p95 Latency (server-side)",
+   "type": "timeseries",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 0
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "histogram_quantile(0.95, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/context\"}[5m])) * 1000",
+     "legendFormat": "p95 ms",
+     "refId": "A"
+    },
+    {
+     "expr": "histogram_quantile(0.50, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/context\"}[5m])) * 1000",
+     "legendFormat": "p50 ms",
+     "refId": "B"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "ms",
+     "thresholds": {
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "red",
+        "value": 500
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 3,
+   "title": "Request Rate (req/s)",
+   "type": "timeseries",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 8
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "rate(da10_http_requests_total{endpoint=\"/search\"}[5m])",
+     "legendFormat": "/search",
+     "refId": "A"
+    },
+    {
+     "expr": "rate(da10_http_requests_total{endpoint=\"/context\"}[5m])",
+     "legendFormat": "/context",
+     "refId": "B"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps"
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 4,
+   "title": "Error Rate (5xx req/s)",
+   "type": "timeseries",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 8
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "rate(da10_http_requests_total{status=~\"5..\"}[5m])",
+     "legendFormat": "5xx {{endpoint}}",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "custom": {
+      "lineWidth": 2
+     },
+     "color": {
+      "fixedColor": "red",
+      "mode": "fixed"
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 5,
+   "title": "Zero-Result Rate",
+   "type": "stat",
+   "gridPos": {
+    "h": 4,
+    "w": 6,
+    "x": 0,
+    "y": 16
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "rate(da10_search_zero_results_total[5m])",
+     "legendFormat": "zero-result/s",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "thresholds": {
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 0.01
+       },
+       {
+        "color": "red",
+        "value": 0.05
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    }
+   }
+  },
+  {
+   "id": 6,
+   "title": "Stage p95 Latency (ms)",
+   "type": "barchart",
+   "gridPos": {
+    "h": 8,
+    "w": 18,
+    "x": 6,
+    "y": 16
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "histogram_quantile(0.95, rate(da10_stage_duration_seconds_bucket[5m])) * 1000",
+     "legendFormat": "{{stage}}",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "ms"
+    },
+    "overrides": []
+   },
+   "options": {
+    "xField": "stage",
+    "orientation": "auto"
+   }
+  },
+  {
+   "id": 7,
+   "title": "Dependency Up",
+   "type": "stat",
+   "gridPos": {
+    "h": 4,
+    "w": 12,
+    "x": 0,
+    "y": 24
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "da10_dependency_up",
+     "legendFormat": "{{dependency}}",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "mappings": [
+      {
+       "type": "value",
+       "options": {
+        "0": {
+         "text": "DOWN",
+         "color": "red"
+        },
+        "1": {
+         "text": "UP",
+         "color": "green"
+        }
+       }
+      }
+     ],
+     "thresholds": {
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "green",
+        "value": 1
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "background"
+   }
+  },
+  {
+   "id": 8,
+   "title": "BM25 Appendix — Request Duration (p95)",
+   "type": "timeseries",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 24
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "histogram_quantile(0.95, rate(da10_http_request_duration_seconds_bucket[5m])) * 1000",
+     "legendFormat": "p95 {{endpoint}} ms",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "ms"
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 50,
+   "title": "Golden Dataset Evaluation (lần chạy gần nhất)",
+   "type": "row",
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 32
+   },
+   "panels": []
+  },
+  {
+   "id": 51,
+   "title": "Recall@10",
+   "type": "stat",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 0,
+    "y": 33
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "da10_eval_metric{name=\"recall\",k=\"10\"}",
+     "legendFormat": "Recall@10",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "min": 0,
+     "max": 1,
+     "decimals": 4,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 0.4
+       },
+       {
+        "color": "green",
+        "value": 0.7
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none",
+    "textMode": "value_and_name"
+   }
+  },
+  {
+   "id": 52,
+   "title": "Precision@10",
+   "type": "stat",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 4,
+    "y": 33
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "da10_eval_metric{name=\"precision\",k=\"10\"}",
+     "legendFormat": "Precision@10",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "min": 0,
+     "max": 1,
+     "decimals": 4,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 0.4
+       },
+       {
+        "color": "green",
+        "value": 0.7
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none",
+    "textMode": "value_and_name"
+   }
+  },
+  {
+   "id": 53,
+   "title": "Hit@10",
+   "type": "stat",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 8,
+    "y": 33
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "da10_eval_metric{name=\"hit\",k=\"10\"}",
+     "legendFormat": "Hit@10",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "min": 0,
+     "max": 1,
+     "decimals": 4,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 0.4
+       },
+       {
+        "color": "green",
+        "value": 0.7
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none",
+    "textMode": "value_and_name"
+   }
+  },
+  {
+   "id": 54,
+   "title": "MRR",
+   "type": "stat",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 12,
+    "y": 33
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "da10_eval_metric{name=\"mrr\",k=\"10\"}",
+     "legendFormat": "MRR",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "min": 0,
+     "max": 1,
+     "decimals": 4,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 0.4
+       },
+       {
+        "color": "green",
+        "value": 0.7
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none",
+    "textMode": "value_and_name"
+   }
+  },
+  {
+   "id": 55,
+   "title": "nDCG@10",
+   "type": "stat",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 16,
+    "y": 33
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "da10_eval_metric{name=\"ndcg\",k=\"10\"}",
+     "legendFormat": "nDCG@10",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "min": 0,
+     "max": 1,
+     "decimals": 4,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 0.4
+       },
+       {
+        "color": "green",
+        "value": 0.7
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none",
+    "textMode": "value_and_name"
+   }
+  },
+  {
+   "id": 56,
+   "title": "Số câu đã eval",
+   "type": "stat",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 20,
+    "y": 33
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "da10_eval_queries_total",
+     "legendFormat": "Số câu đã eval",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "min": 0,
+     "max": null,
+     "decimals": 0,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "blue",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "none",
+    "graphMode": "none",
+    "textMode": "value_and_name"
+   }
+  }
+ ],
+ "refresh": "10s",
+ "schemaVersion": 38,
+ "tags": [
+  "da10"
+ ],
+ "templating": {
+  "list": [
+   {
+    "current": {},
+    "hide": 0,
+    "includeAll": false,
+    "multi": false,
+    "name": "DS_PROMETHEUS",
+    "options": [],
+    "query": "prometheus",
+    "refresh": 1,
+    "type": "datasource"
+   }
+  ]
+ },
+ "time": {
+  "from": "now-1h",
+  "to": "now"
+ },
+ "timepicker": {},
+ "timezone": "browser",
+ "title": "DA10 API",
+ "uid": "da10-api-v1",
+ "version": 2,
+ "weekStart": ""
+}

@@ -714,6 +714,35 @@
       <section class="section" style="margin-top:14px;">
         <div class="section-head">
           <div>
+            <h2>F. Đánh giá Golden Dataset</h2>
+            <p class="section-subtitle">Chạy golden_set_v2 qua pipeline → Recall / Precision / Hit / MRR / nDCG. Nguồn: GET /eval/golden.</p>
+          </div>
+          <span class="badge blue">METRIC THẬT</span>
+        </div>
+        <div class="query-row" style="grid-template-columns: 130px 130px minmax(0,1fr) 160px;">
+          <select id="evalLimit">
+            <option value="5">5 câu (nhanh)</option>
+            <option value="10" selected>10 câu</option>
+            <option value="20">20 câu</option>
+            <option value="59">59 câu (full ~2.5p)</option>
+          </select>
+          <select id="evalK">
+            <option value="10" selected>K=10</option>
+            <option value="20">K=20</option>
+            <option value="50">K=50</option>
+          </select>
+          <select id="evalMode">
+            <option value="false" selected>candidate-only (nhanh)</option>
+            <option value="true">full (vector+BM25)</option>
+          </select>
+          <button id="evalButton" type="button">Chạy đánh giá</button>
+        </div>
+        <div id="evalBody" class="state" style="margin-top:12px;">Bấm "Chạy đánh giá" để đo metric trên golden dataset. Lưu ý: nhiều câu sẽ lâu (~2s/câu).</div>
+      </section>
+
+      <section class="section" style="margin-top:14px;">
+        <div class="section-head">
+          <div>
             <h2>Mapping field backend sang UI</h2>
             <p class="section-subtitle">Bảng này giúp mentor thấy field nào đã có và field nào còn cần backend expose.</p>
           </div>
@@ -798,7 +827,12 @@
       pipelineBody: document.getElementById("pipelineBody"),
       rankingBody: document.getElementById("rankingBody"),
       contextBody: document.getElementById("contextBody"),
-      evidenceBody: document.getElementById("evidenceBody")
+      evidenceBody: document.getElementById("evidenceBody"),
+      evalLimit: document.getElementById("evalLimit"),
+      evalK: document.getElementById("evalK"),
+      evalMode: document.getElementById("evalMode"),
+      evalButton: document.getElementById("evalButton"),
+      evalBody: document.getElementById("evalBody")
     };
 
     function defaultApiBase() {
@@ -846,24 +880,26 @@
       return `${getApiBase()}${path}`;
     }
 
-    function makeTimeoutSignal() {
+    function makeTimeoutSignal(timeoutMs = REQUEST_TIMEOUT_MS) {
       if (typeof AbortSignal !== "undefined" && AbortSignal.timeout) {
-        return AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+        return AbortSignal.timeout(timeoutMs);
       }
       const controller = new AbortController();
-      setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+      setTimeout(() => controller.abort(), timeoutMs);
       return controller.signal;
     }
 
     async function fetchJson(path, options = {}) {
+      // options.timeoutMs cho phép override timeout (vd /eval/golden chạy 59 câu mất vài phút).
+      const { timeoutMs, ...fetchOptions } = options;
       const response = await fetch(endpointUrl(path), {
-        ...options,
+        ...fetchOptions,
         headers: {
           "Accept": "application/json",
           ...(options.body ? { "Content-Type": "application/json" } : {}),
           ...(options.headers || {})
         },
-        signal: makeTimeoutSignal()
+        signal: makeTimeoutSignal(timeoutMs)
       });
 
       const text = await response.text();
@@ -1686,8 +1722,83 @@
       els.evidenceBody.innerHTML = `<div class="state warn">Chưa có evidence vì backend chưa reachable.</div>`;
     }
 
+    // ── F. Golden Dataset evaluation ─────────────────────────────────────────
+    async function runEval() {
+      const limit = els.evalLimit.value;
+      const k = els.evalK.value;
+      const useServices = els.evalMode.value;
+      els.evalButton.disabled = true;
+      els.evalButton.textContent = "Đang chạy...";
+      els.evalBody.innerHTML = `<div class="state">Đang chạy ${escapeHtml(limit)} câu (K=${escapeHtml(k)})... ~2s/câu, vui lòng chờ.</div>`;
+
+      try {
+        const data = await fetchJson(
+          `/eval/golden?limit=${encodeURIComponent(limit)}&k=${encodeURIComponent(k)}&use_services=${encodeURIComponent(useServices)}`,
+          { timeoutMs: 600000 }   // 10 phút: eval 59 câu full ~90s, để dư.
+        );
+        renderEval(data);
+      } catch (error) {
+        els.evalBody.innerHTML = errorState("Không chạy được GET /eval/golden.", error);
+      } finally {
+        els.evalButton.disabled = false;
+        els.evalButton.textContent = "Chạy đánh giá";
+      }
+    }
+
+    function renderEval(data) {
+      const s = data.summary || {};
+      const rows = asArray(data.per_query);
+      const metricCard = (label, val) =>
+        `<div class="metric-card"><div class="metric-label">${escapeHtml(label)}</div>` +
+        `<div class="metric-value">${escapeHtml(fmt(val, 4))}</div></div>`;
+
+      const perRows = rows.map((r) => `
+        <tr>
+          <td>${escapeHtml(r.query_id || "")}</td>
+          <td class="mini">${escapeHtml(r.query || "")}</td>
+          <td>${escapeHtml(r.n_relevant)}</td>
+          <td>${escapeHtml(fmt(r.recall, 3))}</td>
+          <td>${escapeHtml(fmt(r.precision, 3))}</td>
+          <td>${escapeHtml(fmt(r.hit, 0))}</td>
+          <td>${escapeHtml(fmt(r.rr, 3))}</td>
+          <td>${escapeHtml(fmt(r.ndcg, 3))}</td>
+        </tr>
+      `).join("");
+
+      els.evalBody.innerHTML = `
+        <div class="badges" style="margin:0 0 12px;">
+          <span class="badge ok">n_queries: ${escapeHtml(s.n_queries)}</span>
+          <span class="badge blue">K: ${escapeHtml(s.k)}</span>
+          <span class="badge">mode: ${escapeHtml(data.mode || "")}</span>
+          <span class="badge">thời gian: ${escapeHtml(data.duration_s)}s</span>
+        </div>
+        <div class="overview" style="margin-bottom:12px;">
+          ${metricCard("Recall@" + s.k, s.recall)}
+          ${metricCard("Precision@" + s.k, s.precision)}
+          ${metricCard("Hit@" + s.k, s.hit)}
+          ${metricCard("MRR", s.rr)}
+        </div>
+        <div class="overview" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:12px;">
+          ${metricCard("nDCG@" + s.k, s.ndcg)}
+          ${metricCard("Số câu đánh giá", s.n_queries)}
+        </div>
+        <h3>Chi tiết theo câu</h3>
+        <div style="max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:8px;">
+          <table>
+            <thead><tr>
+              <th>query_id</th><th>Câu hỏi</th><th>#GT</th>
+              <th>Recall</th><th>Prec</th><th>Hit</th><th>RR</th><th>nDCG</th>
+            </tr></thead>
+            <tbody>${perRows || `<tr><td colspan="8">Không có per-query.</td></tr>`}</tbody>
+          </table>
+        </div>
+        <div class="mini" style="margin-top:8px;">Metric này cũng được đẩy vào Prometheus gauge <code>da10_eval_metric</code> (xem /metrics).</div>
+      `;
+    }
+
     els.healthButton.addEventListener("click", checkBackend);
     els.runButton.addEventListener("click", runTrace);
+    els.evalButton.addEventListener("click", runEval);
     els.queryInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") runTrace();
     });
