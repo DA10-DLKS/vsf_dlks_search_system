@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { search } from "../api/api_client";
+import { searchV2 } from "../api/api_client";
 import EmptyState from "./EmptyState";
 import ErrorState from "./ErrorState";
 import LoadingState from "./LoadingState";
@@ -9,20 +9,32 @@ const defaultQuery = "Tôi muốn resort yên tĩnh gần biển cho gia đình"
 
 export default function SearchInterface() {
   const [query, setQuery] = useState(defaultQuery);
-  const [response, setResponse] = useState(null);
+  const [queryId, setQueryId] = useState("");
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   async function runSearch() {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+
     setLoading(true);
     setError(null);
+    setHasSearched(true);
 
     try {
-      const data = await search(query);
-      setResponse(data);
+      const data = await searchV2(trimmedQuery, {
+        top_k: 10,
+        page: 0,
+        include_debug: false
+      });
+      setQueryId(data.query_id || "");
+      setResults(data.results || []);
     } catch (apiError) {
       setError(apiError);
-      setResponse(null);
+      setQueryId("");
+      setResults([]);
     } finally {
       setLoading(false);
     }
@@ -52,8 +64,10 @@ export default function SearchInterface() {
 
       {loading ? <LoadingState /> : null}
       {error ? <ErrorState error={error} onRetry={runSearch} /> : null}
-      {!loading && !error && response ? <ResultList results={response.results} /> : null}
-      {!loading && !error && !response ? (
+      {!loading && !error && hasSearched ? (
+        <ResultList results={results} query={query.trim()} query_id={queryId} />
+      ) : null}
+      {!loading && !error && !hasSearched ? (
         <EmptyState message="Submit a demo query to inspect ranked results, citations, sources, and context chunks." />
       ) : null}
     </main>

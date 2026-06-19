@@ -1,0 +1,95 @@
+{
+  "label": "MOCK / DEMO",
+  "owner_boundary": {
+    "calculated_by": "Vu Duc Kien - API & Evaluation",
+    "displayed_by": "Nguyen Duy Hieu - Frontend Demo Tool",
+    "rule": "Frontend only displays provided evaluation values. It does not calculate Recall, MRR, NDCG, latency, citation coverage or context quality."
+  },
+  "data_provenance": {
+    "source": "Mock evaluation results for Sprint demo",
+    "status": "Demo data only",
+    "generated_for": "DA10 Frontend Display Layer",
+    "last_updated": "2026-06-10"
+  },
+  "summary": {
+    "total_queries": 50,
+    "tested_queries": 5,
+    "passed_queries": 4,
+    "failed_queries": 1
+  },
+  "retrieval_metrics": {
+    "recall_at_10": 0.84,
+    "mrr_at_10": 0.72,
+    "ndcg_at_10": 0.78,
+    "hit_at_5": 0.8,
+    "hit_at_10": 0.9,
+    "zero_result_rate": 0.04
+  },
+  "context_citation_metrics": {
+    "chunk_recall": 0.76,
+    "citation_coverage": 0.82,
+    "context_quality": 0.8
+  },
+  "latency_metrics": {
+    "p95_search_latency_ms": 420,
+    "p95_context_latency_ms": 610
+  },
+  "golden_dataset_coverage": {
+    "covered_queries": 5,
+    "total_golden_queries": 50,
+    "coverage_rate": 0.1,
+    "note": "Only 5 query-level rows are included for frontend demo review. Full golden dataset output is expected from the API & Evaluation owner."
+  },
+  "query_results": [
+    {
+      "query_id": "GQ-001",
+      "query": "Tôi muốn resort yên tĩnh gần biển cho gia đình",
+      "business_category": "Family beach resort",
+      "expected_hotel_ids": ["hotel_805030", "hotel_6377313"],
+      "returned_hotel_ids": ["hotel_805030", "hotel_6377313", "hotel_625168"],
+      "relevant_found": true,
+      "status": "PASS",
+      "notes": "Top results include family-friendly beach resorts with citations and context chunks."
+    },
+    {
+      "query_id": "GQ-002",
+      "query": "Khách sạn phù hợp cho chuyến công tác ở trung tâm",
+      "business_category": "Business hotel",
+      "expected_hotel_ids": ["hotel_10961", "hotel_10962"],
+      "returned_hotel_ids": ["hotel_10961", "hotel_11002", "hotel_10962"],
+      "relevant_found": true,
+      "status": "PASS",
+      "notes": "Returned central hotels suitable for business travel. Ranking should be verified with real evaluator."
+    },
+    {
+      "query_id": "GQ-003",
+      "query": "Địa điểm nghỉ dưỡng có tiện ích cho trẻ em",
+      "business_category": "Family amenities",
+      "expected_hotel_ids": ["hotel_6377313", "hotel_805030"],
+      "returned_hotel_ids": ["hotel_6377313", "hotel_805030"],
+      "relevant_found": true,
+      "status": "PASS",
+      "notes": "Returned family-oriented properties with child-friendly amenities in mock data."
+    },
+    {
+      "query_id": "GQ-004",
+      "query": "Khách sạn gần biển có spa và hồ bơi",
+      "business_category": "Beach wellness",
+      "expected_hotel_ids": ["hotel_805030", "hotel_2577124"],
+      "returned_hotel_ids": ["hotel_805030", "hotel_6377313"],
+      "relevant_found": true,
+      "status": "PASS",
+      "notes": "Relevant beach resort found. Full spa-specific validation requires richer backend metadata."
+    },
+    {
+      "query_id": "GQ-005",
+      "query": "Khách sạn giá rẻ gần sân bay cho một đêm",
+      "business_category": "Budget airport stay",
+      "expected_hotel_ids": ["hotel_1602693", "hotel_1155111"],
+      "returned_hotel_ids": ["hotel_10961", "hotel_11002"],
+      "relevant_found": false,
+      "status": "FAIL",
+      "notes": "Mock result set does not include enough airport-budget coverage. This should be retested when real Search API is available."
+    }
+  ]
+}

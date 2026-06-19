@@ -1,9 +1,19 @@
 import { useState } from "react";
 
-export default function MetadataCard({ metadata = {}, score }) {
+export default function MetadataCard({ metadata = {}, contextMetadata = null, score }) {
   const [expanded, setExpanded] = useState(false);
-  const amenities = metadata.amenities || [];
-  const bestFor = metadata.best_for || [];
+  const detail = contextMetadata || {};
+  const mergedMetadata = {
+    ...metadata,
+    ...detail,
+    amenities: detail.amenities || metadata.amenities || metadata.amenities_top || [],
+    suitable_for: detail.suitable_for || metadata.suitable_for || metadata.best_for || [],
+    category: metadata.category || detail.accommodation_type || metadata.accommodation_type,
+    location: metadata.location || detail.city || metadata.city || detail.address || metadata.address
+  };
+  const amenities = mergedMetadata.amenities || [];
+  const suitableFor = mergedMetadata.suitable_for || [];
+  const priceFrom = mergedMetadata.price_from;
 
   return (
     <section className="metadata-card">
@@ -15,12 +25,12 @@ export default function MetadataCard({ metadata = {}, score }) {
       </div>
       <dl>
         <div>
-          <dt>Location</dt>
-          <dd>{metadata.location || "Unknown location"}</dd>
+          <dt>City</dt>
+          <dd>{mergedMetadata.city || mergedMetadata.location || "Unknown city"}</dd>
         </div>
         <div>
-          <dt>Category</dt>
-          <dd>{metadata.category || "Unknown category"}</dd>
+          <dt>Type</dt>
+          <dd>{mergedMetadata.accommodation_type || mergedMetadata.category || "Unknown type"}</dd>
         </div>
         <div>
           <dt>Score</dt>
@@ -30,16 +40,29 @@ export default function MetadataCard({ metadata = {}, score }) {
       {expanded ? (
         <div className="metadata-expanded">
           <p>
-            <strong>Ranking:</strong> {metadata.ranking_info || "No ranking information available"}
+            <strong>Address:</strong> {mergedMetadata.address || "Unknown address"}
           </p>
           <p>
-            <strong>Price level:</strong> {metadata.price_level || "Unknown"}
+            <strong>Star rating:</strong> {mergedMetadata.star_rating ?? "Unknown"}
+          </p>
+          <p>
+            <strong>Review score:</strong> {mergedMetadata.review_score ?? "Unknown"}
+            {mergedMetadata.review_count ? ` (${mergedMetadata.review_count} reviews)` : ""}
+          </p>
+          <p>
+            <strong>Price from:</strong>{" "}
+            {priceFrom ? `${Number(priceFrom).toLocaleString("vi-VN")} VND` : "Unknown"}
           </p>
           <p>
             <strong>Amenities:</strong> {amenities.length ? amenities.join(", ") : "No amenities listed"}
           </p>
           <p>
-            <strong>Best for:</strong> {bestFor.length ? bestFor.join(", ") : "No audience tags listed"}
+            <strong>Suitable for:</strong>{" "}
+            {suitableFor.length ? suitableFor.join(", ") : "No audience tags listed"}
+          </p>
+          <p>
+            <strong>Ranking:</strong>{" "}
+            {mergedMetadata.ranking_info || "No ranking information available"}
           </p>
         </div>
       ) : null}

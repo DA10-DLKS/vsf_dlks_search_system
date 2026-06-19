@@ -1,5 +1,8 @@
 export default function ErrorState({ error, onRetry }) {
-  const message = typeof error === "string" ? error : error?.message || "Something went wrong.";
+  const message =
+    typeof error === "string"
+      ? error
+      : error?.user_message || error?.message || "Something went wrong.";
 
   return (
     <div className="state state-error" role="alert">
