@@ -53,10 +53,30 @@ app = FastAPI(title="DA10 Knowledge & Retrieval Platform")
 
 @app.on_event("startup")
 def _warmup() -> None:
-    """V12: nạp sẵn synonym (tránh cold-start ~978ms request đầu mỗi worker). An toàn nếu lỗi."""
+    """V12: nạp sẵn synonym (tránh cold-start ~978ms request đầu mỗi worker). An toàn nếu lỗi.
+
+    Quan trọng (fix segfault): các route hybrid chạy ở threadpool của Starlette (def route).
+    Nếu để model XLM-RoBERTa (bge-m3 embedding và bge-reranker cross-encoder) lazy-load LẦN ĐẦU
+    trong thread con đó, torch native crash (exit 139) trên CPU/Windows. Khởi tạo cả hai NGAY Ở
+    STARTUP (main thread) tránh được. Reranker chỉ warmup khi USE_RERANKER bật (mặc định off).
+    Thứ tự: cross-encoder trước, bge-m3 sau (an toàn theo kiểm chứng init order)."""
     try:
         from retrieval.query_processing import warmup
         warmup()
+    except Exception:
+        pass
+
+    # Cross-encoder reranker (chỉ khi bật) — nạp ở main thread.
+    if os.environ.get("USE_RERANKER", "0") == "1":
+        try:
+            from retrieval.reranking.neural_rerank import _load_model
+            _load_model()
+        except Exception:
+            pass
+
+    # bge-m3 embedding (lazy service) — ép khởi tạo ở main thread để tránh lazy-load trong threadpool.
+    try:
+        _get_vector_service()
     except Exception:
         pass
 
