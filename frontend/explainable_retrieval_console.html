@@ -265,6 +265,8 @@
 
     .section {
       padding: 16px;
+      min-width: 0;            /* grid/flex item không bị nội dung dài đẩy tràn ngang */
+      overflow-wrap: anywhere;
     }
 
     .section-head {
@@ -431,7 +433,8 @@
     /* Vùng cuộn cho bảng/danh sách dài (candidates, BM25, vector, chunks). */
     .scroll-box {
       max-height: 420px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--surface);
@@ -439,6 +442,8 @@
 
     .scroll-box.tall { max-height: 560px; }
     .scroll-box.short { max-height: 300px; }
+    /* Khung chứa bảng (BM25/ranking) cần cuộn ngang để không cắt cột; khung chứa chunk thì wrap. */
+    .scroll-box:has(table) { overflow-x: auto; }
 
     /* Header bảng dính khi cuộn trong scroll-box. */
     .scroll-box table { border: 0; }
@@ -582,12 +587,19 @@
       background: var(--surface-soft);
       border-radius: 7px;
       padding: 10px 12px;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
+    /* Mọi text con trong chunk (URL, chunk_id dài) phải xuống dòng, không tràn ngang. */
+    .chunk * { overflow-wrap: anywhere; word-break: break-word; }
 
     .chunk-title {
       font-weight: 800;
       margin-bottom: 5px;
       font-size: 13px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .footer-note {
@@ -1069,10 +1081,13 @@
       ]);
       renderLoading();
 
-      // top_n tối đa của backend là 20; lấy nhiều nhất có thể để hiển thị TOÀN BỘ hotel (candidates/bm25/vector).
-      const hybridTopN = Math.min(Math.max(state.topN, 20), 20);
+      // Phương án 2: LUÔN fetch top_n=20 (trần backend) để các tab trace thấy TOÀN BỘ
+      // candidates/bm25/vector/rank; dropdown topN chỉ cắt ở phần HIỂN THỊ (xem renderOverview/renderRanking).
+      const hybridTopN = 20;
+      // BM25 baseline: backend GET /search nhận `size` (le=20) — truyền đúng topN người dùng chọn.
+      const bm25Size = Math.min(Math.max(state.topN, 1), 20);
       const hybridPath = `/hybrid_search?q=${encodeURIComponent(query)}&top_n=${hybridTopN}&answer=true`;
-      const bm25Path = `/search?q=${encodeURIComponent(query)}`;
+      const bm25Path = `/search?q=${encodeURIComponent(query)}&size=${bm25Size}`;
 
       const [hybridResult, bm25Result] = await Promise.allSettled([
         fetchJson(hybridPath),
@@ -1146,13 +1161,14 @@
         ...asArray(intent.landmarks)
       ].length;
 
-      const topHotels = asArray(state.hybrid?.top_hotels);
+      // Phương án 2: fetch 20 cho trace, nhưng card hiển thị theo topN người dùng chọn.
+      const topHotels = asArray(state.hybrid?.top_hotels).slice(0, state.topN);
       const bm25Results = asArray(state.bm25?.results);
-      const bm25Hits = state.bm25 ? (Number(state.bm25.total_hits) || bm25Results.length) : "-";
+      const bm25Hits = state.bm25 ? bm25Results.length : "-";
       els.overview.innerHTML = `
         ${overviewCard("Ontology tags", state.hybrid ? conceptCount : fallbackSignals.concepts.length, state.hybrid ? "Từ backend /hybrid_search" : "Fallback frontend từ query")}
         ${overviewCard("Candidates", state.hybrid ? fmt(state.hybrid.n_candidates, 0) : "-", state.hybrid ? "Field: n_candidates" : "No candidate trace")}
-        ${overviewCard("Top Hotels", state.hybrid ? topHotels.length : "-", state.hybrid ? "Ranked hotels returned" : "No ranked hotels")}
+        ${overviewCard("Top Hotels", state.hybrid ? topHotels.length : "-", state.hybrid ? `Top ${state.topN} (đã chọn)` : "No ranked hotels")}
         ${overviewCard("BM25 results", bm25Hits, state.bm25 ? `${fmt(state.bm25.took_ms, 0)} ms` : errorHint(state.lastErrors.bm25, "BM25 unavailable"))}
       `;
     }
@@ -1534,7 +1550,9 @@
         return;
       }
 
-      const hotels = asArray(state.hybrid.top_hotels);
+      // Phương án 2: backend trả 20 (cho trace), bảng xếp hạng hiển thị đúng topN người dùng chọn.
+      const allHotels = asArray(state.hybrid.top_hotels);
+      const hotels = allHotels.slice(0, state.topN);
       if (!hotels.length) {
         els.rankingBody.innerHTML = `<div class="state warn">GET /hybrid_search trả về 0 top_hotels.</div>`;
         return;
@@ -1587,7 +1605,7 @@
 
       els.rankingBody.innerHTML = `
         <div class="badges" style="margin:0 0 10px;">
-          <span class="badge ok">hiển thị toàn bộ ${hotels.length} hotel (top_hotels)</span>
+          <span class="badge ok">hiển thị ${hotels.length}/${allHotels.length} hotel (Top ${state.topN})</span>
           <span class="badge blue">n_candidates: ${escapeHtml(fmt(state.hybrid.n_candidates, 0))}</span>
           <span class="badge blue">n_fused: ${escapeHtml(fmt(state.hybrid.n_fused, 0))}</span>
         </div>
@@ -1650,15 +1668,18 @@
         </div>
       `).join("");
 
-      // Semantic profile: mỗi ASPECT 1 thanh score [0,1].
-      const aspectRows = Object.entries(profile).map(([aspect, info]) => {
-        const score = typeof info === "object" ? (info.score ?? 0) : Number(info) || 0;
-        const ev = typeof info === "object" ? info.evidence_count : undefined;
+      // Semantic profile gồm 2 loại: ASPECT_* (điểm khía cạnh từ review) và non-ASPECT
+      // (điểm profile của concept AMEN_/PURPOSE_/STYLE_...). Tách riêng cho dễ đọc.
+      const scoreOf = (info) => (typeof info === "object" ? (info.score ?? 0) : Number(info) || 0);
+      const evOf = (info) => (typeof info === "object" ? info.evidence_count : undefined);
+      const scoreBar = (label, info) => {
+        const score = scoreOf(info);
+        const ev = evOf(info);
         const pct = Math.max(0, Math.min(100, score * 100));
         return `
           <div style="margin-bottom:8px;">
             <div class="score-row" style="margin-bottom:3px;">
-              <span>${escapeHtml(aspect.replace(/^ASPECT_/, ""))}</span>
+              <span>${escapeHtml(label)}</span>
               <strong>${escapeHtml(fmt(score, 2))}${ev !== undefined ? ` · ${escapeHtml(ev)} đánh giá` : ""}</strong>
             </div>
             <div style="height:7px;background:var(--line);border-radius:99px;overflow:hidden;">
@@ -1666,7 +1687,16 @@
             </div>
           </div>
         `;
-      }).join("");
+      };
+      const entries = Object.entries(profile);
+      const aspectEntries = entries
+        .filter(([k]) => k.startsWith("ASPECT_"))
+        .sort((a, b) => scoreOf(b[1]) - scoreOf(a[1]));
+      const otherEntries = entries
+        .filter(([k]) => !k.startsWith("ASPECT_"))
+        .sort((a, b) => scoreOf(b[1]) - scoreOf(a[1]));
+      const aspectRows = aspectEntries.map(([k, info]) => scoreBar(k.replace(/^ASPECT_/, ""), info)).join("");
+      const otherRows = otherEntries.map(([k, info]) => scoreBar(k, info)).join("");
 
       const attrHtml = `
         <dl class="kv-grid">
@@ -1684,9 +1714,13 @@
           ${attrHtml}
         </div>
         <div style="margin-bottom:14px;">
-          <h3 style="margin-bottom:8px;">Semantic profile (ASPECT)</h3>
-          ${aspectRows || '<div class="state warn">Không có semantic_profile.</div>'}
+          <h3 style="margin-bottom:8px;">Đánh giá theo khía cạnh (ASPECT)</h3>
+          ${aspectRows || '<div class="state warn">Không có điểm ASPECT.</div>'}
         </div>
+        ${otherRows ? `<div style="margin-bottom:14px;">
+          <h3 style="margin-bottom:8px;">Điểm profile concept khác</h3>
+          ${otherRows}
+        </div>` : ""}
         <div>
           <h3 style="margin-bottom:8px;">Ontology concepts (${concepts.length})</h3>
           ${conceptHtml ? `<div class="tag-grid">${conceptHtml}</div>` : '<div class="state warn">Không có ontology_concepts.</div>'}
@@ -1867,8 +1901,8 @@
       els.evidenceBody.innerHTML = `
         <div class="context-block">
           <div><h3>Citations</h3>${renderList(citations, "Không có citations.")}</div>
-          <div><h3>Positive evidence</h3>${renderList(positives, "Không có positive evidence.")}</div>
-          <div><h3>Negative evidence</h3>${renderList(negatives, "Không có negative evidence.")}</div>
+          <div><h3>Positive evidence</h3>${renderEvidence(positives, "positive", "Không có positive evidence.")}</div>
+          <div><h3>Negative evidence</h3>${renderEvidence(negatives, "negative", "Không có negative evidence.")}</div>
         </div>
       `;
     }
@@ -1927,9 +1961,9 @@
         if (typeof item === "string") {
           return `<div class="chunk"><div class="chunk-title">#${index + 1}</div><div>${escapeHtml(item)}</div></div>`;
         }
-        const title = item.citation_id || item.source_id || item.id || item.chunk_id || `item_${index + 1}`;
-        const text = item.text_snippet || item.text || item.content || item.snippet || formatValue(item);
-        const meta = item.source_type || item.source || item.url || item.table || "";
+        const title = item.label || item.title || item.citation_id || item.source_id || item.id || item.chunk_id || `item_${index + 1}`;
+        const text = item.quote || item.text_snippet || item.text || item.content || item.snippet || formatValue(item);
+        const meta = item.url || item.source_type || item.source || item.type || item.table || "";
         return `
           <div class="chunk">
             <div class="chunk-title">${escapeHtml(title)}</div>
@@ -1941,6 +1975,35 @@
       return arr.length > 4
         ? `<div class="scroll-box short">${body}</div>`
         : body;
+    }
+
+    // Render evidence ABSA gọn (aspect/score + span review), ưu tiên item khớp query (matched).
+    function renderEvidence(items, kind, emptyMessage) {
+      const arr = asArray(items);
+      if (!arr.length) return `<div class="state warn">${escapeHtml(emptyMessage)}</div>`;
+      const body = arr.map((item) => {
+        if (typeof item !== "object") {
+          return `<div class="chunk"><div>${escapeHtml(formatValue(item))}</div></div>`;
+        }
+        const aspect = item.aspect || item.concept || "-";
+        const score = kind === "negative" ? item.negative_score : item.score;
+        const count = item.evidence_count;
+        const spans = asArray(item.spans);
+        const matched = item.matched
+          ? `<span class="badge ok" style="margin-left:6px;">khớp nhu cầu</span>` : "";
+        const scoreLine = (score !== undefined && score !== null)
+          ? `score ${escapeHtml(fmt(score))}${count ? ` · ${escapeHtml(fmt(count, 0))} lượt` : ""}` : "";
+        const spanHtml = spans.length
+          ? `<div class="text-box" style="margin-top:6px;">${spans.map((s) => escapeHtml(String(s))).join("<br>")}</div>` : "";
+        return `
+          <div class="chunk">
+            <div class="chunk-title">${escapeHtml(aspect)}${matched}</div>
+            ${scoreLine ? `<div class="mini">${scoreLine}</div>` : ""}
+            ${spanHtml}
+          </div>
+        `;
+      }).join("");
+      return arr.length > 4 ? `<div class="scroll-box short">${body}</div>` : body;
     }
 
     function hotelIdFor(hotel) {

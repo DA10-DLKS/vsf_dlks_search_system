@@ -47,51 +47,96 @@ _ASPECT_VI = {
 }
 
 
-def _grounded_evidence(hotel_id: Any, max_pos: int = 5) -> dict[str, Any]:
+def _concept_vi(concept: str) -> str:
+    """Nhãn tiếng Việt cho 1 concept, gộp mọi nhóm (aspect/purpose/amenity); fallback = raw."""
+    return _ASPECT_VI.get(concept) or _PURPOSE_VI.get(concept) or _AMEN_VI.get(concept) or concept
+
+
+def _grounded_evidence(
+    hotel_id: Any, max_pos: int = 5, query_concepts: set[str] | None = None
+) -> dict[str, Any]:
     """V6: rút bằng chứng THẬT từ ABSA (semantic_profile + negative_style_profile) thay vì chỉ
     dùng content marketing. Trả mặt mạnh (aspect score cao, có evidence_count) + mặt yếu (negative
-    span review thật) để câu trả lời CÂN BẰNG, không tâng bốc, không bịa."""
+    span review thật) để câu trả lời CÂN BẰNG, không tâng bốc, không bịa.
+
+    V7 (#4-A): nếu có query_concepts (từ parse_intent), ƯU TIÊN aspect KHỚP query lên đầu ở CẢ hai
+    chiều pos/neg và đánh dấu `matched=True`. Soi cả negative để KHÔNG tâng bốc sai: hotel điểm
+    positive thấp nhưng negative cao về cùng aspect (vd 'yên tĩnh') sẽ nổi lên ở mặt hạn chế."""
     ke = labels_for(hotel_id)
     sp = ke.get("semantic_profile") or {}
     neg = ke.get("negative_style_profile") or {}
+    qc = query_concepts or set()
+
+    # Ưu tiên: aspect khớp query trước (matched), trong mỗi nhóm vẫn sort theo score giảm dần.
+    def _pos_key(item):
+        c, v = item
+        return (0 if c in qc else 1, -(v.get("score") or 0))
 
     positives = []
-    for c, v in sorted(sp.items(), key=lambda x: -(x[1].get("score") or 0)):
+    for c, v in sorted(sp.items(), key=_pos_key):
         if (v.get("evidence_count") or 0) < 1:
             continue
         positives.append({
-            "aspect": _ASPECT_VI.get(c, c),
+            "concept": c,
+            "aspect": _concept_vi(c),
             "score": round(float(v.get("score") or 0), 2),
             "evidence_count": int(v.get("evidence_count") or 0),
+            "matched": c in qc,
         })
         if len(positives) >= max_pos:
             break
 
+    def _neg_key(item):
+        c, v = item
+        return (0 if c in qc else 1, -(v.get("negative_score") or 0))
+
     negatives = []
-    for c, v in neg.items():
+    for c, v in sorted(neg.items(), key=_neg_key):
         spans = [s for s in (v.get("top_spans") or []) if s][:2]
         negatives.append({
-            "aspect": _ASPECT_VI.get(c, c),
+            "concept": c,
+            "aspect": _concept_vi(c),
             "negative_score": round(float(v.get("negative_score") or 0), 2),
             "spans": spans,
+            "matched": c in qc,
         })
 
     return {"positives": positives, "negatives": negatives}
 
 
 def _evidence_text(title: str, content: str, evidence: dict[str, Any]) -> str:
-    """Gộp content + evidence ABSA thành 1 đoạn ngữ cảnh có dẫn chứng cho LLM."""
+    """Gộp content + evidence ABSA thành 1 đoạn ngữ cảnh có dẫn chứng cho LLM.
+
+    V7: nêu RÕ aspect khớp nhu cầu query (matched) ở phần đầu — gồm CẢ chiều tích cực lẫn tiêu cực —
+    để LLM trả lời trung thực: hotel mạnh/yếu đúng tiêu chí user hỏi, không tâng bốc."""
     parts = []
     if content:
         parts.append(content[:600])
+
     pos = evidence.get("positives") or []
-    if pos:
-        parts.append("Điểm được khách đánh giá cao (từ review thật): " + "; ".join(
-            f"{p['aspect']} ({p['score']}, {p['evidence_count']} lượt)" for p in pos
-        ))
     neg = evidence.get("negatives") or []
-    for n in neg:
+
+    # Phần khớp nhu cầu user: gom cả pos+neg của các aspect matched để LLM cân nhắc 2 chiều.
+    matched_pos = [p for p in pos if p.get("matched")]
+    matched_neg = [n for n in neg if n.get("matched")]
+    for p in matched_pos:
+        parts.append(
+            f"Về tiêu chí '{p['aspect']}' (khách hỏi): điểm tích cực {p['score']} "
+            f"từ {p['evidence_count']} lượt đánh giá."
+        )
+    for n in matched_neg:
+        line = f"Về tiêu chí '{n['aspect']}' (khách hỏi): có phản hồi tiêu cực (điểm {n['negative_score']})."
         if n.get("spans"):
+            line += " Trích review: " + " | ".join(n["spans"])
+        parts.append(line)
+
+    other_pos = [p for p in pos if not p.get("matched")]
+    if other_pos:
+        parts.append("Điểm mạnh nổi bật khác (từ review thật): " + "; ".join(
+            f"{p['aspect']} ({p['score']}, {p['evidence_count']} lượt)" for p in other_pos
+        ))
+    for n in neg:
+        if not n.get("matched") and n.get("spans"):
             parts.append(f"Lưu ý mặt hạn chế — {n['aspect']}: " + " | ".join(n["spans"]))
     return "\n".join(parts) or "Không có mô tả chi tiết."
 
@@ -192,12 +237,24 @@ def build_hotel_context(result_id: str, query: str | None = None) -> dict[str, A
     title = obj.get("title") or result_id
     md = _hotel_metadata(hotel_id)
     content = (obj.get("content") or "").strip()
-    evidence = _grounded_evidence(hotel_id)
+
+    # #4-A: trích concept từ query gốc để ƯU TIÊN evidence khớp nhu cầu user (cả pos lẫn neg).
+    query_concepts: set[str] = set()
+    q_clean = (query or "").strip()
+    if q_clean:
+        try:
+            from retrieval.query_processing.intent_parser import parse_intent
+            query_concepts = set(parse_intent(q_clean).concepts)
+        except Exception:
+            query_concepts = set()
+    evidence = _grounded_evidence(hotel_id, query_concepts=query_concepts)
     grounded_text = _evidence_text(title, content, evidence)
     rf = labels_for(hotel_id).get("range_filters") or {}
 
+    # #3-B: vẫn truyền query gốc (đã được nới prompt trong context_package) để câu trả lời bám nhu cầu;
+    # nếu không có query thì hỏi giới thiệu chung hotel.
     pkg = ContextPackage(
-        query=(query or "").strip() or f"Vì sao {title} phù hợp? Giới thiệu ngắn gọn.",
+        query=q_clean or f"Vì sao {title} phù hợp? Giới thiệu ngắn gọn.",
         chunks=[ContextChunk(
             chunk_id=f"chunk_{hotel_id}",
             hotel_id=hotel_id,
@@ -214,11 +271,82 @@ def build_hotel_context(result_id: str, query: str | None = None) -> dict[str, A
         metadata={"hotel_id": hotel_id, "grounded": True},
     )
     ans = generate_answer(pkg)
+
+    # #1-B: tách evidence ABSA đã có thành NHIỀU chunk hiển thị (matched lên đầu), thay vì 1 chunk gộp.
+    display_chunks = _evidence_chunks(hotel_id, title, content, evidence, md)
     return {
         "result_id": result_id,
         "llm_context": ans.get("answer", ""),
-        "citations": [f"cit_{hotel_id}"],
-        "source_documents": [f"doc_{hotel_id}"],
-        "context_chunks": [f"chunk_{hotel_id}"],
+        # #2: trả OBJECT thật (không phải string id) để frontend render đúng text + metadata.
+        "citations": [{
+            "id": f"cit_{hotel_id}",
+            "source_document_id": f"doc_{hotel_id}",
+            "label": title,
+            "url": (obj.get("provenance") or {}).get("source_url", ""),
+            "quote": (content[:160] or grounded_text[:160]),
+        }],
+        "source_documents": [{
+            "id": f"doc_{hotel_id}",
+            "title": title,
+            "type": "hotel_detail",
+            "url": (obj.get("provenance") or {}).get("source_url", ""),
+        }],
+        "context_chunks": display_chunks,
         "evidence": evidence,
     }
+
+
+def _evidence_chunks(
+    hotel_id: Any, title: str, content: str, evidence: dict[str, Any], md: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """#1-B: dựng NHIỀU chunk hiển thị từ ABSA đã enrich (không search lại).
+
+    Thứ tự: (1) chunk tổng quan từ content; (2) các aspect KHỚP query (matched) — cả mặt mạnh lẫn
+    mặt hạn chế có span review thật; (3) các điểm mạnh/hạn chế nổi bật khác. Positive chỉ có
+    score+count (data không lưu span positive); negative có top_spans = câu review nguyên văn."""
+    chunks: list[dict[str, Any]] = []
+
+    if content:
+        chunks.append({
+            "chunk_id": f"chunk_{hotel_id}_overview",
+            "hotel_name": title,
+            "source_type": "hotel_content",
+            "text": content[:400],
+            "score": None,
+            "metadata": {"location": md.get("location")},
+        })
+
+    pos = evidence.get("positives") or []
+    neg = evidence.get("negatives") or []
+    # matched trước, trong nhóm giữ nguyên thứ tự đã sort ở _grounded_evidence.
+    ordered_pos = [p for p in pos if p.get("matched")] + [p for p in pos if not p.get("matched")]
+    ordered_neg = [n for n in neg if n.get("matched")] + [n for n in neg if not n.get("matched")]
+
+    for p in ordered_pos:
+        tag = " (khớp nhu cầu)" if p.get("matched") else ""
+        chunks.append({
+            "chunk_id": f"chunk_{hotel_id}_pos_{p['concept']}",
+            "hotel_name": title,
+            "source_type": "absa_positive",
+            "text": f"Điểm mạnh{tag}: {p['aspect']} — đánh giá tích cực {p['score']} "
+                    f"từ {p['evidence_count']} lượt review.",
+            "score": p["score"],
+            "metadata": {"concept": p["concept"], "evidence_count": p["evidence_count"],
+                         "matched": p["matched"]},
+        })
+
+    for n in ordered_neg:
+        if not n.get("spans"):
+            continue
+        tag = " (khớp nhu cầu)" if n.get("matched") else ""
+        chunks.append({
+            "chunk_id": f"chunk_{hotel_id}_neg_{n['concept']}",
+            "hotel_name": title,
+            "source_type": "absa_negative",
+            "text": f"Mặt hạn chế{tag}: {n['aspect']} (điểm tiêu cực {n['negative_score']}). "
+                    f"Trích review thật: " + " | ".join(n["spans"]),
+            "score": n["negative_score"],
+            "metadata": {"concept": n["concept"], "matched": n["matched"], "spans": n["spans"]},
+        })
+
+    return chunks
