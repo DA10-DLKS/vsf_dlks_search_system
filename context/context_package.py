@@ -114,8 +114,13 @@ Ngữ cảnh:
 
 Yêu cầu:
 1. Chỉ dùng thông tin trong ngữ cảnh (không bịa).
-2. Nếu thiếu thông tin, nói rõ "Tôi không tìm thấy thông tin cụ thể trong dữ liệu".
-3. Khi nhắc một khách sạn, trích dẫn nguồn [i] tương ứng.
+2. Ngữ cảnh là về MỘT khách sạn cụ thể được người dùng chọn. Hãy giải thích khách sạn này phù hợp \
+TỚI ĐÂU với nhu cầu trong câu hỏi, dựa trên bằng chứng có sẵn (điểm đánh giá, review thật).
+3. Đánh giá CÂN BẰNG: nêu cả mặt mạnh lẫn mặt hạn chế đúng với bằng chứng; nếu review cho thấy \
+khách sạn YẾU ở tiêu chí người dùng hỏi thì nói thẳng, không tâng bốc.
+4. Nếu một tiêu chí cụ thể trong câu hỏi không có dữ liệu, chỉ nói rõ "chưa có thông tin về tiêu \
+chí đó" cho riêng tiêu chí ấy — KHÔNG vì thế mà từ chối giới thiệu các điểm khác của khách sạn.
+5. Khi nhắc một khách sạn, trích dẫn nguồn [i] tương ứng.
 
 Câu hỏi: "{query}"
 """

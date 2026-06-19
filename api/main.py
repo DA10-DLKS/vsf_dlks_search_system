@@ -172,7 +172,10 @@ def metrics():
 
 
 @app.get("/search")
-def search_bm25(q: str = Query(..., description="Search query")) -> dict:
+def search_bm25(
+    q: str = Query(..., description="Search query"),
+    size: int = Query(10, ge=1, le=20, description="Số kết quả BM25 trả về"),
+) -> dict:
     """
     BM25 search endpoint (Sprint 1 baseline).
     Tracks latency and error counts via Prometheus.
@@ -182,7 +185,7 @@ def search_bm25(q: str = Query(..., description="Search query")) -> dict:
     REQUESTS_TOTAL.labels(endpoint=endpoint).inc()
 
     try:
-        response = keyword_search_service.search(q)
+        response = keyword_search_service.search(q, size=size)
         latency = time.time() - start_time
         REQUEST_LATENCY.labels(endpoint=endpoint).observe(latency)
         return response
