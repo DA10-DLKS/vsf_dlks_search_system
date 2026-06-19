@@ -29,6 +29,7 @@ from retrieval.filtering import (
 )
 from retrieval.query_processing import parse_intent
 from retrieval.reranking import (
+    METHOD_DENSITY_FALLBACK,
     aggregate_by_hotel,
     apply_profile_boost,
     business_rerank,
@@ -136,6 +137,14 @@ def run_hybrid_search(
     else:
         reranked = neural_rerank(query, fused, top_k=len(fused), use_model=False)
 
+    # Chế độ rerank THỰC TẾ đã chạy (cross-encoder vs density-fallback). neural_rerank gắn
+    # doc["rerank_method"]; đọc lại để expose ra API — kể cả khi USE_RERANKER=1 nhưng model
+    # load lỗi thì giá trị này tự là density-fallback (phản ánh đúng cái đã xảy ra).
+    rerank_method = next(
+        (d["rerank_method"] for d in reranked if d.get("rerank_method")),
+        METHOD_DENSITY_FALLBACK,
+    )
+
     # Node 7C
     reranked = business_rerank(
         reranked, concepts=intent.concepts, intent_max_price=intent.range.get("price_max")
@@ -150,6 +159,7 @@ def run_hybrid_search(
         "intent": intent.to_dict(),
         "n_candidates": len(candidates),
         "n_fused": len(fused),
+        "rerank_method": rerank_method,
         "top_hotels": top_hotels,
         "context_package": pkg.to_dict(),
         "prompt": prompt,
