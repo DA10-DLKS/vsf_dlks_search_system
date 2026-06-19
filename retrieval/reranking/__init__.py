@@ -7,7 +7,11 @@ from .fusion import (
     reciprocal_rank_fusion,
     rrf_by_hotel,
 )
-from .neural_rerank import neural_rerank
+from .neural_rerank import (
+    METHOD_CROSS_ENCODER,
+    METHOD_DENSITY_FALLBACK,
+    neural_rerank,
+)
 
 __all__ = [
     "reciprocal_rank_fusion",
@@ -16,4 +20,6 @@ __all__ = [
     "business_rerank",
     "aggregate_by_hotel",
     "neural_rerank",
+    "METHOD_CROSS_ENCODER",
+    "METHOD_DENSITY_FALLBACK",
 ]

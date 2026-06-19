@@ -428,6 +428,85 @@
       line-height: 1.35;
     }
 
+    /* Vùng cuộn cho bảng/danh sách dài (candidates, BM25, vector, chunks). */
+    .scroll-box {
+      max-height: 420px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .scroll-box.tall { max-height: 560px; }
+    .scroll-box.short { max-height: 300px; }
+
+    /* Header bảng dính khi cuộn trong scroll-box. */
+    .scroll-box table { border: 0; }
+    .scroll-box thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .scroll-hint {
+      color: var(--muted);
+      font-size: 11px;
+      margin: 4px 2px 0;
+    }
+
+    /* Modal popup (ontology) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      width: min(720px, 100%);
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-body {
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .kv-grid {
+      display: grid;
+      grid-template-columns: minmax(120px, max-content) minmax(0, 1fr);
+      gap: 4px 12px;
+      font-size: 12px;
+    }
+
+    .kv-grid dt { color: var(--muted); font-weight: 750; }
+    .kv-grid dd { margin: 0; overflow-wrap: anywhere; }
+
+    .chunk-meta {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -692,7 +771,7 @@
           <div class="section-head">
             <div>
               <h2>D. Context package</h2>
-              <p class="section-subtitle">Fields: context_package.chunks[], llm_context, prompt</p>
+              <p class="section-subtitle">context_package.chunks[] (chunk_id + nội dung + metadata) · prompt/llm_context rút gọn tối đa 200 ký tự</p>
             </div>
             <span class="badge ok">CHỌN KHÁCH SẠN</span>
           </div>
@@ -714,6 +793,35 @@
       <section class="section" style="margin-top:14px;">
         <div class="section-head">
           <div>
+            <h2>F. Đánh giá Golden Dataset</h2>
+            <p class="section-subtitle">Chạy golden_set_v2 qua pipeline → Recall / Precision / Hit / MRR / nDCG. Nguồn: GET /eval/golden.</p>
+          </div>
+          <span class="badge blue">METRIC THẬT</span>
+        </div>
+        <div class="query-row" style="grid-template-columns: 130px 130px minmax(0,1fr) 160px;">
+          <select id="evalLimit">
+            <option value="5">5 câu (nhanh)</option>
+            <option value="10" selected>10 câu</option>
+            <option value="20">20 câu</option>
+            <option value="59">59 câu (full ~2.5p)</option>
+          </select>
+          <select id="evalK">
+            <option value="10" selected>K=10</option>
+            <option value="20">K=20</option>
+            <option value="50">K=50</option>
+          </select>
+          <select id="evalMode">
+            <option value="false" selected>candidate-only (nhanh)</option>
+            <option value="true">full (vector+BM25)</option>
+          </select>
+          <button id="evalButton" type="button">Chạy đánh giá</button>
+        </div>
+        <div id="evalBody" class="state" style="margin-top:12px;">Bấm "Chạy đánh giá" để đo metric trên golden dataset. Lưu ý: nhiều câu sẽ lâu (~2s/câu).</div>
+      </section>
+
+      <section class="section" style="margin-top:14px;">
+        <div class="section-head">
+          <div>
             <h2>Mapping field backend sang UI</h2>
             <p class="section-subtitle">Bảng này giúp mentor thấy field nào đã có và field nào còn cần backend expose.</p>
           </div>
@@ -725,7 +833,6 @@
               <th>Khu vực UI</th>
               <th>Endpoint</th>
               <th>Field sử dụng</th>
-              <th>Còn thiếu / TODO</th>
             </tr>
           </thead>
           <tbody>
@@ -733,31 +840,26 @@
               <td>Hiểu query</td>
               <td>GET /hybrid_search</td>
               <td>intent.query, concepts, hard_concepts, feel_concepts, purposes, landmarks, location_concepts, implicit, city, range</td>
-              <td>Concept confidence, matched text, ontology node provenance nếu chưa expose.</td>
             </tr>
             <tr>
               <td>Luồng retrieval</td>
               <td>GET /hybrid_search</td>
               <td>n_candidates, n_fused, top_hotels[].bm25_rank, vector_rank, rrf_score, rerank_score</td>
-              <td>Input/output count sau từng filter/boost.</td>
             </tr>
             <tr>
               <td>Giải thích xếp hạng</td>
               <td>GET /hybrid_search</td>
               <td>top_hotels[].final_score, business_score, rerank_score, rrf_score, matched_chunks</td>
-              <td>Breakdown chi tiết location/purpose/review bonus.</td>
             </tr>
             <tr>
               <td>Baseline BM25</td>
               <td>GET /search</td>
               <td>results[].id, name, score, city, address, description, took_ms, total_hits</td>
-              <td>Không có vector/context/citation.</td>
             </tr>
             <tr>
               <td>Context + Evidence</td>
               <td>POST /context</td>
               <td>llm_context, context_text, context_chunks, citations, evidence, source_documents</td>
-              <td>Nếu route chưa sẵn sàng, UI hiển thị fallback rõ ràng.</td>
             </tr>
           </tbody>
         </table>
@@ -770,6 +872,8 @@
   <script>
     const DEFAULT_QUERY = "khách sạn phù hợp cho trẻ nhỏ gần VinWonders Phú Quốc";
     const REQUEST_TIMEOUT_MS = 60000;
+    // D. Context package: prompt/llm_context chỉ hiển thị tối đa 200 ký tự.
+    const CONTEXT_PREVIEW_CHARS = 200;
 
     const state = {
       apiBase: "",
@@ -798,7 +902,12 @@
       pipelineBody: document.getElementById("pipelineBody"),
       rankingBody: document.getElementById("rankingBody"),
       contextBody: document.getElementById("contextBody"),
-      evidenceBody: document.getElementById("evidenceBody")
+      evidenceBody: document.getElementById("evidenceBody"),
+      evalLimit: document.getElementById("evalLimit"),
+      evalK: document.getElementById("evalK"),
+      evalMode: document.getElementById("evalMode"),
+      evalButton: document.getElementById("evalButton"),
+      evalBody: document.getElementById("evalBody")
     };
 
     function defaultApiBase() {
@@ -846,24 +955,26 @@
       return `${getApiBase()}${path}`;
     }
 
-    function makeTimeoutSignal() {
+    function makeTimeoutSignal(timeoutMs = REQUEST_TIMEOUT_MS) {
       if (typeof AbortSignal !== "undefined" && AbortSignal.timeout) {
-        return AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+        return AbortSignal.timeout(timeoutMs);
       }
       const controller = new AbortController();
-      setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+      setTimeout(() => controller.abort(), timeoutMs);
       return controller.signal;
     }
 
     async function fetchJson(path, options = {}) {
+      // options.timeoutMs cho phép override timeout (vd /eval/golden chạy 59 câu mất vài phút).
+      const { timeoutMs, ...fetchOptions } = options;
       const response = await fetch(endpointUrl(path), {
-        ...options,
+        ...fetchOptions,
         headers: {
           "Accept": "application/json",
           ...(options.body ? { "Content-Type": "application/json" } : {}),
           ...(options.headers || {})
         },
-        signal: makeTimeoutSignal()
+        signal: makeTimeoutSignal(timeoutMs)
       });
 
       const text = await response.text();
@@ -958,7 +1069,9 @@
       ]);
       renderLoading();
 
-      const hybridPath = `/hybrid_search?q=${encodeURIComponent(query)}&top_n=${state.topN}&answer=false`;
+      // top_n tối đa của backend là 20; lấy nhiều nhất có thể để hiển thị TOÀN BỘ hotel (candidates/bm25/vector).
+      const hybridTopN = Math.min(Math.max(state.topN, 20), 20);
+      const hybridPath = `/hybrid_search?q=${encodeURIComponent(query)}&top_n=${hybridTopN}&answer=true`;
       const bm25Path = `/search?q=${encodeURIComponent(query)}`;
 
       const [hybridResult, bm25Result] = await Promise.allSettled([
@@ -1235,7 +1348,8 @@
         return;
       }
 
-      const rows = asArray(state.bm25.results).slice(0, 8).map((r, index) => `
+      const bm25All = asArray(state.bm25.results);
+      const rows = bm25All.map((r, index) => `
         <tr>
           <td>${index + 1}</td>
           <td>
@@ -1249,13 +1363,17 @@
 
       els.bm25Body.innerHTML = `
         <div class="badges" style="margin:0 0 10px;">
-          <span class="badge ok">số kết quả: ${escapeHtml(fmt(Number(state.bm25.total_hits) || asArray(state.bm25.results).length, 0))}</span>
+          <span class="badge ok">số kết quả: ${escapeHtml(fmt(Number(state.bm25.total_hits) || bm25All.length, 0))}</span>
           <span class="badge blue">took_ms: ${escapeHtml(fmt(state.bm25.took_ms, 0))}</span>
+          <span class="badge">hiển thị toàn bộ ${bm25All.length} dòng</span>
         </div>
-        <table>
-          <thead><tr><th>#</th><th>Khách sạn</th><th>Điểm BM25</th><th>Mô tả</th></tr></thead>
-          <tbody>${rows || `<tr><td colspan="4">Không có kết quả BM25.</td></tr>`}</tbody>
-        </table>
+        <div class="scroll-box">
+          <table>
+            <thead><tr><th>#</th><th>Khách sạn</th><th>Điểm BM25</th><th>Mô tả</th></tr></thead>
+            <tbody>${rows || `<tr><td colspan="4">Không có kết quả BM25.</td></tr>`}</tbody>
+          </table>
+        </div>
+        <div class="scroll-hint">Cuộn trong khung để xem hết kết quả BM25 (GET /search).</div>
       `;
     }
 
@@ -1289,19 +1407,62 @@
       const rrfCount = topHotels.filter((h) => h.rrf_score !== undefined && h.rrf_score !== null).length;
       const rerankCount = topHotels.filter((h) => h.rerank_score !== undefined && h.rerank_score !== null).length;
 
+      // Suy ra phương pháp rerank đang dùng từ chính dữ liệu trả về:
+      // - rerank_score == text_signal_norm trên mọi hotel  => density fallback (USE_RERANKER=0, không model)
+      // - khác nhau                                        => cross-encoder model (USE_RERANKER=1)
+      const rerankMethod = detectRerankMethod(topHotels);
+
       els.pipelineBody.innerHTML = `
         <div class="pipeline">
           ${pipeStep("1. Query", "1", "User query")}
           ${pipeStep("2. Concepts", asArray(intent.concepts).length + asArray(intent.hard_concepts).length, "Detected concepts")}
-          ${pipeStep("3. Candidates", fmt(state.hybrid.n_candidates, 0), "Field: n_candidates")}
-          ${pipeStep("4. BM25", bm25RankCount, "Hotels with bm25_rank")}
-          ${pipeStep("5. Vector", vectorRankCount, "Hotels with vector_rank")}
-          ${pipeStep("6. Fusion/Rerank", `${rrfCount}/${rerankCount}`, "rrf_score / rerank_score")}
+          ${pipeStep("3. Candidates", fmt(state.hybrid.n_candidates, 0), "Field: n_candidates (n_fused: " + fmt(state.hybrid.n_fused, 0) + ")")}
+          ${pipeStep("4. BM25", bm25RankCount, "Hotels có bm25_rank")}
+          ${pipeStep("5. Vector", vectorRankCount, "Hotels có vector_rank (Qdrant/bge-m3)")}
+          ${pipeStep("6. Fusion → Rerank", `${rrfCount} / ${rerankCount}`, "có rrf_score / có rerank_score")}
         </div>
-        <div class="state warn" style="margin-top:12px;">
-          TODO backend: nếu cần demo mạnh hơn, backend nên expose count sau từng bước filter/boost, ví dụ location filter -> purpose boost -> review boost -> rerank.
+        <div class="state ${rerankMethod.type}" style="margin-top:12px;">
+          <strong>Rerank đang thực hiện qua: ${escapeHtml(rerankMethod.label)}</strong><br />
+          ${escapeHtml(rerankMethod.detail)}
+        </div>
+        <div class="state" style="margin-top:10px;">
+          <strong>Thứ hạng cuối (final_score) = business_rerank</strong>, tổ hợp có trọng số của:
+          <code>text_signal_norm</code> (tín hiệu BM25+vector sau RRF, chuẩn hóa [0,1]) ·
+          <code>review_score</code> · <code>review_count</code> · <code>price_fit</code> · <code>concept_match</code>
+          (số concept khớp ontology). Sau đó <code>aggregate_by_hotel</code> gom chunk theo hotel.
         </div>
       `;
+    }
+
+    // Phương pháp rerank LẤY TRỰC TIẾP từ field backend `rerank_method` (Node 7B).
+    // Backend trả "cross-encoder" (bge-reranker-v2-m3) hoặc "density-fallback" (keyword density).
+    // Giá trị phản ánh CHẾ ĐỘ THỰC TẾ đã chạy: kể cả khi USE_RERANKER=1 mà model lỗi thì backend
+    // tự báo "density-fallback".
+    function detectRerankMethod(hotels) {
+      const method =
+        state.hybrid?.rerank_method ||
+        asArray(hotels).map((h) => h.rerank_method).find(Boolean) ||
+        "";
+
+      if (method === "cross-encoder") {
+        return {
+          type: "ok",
+          label: "Cross-encoder bge-reranker-v2-m3 (Node 7B, USE_RERANKER=1)",
+          detail: "Backend báo rerank_method = \"cross-encoder\": điểm rerank_score do mô hình cross-encoder chấm cặp (query, chunk)."
+        };
+      }
+      if (method === "density-fallback") {
+        return {
+          type: "warn",
+          label: "Density fallback (Node 7B — KHÔNG dùng model)",
+          detail: "Backend báo rerank_method = \"density-fallback\": rerank_score = keyword-density + tín hiệu RRF. Xảy ra khi USE_RERANKER=0, hoặc USE_RERANKER=1 nhưng model không tải được. Thứ hạng cuối vẫn do business_rerank quyết định."
+        };
+      }
+      return {
+        type: "warn",
+        label: "Chưa xác định (backend chưa trả rerank_method)",
+        detail: "Response /hybrid_search không có field rerank_method — backend có thể là bản cũ chưa expose."
+      };
     }
 
     function pipeStep(title, value, note) {
@@ -1385,7 +1546,10 @@
         const name = md.hotel_name || md.name || hotel.hotel_name || hotel.name || id;
         const city = md.city || hotel.city || "";
         const type = md.accommodation_type || hotel.accommodation_type || "";
-        const chunks = asArray(hotel.matched_chunks || hotel.chunks);
+        // matched_chunks là SỐ ĐẾM (int) chunk gom theo hotel, không phải mảng chunk.
+        const matchedCount = typeof hotel.matched_chunks === "number"
+          ? hotel.matched_chunks
+          : asArray(hotel.matched_chunks || hotel.chunks).length;
         const selected = id === state.selectedHotelId ? " selected" : "";
         return `
           <tr class="selectable${selected}" data-hotel-id="${escapeHtml(id)}">
@@ -1393,12 +1557,14 @@
             <td>
               <strong>${escapeHtml(name)}</strong>
               <div class="mini">${escapeHtml([city, type].filter(Boolean).join(" - "))}</div>
+              <div class="mini">chunk đại diện: <strong>${escapeHtml(hotel.chunk_id || "-")}</strong></div>
             </td>
             <td>
               <div class="score-stack">
                 ${scoreRow("final", hotel.final_score ?? hotel.score)}
                 ${scoreRow("business", hotel.business_score)}
                 ${scoreRow("rerank", hotel.rerank_score)}
+                ${scoreRow("text_signal", hotel.text_signal_norm)}
                 ${scoreRow("rrf", hotel.rrf_score)}
               </div>
             </td>
@@ -1406,27 +1572,40 @@
               <div class="score-stack">
                 ${scoreRow("bm25_rank", hotel.bm25_rank)}
                 ${scoreRow("vector_rank", hotel.vector_rank)}
-                ${scoreRow("chunks", chunks.length)}
+                ${scoreRow("matched_chunks", matchedCount)}
               </div>
             </td>
-            <td><button class="secondary" type="button" data-context-id="${escapeHtml(id)}">Load context</button></td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <button class="secondary" type="button" data-context-id="${escapeHtml(id)}">Load context</button>
+                <button class="secondary" type="button" data-ontology-id="${escapeHtml(id)}">Ontology</button>
+              </div>
+            </td>
           </tr>
         `;
       }).join("");
 
       els.rankingBody.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Hotel</th>
-              <th>Score Breakdown</th>
-              <th>Retrieval Signals</th>
-              <th>Context</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
+        <div class="badges" style="margin:0 0 10px;">
+          <span class="badge ok">hiển thị toàn bộ ${hotels.length} hotel (top_hotels)</span>
+          <span class="badge blue">n_candidates: ${escapeHtml(fmt(state.hybrid.n_candidates, 0))}</span>
+          <span class="badge blue">n_fused: ${escapeHtml(fmt(state.hybrid.n_fused, 0))}</span>
+        </div>
+        <div class="scroll-box tall">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Hotel</th>
+                <th>Score Breakdown</th>
+                <th>Retrieval Signals</th>
+                <th>Context</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="scroll-hint">Mỗi hotel chỉ có 1 chunk đại diện vì <code>aggregate_by_hotel</code> gom các chunk theo hotel và giữ chunk điểm cao nhất; <code>matched_chunks</code> là TỔNG số chunk đã gom cho hotel đó.</div>
       `;
 
       els.rankingBody.querySelectorAll("[data-context-id]").forEach((button) => {
@@ -1436,9 +1615,111 @@
         });
       });
 
+      els.rankingBody.querySelectorAll("[data-ontology-id]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          showOntologyModal(button.dataset.ontologyId);
+        });
+      });
+
       els.rankingBody.querySelectorAll("tr[data-hotel-id]").forEach((row) => {
         row.addEventListener("click", () => loadContext(row.dataset.hotelId));
       });
+    }
+
+    // Popup ontology: lấy hotel từ state.hybrid.top_hotels theo id, hiển thị
+    // concepts + semantic_profile (ASPECT score) + KE attributes.
+    function showOntologyModal(hotelId) {
+      const hotel = asArray(state.hybrid?.top_hotels).find((h) => hotelIdFor(h) === String(hotelId));
+      if (!hotel) return;
+      const md = hotel.metadata || {};
+      const name = md.hotel_name || md.name || hotelId;
+      const concepts = asArray(md.ontology_concepts);
+      const profile = md.semantic_profile || {};
+
+      // Concepts: gom theo prefix (AMEN_, ASPECT_, OBJ_, PURPOSE_...) cho dễ đọc.
+      const groups = {};
+      concepts.forEach((c) => {
+        const prefix = String(c).split("_")[0] || "KHÁC";
+        (groups[prefix] = groups[prefix] || []).push(c);
+      });
+      const conceptHtml = Object.keys(groups).sort().map((pfx) => `
+        <div class="tag-group">
+          <div class="tag-title">${escapeHtml(pfx)} (${groups[pfx].length})</div>
+          <div class="tags">${groups[pfx].map((c) => `<span class="tag">${escapeHtml(c)}</span>`).join("")}</div>
+        </div>
+      `).join("");
+
+      // Semantic profile: mỗi ASPECT 1 thanh score [0,1].
+      const aspectRows = Object.entries(profile).map(([aspect, info]) => {
+        const score = typeof info === "object" ? (info.score ?? 0) : Number(info) || 0;
+        const ev = typeof info === "object" ? info.evidence_count : undefined;
+        const pct = Math.max(0, Math.min(100, score * 100));
+        return `
+          <div style="margin-bottom:8px;">
+            <div class="score-row" style="margin-bottom:3px;">
+              <span>${escapeHtml(aspect.replace(/^ASPECT_/, ""))}</span>
+              <strong>${escapeHtml(fmt(score, 2))}${ev !== undefined ? ` · ${escapeHtml(ev)} đánh giá` : ""}</strong>
+            </div>
+            <div style="height:7px;background:var(--line);border-radius:99px;overflow:hidden;">
+              <div style="height:100%;width:${pct}%;background:var(--accent);"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const attrHtml = `
+        <dl class="kv-grid">
+          <dt>Thành phố</dt><dd>${escapeHtml(md.city || "-")}</dd>
+          <dt>Review score</dt><dd>${escapeHtml(fmt(md.ke_review_score, 1))}</dd>
+          <dt>Star rating</dt><dd>${escapeHtml(fmt(md.ke_star_rating, 0))}</dd>
+          <dt>Giá từ (VND)</dt><dd>${escapeHtml(md.ke_price_min_vnd != null ? Number(md.ke_price_min_vnd).toLocaleString("vi-VN") : "-")}</dd>
+          <dt>Tổng concept</dt><dd>${concepts.length}</dd>
+        </dl>
+      `;
+
+      const body = `
+        <div style="margin-bottom:14px;">
+          <h3 style="margin-bottom:4px;">Thuộc tính KE</h3>
+          ${attrHtml}
+        </div>
+        <div style="margin-bottom:14px;">
+          <h3 style="margin-bottom:8px;">Semantic profile (ASPECT)</h3>
+          ${aspectRows || '<div class="state warn">Không có semantic_profile.</div>'}
+        </div>
+        <div>
+          <h3 style="margin-bottom:8px;">Ontology concepts (${concepts.length})</h3>
+          ${conceptHtml ? `<div class="tag-grid">${conceptHtml}</div>` : '<div class="state warn">Không có ontology_concepts.</div>'}
+        </div>
+      `;
+      openModal(`Ontology — ${name}`, body);
+    }
+
+    // Modal dùng chung: tạo overlay 1 lần, đóng bằng nút X / click nền / Esc.
+    function openModal(title, bodyHtml) {
+      let overlay = document.getElementById("modalOverlay");
+      if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "modalOverlay";
+        overlay.className = "modal-overlay";
+        overlay.innerHTML = `
+          <div class="modal-card" role="dialog" aria-modal="true">
+            <div class="modal-head">
+              <h2 id="modalTitle" style="margin:0;"></h2>
+              <button class="secondary" type="button" id="modalClose">Đóng</button>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+        const close = () => { overlay.style.display = "none"; };
+        overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+        overlay.querySelector("#modalClose").addEventListener("click", close);
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+      }
+      overlay.querySelector("#modalTitle").textContent = title;
+      overlay.querySelector("#modalBody").innerHTML = bodyHtml;
+      overlay.style.display = "flex";
     }
 
     function scoreRow(label, value) {
@@ -1501,12 +1782,25 @@
 
       els.contextBody.innerHTML = `
         <div class="context-block">
-          ${prompt ? `<div><h3>LLM-ready prompt/context</h3><div class="text-box">${escapeHtml(prompt)}</div></div>` : ""}
+          ${prompt ? `<div><h3>LLM-ready prompt/context</h3>${renderTruncated(prompt, CONTEXT_PREVIEW_CHARS)}</div>` : ""}
           <div>
-            <h3>Matched chunks from hybrid response</h3>
+            <h3>Matched chunks (context_package.chunks)</h3>
             ${renderChunks(chunks)}
           </div>
         </div>
+      `;
+    }
+
+    // Hiển thị text rút gọn tối đa N ký tự, kèm độ dài đầy đủ để mentor biết bị cắt.
+    function renderTruncated(text, limit) {
+      const full = String(text ?? "");
+      const truncated = full.length > limit;
+      const shown = truncated ? full.slice(0, limit) + "…" : full;
+      return `
+        <div class="text-box">${escapeHtml(shown)}</div>
+        <div class="scroll-hint">${truncated
+          ? `Đã rút gọn còn ${limit} ký tự (đầy đủ: ${full.length} ký tự).`
+          : `${full.length} ký tự.`}</div>
       `;
     }
 
@@ -1564,7 +1858,7 @@
             <span class="badge blue">chunks: ${chunks.length}</span>
             <span class="badge blue">citations: ${citations.length}</span>
           </div>
-          ${contextText ? `<div><h3>LLM-ready context</h3><div class="text-box">${escapeHtml(contextText)}</div></div>` : `<div class="state warn">Backend không trả llm_context/context_text.</div>`}
+          ${contextText ? `<div><h3>LLM-ready context</h3>${renderTruncated(contextText, CONTEXT_PREVIEW_CHARS)}</div>` : `<div class="state warn">Backend không trả llm_context/context_text.</div>`}
           <div><h3>Context chunks</h3>${renderChunks(chunks)}</div>
           <div><h3>Source documents</h3>${renderList(sourceDocs, "Không có source_documents.")}</div>
         </div>
@@ -1579,27 +1873,57 @@
       `;
     }
 
+    // Metadata "đã biết" được render thành nhãn riêng; phần còn lại đổ vào bảng key/value.
+    const CHUNK_KNOWN_KEYS = new Set([
+      "chunk_id", "id", "text", "content", "snippet",
+      "score", "rerank_score", "relevance_score", "scores",
+      "source_type", "source"
+    ]);
+
+    function renderChunkMetadata(chunk) {
+      // Gom metadata: ưu tiên chunk.metadata nếu có, cộng thêm các field lẻ ngoài "known keys".
+      const md = (chunk && typeof chunk.metadata === "object" && chunk.metadata) ? { ...chunk.metadata } : {};
+      for (const [k, v] of Object.entries(chunk || {})) {
+        if (!CHUNK_KNOWN_KEYS.has(k) && k !== "metadata") md[k] = v;
+      }
+      const entries = Object.entries(md).filter(([, v]) => v !== undefined && v !== null && v !== "");
+      if (!entries.length) return "";
+      const rows = entries.map(([k, v]) =>
+        `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(formatValue(v))}</dd>`
+      ).join("");
+      return `<div class="chunk-meta"><div class="tag-title">Metadata chi tiết</div><dl class="kv-grid">${rows}</dl></div>`;
+    }
+
     function renderChunks(chunks) {
       const arr = asArray(chunks);
       if (!arr.length) return `<div class="state warn">Không có context chunks từ backend.</div>`;
-      return arr.slice(0, 8).map((chunk, index) => {
+      const body = arr.map((chunk, index) => {
         const id = chunk.chunk_id || chunk.id || `chunk_${index + 1}`;
         const text = chunk.text || chunk.content || chunk.snippet || formatValue(chunk);
-        const score = chunk.score || chunk.rerank_score || chunk.relevance_score || chunk.scores?.reranker_score || chunk.scores?.score;
+        const score = chunk.score ?? chunk.rerank_score ?? chunk.relevance_score ?? chunk.scores?.reranker_score ?? chunk.scores?.score;
+        const sourceType = chunk.source_type || chunk.source || "";
+        const hotelName = chunk.hotel_name || chunk.metadata?.hotel_name || "";
         return `
           <div class="chunk">
-            <div class="chunk-title">${escapeHtml(id)} ${score !== undefined ? `- score ${escapeHtml(fmt(score))}` : ""}</div>
-            <div class="mini">${escapeHtml(chunk.source_type || chunk.source || "")}</div>
-            <div>${escapeHtml(text)}</div>
+            <div class="chunk-title">
+              chunk_id: ${escapeHtml(id)}${score !== undefined ? ` · score ${escapeHtml(fmt(score))}` : ""}
+            </div>
+            <div class="mini">${escapeHtml([hotelName, sourceType].filter(Boolean).join(" · "))}</div>
+            <div class="text-box" style="margin-top:6px;">${escapeHtml(text)}</div>
+            ${renderChunkMetadata(chunk)}
           </div>
         `;
       }).join("");
+      return `
+        <div class="scroll-box">${body}</div>
+        <div class="scroll-hint">Hiển thị toàn bộ ${arr.length} chunk — cuộn để xem chunk_id, nội dung và metadata chi tiết.</div>
+      `;
     }
 
     function renderList(items, emptyMessage) {
       const arr = asArray(items);
       if (!arr.length) return `<div class="state warn">${escapeHtml(emptyMessage)}</div>`;
-      return arr.slice(0, 10).map((item, index) => {
+      const body = arr.map((item, index) => {
         if (typeof item === "string") {
           return `<div class="chunk"><div class="chunk-title">#${index + 1}</div><div>${escapeHtml(item)}</div></div>`;
         }
@@ -1614,6 +1938,9 @@
           </div>
         `;
       }).join("");
+      return arr.length > 4
+        ? `<div class="scroll-box short">${body}</div>`
+        : body;
     }
 
     function hotelIdFor(hotel) {
@@ -1686,8 +2013,83 @@
       els.evidenceBody.innerHTML = `<div class="state warn">Chưa có evidence vì backend chưa reachable.</div>`;
     }
 
+    // ── F. Golden Dataset evaluation ─────────────────────────────────────────
+    async function runEval() {
+      const limit = els.evalLimit.value;
+      const k = els.evalK.value;
+      const useServices = els.evalMode.value;
+      els.evalButton.disabled = true;
+      els.evalButton.textContent = "Đang chạy...";
+      els.evalBody.innerHTML = `<div class="state">Đang chạy ${escapeHtml(limit)} câu (K=${escapeHtml(k)})... ~2s/câu, vui lòng chờ.</div>`;
+
+      try {
+        const data = await fetchJson(
+          `/eval/golden?limit=${encodeURIComponent(limit)}&k=${encodeURIComponent(k)}&use_services=${encodeURIComponent(useServices)}`,
+          { timeoutMs: 600000 }   // 10 phút: eval 59 câu full ~90s, để dư.
+        );
+        renderEval(data);
+      } catch (error) {
+        els.evalBody.innerHTML = errorState("Không chạy được GET /eval/golden.", error);
+      } finally {
+        els.evalButton.disabled = false;
+        els.evalButton.textContent = "Chạy đánh giá";
+      }
+    }
+
+    function renderEval(data) {
+      const s = data.summary || {};
+      const rows = asArray(data.per_query);
+      const metricCard = (label, val) =>
+        `<div class="metric-card"><div class="metric-label">${escapeHtml(label)}</div>` +
+        `<div class="metric-value">${escapeHtml(fmt(val, 4))}</div></div>`;
+
+      const perRows = rows.map((r) => `
+        <tr>
+          <td>${escapeHtml(r.query_id || "")}</td>
+          <td class="mini">${escapeHtml(r.query || "")}</td>
+          <td>${escapeHtml(r.n_relevant)}</td>
+          <td>${escapeHtml(fmt(r.recall, 3))}</td>
+          <td>${escapeHtml(fmt(r.precision, 3))}</td>
+          <td>${escapeHtml(fmt(r.hit, 0))}</td>
+          <td>${escapeHtml(fmt(r.rr, 3))}</td>
+          <td>${escapeHtml(fmt(r.ndcg, 3))}</td>
+        </tr>
+      `).join("");
+
+      els.evalBody.innerHTML = `
+        <div class="badges" style="margin:0 0 12px;">
+          <span class="badge ok">n_queries: ${escapeHtml(s.n_queries)}</span>
+          <span class="badge blue">K: ${escapeHtml(s.k)}</span>
+          <span class="badge">mode: ${escapeHtml(data.mode || "")}</span>
+          <span class="badge">thời gian: ${escapeHtml(data.duration_s)}s</span>
+        </div>
+        <div class="overview" style="margin-bottom:12px;">
+          ${metricCard("Recall@" + s.k, s.recall)}
+          ${metricCard("Precision@" + s.k, s.precision)}
+          ${metricCard("Hit@" + s.k, s.hit)}
+          ${metricCard("MRR", s.rr)}
+        </div>
+        <div class="overview" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:12px;">
+          ${metricCard("nDCG@" + s.k, s.ndcg)}
+          ${metricCard("Số câu đánh giá", s.n_queries)}
+        </div>
+        <h3>Chi tiết theo câu</h3>
+        <div style="max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:8px;">
+          <table>
+            <thead><tr>
+              <th>query_id</th><th>Câu hỏi</th><th>#GT</th>
+              <th>Recall</th><th>Prec</th><th>Hit</th><th>RR</th><th>nDCG</th>
+            </tr></thead>
+            <tbody>${perRows || `<tr><td colspan="8">Không có per-query.</td></tr>`}</tbody>
+          </table>
+        </div>
+        <div class="mini" style="margin-top:8px;">Metric này cũng được đẩy vào Prometheus gauge <code>da10_eval_metric</code> (xem /metrics).</div>
+      `;
+    }
+
     els.healthButton.addEventListener("click", checkBackend);
     els.runButton.addEventListener("click", runTrace);
+    els.evalButton.addEventListener("click", runEval);
     els.queryInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") runTrace();
     });
