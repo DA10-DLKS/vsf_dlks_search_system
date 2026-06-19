@@ -454,6 +454,43 @@
       margin: 4px 2px 0;
     }
 
+    /* Modal popup (ontology) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      width: min(720px, 100%);
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-body {
+      padding: 18px;
+      overflow: auto;
+    }
+
     .kv-grid {
       display: grid;
       grid-template-columns: minmax(120px, max-content) minmax(0, 1fr);
@@ -1538,7 +1575,12 @@
                 ${scoreRow("matched_chunks", matchedCount)}
               </div>
             </td>
-            <td><button class="secondary" type="button" data-context-id="${escapeHtml(id)}">Load context</button></td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <button class="secondary" type="button" data-context-id="${escapeHtml(id)}">Load context</button>
+                <button class="secondary" type="button" data-ontology-id="${escapeHtml(id)}">Ontology</button>
+              </div>
+            </td>
           </tr>
         `;
       }).join("");
@@ -1573,9 +1615,111 @@
         });
       });
 
+      els.rankingBody.querySelectorAll("[data-ontology-id]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          showOntologyModal(button.dataset.ontologyId);
+        });
+      });
+
       els.rankingBody.querySelectorAll("tr[data-hotel-id]").forEach((row) => {
         row.addEventListener("click", () => loadContext(row.dataset.hotelId));
       });
+    }
+
+    // Popup ontology: lấy hotel từ state.hybrid.top_hotels theo id, hiển thị
+    // concepts + semantic_profile (ASPECT score) + KE attributes.
+    function showOntologyModal(hotelId) {
+      const hotel = asArray(state.hybrid?.top_hotels).find((h) => hotelIdFor(h) === String(hotelId));
+      if (!hotel) return;
+      const md = hotel.metadata || {};
+      const name = md.hotel_name || md.name || hotelId;
+      const concepts = asArray(md.ontology_concepts);
+      const profile = md.semantic_profile || {};
+
+      // Concepts: gom theo prefix (AMEN_, ASPECT_, OBJ_, PURPOSE_...) cho dễ đọc.
+      const groups = {};
+      concepts.forEach((c) => {
+        const prefix = String(c).split("_")[0] || "KHÁC";
+        (groups[prefix] = groups[prefix] || []).push(c);
+      });
+      const conceptHtml = Object.keys(groups).sort().map((pfx) => `
+        <div class="tag-group">
+          <div class="tag-title">${escapeHtml(pfx)} (${groups[pfx].length})</div>
+          <div class="tags">${groups[pfx].map((c) => `<span class="tag">${escapeHtml(c)}</span>`).join("")}</div>
+        </div>
+      `).join("");
+
+      // Semantic profile: mỗi ASPECT 1 thanh score [0,1].
+      const aspectRows = Object.entries(profile).map(([aspect, info]) => {
+        const score = typeof info === "object" ? (info.score ?? 0) : Number(info) || 0;
+        const ev = typeof info === "object" ? info.evidence_count : undefined;
+        const pct = Math.max(0, Math.min(100, score * 100));
+        return `
+          <div style="margin-bottom:8px;">
+            <div class="score-row" style="margin-bottom:3px;">
+              <span>${escapeHtml(aspect.replace(/^ASPECT_/, ""))}</span>
+              <strong>${escapeHtml(fmt(score, 2))}${ev !== undefined ? ` · ${escapeHtml(ev)} đánh giá` : ""}</strong>
+            </div>
+            <div style="height:7px;background:var(--line);border-radius:99px;overflow:hidden;">
+              <div style="height:100%;width:${pct}%;background:var(--accent);"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const attrHtml = `
+        <dl class="kv-grid">
+          <dt>Thành phố</dt><dd>${escapeHtml(md.city || "-")}</dd>
+          <dt>Review score</dt><dd>${escapeHtml(fmt(md.ke_review_score, 1))}</dd>
+          <dt>Star rating</dt><dd>${escapeHtml(fmt(md.ke_star_rating, 0))}</dd>
+          <dt>Giá từ (VND)</dt><dd>${escapeHtml(md.ke_price_min_vnd != null ? Number(md.ke_price_min_vnd).toLocaleString("vi-VN") : "-")}</dd>
+          <dt>Tổng concept</dt><dd>${concepts.length}</dd>
+        </dl>
+      `;
+
+      const body = `
+        <div style="margin-bottom:14px;">
+          <h3 style="margin-bottom:4px;">Thuộc tính KE</h3>
+          ${attrHtml}
+        </div>
+        <div style="margin-bottom:14px;">
+          <h3 style="margin-bottom:8px;">Semantic profile (ASPECT)</h3>
+          ${aspectRows || '<div class="state warn">Không có semantic_profile.</div>'}
+        </div>
+        <div>
+          <h3 style="margin-bottom:8px;">Ontology concepts (${concepts.length})</h3>
+          ${conceptHtml ? `<div class="tag-grid">${conceptHtml}</div>` : '<div class="state warn">Không có ontology_concepts.</div>'}
+        </div>
+      `;
+      openModal(`Ontology — ${name}`, body);
+    }
+
+    // Modal dùng chung: tạo overlay 1 lần, đóng bằng nút X / click nền / Esc.
+    function openModal(title, bodyHtml) {
+      let overlay = document.getElementById("modalOverlay");
+      if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "modalOverlay";
+        overlay.className = "modal-overlay";
+        overlay.innerHTML = `
+          <div class="modal-card" role="dialog" aria-modal="true">
+            <div class="modal-head">
+              <h2 id="modalTitle" style="margin:0;"></h2>
+              <button class="secondary" type="button" id="modalClose">Đóng</button>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+        const close = () => { overlay.style.display = "none"; };
+        overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+        overlay.querySelector("#modalClose").addEventListener("click", close);
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+      }
+      overlay.querySelector("#modalTitle").textContent = title;
+      overlay.querySelector("#modalBody").innerHTML = bodyHtml;
+      overlay.style.display = "flex";
     }
 
     function scoreRow(label, value) {
