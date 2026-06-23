@@ -18,7 +18,16 @@ score trực tiếp (vẫn trả kết quả từ nhãn KE). Phù hợp verify k
 
 from __future__ import annotations
 
+import contextvars
+import time
+from contextlib import contextmanager
 from typing import Any
+
+# Sink per-request để gom thời gian từng stage (ms) phục vụ truy vết request chậm trong log.
+# Khác histogram Prometheus (tổng hợp): cái này gắn được vào ĐÚNG request (kèm request_id/query).
+_stage_sink: contextvars.ContextVar["dict | None"] = contextvars.ContextVar(
+    "da10_stage_sink", default=None
+)
 
 from context import build_context_package, build_prompt
 from retrieval.filtering import (
@@ -36,6 +45,52 @@ from retrieval.reranking import (
     neural_rerank,
     rrf_by_hotel,
 )
+
+
+@contextmanager
+def _stage(name: str):
+    """Đo latency một nhóm node, ghi vào da10_stage_duration_seconds{stage=name}.
+    Nuốt lỗi observability (không bao giờ làm vỡ pipeline vì lý do đo đạc)."""
+    t = time.perf_counter()
+    try:
+        yield
+    finally:
+        dur = time.perf_counter() - t
+        try:
+            from observability.metrics import STAGE_DURATION
+            STAGE_DURATION.labels(stage=name).observe(dur)
+        except Exception:
+            pass
+        sink = _stage_sink.get()
+        if sink is not None:
+            sink[name] = round(dur * 1000, 1)  # ms cho từng stage của riêng request này
+
+
+def _emit_degraded(bm25_service, vector_service) -> None:
+    """Đếm da10_search_degraded_total khi thiếu nguồn text retrieval. Nuốt lỗi observability."""
+    missing = None
+    if bm25_service is None and vector_service is None:
+        missing = "both"
+    elif bm25_service is None:
+        missing = "bm25"
+    elif vector_service is None:
+        missing = "vector"
+    if missing is None:
+        return
+    try:
+        from observability.metrics import SEARCH_DEGRADED
+        SEARCH_DEGRADED.labels(source=missing).inc()
+    except Exception:
+        pass
+
+
+def _emit_rerank_method(method: str) -> None:
+    """Đếm da10_rerank_method_total{method}. Nuốt lỗi observability."""
+    try:
+        from observability.metrics import RERANK_METHOD
+        RERANK_METHOD.labels(method=method or "unknown").inc()
+    except Exception:
+        pass
 
 
 def _candidate_concepts(intent) -> list[str]:
@@ -89,77 +144,89 @@ def run_hybrid_search(
     vector_service / bm25_service: nếu None thì bỏ nguồn đó (vẫn chạy bằng nguồn còn lại hoặc
     chỉ candidate). generate_answer=True -> gọi Node 9 (LLM) sinh câu trả lời.
     """
+    # Khởi tạo sink stage-timing cho request hiện tại (mỗi _stage sẽ ghi ms vào đây).
+    stage_ms: dict[str, float] = {}
+    _stage_sink.set(stage_ms)
+
+    # Degraded mode: thiếu nguồn text retrieval -> pipeline tụt về candidate-only (chất lượng kém
+    # hơn) mà API vẫn 200. Đếm để dashboard/alert phát hiện, tránh "âm thầm phục vụ kết quả kém".
+    _emit_degraded(bm25_service, vector_service)
+
     # Node 1
-    intent = parse_intent(query)
+    with _stage("intent"):
+        intent = parse_intent(query)
 
-    # Node 3: concept whitelist
-    concepts = _candidate_concepts(intent)
-    cw = lookup_hotels_by_concepts(concepts, require_all=False)
+    # Node 2-4: concept lookup + hard filter + candidate builder
+    with _stage("filter"):
+        # Node 3: concept whitelist
+        concepts = _candidate_concepts(intent)
+        cw = lookup_hotels_by_concepts(concepts, require_all=False)
 
-    # Node 2: hard filter (in-memory; production có thể thay sql_hard_filter)
-    sw = inmemory_hard_filter(
-        city=intent.city,
-        star_eq=intent.range.get("star_eq"),
-        score_min=intent.range.get("score_min"),
-        brand=intent.brand,
-    )
+        # Node 2: hard filter (in-memory; production có thể thay sql_hard_filter)
+        sw = inmemory_hard_filter(
+            city=intent.city,
+            star_eq=intent.range.get("star_eq"),
+            score_min=intent.range.get("score_min"),
+            brand=intent.brand,
+        )
 
-    # Node 2b: LOCATION hierarchy. Nếu câu nêu LOC_* -> giao sw với tập hotel thuộc loc (hoặc xã
-    # con). Đây thay cho việc đưa LOC vào concept giao cứng (vốn loại oan hotel ở xã con).
-    loc_wl = _location_whitelist(intent)
-    if loc_wl is not None:
-        sw = [h for h in sw if h in loc_wl] if sw else list(loc_wl)
+        # Node 2b: LOCATION hierarchy. Nếu câu nêu LOC_* -> giao sw với tập hotel thuộc loc (hoặc xã
+        # con). Đây thay cho việc đưa LOC vào concept giao cứng (vốn loại oan hotel ở xã con).
+        loc_wl = _location_whitelist(intent)
+        if loc_wl is not None:
+            sw = [h for h in sw if h in loc_wl] if sw else list(loc_wl)
 
-    # Node 4: candidate
-    rs = review_scores()
-    candidates = build_candidates(
-        sw or None, cw.hotel_ids or None, cap=candidate_pool, review_score_by_hotel=rs,
-        match_count_by_hotel=cw.match_count,
-        idf_score_by_hotel=cw.idf_score,   # V5: ưu tiên concept ĐẶC TRƯNG (IDF) khi cắt cap
-    )
+        # Node 4: candidate
+        rs = review_scores()
+        candidates = build_candidates(
+            sw or None, cw.hotel_ids or None, cap=candidate_pool, review_score_by_hotel=rs,
+            match_count_by_hotel=cw.match_count,
+            idf_score_by_hotel=cw.idf_score,   # V5: ưu tiên concept ĐẶC TRƯNG (IDF) khi cắt cap
+        )
 
-    # Node 4b: OBJ soft filter — loại hotel sai loại CHỈ khi câu nêu loại cụ thể (không OBJ_HOTEL).
-    from knowledge_engineering.common.ke_labels import labels_for
-    if any(c != "OBJ_HOTEL" for c in intent.object_types) and "OBJ_HOTEL" not in intent.object_types:
-        candidates = [
-            h for h in candidates
-            if _obj_ok(intent, set((labels_for(h) or {}).get("ontology_concepts", [])))
-        ]
+        # Node 4b: OBJ soft filter — loại hotel sai loại CHỈ khi câu nêu loại cụ thể (không OBJ_HOTEL).
+        from knowledge_engineering.common.ke_labels import labels_for
+        if any(c != "OBJ_HOTEL" for c in intent.object_types) and "OBJ_HOTEL" not in intent.object_types:
+            candidates = [
+                h for h in candidates
+                if _obj_ok(intent, set((labels_for(h) or {}).get("ontology_concepts", [])))
+            ]
 
-    # V3: candidate rỗng (query không khớp city/concept nào) → KHÔNG trả màn hình trắng.
-    # Để vector quyết định (broad semantic), nếu vector vắng thì lấy top hotel theo review.
-    if not candidates:
-        if vector_service is not None:
-            vr = vector_service.search(query, candidate_hotel_ids=None, top_k=candidate_pool)["results"]
-            candidates = list(dict.fromkeys(h["hotel_id"] for h in vr if h.get("hotel_id")))
+        # V3: candidate rỗng (query không khớp city/concept nào) → KHÔNG trả màn hình trắng.
+        # Để vector quyết định (broad semantic), nếu vector vắng thì lấy top hotel theo review.
         if not candidates:
-            candidates = [h for h, _ in sorted(rs.items(), key=lambda x: -x[1])[:candidate_pool]]
+            if vector_service is not None:
+                vr = vector_service.search(query, candidate_hotel_ids=None, top_k=candidate_pool)["results"]
+                candidates = list(dict.fromkeys(h["hotel_id"] for h in vr if h.get("hotel_id")))
+            if not candidates:
+                candidates = [h for h, _ in sorted(rs.items(), key=lambda x: -x[1])[:candidate_pool]]
 
-    # Node 6: text retrieval trên candidate
-    # Node 6: text retrieval. Lấy NHIỀU chunk (rộng) để phủ candidate, không chỉ top-N.
+    # Node 6: text retrieval trên candidate. Lấy NHIỀU chunk (rộng) để phủ candidate, không chỉ top-N.
     bm25_results: list[dict[str, Any]] = []
     vector_results: list[dict[str, Any]] = []
     text_topk = max(len(candidates), 50)
-    if bm25_service is not None:
-        bm25_results = bm25_service.search_for_fusion(
-            query, candidate_hotel_ids=candidates, size=text_topk
-        )["results"]
-    if vector_service is not None:
-        vector_results = vector_service.search(
-            query, candidate_hotel_ids=candidates, top_k=text_topk
-        )["results"]
+    with _stage("text_retrieval"):
+        if bm25_service is not None:
+            bm25_results = bm25_service.search_for_fusion(
+                query, candidate_hotel_ids=candidates, size=text_topk
+            )["results"]
+        if vector_service is not None:
+            vector_results = vector_service.search(
+                query, candidate_hotel_ids=candidates, top_k=text_topk
+            )["results"]
 
     # Node 7: fusion. NGUYÊN TẮC: vector/BM25 BỔ SUNG, KHÔNG thay thế candidate. Nền là TOÀN BỘ
     # candidate (giữ recall theo multi-signal); điểm text retrieval gắn vào hotel tương ứng làm
     # tín hiệu RERANK. Hotel candidate không có chunk text vẫn ở lại (không bị loại) -> không
     # tụt recall. (Trước đây fused = chỉ chunk vector top-k -> bỏ sót hotel relevant -> recall ↓.)
-    fused = _candidates_as_docs(candidates)
-    if bm25_results or vector_results:
-        # V9: RRF hợp nhất ở CẤP HOTEL (bm25 doc-level vs vector chunk-level không trùng chunk_id).
-        text_ranked = rrf_by_hotel(bm25_results, vector_results)
-        _merge_text_signal(fused, text_ranked)
+    with _stage("fusion"):
+        fused = _candidates_as_docs(candidates)
+        if bm25_results or vector_results:
+            # V9: RRF hợp nhất ở CẤP HOTEL (bm25 doc-level vs vector chunk-level không trùng chunk_id).
+            text_ranked = rrf_by_hotel(bm25_results, vector_results)
+            _merge_text_signal(fused, text_ranked)
 
-    fused = apply_profile_boost(fused, intent.feel_concepts)
+        fused = apply_profile_boost(fused, intent.feel_concepts)
 
     # Node 7B: rerank GIỮ toàn bộ fused (không cắt) -> aggregate_by_hotel mới chọn top_n hotel.
     # Cắt ở đây sẽ bỏ sót hotel relevant trước khi gom theo hotel -> tụt recall.
@@ -168,37 +235,44 @@ def run_hybrid_search(
     # đó, doc text rỗng (candidate thuần KE) giữ nguyên rồi gộp lại để không tụt recall.
     import os as _os
     use_model = use_reranker_model or _os.environ.get("USE_RERANKER", "0") == "1"
-    if use_model:
-        with_text = [d for d in fused if (d.get("text") or "").strip()]
-        without_text = [d for d in fused if not (d.get("text") or "").strip()]
-        reranked = neural_rerank(query, with_text, top_k=len(with_text), use_model=True)
-        reranked = reranked + without_text
-    else:
-        reranked = neural_rerank(query, fused, top_k=len(fused), use_model=False)
+    with _stage("rerank"):
+        if use_model:
+            with_text = [d for d in fused if (d.get("text") or "").strip()]
+            without_text = [d for d in fused if not (d.get("text") or "").strip()]
+            reranked = neural_rerank(query, with_text, top_k=len(with_text), use_model=True)
+            reranked = reranked + without_text
+        else:
+            reranked = neural_rerank(query, fused, top_k=len(fused), use_model=False)
 
-    # Chế độ rerank THỰC TẾ đã chạy (cross-encoder vs density-fallback). neural_rerank gắn
-    # doc["rerank_method"]; đọc lại để expose ra API — kể cả khi USE_RERANKER=1 nhưng model
-    # load lỗi thì giá trị này tự là density-fallback (phản ánh đúng cái đã xảy ra).
-    rerank_method = next(
-        (d["rerank_method"] for d in reranked if d.get("rerank_method")),
-        METHOD_DENSITY_FALLBACK,
-    )
+        # Chế độ rerank THỰC TẾ đã chạy (cross-encoder vs density-fallback). neural_rerank gắn
+        # doc["rerank_method"]; đọc lại để expose ra API — kể cả khi USE_RERANKER=1 nhưng model
+        # load lỗi thì giá trị này tự là density-fallback (phản ánh đúng cái đã xảy ra).
+        rerank_method = next(
+            (d["rerank_method"] for d in reranked if d.get("rerank_method")),
+            METHOD_DENSITY_FALLBACK,
+        )
 
-    # Node 7C
-    reranked = business_rerank(
-        reranked, concepts=intent.concepts, intent_max_price=intent.range.get("price_max")
-    )
-    top_hotels = aggregate_by_hotel(reranked, top_n=top_n)
+        # Node 7C
+        reranked = business_rerank(
+            reranked, concepts=intent.concepts, intent_max_price=intent.range.get("price_max")
+        )
+        top_hotels = aggregate_by_hotel(reranked, top_n=top_n)
+
+    # Đếm phương pháp rerank thực tế (cross-encoder vs density-fallback) để theo dõi tỉ lệ
+    # reranker neural có thực sự chạy hay luôn rơi về fallback.
+    _emit_rerank_method(rerank_method)
 
     # Node 8
-    pkg = build_context_package(query, top_hotels, extra_metadata={"intent": intent.to_dict()})
-    prompt = build_prompt(pkg)
+    with _stage("context"):
+        pkg = build_context_package(query, top_hotels, extra_metadata={"intent": intent.to_dict()})
+        prompt = build_prompt(pkg)
 
     out = {
         "intent": intent.to_dict(),
         "n_candidates": len(candidates),
         "n_fused": len(fused),
         "rerank_method": rerank_method,
+        "stage_ms": stage_ms,   # breakdown latency từng stage của request này (cho log/truy vết)
         "top_hotels": top_hotels,
         "context_package": pkg.to_dict(),
         "prompt": prompt,

@@ -32,14 +32,18 @@ Toàn bộ collector đăng ký trên **`REGISTRY`** (một `CollectorRegistry` 
 | Metric | Loại | Label | Đo gì |
 |---|---|---|---|
 | `da10_http_requests_total` | Counter | endpoint, method, status | tổng request |
-| `da10_http_request_duration_seconds` | Histogram | endpoint | latency HTTP (buckets 50ms→5s) |
-| `da10_search_zero_results_total` | Counter | search_mode | search trả 0 kết quả |
-| `da10_context_build_duration_seconds` | Histogram | — | thời gian build context (→120s) |
-| `da10_stage_duration_seconds` | Histogram | stage | latency từng node pipeline |
+| `da10_http_request_duration_seconds` | Histogram | endpoint, **method** | latency HTTP (buckets 50ms→5s) — `method` tách GET vs POST `/search` |
+| `da10_search_zero_results_total` | Counter | search_mode | search trả 0 kết quả (`hybrid`/`frontend`) |
+| `da10_context_build_duration_seconds` | Histogram | — | thời gian build context `/context` (buckets →120s) |
+| `da10_stage_duration_seconds` | Histogram | stage | latency từng nhóm node pipeline (intent/filter/text_retrieval/fusion/rerank/context) |
+| `da10_search_degraded_total` | Counter | source | search chạy thiếu nguồn retrieval (`bm25`/`vector`/`both`) → tụt candidate-only |
+| `da10_rerank_method_total` | Counter | method | rerank thực tế (`cross-encoder`/`density-fallback`) — theo dõi tỉ lệ reranker neural chạy thật |
+| `da10_llm_duration_seconds` | Histogram | — | latency gọi LLM Node 9 (buckets →60s) |
+| `da10_llm_requests_total` | Counter | status | đếm LLM `ok`/`error` |
 | `da10_eval_metric` | Gauge | name, k | recall/precision/hit/mrr/ndcg lần chạy gần nhất |
 | `da10_eval_queries_total` | Gauge | — | số câu golden đã chạy |
 | `da10_eval_duration_seconds` | Histogram | — | thời gian chạy golden |
-| `da10_dependency_up` | Gauge | dependency | 1=up / 0=down |
+| `da10_dependency_up` | Gauge | dependency | 1=up / 0=down (cập nhật bởi **probe nền định kỳ**) |
 | `da10_dependency_probe_duration_seconds` | Histogram | dependency | latency probe |
 | `search_bm25_request_duration_seconds` | Histogram | endpoint | latency BM25 (baseline) |
 | `search_bm25_requests_total` / `_errors_total` | Counter | endpoint | đếm request/lỗi BM25 |
@@ -48,7 +52,13 @@ Toàn bộ collector đăng ký trên **`REGISTRY`** (một `CollectorRegistry` 
 
 Middleware HTTP trong `api/main.py` đo **mọi** request:
 - Dùng **route path template** làm label `endpoint` (vd `/hybrid_search`) thay vì URL thật → **tránh nổ cardinality**.
-- Ghi `da10_http_request_duration_seconds` + `da10_http_requests_total{endpoint,method,status}`.
+- Thêm label `method` → tách `GET /search` (BM25 baseline, ~70ms) khỏi `POST /search` (hybrid, nhiều giây) vốn cùng route path.
+- Bọc `try/finally` → request ném exception vẫn được đo + đếm (status mặc định 500).
+- Ghi `da10_http_request_duration_seconds{endpoint,method}` + `da10_http_requests_total{endpoint,method,status}`.
+
+**Instrument trong pipeline** (`retrieval/hybrid_search/pipeline.py`): mỗi nhóm node bọc context-manager `_stage(name)` ghi `da10_stage_duration_seconds`; đếm `da10_search_degraded_total` khi thiếu service text retrieval; đếm `da10_rerank_method_total` theo phương pháp rerank thực chạy.
+
+**Instrument LLM** (`context/answer_generator.py` — chokepoint Node 9, phủ cả `/context` lẫn `/hybrid_search?answer=true`): đo `da10_llm_duration_seconds` + đếm `da10_llm_requests_total{status}`. **Không** sửa `knowledge_engineering/enrichment/llm.py` (module dùng chung ABSA) → không lấy token usage.
 
 Mỗi endpoint nghiệp vụ (`/search`, `/hybrid_search`, `/context`, `/eval/golden`) cũng đếm requests/errors/latency riêng (search_bm25_*).
 
@@ -56,13 +66,12 @@ Mỗi endpoint nghiệp vụ (`/search`, `/hybrid_search`, `/context`, `/eval/go
 
 ## 3. Structured logging (`observability/logging/__init__.py`)
 
-- **JSON one-line per event** → stdout + `logs/da10.jsonl`.
+- **JSON one-line per event** → stdout + `logs/da10.jsonl` (qua `RotatingFileHandler` 10MB × 5 file → chặn log phình vô hạn).
 - Timestamp **giờ VN (+07:00)** (`_VnJsonFormatter`).
-- Dùng `logger.info("", extra={"event": "search_completed", "request_id": rid, ...})` → mọi field trong `extra` được merge vào JSON (lọc bỏ field nội bộ của LogRecord).
-- `ensure_ascii=False` → tiếng Việt đọc được trực tiếp trong log.
-- Singleton (`get_logger`), `propagate=False` → không nhân đôi log.
-
-Log JSON cho phép truy vết theo `request_id`, query, intent, số candidate, rerank_method, latency từng stage — phục vụ debug và phân tích chất lượng tìm kiếm.
+- **`request_id`**: middleware sinh `uuid4().hex[:12]` (hoặc nhận header `X-Request-ID` từ client/proxy), lưu vào `contextvars.ContextVar` → formatter **tự chèn `request_id` vào MỌI dòng log** trong cùng request, và trả lại header `X-Request-ID`. Nhờ vậy truy được toàn bộ log của 1 request.
+- Mỗi endpoint nghiệp vụ log 1 dòng sự kiện hoàn tất: `event=search_completed`/`hybrid_search_completed`/`context_completed` kèm `latency_ms`, `n_results`, `rerank_method`.
+- Debug dump cấu trúc response (`[SCHEMA]`) đã **hạ xuống mức DEBUG** (mặc định im, tránh ô nhiễm log); bật lại khi cần đối chiếu contract bằng `SCHEMA_DEBUG=1`.
+- `ensure_ascii=False` → tiếng Việt đọc được trực tiếp; singleton (`get_logger`), `propagate=False` → không nhân đôi log.
 
 ---
 
@@ -86,6 +95,8 @@ Mỗi probe (`_probe`):
 
 `GET /health` (liveness) thì luôn `{"status":"ok"}` — phân biệt liveness (process sống) vs readiness (deps sẵn).
 
+**Probe nền định kỳ**: Prometheus scrape `/metrics` chứ **không** gọi `/health/deep`, nên nếu chỉ cập nhật gauge khi gọi tay endpoint thì `da10_dependency_up` sẽ cũ/chết. Một **background asyncio task** (khởi động ở `startup`, `api/main.py`) chạy `deep_health()` mỗi `DEP_PROBE_INTERVAL` giây (mặc định 30s, qua threadpool vì probe blocking) → gauge **luôn tươi** khi scrape. Probe 1 lần ngay lúc startup để có giá trị tức thì.
+
 ---
 
 ## 5. Golden evaluation → dashboard
@@ -102,14 +113,45 @@ UI (`evaluation_dashboard.html`) gọi endpoint này để theo dõi metric theo
 ## 6. Grafana (`observability/grafana/`)
 
 - **Auto-provisioning**: `provisioning/datasources/datasource.yml` (Prometheus), `provisioning/dashboards/provider.yml` (load dashboard).
-- **Dashboard**: `dashboards/da10_api.json` — panel cho latency, throughput, error rate, dependency health, eval metric.
+- **Dashboard**: `dashboards/da10_api.json` — panel cho:
+  - Search p95/p50 (`POST /search`, tách khỏi GET BM25 nhờ label `method`).
+  - Context p95/p50 (dùng `da10_context_build_duration_seconds` buckets →120s, **không** bão hòa như histogram HTTP cap 5s).
+  - Request rate, error rate (5xx), zero-result rate, stage p95 breakdown, dependency up.
+  - **LLM p95/p50 latency**, **LLM error ratio**, **degraded search rate**, **rerank method distribution**.
+  - Golden eval (Recall/Precision/Hit/MRR/nDCG lần chạy gần nhất).
 - Grafana bật anonymous Admin (`GF_AUTH_ANONYMOUS_ENABLED=true`) → mở `localhost:3000` xem ngay, không cần login (demo).
 
 ---
 
-## 7. SLO
+## 6b. Truy vết request chậm (per-request tracing nhẹ)
 
-Hệ thống có `SLO_GUIDELINE.md` ở root định nghĩa mục tiêu (latency, error budget). Các metric ở trên (`da10_http_request_duration_seconds`, `_errors_total`, `da10_dependency_up`) là cơ sở để tính SLI và cảnh báo.
+Metrics chỉ cho biết stage nào chậm **ở mức tổng hợp**. Để biết **một request cụ thể có query gì và chậm ở stage nào**, hệ thống dùng "poor man's tracing" qua log thay vì Loki/OpenTelemetry:
+
+- `pipeline.py` gom thời gian từng stage của **chính request đó** vào `out["stage_ms"]` (qua `contextvars`, song song với histogram Prometheus).
+- Mỗi endpoint log sự kiện hoàn tất kèm `request_id` + `query` + `stage_ms{...}` + `latency_ms` vào `logs/da10.jsonl`.
+- Endpoint `GET /observability/slow_requests?min_ms=&limit=` đọc log, trả các request đã hoàn tất, sắp theo latency giảm dần.
+- **Trang UI** `frontend/slow_requests.html` (mở `localhost:8000/ui/slow_requests.html`): bảng request chậm + thanh breakdown từng stage, tô đỏ stage chậm nhất, có ngưỡng lọc + auto-refresh.
+
+Truy nhanh bằng dòng lệnh (cần `jq`):
+```bash
+cat logs/da10.jsonl | jq -c 'select(.event=="search_completed" and .latency_ms>1000) | {request_id, query, latency_ms, stage_ms}'
+```
+
+---
+
+## 7. Alerting & SLO
+
+**Alert rules** (`observability/alerts.yml`, nạp vào Prometheus qua `rule_files`, mount trong `docker-compose.yml`): xem ở tab **Alerts** của Prometheus/Grafana — *chưa* gắn Alertmanager nên không gửi thông báo ngoài (đủ cho demo).
+
+| Alert | Điều kiện | Mức |
+|---|---|---|
+| `HighErrorRate` | tỉ lệ 5xx > 5% trong 5m | warning |
+| `HighSearchLatency` | p95 `POST /search` > 1.5s trong 10m | warning |
+| `DependencyDown` | `da10_dependency_up == 0` trong 1m | critical |
+| `SearchDegraded` | có request degraded (thiếu BM25/vector) trong 5m | warning |
+| `LLMErrors` | tỉ lệ lỗi LLM > 20% trong 15m | warning |
+
+**SLO**: định nghĩa mục tiêu SLO thật ở `docs/Le Hoang Dat/slo_defination.md`. (Lưu ý: `SLO_GUIDELINE.md` ở root **không** phải định nghĩa SLO — đó là *runbook BM25 Sprint 1*.) Các metric `da10_http_request_duration_seconds`, `da10_http_requests_total{status}`, `da10_dependency_up` là cơ sở tính SLI và alert ở trên.
 
 ---
 

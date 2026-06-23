@@ -23,7 +23,9 @@ HTTP_REQUESTS = Counter(
 HTTP_DURATION = Histogram(
     "da10_http_request_duration_seconds",
     "HTTP request duration in seconds",
-    ["endpoint"],
+    # method tách GET /search (BM25 baseline) khỏi POST /search (hybrid) — cùng route path
+    # nhưng latency rất khác nhau; thiếu method thì p95 trộn 2 endpoint -> sai.
+    ["endpoint", "method"],
     buckets=[0.05, 0.1, 0.15, 0.25, 0.5, 0.75, 1.0, 2.0, 5.0],
     registry=REGISTRY,
 )
@@ -32,6 +34,40 @@ SEARCH_ZERO_RESULTS = Counter(
     "da10_search_zero_results_total",
     "Search requests returning zero results",
     ["search_mode"],
+    registry=REGISTRY,
+)
+
+# ── Degraded retrieval & rerank method (chất lượng vận hành) ──────────────────
+
+SEARCH_DEGRADED = Counter(
+    "da10_search_degraded_total",
+    "Hybrid search chạy THIẾU nguồn text retrieval (tụt về candidate-only). "
+    "label source=bm25|vector|both = nguồn đang vắng.",
+    ["source"],
+    registry=REGISTRY,
+)
+
+RERANK_METHOD = Counter(
+    "da10_rerank_method_total",
+    "Phương pháp rerank thực tế đã chạy mỗi lần search. "
+    "label method=cross-encoder|density-fallback.",
+    ["method"],
+    registry=REGISTRY,
+)
+
+# ── LLM (Node 9) — thành phần ngoài đắt/chậm/dễ lỗi nhất của hệ RAG ───────────
+
+LLM_DURATION = Histogram(
+    "da10_llm_duration_seconds",
+    "Thời gian gọi LLM sinh câu trả lời (Node 9), giây.",
+    buckets=[0.1, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 40.0, 60.0],
+    registry=REGISTRY,
+)
+
+LLM_REQUESTS = Counter(
+    "da10_llm_requests_total",
+    "Tổng lần gọi LLM. label status=ok|error (error = thiếu key/mạng/parse, answer rỗng).",
+    ["status"],
     registry=REGISTRY,
 )
 

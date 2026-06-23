@@ -11,13 +11,26 @@ metadata hiển thị (location/amenities/price_level/best_for) từ ke_labels +
 
 from __future__ import annotations
 
+import asyncio
 import json
+import logging
+import os
 from functools import lru_cache
 from typing import Any
+
+import httpx
 
 from knowledge_engineering.common.ke_labels import labels_for
 
 KO_JSON = "knowledge_engineering/enrichment/knowledge_objects.json"
+
+_log = logging.getLogger(__name__)
+
+# API OTA (Supabase) trả full hotel object đúng schema frontend (hotel2.json). /search chỉ lo
+# RANKING (pipeline) còn DỮ LIỆU hiển thị lấy từ đây theo hotel_id. Key/timeout cấu hình qua env.
+OTA_API_BASE = os.getenv("OTA_API_BASE", "https://supabase-ota-travel.onrender.com").rstrip("/")
+OTA_API_KEY = os.getenv("OTA_API_KEY", "ota_sk_7f3d9b2e1a4c8f6e5d3a")
+OTA_API_TIMEOUT = float(os.getenv("OTA_API_TIMEOUT", "30"))
 
 # Map concept -> nhãn hiển thị tiếng Việt cho amenities/best_for (gọn, dễ đọc trên UI).
 _AMEN_VI = {
@@ -180,45 +193,59 @@ def _hotel_metadata(hotel_id: Any) -> dict[str, Any]:
     }
 
 
-def _snippet(hotel_id: Any, chunk_text: str | None) -> str:
-    if chunk_text:
-        return chunk_text[:200]
-    content = (_obj(hotel_id).get("content") or "").strip()
-    return content[:200] or "Không có mô tả."
+async def _fetch_hotel(client: httpx.AsyncClient, hotel_id: Any) -> dict[str, Any] | None:
+    """Lấy full hotel object từ API OTA. Trả None nếu lỗi/không tồn tại -> hotel sẽ bị BỎ QUA."""
+    try:
+        r = await client.get(f"{OTA_API_BASE}/api/hotels/{hotel_id}")
+        r.raise_for_status()
+        obj = r.json()
+        return obj if isinstance(obj, dict) else None
+    except Exception as exc:  # noqa: BLE001 — 1 hotel lỗi không được làm hỏng cả request
+        _log.warning("OTA fetch hotel_id=%s lỗi: %s", hotel_id, exc)
+        return None
+
+
+async def _fetch_hotels(pairs: list[tuple[Any, float]]) -> dict[Any, dict[str, Any]]:
+    """Gọi API OTA cho tất cả hotel_id ĐỒNG THỜI (render.com cold-start chậm nếu gọi tuần tự)."""
+    async with httpx.AsyncClient(
+        timeout=OTA_API_TIMEOUT, headers={"X-API-Key": OTA_API_KEY}
+    ) as client:
+        objs = await asyncio.gather(*(_fetch_hotel(client, hid) for hid, _ in pairs))
+    return {hid: obj for (hid, _), obj in zip(pairs, objs) if obj is not None}
 
 
 def to_search_response(query: str, pipeline_result: dict[str, Any]) -> dict[str, Any]:
-    """pipeline run_hybrid_search -> {query, results[], total} cho frontend /search."""
-    results = []
+    """pipeline run_hybrid_search -> {query, results[], total} cho frontend /search.
+
+    Mỗi result là full hotel object (schema hotel2.json) lấy từ API OTA theo hotel_id, chèn thêm
+    `score` = final_score của pipeline (làm tròn 4). Pipeline lo RANKING, API OTA lo DỮ LIỆU hiển thị.
+    Hotel nào fetch lỗi thì bỏ qua; giữ nguyên thứ tự rank của pipeline."""
+    # Gom (hotel_id, score) theo thứ tự rank, bỏ trùng (1 hotel có thể có nhiều chunk).
+    pairs: list[tuple[Any, float]] = []
+    seen: set[Any] = set()
     for c in pipeline_result.get("context_package", {}).get("chunks", []):
         hid = c.get("hotel_id")
-        results.append({
-            "id": f"hotel_{hid}",
-            "title": c.get("hotel_name") or f"hotel_{hid}",
-            "snippet": _snippet(hid, c.get("text")),
-            "score": round(float(c.get("score", 0)), 4),
-            "metadata": _hotel_metadata(hid),
-            "citations": [{
-                "id": f"cit_{hid}",
-                "source_document_id": f"doc_{hid}",
-                "chunk_id": str(c.get("chunk_id", "")),
-                "label": c.get("hotel_name") or "Hotel detail",
-                "url": (_obj(hid).get("provenance") or {}).get("source_url", ""),
-                "quote": _snippet(hid, c.get("text"))[:120],
-            }],
-            "source_documents": [{
-                "id": f"doc_{hid}",
-                "title": c.get("hotel_name") or f"hotel_{hid}",
-                "type": "hotel_detail",
-                "url": (_obj(hid).get("provenance") or {}).get("source_url", ""),
-            }],
-            "context_chunks": [{
-                "id": str(c.get("chunk_id", f"chunk_{hid}")),
-                "source_document_id": f"doc_{hid}",
-                "text": c.get("text") or _snippet(hid, None),
-                "rank": c.get("citation_index", 1),
-            }],
-        })
+        if hid is None or hid in seen:
+            continue
+        seen.add(hid)
+        pairs.append((hid, round(float(c.get("score", 0)), 4)))
+
+    fetched = asyncio.run(_fetch_hotels(pairs)) if pairs else {}
+
+    results = []
+    for hid, score in pairs:
+        obj = fetched.get(hid)
+        if obj is None:
+            continue
+        # Chèn `score` ngay sau `id` để khớp thứ tự field trong schema hotel2.json.
+        merged: dict[str, Any] = {}
+        for k, v in obj.items():
+            merged[k] = v
+            if k == "id":
+                merged["score"] = score
+        if "score" not in merged:  # phòng khi object không có `id`
+            merged["score"] = score
+        results.append(merged)
     return {"query": query, "results": results, "total": len(results)}
 
 
