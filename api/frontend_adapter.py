@@ -30,7 +30,7 @@ _log = logging.getLogger(__name__)
 # RANKING (pipeline) còn DỮ LIỆU hiển thị lấy từ đây theo hotel_id. Key/timeout cấu hình qua env.
 OTA_API_BASE = os.getenv("OTA_API_BASE", "https://supabase-ota-travel.onrender.com").rstrip("/")
 OTA_API_KEY = os.getenv("OTA_API_KEY", "ota_sk_7f3d9b2e1a4c8f6e5d3a")
-OTA_API_TIMEOUT = float(os.getenv("OTA_API_TIMEOUT", "30"))
+OTA_API_TIMEOUT = float(os.getenv("OTA_API_TIMEOUT", "60"))
 
 # Map concept -> nhãn hiển thị tiếng Việt cho amenities/best_for (gọn, dễ đọc trên UI).
 _AMEN_VI = {
