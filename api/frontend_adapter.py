@@ -15,6 +15,8 @@ import asyncio
 import json
 import logging
 import os
+import re
+import time
 from functools import lru_cache
 from typing import Any
 
@@ -31,6 +33,10 @@ _log = logging.getLogger(__name__)
 OTA_API_BASE = os.getenv("OTA_API_BASE", "https://supabase-ota-travel.onrender.com").rstrip("/")
 OTA_API_KEY = os.getenv("OTA_API_KEY", "ota_sk_7f3d9b2e1a4c8f6e5d3a")
 OTA_API_TIMEOUT = float(os.getenv("OTA_API_TIMEOUT", "30"))
+
+# Cache hotel objects in memory để tránh OTA cold-start. TTL mặc định 1 giờ.
+_OTA_CACHE: dict[int, tuple[float, dict[str, Any]]] = {}
+_OTA_CACHE_TTL = float(os.getenv("OTA_CACHE_TTL", "3600"))
 
 # Map concept -> nhãn hiển thị tiếng Việt cho amenities/best_for (gọn, dễ đọc trên UI).
 _AMEN_VI = {
@@ -194,14 +200,23 @@ def _hotel_metadata(hotel_id: Any) -> dict[str, Any]:
 
 
 async def _fetch_hotel(client: httpx.AsyncClient, hotel_id: Any) -> dict[str, Any] | None:
-    """Lấy full hotel object từ API OTA. Trả None nếu lỗi/không tồn tại -> hotel sẽ bị BỎ QUA."""
+    """Lấy full hotel object từ API OTA (hoặc cache). Trả None nếu lỗi/không tồn tại."""
+    now = time.time()
+    cached = _OTA_CACHE.get(hotel_id)
+    if cached and now - cached[0] < _OTA_CACHE_TTL:
+        return cached[1]
     try:
         r = await client.get(f"{OTA_API_BASE}/api/hotels/{hotel_id}")
         r.raise_for_status()
         obj = r.json()
-        return obj if isinstance(obj, dict) else None
-    except Exception as exc:  # noqa: BLE001 — 1 hotel lỗi không được làm hỏng cả request
+        if isinstance(obj, dict):
+            _OTA_CACHE[hotel_id] = (now, obj)
+            return obj
+        return None
+    except Exception as exc:
         _log.warning("OTA fetch hotel_id=%s lỗi: %s", hotel_id, exc)
+        if cached:
+            return cached[1]
         return None
 
 
