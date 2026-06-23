@@ -281,6 +281,19 @@ class RunStats:
     n_with_tag: int = 0
     per_concept: dict = field(default_factory=lambda: defaultdict(int))
     per_facet: dict = field(default_factory=lambda: defaultdict(int))
+    # Độ phủ amenity (metric cảnh báo "rớt im lặng"): chuỗi amenity thô DISTINCT trên corpus,
+    # bao nhiêu khớp source_tag_map, bao nhiêu RỚT. Tụt phủ khi corpus mới = tín hiệu chạy
+    # amenity_miner để đưa chuỗi mới vào candidate_queue. KHÔNG ảnh hưởng output tag.
+    amenity_raw_distinct: int = 0
+    amenity_raw_mapped: int = 0
+
+
+def _amenity_strings(hotel: dict) -> list[str]:
+    """Gộp amenities + amenity_groups[*] -> list chuỗi (giống tag_source, để đo độ phủ)."""
+    vals = list(hotel.get("amenities", []) or [])
+    for group in (hotel.get("amenity_groups") or {}).values():
+        vals.extend(group or [])
+    return [v for v in vals if isinstance(v, str)]
 
 
 def run(hotels_glob: str = HOTELS_GLOB, out_json: str = OUT_JSON) -> RunStats:
@@ -289,6 +302,8 @@ def run(hotels_glob: str = HOTELS_GLOB, out_json: str = OUT_JSON) -> RunStats:
     facets = load_concept_facets()
     stats = RunStats()
     result: dict[str, list[dict]] = {}
+    amen_map = stmap.get("amenities") or {}
+    amen_seen: set[str] = set()   # chuỗi amenity thô distinct (toàn corpus) để đo độ phủ
 
     for f in sorted(glob.glob(hotels_glob)):
         hotel = json.load(open(f, encoding="utf-8"))
@@ -301,6 +316,10 @@ def run(hotels_glob: str = HOTELS_GLOB, out_json: str = OUT_JSON) -> RunStats:
         for t in tags:
             stats.per_concept[t["concept"]] += 1
             stats.per_facet[facets.get(t["concept"], "?")] += 1
+        amen_seen.update(_amenity_strings(hotel))
+
+    stats.amenity_raw_distinct = len(amen_seen)
+    stats.amenity_raw_mapped = sum(1 for v in amen_seen if v in amen_map)
 
     json.dump(result, open(out_json, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     return stats
@@ -313,4 +332,12 @@ if __name__ == "__main__":
     print("Tag theo facet:")
     for fct, n in sorted(s.per_facet.items(), key=lambda x: -x[1]):
         print(f"  {fct:14s} {n}")
+    # Độ phủ amenity: cảnh báo "rớt im lặng". rớt nhiều cái ĐÁNG GIÁ -> chạy amenity_miner.
+    if s.amenity_raw_distinct:
+        cov = 100 * s.amenity_raw_mapped / s.amenity_raw_distinct
+        dropped = s.amenity_raw_distinct - s.amenity_raw_mapped
+        print(f"Độ phủ amenity: map {s.amenity_raw_mapped}/{s.amenity_raw_distinct} chuỗi thô "
+              f"distinct ({cov:.1f}%) | RỚT {dropped} chuỗi")
+        print("  -> rà chuỗi rớt đáng giá: "
+              "python -m knowledge_engineering.enrichment.amenity_miner --dry-run")
     print(f"-> {OUT_JSON}")

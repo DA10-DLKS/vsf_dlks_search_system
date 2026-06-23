@@ -396,3 +396,84 @@ relations:
   status: verified
   support: 30
   note: approved từ candidate (generated_lift, lift=1.79, boost-only)
+- source: OBJ_APARTMENT
+  target: AMEN_WASHING_MACHINE
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.59
+  use_as: boost
+  status: verified
+  support: 54
+  note: approved từ candidate (generated_lift, lift=2.93, boost-only)
+- source: OBJ_RESORT
+  target: AMEN_BBQ
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.59
+  use_as: boost
+  status: verified
+  support: 43
+  note: approved từ candidate (generated_lift, lift=2.85, boost-only)
+- source: OBJ_RESORT
+  target: AMEN_HOT_TUB
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.54
+  use_as: boost
+  status: verified
+  support: 43
+  note: approved từ candidate (generated_lift, lift=2.36, boost-only)
+- source: OBJ_RESORT
+  target: AMEN_GARDEN
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.48
+  use_as: boost
+  status: verified
+  support: 43
+  note: approved từ candidate (generated_lift, lift=1.75, boost-only)
+- source: OBJ_RESORT
+  target: AMEN_GYM
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.47
+  use_as: boost
+  status: verified
+  support: 43
+  note: approved từ candidate (generated_lift, lift=1.73, boost-only)
+- source: OBJ_RESORT
+  target: AMEN_POOL
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.47
+  use_as: boost
+  status: verified
+  support: 43
+  note: approved từ candidate (generated_lift, lift=1.69, boost-only)
+- source: SETTING_ISLAND
+  target: AMEN_BBQ
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.51
+  use_as: boost
+  status: verified
+  support: 28
+  note: approved từ candidate (generated_lift, lift=2.11, boost-only)
+- source: SETTING_NATURE
+  target: AMEN_BBQ
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.5
+  use_as: boost
+  status: verified
+  support: 126
+  note: approved từ candidate (generated_lift, lift=2.01, boost-only)
+- source: SETTING_RIVERSIDE
+  target: AMEN_HOT_TUB
+  type: cooccurs_with
+  source_type: curated
+  confidence: 0.46
+  use_as: boost
+  status: verified
+  support: 68
+  note: approved từ candidate (generated_lift, lift=1.62, boost-only)

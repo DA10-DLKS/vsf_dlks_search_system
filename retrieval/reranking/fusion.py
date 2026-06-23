@@ -11,6 +11,7 @@ Output: list đã fuse, sort theo điểm cuối.
 
 from __future__ import annotations
 
+from functools import lru_cache
 from typing import Any
 
 RRF_K = 60
@@ -20,7 +21,42 @@ PROFILE_BOOST_WEIGHT = 0.05   # mỗi feel-concept khớp + score, cộng nhẹ 
 # (vector-only recall 0.42 < KE-only 0.51). neural_w=0.05 cho recall 0.5114 + MRR 0.9065 + Hit
 # 0.9831 (đỉnh cả 3). Text-signal đóng vai trò TINH CHỈNH thứ hạng, không phải động lực recall.
 # Xem evaluation/retrieval_metrics/sweep_neural.py để tái lập. (V1 + V9 đợt 1.)
-BUSINESS_WEIGHTS = {"neural": 0.05, "review": 0.2, "review_count": 0.1, "price_fit": 0.1, "concept": 0.1}
+# relation=0.05: boost hotel có amenity-MINH-CHỨNG cho purpose trong câu (PURPOSE_FAMILY ->
+# AMEN_KIDS_CLUB...). Port từ query_demo (purpose_hit). ADDITIVE + nhỏ: câu KHÔNG có purpose ->
+# signal=0 -> business_score y HỆT cũ (không phá luồng/không đổi golden khi không có purpose).
+BUSINESS_WEIGHTS = {"neural": 0.05, "review": 0.2, "review_count": 0.1, "price_fit": 0.1,
+                    "concept": 0.1, "relation": 0.05}
+
+
+# Bảng tĩnh fallback — ĐỒNG BỘ với query_demo._PURPOSE_EVIDENCE_FALLBACK. Dùng khi relation_loader
+# lỗi/rỗng (retrieval không được vỡ vì thiếu file relation). Nguồn chính là relation graph verified.
+_PURPOSE_EVIDENCE_FALLBACK = {
+    "PURPOSE_FAMILY": {"AMEN_KIDS_CLUB", "AMEN_KIDS_POOL", "AMEN_BABYSITTING"},
+    "PURPOSE_ROMANTIC": {"AMEN_SEA_VIEW", "AMEN_PRIVATE_POOL", "STYLE_ROMANTIC"},
+    "PURPOSE_BUSINESS": {"AMEN_MEETING_ROOM", "AMEN_WIFI"},
+    "PURPOSE_WELLNESS": {"AMEN_SPA", "STYLE_QUIET"},
+    "PURPOSE_GROUP": {"AMEN_KARAOKE", "AMEN_GAME_ROOM", "AMEN_MEETING_ROOM"},
+}
+
+
+@lru_cache(maxsize=1)
+def _boost_evidence() -> dict[str, frozenset]:
+    """{concept_source -> frozenset(target)} từ relation graph verified (use_as=boost).
+    Fallback bảng tĩnh nếu loader lỗi/rỗng. Load 1 lần (lru_cache) — không đọc file mỗi query.
+
+    KHÔNG chỉ purpose: mọi cạnh boost verified (vd cũng có thể SETTING->AMEN). query trong
+    business_rerank lọc theo concept thực có trong câu nên thừa cạnh không gây hại."""
+    try:
+        from knowledge_engineering.common.relation_loader import load_relations
+        rels = load_relations(status={"verified"}, use_as={"boost"})
+        out: dict[str, set] = {}
+        for r in rels:
+            out.setdefault(r.source, set()).add(r.target)
+        if out:
+            return {k: frozenset(v) for k, v in out.items()}
+    except Exception:
+        pass
+    return {k: frozenset(v) for k, v in _PURPOSE_EVIDENCE_FALLBACK.items()}
 
 
 def reciprocal_rank_fusion(
@@ -146,6 +182,13 @@ def business_rerank(
     if _nw is not None:
         w = {**w, "neural": float(_nw)}
     concepts = set(concepts or [])
+    # relation boost: tập concept-MINH-CHỨNG cho MỌI concept trong câu có cạnh boost verified
+    # (PURPOSE_FAMILY -> AMEN_KIDS_CLUB; SETTING_COASTAL -> AMEN_SEA_VIEW...). Rỗng khi câu không
+    # khớp cạnh boost nào -> signal=0 (không đổi business_score cũ). Nguồn = relation graph verified.
+    evidence = _boost_evidence()
+    boost_targets: set[str] = set()
+    for c in concepts:
+        boost_targets |= evidence.get(c, frozenset())
     max_rc = max(
         [(d.get("metadata") or {}).get("review_count") or 0 for d in fused] + [1]
     )
@@ -167,13 +210,20 @@ def business_rerank(
         price_fit = 1.0 if (not intent_max_price or not price or price <= intent_max_price) else 0.0
         oc = set(md.get("ontology_concepts") or [])
         concept_match = len(concepts & oc) / max(len(concepts), 1) if concepts else 0.0
+        # relation_match: tỉ lệ amenity-minh-chứng hotel CÓ trên tổng minh-chứng cần. boost_targets
+        # rỗng (câu không có purpose) -> 0.0 -> business_score KHÔNG đổi so với trước.
+        relation_match = (
+            len(boost_targets & oc) / len(boost_targets) if boost_targets else 0.0
+        )
         doc["text_signal_norm"] = neural  # debug: text-signal sau chuẩn hóa [0,1] (V8 breakdown)
+        doc["relation_match"] = relation_match  # debug: xem hotel khớp minh-chứng purpose bao nhiêu
         doc["business_score"] = (
             w["neural"] * neural
             + w["review"] * review_score
             + w["review_count"] * review_count
             + w["price_fit"] * price_fit
             + w["concept"] * concept_match
+            + w["relation"] * relation_match
         )
     fused.sort(key=lambda d: -d["business_score"])
     return fused

@@ -8,7 +8,7 @@ from typing import Any
 from opensearchpy import OpenSearch
 
 
-DEFAULT_SEARCH_FIELDS = ["name", "description^2", "city", "address", "amenities"]
+DEFAULT_SEARCH_FIELDS = ["name", "name_alt", "brand", "description^2", "city", "address", "amenities"]
 # V16: _map_hit đọc `description` nhưng _source trước đây KHÔNG gồm → GET /search trả description=null
 # + thiếu metadata hiển thị. Bổ sung các field _map_hit cần + field UI hữu ích.
 DEFAULT_SOURCE_FIELDS = [

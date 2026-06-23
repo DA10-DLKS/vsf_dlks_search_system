@@ -69,7 +69,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:49:57+00:00"
+  "created_at": "2026-06-11T16:49:57+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1023293350": {
   "review_id": 1023293350,
@@ -165,6 +168,11 @@
     "concept": "STYLE_MODERN",
     "sentiment": "positive",
     "span": "modern design"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff were exceptionally friendly and helpful throughout my stay."
    }
   ],
   "novel": [],
@@ -175,7 +183,8 @@
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
    "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
-   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1111496583": {
@@ -326,13 +335,21 @@
     "concept": "STYLE_LIVELY",
     "sentiment": "negative",
     "span": "The soundproofing is poor."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "There aren't many shops around."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:50:16+00:00"
+  "created_at": "2026-06-11T16:50:16+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1004556407": {
   "review_id": 1004556407,
@@ -398,6 +415,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Đặc biệt cảm ơn bạn Trần Tuân. Bạn là nhân viên tuyệt vời, rất thân thiện, cởi mở và rất nhiệt tình trong suốt thời gian khách lưu trú."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "rất thân thiện, cởi mở và rất nhiệt tình trong suốt thời gian khách lưu trú."
    }
   ],
   "novel": [],
@@ -406,7 +428,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T16:50:16+00:00",
   "backfilled_versions": {
-   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1085685158": {
@@ -541,13 +564,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "Overall, it's good, and the price is very reasonable!"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff are very friendly and enthusiastic."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:50:16+00:00"
+  "created_at": "2026-06-11T16:50:16+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1037860535": {
   "review_id": 1037860535,
@@ -600,7 +631,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T16:50:16+00:00",
   "backfilled_versions": {
-   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1119682866": {
@@ -618,13 +650,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "the facilities are close abit early."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the girl at reception named Nhung Nguyen is very helpful and friendly."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:50:16+00:00"
+  "created_at": "2026-06-11T16:50:16+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1112813413": {
   "review_id": 1112813413,
@@ -679,6 +719,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "negative",
     "span": "tiêu chuẩn đạt 5 sao là chưa"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "xung quanh khuôn viên của Flamingo còn rất hoang sơ, có thể nói là chưa có gì mấy."
    }
   ],
   "novel": [],
@@ -687,7 +732,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T16:50:16+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1060658549": {
@@ -715,13 +761,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Breakfast is decent."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "suitable for families with elderly and children."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:50:16+00:00"
+  "created_at": "2026-06-11T16:50:16+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1120574200": {
   "review_id": 1120574200,
@@ -761,6 +815,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "creating a comfortable and pleasant atmosphere."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff are friendly, polite, and always willing to help."
    }
   ],
   "novel": [],
@@ -769,7 +828,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T16:50:16+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1120343026": {
@@ -823,12 +883,20 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "lễ tân Nhung và Quỳnh thân thiện, chu đáo!"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "thân thiện, chu đáo!"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:50:16+00:00"
+  "created_at": "2026-06-11T16:50:16+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  }
 }

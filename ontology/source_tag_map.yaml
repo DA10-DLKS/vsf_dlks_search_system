@@ -171,17 +171,69 @@ amenities:
   "Khả năng tiếp cận cho người khó đi lại": AMEN_WHEELCHAIR
   "Nhà vệ sinh cho người khuyết tật": AMEN_WHEELCHAIR
   "Phòng tắm dành cho người khuyết tật": AMEN_WHEELCHAIR
+  # gom thêm các mức accessibility (đào từ amenity_miner — đều thuộc AMEN_WHEELCHAIR, KHÔNG tách
+  # concept lẻ; tránh nở ontology bằng nhiều concept ít hotel). Nguồn: feedback DA09 (accessibility).
+  "Nhà hàng phòng chờ phù hợp cho người khuyết tật tại chỗ nghỉ": AMEN_WHEELCHAIR
+  "Bãi tự đỗ xe phù hợp cho người khuyết tật tại chỗ nghỉ": AMEN_WHEELCHAIR
+  "Bàn trang điểm phù hợp cho người khuyết tật": AMEN_WHEELCHAIR
+  "Dịch vụ vận chuyển phù hợp cho người khuyết tật": AMEN_WHEELCHAIR
+  "Phòng và hoặc bộ dụng cụ phù hợp cho người khiếm thính": AMEN_WHEELCHAIR
+  "Phòng tắm có lối đi thoai thoải": AMEN_WHEELCHAIR
+  "Phòng tắm có băng ghế tắm": AMEN_WHEELCHAIR
+  "Bảng chỉ dẫn chữ nổi và sờ được": AMEN_WHEELCHAIR
+  "Thanh vịn bồn tắm":      AMEN_WHEELCHAIR
+  "Thanh vịn chống trượt":  AMEN_WHEELCHAIR
   # ---- Meeting / business ----
   "Cơ sở vật chất cho họp mặt tiệc lớn": AMEN_MEETING_ROOM
   "Phòng họp":              AMEN_MEETING_ROOM
   "Phòng hội thảo":         AMEN_MEETING_ROOM
   # ---- Garden / outdoor ----
   "Vườn":                   AMEN_GARDEN
-  "Sân hiên":               AMEN_GARDEN
   "Khu vực tầng thượng":    AMEN_GARDEN
-  "Ban công sân hiên":      AMEN_GARDEN
   "Khu vực tầng thượng ":   AMEN_GARDEN
   "Đồ gỗ ngoài trời":       AMEN_GARDEN
+  # ---- Balcony / terrace (tách khỏi GARDEN: ban công/sân hiên là tiện ích PHÒNG, khác vườn chung) ----
+  "Sân hiên":               AMEN_BALCONY
+  "Ban công sân hiên":      AMEN_BALCONY
+  "Ban công hoặc sân hiên": AMEN_BALCONY
+  "Ban công":               AMEN_BALCONY
+  # ---- BBQ (đào từ amenity_miner — feedback DA09) ----
+  "Tiện nghi nấu nướng ngoài trời":      AMEN_BBQ
+  "Tiện nghi nấu nướng ngoài trời riêng": AMEN_BBQ
+  "Tiện nghi bbq":          AMEN_BBQ
+  "Bếp nướng":              AMEN_BBQ
+  # ---- Hot tub / jacuzzi ----
+  "Bồn tắm nước nóng":      AMEN_HOT_TUB
+  "Bồn tắm lộ thiên":       AMEN_HOT_TUB
+  "Bồn tắm tạo sóng":       AMEN_HOT_TUB
+  # ---- EV charger ----
+  "Trạm sạc điện xe hơi":   AMEN_EV_CHARGER
+  # ---- Washing machine ----
+  "Máy giặt":               AMEN_WASHING_MACHINE
+  "Phòng máy giặt tự động": AMEN_WASHING_MACHINE
+  "Máy sấy quần áo":        AMEN_WASHING_MACHINE
+  # ---- Fireplace ----
+  "Lò sưởi":                AMEN_FIREPLACE
+  "Lò sưởi trong nhà":      AMEN_FIREPLACE
+  "Sưởi":                   AMEN_FIREPLACE
+  # ---- Adults only ----
+  "Chỗ nghỉ chỉ dành cho người lớn": AMEN_ADULTS_ONLY
+  "Chỉ cho các cặp nam nữ": AMEN_ADULTS_ONLY
+  # ---- Streaming ----
+  "Dịch vụ phát trực tuyến như netflix": AMEN_STREAMING
+  "Phim theo yêu cầu":      AMEN_STREAMING
+  # ---- Halal ----
+  "Nhà hàng halal":         AMEN_HALAL
+  "Bữa sáng halal":         AMEN_HALAL
+  # ---- Vegetarian ----
+  "Nhà hàng phục vụ món chay": AMEN_VEGETARIAN
+  # ---- Themed room ----
+  "Phòng theo chủ đề":      AMEN_THEMED_ROOM
+  "Phòng thiết kế theo phong cách quán cà phê": AMEN_THEMED_ROOM
+  # ---- Microwave ----
+  "Lò vi sóng":             AMEN_MICROWAVE
+  # ---- Dishwasher ----
+  "Máy rửa bát":            AMEN_DISHWASHER
   # ---- Bike ----
   "Đỗ xe đạp":              AMEN_BIKE
   "Thuê xe đạp":            AMEN_BIKE

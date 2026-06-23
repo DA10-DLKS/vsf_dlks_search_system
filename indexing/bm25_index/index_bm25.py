@@ -11,10 +11,15 @@ TARGET_INDEX_NAME = os.environ.get('BM25_TARGET_INDEX') or RUNTIME_INDEX_NAME
 BM25_ALIAS = os.environ.get('BM25_ALIAS', RUNTIME_INDEX_NAME)
 BM25_PROMOTE_ALIAS = os.environ.get('BM25_PROMOTE_ALIAS', 'false').lower() in ('1', 'true', 'yes', 'y')
 DATA_DIR = os.environ.get('CLEANED_DATA_DIR', 'data/cleaned')
-BULK_CHUNK_SIZE = int(os.environ.get('BULK_CHUNK_SIZE', '50'))
+# Chunk 15 (giảm từ 50): doc rất to (reviews_detail/rooms/nearby...), 50 doc/bulk = payload nặng
+# -> OpenSearch xử lý >10s -> client timeout (nhất là khi disk cao, I/O chậm). 15 doc/bulk nhẹ hơn.
+BULK_CHUNK_SIZE = int(os.environ.get('BULK_CHUNK_SIZE', '15'))
 BULK_MAX_CHUNK_BYTES = int(os.environ.get('BULK_MAX_CHUNK_BYTES', str(5 * 1024 * 1024)))
+# request_timeout cho bulk: default 10s quá ngắn cho bulk doc to. 120s để chắc.
+BULK_REQUEST_TIMEOUT = int(os.environ.get('BULK_REQUEST_TIMEOUT', '120'))
 
-client = OpenSearch(OPENSEARCH_URL)
+# timeout=60: ping/health/single-doc không bị treo ở default 10s.
+client = OpenSearch(OPENSEARCH_URL, timeout=60)
 
 
 def parse_price(price_str):
@@ -121,6 +126,8 @@ def iter_docs(data_dir, index_name=TARGET_INDEX_NAME):
                 "_id": str(hotel_id),
                 "id": hotel_id,
                 "name": doc.get('name'),
+                "name_alt": doc.get('name_alt'),   # tên EN tách từ ngoặc (alias search; có thể None)
+                "brand": doc.get('brand'),         # chuỗi KS (filter/search theo brand; có thể None)
                 "accommodation_type": doc.get('accommodation_type'),
                 "star_rating": doc.get('star_rating'),
                 "is_luxury": doc.get('is_luxury'),
@@ -191,6 +198,7 @@ def run_indexing(opensearch_client=client):
             iter_docs(DATA_DIR, TARGET_INDEX_NAME),
             chunk_size=BULK_CHUNK_SIZE,
             max_chunk_bytes=BULK_MAX_CHUNK_BYTES,
+            request_timeout=BULK_REQUEST_TIMEOUT,
             raise_on_error=False,
             raise_on_exception=False,
         ):

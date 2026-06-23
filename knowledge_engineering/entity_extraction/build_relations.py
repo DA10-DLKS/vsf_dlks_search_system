@@ -20,6 +20,8 @@ import re
 
 import yaml
 
+from ingestion.cleaning.nearby_filter import filter_nearby_places
+
 HOTELS_GLOB = "data/raw/hotels/*.json"
 # Landmark giờ tự sinh ở location.generated.yaml; location.yaml chỉ còn alias curated (nếu có).
 LOCATION_YAMLS = ["ontology/core/location.generated.yaml", "ontology/core/location.yaml"]
@@ -67,7 +69,10 @@ def build_near_relations(hotels_glob: str = HOTELS_GLOB) -> list[dict]:
     for f in sorted(glob.glob(hotels_glob)):
         d = json.load(open(f, encoding="utf-8"))
         hid = d.get("hotel_id")
-        for p in d.get("nearby_places") or []:
+        # CAP "gần" 15km (tái dùng nearby_filter — 1 nguồn-sự-thật về ngưỡng, đồng bộ với clean).
+        # Trước đây KHÔNG cap -> quan hệ near dính sân bay 200km (VN dài 1600km, không phải "gần").
+        # build_relations đọc data/raw (chưa qua clean) nên PHẢI tự lọc ở đây. Xem [[cleaning-name-nearby]].
+        for p in filter_nearby_places(d.get("nearby_places") or []):
             cid = match_landmark(p.get("name", ""), exact_index)
             if cid is None:
                 continue

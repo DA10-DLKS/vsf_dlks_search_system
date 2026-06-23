@@ -139,10 +139,19 @@ rules:
   OBJ_APARTMENT:
     expands_to:
     - AMEN_KITCHEN
+    - AMEN_WASHING_MACHINE
     evidence:
+      AMEN_WASHING_MACHINE: curated/cooccurs_with/use_as=boost
       AMEN_KITCHEN: curated/cooccurs_with/use_as=boost
     status: verified
     expansions:
+    - target: AMEN_WASHING_MACHINE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.59
+      status: verified
     - target: AMEN_KITCHEN
       relation_type: cooccurs_with
       source_type: curated
@@ -176,11 +185,16 @@ rules:
   OBJ_RESORT:
     expands_to:
     - AMEN_BABYSITTING
+    - AMEN_BBQ
     - AMEN_BEACHFRONT
     - AMEN_BIKE
     - AMEN_GAME_ROOM
+    - AMEN_GARDEN
     - AMEN_GOLF
+    - AMEN_GYM
+    - AMEN_HOT_TUB
     - AMEN_KIDS_POOL
+    - AMEN_POOL
     - AMEN_SEA_VIEW
     - AMEN_TENNIS
     - AMEN_WATERSPORT
@@ -188,12 +202,17 @@ rules:
       AMEN_TENNIS: curated/cooccurs_with/use_as=boost
       AMEN_GAME_ROOM: curated/cooccurs_with/use_as=boost
       AMEN_WATERSPORT: curated/cooccurs_with/use_as=boost
+      AMEN_BBQ: curated/cooccurs_with/use_as=boost
       AMEN_BEACHFRONT: curated/cooccurs_with/use_as=boost
       AMEN_BABYSITTING: curated/cooccurs_with/use_as=boost
+      AMEN_HOT_TUB: curated/cooccurs_with/use_as=boost
       AMEN_SEA_VIEW: curated/cooccurs_with/use_as=boost
       AMEN_GOLF: curated/cooccurs_with/use_as=boost
       AMEN_KIDS_POOL: curated/cooccurs_with/use_as=boost
       AMEN_BIKE: curated/cooccurs_with/use_as=boost
+      AMEN_GARDEN: curated/cooccurs_with/use_as=boost
+      AMEN_GYM: curated/cooccurs_with/use_as=boost
+      AMEN_POOL: curated/cooccurs_with/use_as=boost
     status: verified
     expansions:
     - target: AMEN_TENNIS
@@ -217,6 +236,13 @@ rules:
       weight: 0.8
       confidence: 0.61
       status: verified
+    - target: AMEN_BBQ
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.59
+      status: verified
     - target: AMEN_BEACHFRONT
       relation_type: cooccurs_with
       source_type: curated
@@ -230,6 +256,13 @@ rules:
       use_as: boost
       weight: 0.8
       confidence: 0.55
+      status: verified
+    - target: AMEN_HOT_TUB
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.54
       status: verified
     - target: AMEN_SEA_VIEW
       relation_type: cooccurs_with
@@ -258,6 +291,27 @@ rules:
       use_as: boost
       weight: 0.8
       confidence: 0.48
+      status: verified
+    - target: AMEN_GARDEN
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.48
+      status: verified
+    - target: AMEN_GYM
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: AMEN_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
       status: verified
   PRICE_LUXURY:
     expands_to:
@@ -422,6 +476,7 @@ rules:
       status: verified
   SETTING_ISLAND:
     expands_to:
+    - AMEN_BBQ
     - AMEN_BEACHFRONT
     - AMEN_SEA_VIEW
     - AMEN_WATERSPORT
@@ -429,6 +484,7 @@ rules:
       AMEN_WATERSPORT: curated/cooccurs_with/use_as=boost
       AMEN_BEACHFRONT: curated/cooccurs_with/use_as=boost
       AMEN_SEA_VIEW: curated/cooccurs_with/use_as=boost
+      AMEN_BBQ: curated/cooccurs_with/use_as=boost
     status: verified
     expansions:
     - target: AMEN_WATERSPORT
@@ -451,6 +507,41 @@ rules:
       use_as: boost
       weight: 0.8
       confidence: 0.53
+      status: verified
+    - target: AMEN_BBQ
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.51
+      status: verified
+  SETTING_NATURE:
+    expands_to:
+    - AMEN_BBQ
+    evidence:
+      AMEN_BBQ: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_BBQ
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.5
+      status: verified
+  SETTING_RIVERSIDE:
+    expands_to:
+    - AMEN_HOT_TUB
+    evidence:
+      AMEN_HOT_TUB: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_HOT_TUB
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.46
       status: verified
   STYLE_LUXURY:
     expands_to:

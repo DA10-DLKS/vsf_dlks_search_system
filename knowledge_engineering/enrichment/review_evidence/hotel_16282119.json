@@ -443,6 +443,11 @@
     "concept": "STYLE_MODERN",
     "sentiment": "positive",
     "span": "modern rooms"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "NOT family friendly music"
    }
   ],
   "novel": [],
@@ -452,7 +457,8 @@
   "created_at": "2026-06-11T11:17:01+00:00",
   "backfilled_versions": {
    "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
-   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "702159291": {
@@ -980,13 +986,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "comfortable"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "kid friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:04+00:00"
+  "created_at": "2026-06-11T11:17:04+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1102122025": {
   "review_id": 1102122025,
@@ -1055,7 +1069,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:04+00:00"
+  "created_at": "2026-06-11T11:17:04+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "783649051": {
   "review_id": 783649051,
@@ -1305,7 +1322,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:05+00:00"
+  "created_at": "2026-06-11T11:17:05+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "666793061": {
   "review_id": 666793061,
@@ -1403,7 +1423,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:05+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "847803582": {
@@ -1954,7 +1975,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:06+00:00"
+  "created_at": "2026-06-11T11:17:06+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1022252133": {
   "review_id": 1022252133,
@@ -2117,7 +2141,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:06+00:00"
+  "created_at": "2026-06-11T11:17:06+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1031870652": {
   "review_id": 1031870652,
@@ -2786,7 +2813,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:06+00:00"
+  "created_at": "2026-06-11T11:17:06+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "921077573": {
   "review_id": 921077573,
@@ -2911,7 +2941,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:06+00:00"
+  "created_at": "2026-06-11T11:17:06+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "791956639": {
   "review_id": 791956639,
@@ -3197,7 +3230,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:06+00:00"
+  "created_at": "2026-06-11T11:17:06+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1062610167": {
   "review_id": 1062610167,
@@ -3517,7 +3553,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:07+00:00"
+  "created_at": "2026-06-11T11:17:07+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1022252127": {
   "review_id": 1022252127,
@@ -3800,7 +3839,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:07+00:00"
+  "created_at": "2026-06-11T11:17:07+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1112820039": {
   "review_id": 1112820039,
@@ -3869,7 +3911,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:07+00:00"
+  "created_at": "2026-06-11T11:17:07+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1059441353": {
   "review_id": 1059441353,
@@ -3910,7 +3955,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:07+00:00"
+  "created_at": "2026-06-11T11:17:07+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "947292038": {
   "review_id": 947292038,
@@ -4043,7 +4091,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:07+00:00"
+  "created_at": "2026-06-11T11:17:07+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "981694404": {
   "review_id": 981694404,
@@ -4102,7 +4153,8 @@
   "created_at": "2026-06-11T11:17:07+00:00",
   "backfilled_versions": {
    "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1067211860": {
@@ -5108,7 +5160,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:08+00:00"
+  "created_at": "2026-06-11T11:17:08+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1067211914": {
   "review_id": 1067211914,
@@ -5250,7 +5305,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:08+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "933001536": {
@@ -5542,7 +5598,8 @@
   "created_at": "2026-06-11T11:17:12+00:00",
   "backfilled_versions": {
    "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "740062146": {
@@ -5675,7 +5732,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:12+00:00"
+  "created_at": "2026-06-11T11:17:12+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1045046890": {
   "review_id": 1045046890,
@@ -5914,6 +5974,11 @@
     "concept": "STYLE_MODERN",
     "sentiment": "positive",
     "span": "very modern and clean"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "We will come back to Con Dao and to this hotel."
    }
   ],
   "novel": [],
@@ -5922,7 +5987,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:12+00:00",
   "backfilled_versions": {
-   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "961121743": {
@@ -5987,6 +6053,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "the spa was relaxing"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "What made this hotel special was the staff- all so helpful and friendly."
    }
   ],
   "novel": [],
@@ -5995,7 +6066,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:12+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "953743591": {
@@ -6262,13 +6334,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "good foods"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Staff were friendly."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:17+00:00"
+  "created_at": "2026-06-11T11:17:17+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "939399355": {
   "review_id": 939399355,
@@ -6597,6 +6677,11 @@
     "concept": "STYLE_QUIET",
     "sentiment": "positive",
     "span": "quite private without any noise"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff is friendly and very helpful."
    }
   ],
   "novel": [],
@@ -6605,7 +6690,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:18+00:00",
   "backfilled_versions": {
-   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "914701988": {
@@ -6723,13 +6809,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "They were really kind"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "However, everyone was friendly."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:18+00:00"
+  "created_at": "2026-06-11T11:17:18+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "726745959": {
   "review_id": 726745959,
@@ -6822,6 +6916,11 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Đồ vải cũ, vé ăn sáng đắt đồ ăn chưa phong phú"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "Đồ vải cũ, vé ăn sáng đắt đồ ăn chưa phong phú"
    }
   ],
   "novel": [],
@@ -6830,7 +6929,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:18+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1062785653": {
@@ -6858,6 +6958,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "nghĩ dưỡng ở đây"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Nhân viên thân thiện."
    }
   ],
   "novel": [],
@@ -6866,7 +6971,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:18+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1117661611": {
@@ -7089,13 +7195,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the location is in center of the city easy for seeing around"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staffs are very friendly and helpful."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:24+00:00"
+  "created_at": "2026-06-11T11:17:24+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "971548756": {
   "review_id": 971548756,
@@ -7138,13 +7252,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "negative",
     "span": "No beach (muddy at eb)"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "No beach (muddy at eb)"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:24+00:00"
+  "created_at": "2026-06-11T11:17:24+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1022252125": {
   "review_id": 1022252125,
@@ -7225,13 +7347,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Good service, friendly staff, food is just right."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly staff, food is just right, the kitchen ladies are very cute, and the receptionists are very charming!"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:24+00:00"
+  "created_at": "2026-06-11T11:17:24+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1070962698": {
   "review_id": 1070962698,
@@ -7294,6 +7424,11 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Phòng có mùi của khách cũ, giá phòng tương đối cao nhưng lại không kèm ăn sáng"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "nhân viên tiếp tân không thân thiện."
    }
   ],
   "novel": [],
@@ -7302,7 +7437,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:24+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1104275720": {
@@ -7394,6 +7530,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "Nhân viên tiếp tân không thân thiện."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "Nhân viên tiếp tân không thân thiện."
    }
   ],
   "novel": [],
@@ -7402,7 +7543,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:24+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1079445216": {
@@ -7463,13 +7605,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Máy lạnh trong phòng chưa tự điều chỉnh được nhiệt độ, đôi lúc hơi lạnh quá hoặc không đủ mát, gây chút bất tiện"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Nhân viên rất thân thiện, nhiệt tình và chuyên nghiệp."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:25+00:00"
+  "created_at": "2026-06-11T11:17:25+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "913701976": {
   "review_id": 913701976,
@@ -7677,6 +7827,11 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Phòng hơi nhỏ nhưng giường rất rộng và êm"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Nhân viên thân thiện, nhiệt tình."
    }
   ],
   "novel": [],
@@ -7685,7 +7840,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:25+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "900333403": {
@@ -7868,13 +8024,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "Beautiful internal pool"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Friendly and nice staffs."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:25+00:00"
+  "created_at": "2026-06-11T11:17:25+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "803898158": {
   "review_id": 803898158,
@@ -8005,6 +8169,11 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Vị trí quá thuận lợi , nằm ngay trung tâm có thể đi tham quan và ăn uống xung quanh rất gần."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Nhân viên khách sạn rất dễ thương, nhiệt tình."
    }
   ],
   "novel": [],
@@ -8013,7 +8182,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:26+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "745356523": {
@@ -8131,13 +8301,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Nhân viên thân thiện"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Nhân viên thân thiện."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:26+00:00"
+  "created_at": "2026-06-11T11:17:26+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "830067935": {
   "review_id": 830067935,
@@ -8233,13 +8411,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "phòng mới sạch sẽ"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "nhân viên thân thiện."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:26+00:00"
+  "created_at": "2026-06-11T11:17:26+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "823267389": {
   "review_id": 823267389,
@@ -8315,13 +8501,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "các thiết bị tốt"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "nv nhiệt tình dễ thương."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:26+00:00"
+  "created_at": "2026-06-11T11:17:26+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1124221888": {
   "review_id": 1124221888,
@@ -8430,13 +8624,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Nhà hàg dở nhất trong tất cả các resort 4-5 sao mà mình đã đi, món á mà ăn ko nổi luôn, mình đặt món lẩu tôm hùm nhưng nau lên con tôm đen thui mình kêu nv ra và nhà hàg đã nhận lại món đó, cá thu hay"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "nhà hàg dở nhất trong tất cả các resort 4-5 sao mà mình đã đi."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:26+00:00"
+  "created_at": "2026-06-11T11:17:26+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1004128834": {
   "review_id": 1004128834,
@@ -8525,7 +8727,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:26+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "755298352": {
@@ -8556,7 +8759,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:26+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "986531206": {
@@ -8773,13 +8977,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Khách sạn nhiệt tình dễ thương. Các bạn nhân viên luôn hỗ trợ nhiệt tình"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Khách sạn nhiệt tình dễ thương. Các bạn nhân viên luôn hỗ trợ nhiệt tình"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:26+00:00"
+  "created_at": "2026-06-11T11:17:26+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1081132131": {
   "review_id": 1081132131,
@@ -8899,7 +9111,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:26+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "933013748": {
@@ -9082,7 +9295,8 @@
   "created_at": "2026-06-11T11:17:39+00:00",
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "954114597": {
@@ -9161,7 +9375,8 @@
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
    "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
-   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "879855533": {
@@ -9213,7 +9428,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T11:17:39+00:00"
+  "created_at": "2026-06-11T11:17:39+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "908980080": {
   "review_id": 908980080,
@@ -9329,6 +9547,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "positive",
     "span": "elegant, clean, and equipped with modern amenities"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff is friendly, always warmly greeting and attentively assisting guests — a big plus for the quality of service"
    }
   ],
   "novel": [],
@@ -9343,7 +9566,8 @@
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
    "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
    "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "898337655": {
@@ -9469,7 +9693,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T11:17:39+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1004394019": {
