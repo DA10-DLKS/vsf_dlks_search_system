@@ -37,12 +37,12 @@
    },
    "targets": [
     {
-     "expr": "histogram_quantile(0.95, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/search\"}[5m])) * 1000",
+     "expr": "histogram_quantile(0.95, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/search\",method=\"POST\"}[5m])) * 1000",
      "legendFormat": "p95 ms",
      "refId": "A"
     },
     {
-     "expr": "histogram_quantile(0.50, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/search\"}[5m])) * 1000",
+     "expr": "histogram_quantile(0.50, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/search\",method=\"POST\"}[5m])) * 1000",
      "legendFormat": "p50 ms",
      "refId": "B"
     }
@@ -90,12 +90,12 @@
    },
    "targets": [
     {
-     "expr": "histogram_quantile(0.95, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/context\"}[5m])) * 1000",
+     "expr": "histogram_quantile(0.95, rate(da10_context_build_duration_seconds_bucket[5m])) * 1000",
      "legendFormat": "p95 ms",
      "refId": "A"
     },
     {
-     "expr": "histogram_quantile(0.50, rate(da10_http_request_duration_seconds_bucket{endpoint=\"/context\"}[5m])) * 1000",
+     "expr": "histogram_quantile(0.50, rate(da10_context_build_duration_seconds_bucket[5m])) * 1000",
      "legendFormat": "p50 ms",
      "refId": "B"
     }
@@ -359,6 +359,158 @@
    "fieldConfig": {
     "defaults": {
      "unit": "ms"
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 9,
+   "title": "LLM (Node 9) p95 / p50 Latency",
+   "type": "timeseries",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 40
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "histogram_quantile(0.95, rate(da10_llm_duration_seconds_bucket[5m]))",
+     "legendFormat": "p95 s",
+     "refId": "A"
+    },
+    {
+     "expr": "histogram_quantile(0.50, rate(da10_llm_duration_seconds_bucket[5m]))",
+     "legendFormat": "p50 s",
+     "refId": "B"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s"
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 10,
+   "title": "LLM Error Ratio",
+   "type": "stat",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 12,
+    "y": 40
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "sum(rate(da10_llm_requests_total{status=\"error\"}[15m])) / clamp_min(sum(rate(da10_llm_requests_total[15m])), 1e-9)",
+     "legendFormat": "error ratio",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "min": 0,
+     "max": 1,
+     "decimals": 2,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 0.05
+       },
+       {
+        "color": "red",
+        "value": 0.2
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "background"
+   }
+  },
+  {
+   "id": 11,
+   "title": "Degraded Search Rate (thiếu nguồn retrieval)",
+   "type": "timeseries",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 18,
+    "y": 40
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "rate(da10_search_degraded_total[5m])",
+     "legendFormat": "{{source}}",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "custom": {
+      "lineWidth": 2
+     },
+     "color": {
+      "fixedColor": "orange",
+      "mode": "palette-classic"
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 12,
+   "title": "Rerank Method (rate)",
+   "type": "timeseries",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 48
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "targets": [
+    {
+     "expr": "rate(da10_rerank_method_total[5m])",
+     "legendFormat": "{{method}}",
+     "refId": "A"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps"
     },
     "overrides": []
    }

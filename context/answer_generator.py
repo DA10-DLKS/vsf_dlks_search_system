@@ -10,9 +10,20 @@ ContextPackage thô cho client tự render, hoặc gọi node này để có ans
 
 from __future__ import annotations
 
+import time
 from typing import Any
 
 from context.context_package import ContextPackage, build_prompt
+
+
+def _emit_llm(status: str, elapsed: float) -> None:
+    """Ghi da10_llm_requests_total{status} + da10_llm_duration_seconds. Nuốt lỗi observability."""
+    try:
+        from observability.metrics import LLM_REQUESTS, LLM_DURATION
+        LLM_REQUESTS.labels(status=status).inc()
+        LLM_DURATION.observe(elapsed)
+    except Exception:
+        pass
 
 SYSTEM_PROMPT = (
     "Bạn là trợ lý tư vấn du lịch tiếng Việt, trả lời ngắn gọn, chính xác, có trích dẫn nguồn. "
@@ -44,10 +55,13 @@ def generate_answer(
         for c in pkg.chunks[:max_chunks]
     ]
     cfg = active_config()
+    t = time.perf_counter()
     try:
         answer = complete_text(system=SYSTEM_PROMPT, user=prompt, temperature=temperature)
+        _emit_llm("ok", time.perf_counter() - t)
         return {"answer": answer, "citations": citations,
                 "model": f"{cfg['provider']}/{cfg['model']}", "error": None}
     except Exception as exc:  # noqa: BLE001
+        _emit_llm("error", time.perf_counter() - t)
         return {"answer": "", "citations": citations,
                 "model": f"{cfg['provider']}/{cfg['model']}", "error": str(exc)}

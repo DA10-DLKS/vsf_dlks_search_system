@@ -56,6 +56,7 @@ services:
       - "9090:9090"
     volumes:
       - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./observability/alerts.yml:/etc/prometheus/alerts.yml:ro
     extra_hosts:
       # API chạy trên host (uvicorn), Prometheus trong Docker -> trỏ về host.
       - "host.docker.internal:host-gateway"

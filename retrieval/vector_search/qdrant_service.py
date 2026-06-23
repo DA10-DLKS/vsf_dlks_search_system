@@ -35,15 +35,27 @@ class QdrantSearchService:
         self.collection = collection
         self.default_top_k = default_top_k
 
-    def _candidate_filter(self, hotel_ids: list[int] | None):
-        """Qdrant Filter: payload.hotel_id ∈ candidate. None nếu không lọc."""
-        if not hotel_ids:
+    def _candidate_filter(
+        self,
+        hotel_ids: list[int] | None,
+        sections: list[str] | None = None,
+    ):
+        """Qdrant Filter: payload.hotel_id ∈ candidate, VÀ (tùy chọn) payload.section ∈ sections.
+        None nếu không có điều kiện nào.
+
+        sections là filter phụ cùng cấp với hotel_id (đều khớp trên payload, không đụng tới
+        vector) để LOẠI bớt chunk không cần — vd chỉ giữ section 'faq'. MatchAny -> OR (chunk
+        thuộc 1 trong các section yêu cầu là đủ)."""
+        if not hotel_ids and not sections:
             return None
         from qdrant_client.models import FieldCondition, Filter, MatchAny
 
-        return Filter(
-            must=[FieldCondition(key="hotel_id", match=MatchAny(any=list(hotel_ids)))]
-        )
+        must = []
+        if hotel_ids:
+            must.append(FieldCondition(key="hotel_id", match=MatchAny(any=list(hotel_ids))))
+        if sections:
+            must.append(FieldCondition(key="section", match=MatchAny(any=list(sections))))
+        return Filter(must=must)
 
     # V11 (SLA): chỉ kéo field downstream THỰC SỰ dùng. with_payload=True kéo cả 60+ field
     # (image_urls/parent_text/...) → Qdrant ~244ms vs ~30ms (chậm 8×). Không downstream nào
@@ -55,6 +67,7 @@ class QdrantSearchService:
         query: str,
         top_k: int | None = None,
         candidate_hotel_ids: list[int] | None = None,
+        sections: list[str] | None = None,
     ) -> dict[str, Any]:
         limit = top_k or self.default_top_k
         embedding = self.embedding_model.embed([query])[0]
@@ -62,7 +75,7 @@ class QdrantSearchService:
         response = self.client.query_points(
             collection_name=self.collection,
             query=embedding.vector,
-            query_filter=self._candidate_filter(candidate_hotel_ids),
+            query_filter=self._candidate_filter(candidate_hotel_ids, sections),
             limit=limit,
             with_payload=self._PAYLOAD_FIELDS,
         )
