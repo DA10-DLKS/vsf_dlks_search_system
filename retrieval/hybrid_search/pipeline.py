@@ -39,15 +39,39 @@ from retrieval.reranking import (
 
 
 def _candidate_concepts(intent) -> list[str]:
-    """Concept dùng cho Node 3 lookup (hard + feel + obj + price + lmk + location)."""
+    """Concept dùng cho Node 3 lookup (hard + feel + price + lmk). KHÔNG gồm:
+    - location_concepts: xử lý RIÊNG bằng hierarchy (hotel ở xã con khớp query thành phố cha) —
+      nếu để concept index khớp ĐÚNG loc thì 'Phú Quốc' loại hotel 'Gành Dầu' (con).
+    - object_types: OBJ là SOFT (port query_demo). 'khách sạn'(OBJ_HOTEL)=mọi lưu trú, KHÔNG lọc;
+      chỉ lọc khi câu nêu LOẠI CỤ THỂ (resort/villa) mà KHÔNG kèm OBJ_HOTEL. Xử lý ở _obj_ok."""
     return (
         intent.hard_concepts
         + intent.feel_concepts
-        + intent.object_types
         + intent.price_tiers
         + intent.landmarks
-        + intent.location_concepts
     )
+
+
+def _location_whitelist(intent) -> set[int] | None:
+    """Hotel khớp location query theo HIERARCHY (LOC con khớp LOC cha). None nếu câu không nêu
+    location_concepts (để city-text filter ở Node 2 lo)."""
+    from retrieval.filtering import hotels_in_location
+    locs = intent.location_concepts
+    if not locs:
+        return None
+    out: set[int] = set()
+    for loc in locs:
+        out |= set(hotels_in_location(loc))
+    return out
+
+
+def _obj_ok(intent, hotel_concepts: set[str]) -> bool:
+    """OBJ filter SOFT (port query_demo): chỉ loại khi câu nêu loại CỤ THỂ (resort/villa...) mà
+    KHÔNG kèm OBJ_HOTEL, và hotel không thuộc loại đó. 'khách sạn' hoặc không nêu loại -> luôn OK."""
+    want = [c for c in intent.object_types if c != "OBJ_HOTEL"]
+    if not want or "OBJ_HOTEL" in intent.object_types:
+        return True
+    return not hotel_concepts.isdisjoint(want)
 
 
 def run_hybrid_search(
@@ -77,7 +101,14 @@ def run_hybrid_search(
         city=intent.city,
         star_eq=intent.range.get("star_eq"),
         score_min=intent.range.get("score_min"),
+        brand=intent.brand,
     )
+
+    # Node 2b: LOCATION hierarchy. Nếu câu nêu LOC_* -> giao sw với tập hotel thuộc loc (hoặc xã
+    # con). Đây thay cho việc đưa LOC vào concept giao cứng (vốn loại oan hotel ở xã con).
+    loc_wl = _location_whitelist(intent)
+    if loc_wl is not None:
+        sw = [h for h in sw if h in loc_wl] if sw else list(loc_wl)
 
     # Node 4: candidate
     rs = review_scores()
@@ -86,6 +117,14 @@ def run_hybrid_search(
         match_count_by_hotel=cw.match_count,
         idf_score_by_hotel=cw.idf_score,   # V5: ưu tiên concept ĐẶC TRƯNG (IDF) khi cắt cap
     )
+
+    # Node 4b: OBJ soft filter — loại hotel sai loại CHỈ khi câu nêu loại cụ thể (không OBJ_HOTEL).
+    from knowledge_engineering.common.ke_labels import labels_for
+    if any(c != "OBJ_HOTEL" for c in intent.object_types) and "OBJ_HOTEL" not in intent.object_types:
+        candidates = [
+            h for h in candidates
+            if _obj_ok(intent, set((labels_for(h) or {}).get("ontology_concepts", [])))
+        ]
 
     # V3: candidate rỗng (query không khớp city/concept nào) → KHÔNG trả màn hình trắng.
     # Để vector quyết định (broad semantic), nếu vector vắng thì lấy top hotel theo review.

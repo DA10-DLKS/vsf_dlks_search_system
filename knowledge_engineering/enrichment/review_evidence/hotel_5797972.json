@@ -232,13 +232,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "It was a safe environment and family friendly."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "family friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:36:55+00:00"
+  "created_at": "2026-06-11T10:36:55+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "210670467": {
   "review_id": 210670467,

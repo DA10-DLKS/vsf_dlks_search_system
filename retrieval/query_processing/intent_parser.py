@@ -52,6 +52,7 @@ class ParsedIntent:
     landmarks: list[str] = field(default_factory=list)
     location_concepts: list[str] = field(default_factory=list)
     city: str | None = None
+    brand: str | None = None      # chuỗi KS user hỏi đích danh ("thuộc Vinpearl") -> filter
     range: dict[str, Any] = field(default_factory=dict)
     implicit: dict[str, str] = field(default_factory=dict)
 
@@ -67,6 +68,7 @@ class ParsedIntent:
             "landmarks": self.landmarks,
             "location_concepts": self.location_concepts,
             "city": self.city,
+            "brand": self.brand,
             "range": self.range,
             "implicit": self.implicit,
         }
@@ -162,6 +164,13 @@ def parse_city(q: str) -> str | None:
     return None
 
 
+def parse_brand(q: str) -> str | None:
+    """Bắt brand (chuỗi KS) trong câu hỏi. Dùng CHUNG extract_brand với cleaning (1 nguồn bảng
+    brand) -> query và data khớp cùng canonical. None nếu câu không nêu brand đã biết."""
+    from ingestion.cleaning.brand_normalizer import extract_brand
+    return extract_brand(q)
+
+
 def parse_intent(q: str, syn_yaml: str = SYN_YAML_DEFAULT) -> ParsedIntent:
     """Câu hỏi VN -> ParsedIntent. Rule-based, dùng synonym_dictionary của KE."""
     syn = _load_synonyms(syn_yaml)
@@ -192,6 +201,7 @@ def parse_intent(q: str, syn_yaml: str = SYN_YAML_DEFAULT) -> ParsedIntent:
         landmarks=[c for c in concepts if c.startswith("LMK_")],
         location_concepts=[c for c in concepts if c.startswith("LOC_")],
         city=parse_city(q),
+        brand=parse_brand(q),
         range=rng,
         implicit=implicit,
     )

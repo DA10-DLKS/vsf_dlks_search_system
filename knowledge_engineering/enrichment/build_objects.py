@@ -305,6 +305,7 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
         "id": f"acc_{hid}",
         "type": meta.get("type", "hotel"),
         "title": hotel.get("name"),
+        "brand": hotel.get("brand"),   # chuỗi KS (từ cleaning brand_normalizer); None nếu không thuộc
         "source": hotel.get("source", "agoda"),
         "ontology_version": ONTOLOGY_VERSION,
         "content": hotel.get("description_short") or hotel.get("description"),

@@ -37,12 +37,16 @@ def inmemory_hard_filter(
     city: str | None = None,
     star_eq: int | None = None,
     score_min: float | None = None,
+    brand: str | None = None,
 ) -> list[int]:
-    """Node 2 không cần DB: lọc hotel theo city text + star/score trong ke_labels.
+    """Node 2 không cần DB: lọc hotel theo city text + star/score + brand trong ke_labels.
 
     City match: fold 2 chiều substring giữa city query và city/province của KE — bắt biến thể
     "phú quốc" vs "Đảo Phú Quốc", "cát bà" vs "Quần Đảo Cát Bà". GIÁ là placeholder trong KE
     -> KHÔNG lọc cứng giá (giống query_demo), chỉ star/score. Production: dùng sql_hard_filter.
+
+    Brand (chuỗi KS): LỌC CỨNG — "thuộc Vinpearl" chỉ trả hotel brand=Vinpearl. So khớp canonical
+    (cùng extract_brand cho query lẫn data nên khớp đúng). brand=None -> không lọc brand.
     """
     labels = load_ke_labels()
     city_norm = normalize(city, fold=True) if city else None
@@ -55,9 +59,14 @@ def inmemory_hard_filter(
             continue
         if score_min is not None and (rf.get("review_score") or 0) < score_min:
             continue
+        if brand is not None and ke.get("brand") != brand:
+            continue
         if city_norm:
             blob = blobs.get(hid, "")
-            if city_norm not in blob and blob and not any(tok in blob for tok in city_toks):
+            # khớp city: full substring HOẶC TẤT CẢ token đặc trưng có trong blob (AND, không OR).
+            # OR cũ làm "phú quốc"=[phu,quoc] khớp "phu ly" (chỉ trùng "phu") -> Phủ Lý lọt vào
+            # kết quả Phú Quốc. AND đòi cả "phu" VÀ "quoc" -> Phủ Lý thiếu "quoc" -> loại đúng.
+            if city_norm not in blob and not (city_toks and blob and all(tok in blob for tok in city_toks)):
                 continue
         out.append(hid)
     return out

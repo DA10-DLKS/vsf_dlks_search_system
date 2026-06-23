@@ -556,6 +556,11 @@
     "concept": "STYLE_QUIET",
     "sentiment": "negative",
     "span": "the second floor may not be suitable for those who prefer peace and quiet."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "If you have children, you should choose a room on the second floor because it's close to the swimming pool, which is very convenient for moving around."
    }
   ],
   "novel": [
@@ -571,7 +576,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T15:02:44+00:00",
   "backfilled_versions": {
-   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "798094863": {
@@ -756,7 +762,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T15:02:46+00:00"
+  "created_at": "2026-06-11T15:02:46+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "817578467": {
   "review_id": 817578467,

@@ -198,7 +198,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T10:47:27+00:00",
   "backfilled_versions": {
-   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "848945224": {
@@ -318,6 +319,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "so relaxing here just like home"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "I and my family are very enjoying staying in this resort cause it was so relaxing here just like home."
    }
   ],
   "novel": [],
@@ -326,7 +332,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T10:47:27+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "750785601": {
@@ -355,7 +362,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:27+00:00"
+  "created_at": "2026-06-11T10:47:27+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "212795609": {
   "review_id": 212795609,
@@ -443,7 +453,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:27+00:00"
+  "created_at": "2026-06-11T10:47:27+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1056727820": {
   "review_id": 1056727820,
@@ -483,13 +496,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "The facilities ran down and nothing about the place worth the price"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "They are not family friendly."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:31+00:00"
+  "created_at": "2026-06-11T10:47:31+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1057303660": {
   "review_id": 1057303660,
@@ -1082,7 +1103,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:31+00:00"
+  "created_at": "2026-06-11T10:47:31+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1041233375": {
   "review_id": 1041233375,
@@ -1512,7 +1536,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:32+00:00"
+  "created_at": "2026-06-11T10:47:32+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "702170166": {
   "review_id": 702170166,
@@ -1677,6 +1704,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "positive",
     "span": "the friendly staff and luxurious facilities make it a resort I want to visit again."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "A healing trip for a family of four!"
    }
   ],
   "novel": [],
@@ -1686,7 +1718,8 @@
   "created_at": "2026-06-11T10:47:32+00:00",
   "backfilled_versions": {
    "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "761957489": {
@@ -1853,7 +1886,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:33+00:00"
+  "created_at": "2026-06-11T10:47:33+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1064318590": {
   "review_id": 1064318590,
@@ -1909,7 +1945,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:33+00:00"
+  "created_at": "2026-06-11T10:47:33+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "913971532": {
   "review_id": 913971532,
@@ -1973,7 +2012,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:33+00:00"
+  "created_at": "2026-06-11T10:47:33+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1004595319": {
   "review_id": 1004595319,
@@ -2350,7 +2392,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:35+00:00"
+  "created_at": "2026-06-11T10:47:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "810515818": {
   "review_id": 810515818,
@@ -2527,13 +2572,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the scenery is very beautiful"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "making it great for swimming and playing with the kids every day."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:35+00:00"
+  "created_at": "2026-06-11T10:47:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "761957469": {
   "review_id": 761957469,
@@ -2696,7 +2749,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:35+00:00"
+  "created_at": "2026-06-11T10:47:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "693535525": {
   "review_id": 693535525,
@@ -3122,7 +3178,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:35+00:00"
+  "created_at": "2026-06-11T10:47:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1050332651": {
   "review_id": 1050332651,
@@ -3305,7 +3364,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T10:47:35+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1067221319": {
@@ -3927,13 +3987,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the staff were friendly."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "there wasn't any food for toddlers."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:38+00:00"
+  "created_at": "2026-06-11T10:47:38+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1081143573": {
   "review_id": 1081143573,
@@ -3984,7 +4052,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:38+00:00"
+  "created_at": "2026-06-11T10:47:38+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "810515814": {
   "review_id": 810515814,
@@ -4293,7 +4364,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:38+00:00"
+  "created_at": "2026-06-11T10:47:38+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "913874319": {
   "review_id": 913874319,
@@ -4357,7 +4431,8 @@
   "created_at": "2026-06-11T10:47:38+00:00",
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "847504729": {
@@ -4432,7 +4507,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:38+00:00"
+  "created_at": "2026-06-11T10:47:38+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "816313529": {
   "review_id": 816313529,
@@ -4467,7 +4545,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:38+00:00"
+  "created_at": "2026-06-11T10:47:38+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "799963137": {
   "review_id": 799963137,
@@ -4898,7 +4979,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:38+00:00"
+  "created_at": "2026-06-11T10:47:38+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1004595310": {
   "review_id": 1004595310,
@@ -4992,7 +5076,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:38+00:00"
+  "created_at": "2026-06-11T10:47:38+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "939412262": {
   "review_id": 939412262,
@@ -5455,6 +5542,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "if you are looking for a quiet retreat with family, I think it is the best resort."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "if you are looking for a quiet retreat with family, I think it is the best resort."
    }
   ],
   "novel": [
@@ -5471,7 +5563,8 @@
   "created_at": "2026-06-11T10:47:41+00:00",
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1075781727": {
@@ -5670,13 +5763,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "They are very friendly though."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Great place especially for a family"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:41+00:00"
+  "created_at": "2026-06-11T10:47:41+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "921085188": {
   "review_id": 921085188,
@@ -6499,7 +6600,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:47:55+00:00"
+  "created_at": "2026-06-11T10:47:55+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1077459824": {
   "review_id": 1077459824,
@@ -7419,7 +7523,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T10:47:56+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "693535526": {

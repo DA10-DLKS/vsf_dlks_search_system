@@ -157,13 +157,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "location in city center"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "kids club is paid (not mentioned in web-site)"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:05+00:00"
+  "created_at": "2026-06-11T07:01:05+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "848977915": {
   "review_id": 848977915,
@@ -208,6 +216,11 @@
     "concept": "STYLE_ROMANTIC",
     "sentiment": "negative",
     "span": "this hotel was way too busy"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "the private beach is right next to the public beach, therefore more busy w/ many people passing by wanting glimpse/ pics of our western children"
    }
   ],
   "novel": [],
@@ -216,7 +229,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T07:01:05+00:00",
   "backfilled_versions": {
-   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "848977906": {
@@ -370,7 +384,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:05+00:00"
+  "created_at": "2026-06-11T07:01:05+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1100197829": {
   "review_id": 1100197829,
@@ -640,7 +657,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:04+00:00"
+  "created_at": "2026-06-11T07:01:04+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1050353589": {
   "review_id": 1050353589,
@@ -662,13 +682,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "Nice pool and poolside bar to help pass time."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "very welcoming and friendly staff"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:04+00:00"
+  "created_at": "2026-06-11T07:01:04+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "7107753": {
   "review_id": 7107753,
@@ -795,13 +823,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Super breakfast."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the staff is friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:04+00:00"
+  "created_at": "2026-06-11T07:01:04+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "6578121": {
   "review_id": 6578121,
@@ -915,7 +951,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:04+00:00"
+  "created_at": "2026-06-11T07:01:04+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "783708265": {
   "review_id": 783708265,
@@ -1039,7 +1078,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:02+00:00"
+  "created_at": "2026-06-11T07:01:02+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "988707096": {
   "review_id": 988707096,
@@ -1254,7 +1296,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:02+00:00"
+  "created_at": "2026-06-11T07:01:02+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "766689984": {
   "review_id": 766689984,
@@ -1799,13 +1844,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "The glass doors are full of finger prints and as there ar lack f staff, the tables and chairs were grubby."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "Children at the club lounge are very unruly, put their fingers inside food jars to pick food (dirty)"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:03+00:00"
+  "created_at": "2026-06-11T07:01:03+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "886709624": {
   "review_id": 886709624,
@@ -1968,7 +2021,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T07:01:04+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "733026080": {
@@ -2493,7 +2547,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:09+00:00"
+  "created_at": "2026-06-11T07:01:09+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1070986120": {
   "review_id": 1070986120,
@@ -2801,7 +2858,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T07:01:09+00:00",
   "backfilled_versions": {
-   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "783708269": {
@@ -3120,13 +3178,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "positive",
     "span": "clean rooms"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "very friendly staff"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:10+00:00"
+  "created_at": "2026-06-11T07:01:10+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "914734418": {
   "review_id": 914734418,
@@ -3221,7 +3287,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:10+00:00"
+  "created_at": "2026-06-11T07:01:10+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "848977832": {
   "review_id": 848977832,
@@ -3352,13 +3421,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "The swimming pool is well decorated."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Staff are very friendly and helpful"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:10+00:00"
+  "created_at": "2026-06-11T07:01:10+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1038202839": {
   "review_id": 1038202839,
@@ -3628,7 +3705,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:01+00:00"
+  "created_at": "2026-06-11T07:01:01+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "798224699": {
   "review_id": 798224699,
@@ -3772,13 +3852,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Central location"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Good Friendly Staff"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:01+00:00"
+  "created_at": "2026-06-11T07:01:01+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "771465146": {
   "review_id": 771465146,
@@ -4307,13 +4395,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "good buffet breakfast"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly staff"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:06+00:00"
+  "created_at": "2026-06-11T07:01:06+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "702196090": {
   "review_id": 702196090,
@@ -4522,7 +4618,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:04+00:00"
+  "created_at": "2026-06-11T07:01:04+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "848977889": {
   "review_id": 848977889,
@@ -5048,7 +5147,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:03+00:00"
+  "created_at": "2026-06-11T07:01:03+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "7896413": {
   "review_id": 7896413,
@@ -5126,13 +5228,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "Infinity pool was beautiful"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Staff are very friendly and helpful."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:03+00:00"
+  "created_at": "2026-06-11T07:01:03+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "218789092": {
   "review_id": 218789092,
@@ -5178,7 +5288,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:03+00:00"
+  "created_at": "2026-06-11T07:01:03+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "12513385": {
   "review_id": 12513385,
@@ -5276,13 +5389,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "Sofa has old wet tower smelling."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Staffs are friendly."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:03+00:00"
+  "created_at": "2026-06-11T07:01:03+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "932819318": {
   "review_id": 932819318,
@@ -5350,13 +5471,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Friendly staff who are always smiling and willing to help."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Friendly staff who are always smiling and willing to help."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:03+00:00"
+  "created_at": "2026-06-11T07:01:03+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "174117346": {
   "review_id": 174117346,
@@ -5406,13 +5535,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "negative",
     "span": "the ONLY complaint is that dinning room could have been cleaned a little better."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "ALL staff were very friendly and very helpful."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:03+00:00"
+  "created_at": "2026-06-11T07:01:03+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "106326051": {
   "review_id": 106326051,
@@ -5476,7 +5613,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:03+00:00"
+  "created_at": "2026-06-11T07:01:03+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1081178201": {
   "review_id": 1081178201,
@@ -6289,13 +6429,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "Tired furniture (worn in beds, in particular), old bathroom fixtures"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "super friendly staff."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:25+00:00"
+  "created_at": "2026-06-11T07:01:25+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1003949901": {
   "review_id": 1003949901,
@@ -6327,6 +6475,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "optimal environment for leisurely walks or relaxation"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the staff were also very friendly and attentive."
    }
   ],
   "novel": [],
@@ -6335,7 +6488,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T07:01:25+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1075801415": {
@@ -6416,13 +6570,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "Lovely pool on the 6th floor"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the staff were very friendly and helpful."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:25+00:00"
+  "created_at": "2026-06-11T07:01:25+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1050353582": {
   "review_id": 1050353582,
@@ -6564,13 +6726,21 @@
     "concept": "ASPECT_CLEANLINESS",
     "sentiment": "positive",
     "span": "clean room"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Friendly staff."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:25+00:00"
+  "created_at": "2026-06-11T07:01:25+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "927058397": {
   "review_id": 927058397,
@@ -6763,13 +6933,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "beautiful swimming pool"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly staff."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:25+00:00"
+  "created_at": "2026-06-11T07:01:25+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1081178211": {
   "review_id": 1081178211,
@@ -7207,13 +7385,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "Breakfast buffet could have been better"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "very friendly staff"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:25+00:00"
+  "created_at": "2026-06-11T07:01:25+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "5328100": {
   "review_id": 5328100,
@@ -7304,13 +7490,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Centre if nha Trang, so you can go to the gold coast mall/Lotte mart next door"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "all the staff were friendly and attentive."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:35+00:00"
+  "created_at": "2026-06-11T07:01:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "105214134": {
   "review_id": 105214134,
@@ -7377,13 +7571,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Great location"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Staff was very professional and friendly."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:35+00:00"
+  "created_at": "2026-06-11T07:01:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "776975176": {
   "review_id": 776975176,
@@ -7435,13 +7637,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Good location too"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly facility."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:35+00:00"
+  "created_at": "2026-06-11T07:01:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "712591130": {
   "review_id": 712591130,
@@ -7504,13 +7714,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Received particularly good help from Miss Trinh-Junia at reception and Club Lounge"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "fantastic staff."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:35+00:00"
+  "created_at": "2026-06-11T07:01:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "9847252": {
   "review_id": 9847252,
@@ -7532,13 +7750,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "friendly staff"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly staff."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:35+00:00"
+  "created_at": "2026-06-11T07:01:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1124237461": {
   "review_id": 1124237461,
@@ -7588,13 +7814,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "Excellent location"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Friendly staff."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:35+00:00"
+  "created_at": "2026-06-11T07:01:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1117691578": {
   "review_id": 1117691578,
@@ -7662,7 +7896,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T07:01:35+00:00",
   "backfilled_versions": {
-   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1111683214": {
@@ -7766,13 +8001,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Love the friendly service given by most staff members."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the staff was awesome to our child. Treated him just like another important person staying at the hotel."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:35+00:00"
+  "created_at": "2026-06-11T07:01:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "10013957": {
   "review_id": 10013957,
@@ -7988,6 +8231,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "positive",
     "span": "Luxurious? Yes"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "pool very inviting and family friendly"
    }
   ],
   "novel": [],
@@ -7996,7 +8244,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T07:01:26+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1022271246": {
@@ -8197,13 +8446,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "positive",
     "span": "superb swimming pool"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly staff superb swimming pool"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:26+00:00"
+  "created_at": "2026-06-11T07:01:26+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1081178206": {
   "review_id": 1081178206,
@@ -8358,13 +8615,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "nhân viên chuyên nghiệp thân thiện."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "nhân viên chuyên nghiệp thân thiện"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:32+00:00"
+  "created_at": "2026-06-11T07:01:32+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "7071304": {
   "review_id": 7071304,
@@ -8468,13 +8733,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "nhân viên thân thiện"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "nhân viên thân thiện"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:32+00:00"
+  "created_at": "2026-06-11T07:01:32+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "6410537": {
   "review_id": 6410537,
@@ -9003,6 +9276,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "positive",
     "span": "exclusive or personal service especially hotel customers only"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "especially for children"
    }
   ],
   "novel": [],
@@ -9011,7 +9289,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T07:01:34+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "966385292": {
@@ -9638,13 +9917,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "the coffee at breakfast was average"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Staff here are excellent, friendly and helpful."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:01:23+00:00"
+  "created_at": "2026-06-11T07:01:23+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1082112997": {
   "review_id": 1082112997,

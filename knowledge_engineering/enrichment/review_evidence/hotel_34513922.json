@@ -20,7 +20,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:36:02+00:00"
+  "created_at": "2026-06-11T14:36:02+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "996508526": {
   "review_id": 996508526,
@@ -152,7 +155,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:36:02+00:00"
+  "created_at": "2026-06-11T14:36:02+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "938664462": {
   "review_id": 938664462,
@@ -636,7 +642,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:36:02+00:00"
+  "created_at": "2026-06-11T14:36:02+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1111655255": {
   "review_id": 1111655255,
@@ -738,7 +747,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T14:36:02+00:00"
+  "created_at": "2026-06-11T14:36:02+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "981690715": {
   "review_id": 981690715,
@@ -847,6 +859,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "rất phù hợp để nghỉ ngơi"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "rất phù hợp để nghỉ ngơi"
    }
   ],
   "novel": [],
@@ -855,7 +872,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T14:36:02+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  }
 }

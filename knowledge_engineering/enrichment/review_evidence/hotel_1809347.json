@@ -175,7 +175,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:42:47+00:00"
+  "created_at": "2026-06-11T09:42:47+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "106136510": {
   "review_id": 106136510,
@@ -439,7 +442,8 @@
   "created_at": "2026-06-11T09:42:47+00:00",
   "backfilled_versions": {
    "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
-   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1113360673": {
@@ -566,13 +570,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "The receptionist staff is very polite and friendly"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the staff is very polite and friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:42:49+00:00"
+  "created_at": "2026-06-11T09:42:49+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1063646048": {
   "review_id": 1063646048,
@@ -589,13 +601,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the staff is enthusiastic and friendly"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the staff is enthusiastic and friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:42:49+00:00"
+  "created_at": "2026-06-11T09:42:49+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1056717414": {
   "review_id": 1056717414,
@@ -698,13 +718,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "friendly and polite staff"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly and polite staff"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:42:49+00:00"
+  "created_at": "2026-06-11T09:42:49+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "577838370": {
   "review_id": 577838370,
@@ -1330,13 +1358,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "nhân viên thân thiện"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "nhân viên thân thiện"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:42:50+00:00"
+  "created_at": "2026-06-11T09:42:50+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "929065560": {
   "review_id": 929065560,
@@ -1920,6 +1956,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "negative",
     "span": "không xứng là 5 sao như khách sạn đưa ra trên Agoda"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "Hồ bơi chỉ cho người lớn, không có hồ bơi trẻ em"
    }
   ],
   "novel": [],
@@ -1929,7 +1970,8 @@
   "created_at": "2026-06-11T09:42:51+00:00",
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "929067156": {
@@ -2277,6 +2319,11 @@
     "concept": "STYLE_QUIET",
     "sentiment": "positive",
     "span": "Quiet location"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Friendly and enthusiastic staff"
    }
   ],
   "novel": [],
@@ -2285,7 +2332,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T09:42:54+00:00",
   "backfilled_versions": {
-   "STYLE_QUIET": "v5-novel-style-only+ef3e0450"
+   "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1013800386": {
@@ -2354,6 +2402,11 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "negative",
     "span": "\"Older types of bathroom...\""
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly service"
    }
   ],
   "novel": [],
@@ -2362,7 +2415,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T09:42:54+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "132050113": {
@@ -2431,13 +2485,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "\"the reception is very lovely, and the security guard is very friendly.\""
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the reception is very lovely, and the security guard is very friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T09:42:54+00:00"
+  "created_at": "2026-06-11T09:42:54+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "165691080": {
   "review_id": 165691080,

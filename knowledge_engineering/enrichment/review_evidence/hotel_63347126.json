@@ -97,7 +97,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:31:15+00:00"
+  "created_at": "2026-06-11T16:31:15+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "981702460": {
   "review_id": 981702460,
@@ -237,6 +240,11 @@
     "concept": "STYLE_MODERN",
     "sentiment": "positive",
     "span": "modern"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Friendly service, enthusiastic staff."
    }
   ],
   "novel": [
@@ -252,7 +260,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T16:31:15+00:00",
   "backfilled_versions": {
-   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "912870825": {
@@ -300,6 +309,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "positive",
     "span": "enjoy a quiet and luxurious vacation in Quy Nhon"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The service here is also very professional and friendly, with staff always ready to assist when needed."
    }
   ],
   "novel": [
@@ -318,7 +332,8 @@
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
    "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
    "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "908680938": {
@@ -351,6 +366,11 @@
     "concept": "STYLE_MODERN",
     "sentiment": "positive",
     "span": "modern architecture"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff at FLC Sea Tower were friendly and attentive."
    }
   ],
   "novel": [],
@@ -359,7 +379,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T16:31:15+00:00",
   "backfilled_versions": {
-   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "908575296": {
@@ -407,6 +428,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "positive",
     "span": "the design of the room, which is both luxurious and very cozy"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff is very attentive and friendly, always ready to assist when needed."
    }
   ],
   "novel": [
@@ -431,7 +457,8 @@
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
    "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
    "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "902985102": {
@@ -449,13 +476,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "the location is right in the city center, convenient for commuting."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the staff was friendly and enthusiastic."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:31:15+00:00"
+  "created_at": "2026-06-11T16:31:15+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1061773801": {
   "review_id": 1061773801,

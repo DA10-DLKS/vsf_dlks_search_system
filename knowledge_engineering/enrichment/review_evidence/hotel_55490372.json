@@ -154,13 +154,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "The view for the room was spectacular."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "invited me to eat lunch with her family"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:13:10+00:00"
+  "created_at": "2026-06-11T16:13:10+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1070644413": {
   "review_id": 1070644413,
@@ -177,13 +185,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "the landlady was particularly warm and friendly."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "landlady was particularly warm and friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:13:10+00:00"
+  "created_at": "2026-06-11T16:13:10+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1105038091": {
   "review_id": 1105038091,
@@ -480,12 +496,21 @@
   "hotel_id": 55490372,
   "rating": 10.0,
   "overall_sentiment": "neutral",
-  "items": [],
+  "items": [
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Cô chủ thân thiện, nhiệt tình"
+   }
+  ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:13:10+00:00"
+  "created_at": "2026-06-11T16:13:10+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1081086925": {
   "review_id": 1081086925,
@@ -531,7 +556,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T16:13:10+00:00"
+  "created_at": "2026-06-11T16:13:10+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1070943305": {
   "review_id": 1070943305,

@@ -94,6 +94,7 @@ def load_ke_labels(ko_json: str = KO_JSON_DEFAULT) -> dict[int, dict[str, Any]]:
             "city": loc.get("city"),
             "province": loc.get("province"),
             "title": obj.get("title"),
+            "brand": obj.get("brand"),   # chuỗi KS -> filter cứng theo brand (query "thuộc Vinpearl")
         }
     return labels
 

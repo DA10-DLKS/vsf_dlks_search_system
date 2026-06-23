@@ -14,12 +14,54 @@ Lookup trả candidate theo 2 chế độ:
 
 from __future__ import annotations
 
+import glob
 import math
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import lru_cache
 
+import yaml
+
 from knowledge_engineering.common.ke_labels import load_ke_labels
+
+LOC_GLOB = "ontology/core/location*.yaml"
+
+
+@lru_cache(maxsize=1)
+def _loc_parent() -> dict[str, str]:
+    """LOC_* -> parent LOC_* (từ core location). Cho hierarchy match (Phú Quốc bao Gành Dầu)."""
+    out: dict[str, str] = {}
+    for f in glob.glob(LOC_GLOB):
+        d = yaml.safe_load(open(f, encoding="utf-8")) or {}
+        for cid, v in (d.get("concepts") or {}).items():
+            p = (v or {}).get("parent") or (v or {}).get("located_in")
+            if p:
+                out[cid] = p
+    return out
+
+
+def _is_same_or_child(child: str | None, parent: str) -> bool:
+    """child == parent HOẶC child là hậu duệ của parent (đi ngược chuỗi parent)."""
+    cur, par = child, _loc_parent()
+    seen = 0
+    while cur and seen < 50:
+        if cur == parent:
+            return True
+        cur = par.get(cur)
+        seen += 1
+    return False
+
+
+@lru_cache(maxsize=64)
+def hotels_in_location(loc_concept: str) -> frozenset[int]:
+    """Mọi hotel có location_concept == loc HOẶC thuộc loc (hậu duệ). Hierarchy-aware: query
+    'Phú Quốc' (LOC_PHU_QUOC) nhặt cả hotel ở 'Gành Dầu' (LOC_GANH_DAU, con của Phú Quốc).
+    Trước đây concept index chỉ khớp ĐÚNG loc -> hotel ở xã con bị loại oan."""
+    labels = load_ke_labels()
+    return frozenset(
+        hid for hid, ke in labels.items()
+        if _is_same_or_child(ke.get("location_concept"), loc_concept)
+    )
 
 
 @dataclass
