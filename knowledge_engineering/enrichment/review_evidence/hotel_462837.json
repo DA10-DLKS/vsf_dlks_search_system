@@ -535,7 +535,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:28+00:00"
+  "created_at": "2026-06-11T07:41:28+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "771448060": {
   "review_id": 771448060,
@@ -773,7 +776,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:28+00:00"
+  "created_at": "2026-06-11T07:41:28+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "926262549": {
   "review_id": 926262549,
@@ -801,7 +807,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:28+00:00"
+  "created_at": "2026-06-11T07:41:28+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "846865105": {
   "review_id": 846865105,
@@ -892,7 +901,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:28+00:00"
+  "created_at": "2026-06-11T07:41:28+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1084966560": {
   "review_id": 1084966560,
@@ -925,7 +937,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:28+00:00"
+  "created_at": "2026-06-11T07:41:28+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1022262733": {
   "review_id": 1022262733,
@@ -1434,7 +1449,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:31+00:00"
+  "created_at": "2026-06-11T07:41:31+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "961135954": {
   "review_id": 961135954,
@@ -1578,7 +1596,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:31+00:00"
+  "created_at": "2026-06-11T07:41:31+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "927046470": {
   "review_id": 927046470,
@@ -1849,6 +1870,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "yên tĩnh, dễ chịu"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Có nhiều hồ bơi cho bé cả nước mặn lẫn ngọt."
    }
   ],
   "novel": [],
@@ -1858,7 +1884,8 @@
   "created_at": "2026-06-11T07:41:31+00:00",
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "960523855": {
@@ -2118,7 +2145,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:32+00:00"
+  "created_at": "2026-06-11T07:41:32+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1117669034": {
   "review_id": 1117669034,
@@ -2724,7 +2754,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:33+00:00"
+  "created_at": "2026-06-11T07:41:33+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "58881950": {
   "review_id": 58881950,
@@ -2741,13 +2774,21 @@
     "concept": "ASPECT_FACILITIES",
     "sentiment": "negative",
     "span": "they not daily clean the pool's floor."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "they should respect for customer's holiday."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:33+00:00"
+  "created_at": "2026-06-11T07:41:33+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1075787479": {
   "review_id": 1075787479,
@@ -3172,7 +3213,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:34+00:00"
+  "created_at": "2026-06-11T07:41:34+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "848956129": {
   "review_id": 848956129,
@@ -3391,7 +3435,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:35+00:00"
+  "created_at": "2026-06-11T07:41:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1038175177": {
   "review_id": 1038175177,
@@ -3547,7 +3594,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:35+00:00"
+  "created_at": "2026-06-11T07:41:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1045055367": {
   "review_id": 1045055367,
@@ -4000,13 +4050,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "negative",
     "span": "the food in the restaurant was truly astonishingly awful"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "It's NOT kids friendly (not baby cots for room or baby chairs in restaurant)."
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:35+00:00"
+  "created_at": "2026-06-11T07:41:35+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "971562731": {
   "review_id": 971562731,
@@ -4488,7 +4546,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T07:41:39+00:00"
+  "created_at": "2026-06-11T07:41:39+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "7405727": {
   "review_id": 7405727,
@@ -5216,7 +5277,8 @@
   "created_at": "2026-06-11T07:41:39+00:00",
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "10872795": {
@@ -5465,7 +5527,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T07:41:41+00:00",
   "backfilled_versions": {
-   "STYLE_MODERN": "v5-novel-style-only+ef3e0450"
+   "STYLE_MODERN": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "684141797": {

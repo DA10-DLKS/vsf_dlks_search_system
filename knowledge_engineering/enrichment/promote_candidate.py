@@ -32,6 +32,7 @@ import yaml
 
 META = "ontology/_meta.yaml"
 QUEUE = "ontology/candidate/candidate_queue.yaml"
+SOURCE_TAG_MAP = "ontology/source_tag_map.yaml"
 CONCEPTS = "ontology/candidate/candidate_concepts.yaml"  # nguồn Tầng 3 (concept ĐẦY ĐỦ song ngữ)
 PROMOTE_LOG = "ontology/candidate/promote_log.yaml"   # audit: ai/khi nào/từ candidate nào
 
@@ -129,6 +130,33 @@ def append_promote_log(entries: list[dict]) -> None:
         yaml.safe_dump(log, fh, allow_unicode=True, sort_keys=False)
 
 
+def append_source_tag_map(entries: dict[str, str], path: str = SOURCE_TAG_MAP) -> int:
+    """Thêm {chuỗi thô -> concept_id} vào source_tag_map.amenities. Đóng lỗ hổng: amenity gán qua
+    Tầng 0 (khớp chuỗi), nên concept amenity mới PHẢI có mapping ở đây mới gán được hotel.
+
+    Bỏ chuỗi đã có (idempotent, KHÔNG ghi đè map cũ). Dùng ruamel-free: đọc-sửa-ghi bằng PyYAML,
+    GIỮ header comment đầu file. Trả số entry thật sự thêm."""
+    if not entries:
+        return 0
+    d = yaml.safe_load(open(path, encoding="utf-8")) or {}
+    amen = d.setdefault("amenities", {})
+    added = 0
+    for s, cid in entries.items():
+        if s not in amen:           # không đụng chuỗi đã map (tôn trọng quyết định cũ)
+            amen[s] = cid
+            added += 1
+    if added:
+        txt = Path(path).read_text(encoding="utf-8")
+        head = "".join(l for l in txt.splitlines(keepends=True) if l.lstrip().startswith("#"))
+        with open(path, "w", encoding="utf-8") as fh:
+            if head:
+                fh.write(head)
+                if not head.endswith("\n"):
+                    fh.write("\n")
+            yaml.safe_dump(d, fh, allow_unicode=True, sort_keys=False)
+    return added
+
+
 def run(apply: bool) -> dict:
     queue = _load(QUEUE)
     cands = queue.get("candidates", []) or []
@@ -186,6 +214,10 @@ def run_concepts(apply: bool) -> dict:
     facet_files = load_facet_files()
 
     to_write: dict[str, dict[str, dict]] = {}
+    # source_tag_entries: {chuỗi thô -> concept_id} cho AMENITY — ghi vào source_tag_map để Tầng 0
+    # ontology_mapper gán được (amenity KHÔNG đi qua synonym). Đóng lỗ hổng "concept vào core nhưng
+    # không hotel nào được gán". Nguồn = field source_strings do amenity_suggest (Cách B) sinh.
+    source_tag_entries: dict[str, str] = {}
     log_entries, skipped, planned = [], [], []
     for cid, block in approved:
         if cid in existing:
@@ -199,8 +231,13 @@ def run_concepts(apply: bool) -> dict:
         if not ff:
             skipped.append(f"{cid}(facet lạ:{block.get('facet')})")
             continue
-        # STRIP metadata discovery — core không chứa status/discovery
-        core_block = {k: v for k, v in block.items() if k not in ("status", "discovery")}
+        # source_strings (nếu có): chuỗi thô -> concept, gom để ghi source_tag_map. KHÔNG vào core.
+        for s in (block.get("source_strings") or []):
+            if s:
+                source_tag_entries[s] = cid
+        # STRIP metadata discovery + source_strings — core chỉ giữ field schema concept
+        core_block = {k: v for k, v in block.items()
+                      if k not in ("status", "discovery", "source_strings")}
         to_write.setdefault(ff, {})[cid] = core_block
         planned.append((cid, core_block))
         log_entries.append({"concept_id": cid, "facet": block.get("facet"),
@@ -208,7 +245,8 @@ def run_concepts(apply: bool) -> dict:
                             "date": date.today().isoformat()})
 
     return {"approved": [c for c, _ in approved], "planned": planned, "skipped": skipped,
-            "to_write": to_write, "log_entries": log_entries, "apply": apply}
+            "to_write": to_write, "log_entries": log_entries,
+            "source_tag_entries": source_tag_entries, "apply": apply}
 
 
 def _print_plan(res: dict) -> None:
@@ -250,6 +288,12 @@ if __name__ == "__main__":
     append_promote_log(res["log_entries"])
     print(f"[log] ghi {len(res['log_entries'])} mục -> {PROMOTE_LOG}")
 
+    # AMENITY: ghi source_strings -> source_tag_map (Tầng 0). Concept amenity KHÔNG đi qua synonym;
+    # thiếu bước này thì concept vào core nhưng KHÔNG hotel nào được gán (lỗ hổng đã gặp với BBQ).
+    st_added = append_source_tag_map(res.get("source_tag_entries") or {})
+    if st_added:
+        print(f"[source_tag_map] thêm {st_added} ánh xạ chuỗi-thô -> concept (amenity gán được Tầng 0)")
+
     # build lại synonym để concept mới có surface form (rule + query nhận ra)
     print("\n[build] sinh lại synonym_dictionary...")
     from knowledge_engineering.common.build_synonym_index import write as build_synonym
@@ -257,7 +301,13 @@ if __name__ == "__main__":
     print(f"  -> {n} surface form ({conf} đa-concept)")
 
     new_ids = [cid for cid, _ in res["planned"]]
+    has_amenity = bool(res.get("source_tag_entries"))
     print("\n=== BƯỚC TIẾP (gán concept mới cho HOTEL CŨ — hồi tố, không chạy lại all) ===")
+    if has_amenity:
+        # amenity = HARD, gán qua ontology_mapper (KHÔNG cần LLM backfill). Chạy mapper lại là đủ.
+        print("  # amenity (HARD) — chạy lại mapper để gán theo source_tag_map vừa cập nhật:")
+        print("  .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.enrichment.ontology_mapper")
+    print("  # concept SOFT (style/aspect từ review) — cần backfill LLM:")
     print(f"  .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.enrichment.absa "
           f"--backfill {' '.join(new_ids)} --yes")
     print("  rồi: profile_builder + build_objects  (đưa concept mới vào object)")

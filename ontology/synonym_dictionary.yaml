@@ -60,6 +60,10 @@ synonyms:
   - AMEN_AC
   accessibility:
   - AMEN_WHEELCHAIR
+  adult-only property:
+  - AMEN_ADULTS_ONLY
+  adults only:
+  - AMEN_ADULTS_ONLY
   aesthetic:
   - STYLE_AESTHETIC
   aesthetic decor:
@@ -91,6 +95,10 @@ synonyms:
   am thuc:
   - AMEN_RESTAURANT
   - ASPECT_FOOD
+  am thuc chay:
+  - AMEN_VEGETARIAN
+  am thuc halal:
+  - AMEN_HALAL
   am_phu:
   - LMK_DONG_M_PHU
   amenities quality:
@@ -321,13 +329,25 @@ synonyms:
   - LMK_NUI_BAI_THO
   bakieu:
   - LMK_DEN_BA_KIEU
+  balcony:
+  - AMEN_BALCONY
   bamuoithangtu:
   - LMK_CONG_VIEN_BA_MUOI_THANG_TU
   bamươithángtư:
   - LMK_CONG_VIEN_BA_MUOI_THANG_TU
+  ban cong:
+  - AMEN_BALCONY
+  ban cong hoac san hien:
+  - AMEN_BALCONY
   ban cong san hien:
+  - AMEN_BALCONY
   - AMEN_GARDEN
+  ban công:
+  - AMEN_BALCONY
+  ban công hoặc sân hiên:
+  - AMEN_BALCONY
   ban công sân hiên:
+  - AMEN_BALCONY
   - AMEN_GARDEN
   ban dao phuong mai:
   - LMK_BAN_DAO_PHUONG_MAI
@@ -461,6 +481,8 @@ synonyms:
   - LMK_DINH_BAO_DAI_DINH_III
   bar:
   - AMEN_BAR
+  barbecue:
+  - AMEN_BBQ
   bau tro:
   - LMK_BAU_TRO
   - LMK_HO_BAU_TRO
@@ -468,6 +490,8 @@ synonyms:
   - LMK_HO_BAU_TRO
   bavung:
   - LMK_HON_BA_VUNG
+  bbq facilities:
+  - AMEN_BBQ
   bds dai phu tin:
   - LMK_BDS_DAI_PHU_TIN
   bds dai_phu tin:
@@ -540,6 +564,8 @@ synonyms:
   - AMEN_KITCHEN
   bep nau:
   - AMEN_KITCHEN
+  bep nuong:
+  - AMEN_BBQ
   beuty waterfall:
   - LMK_BEUTY_WATERFALL
   bi a:
@@ -679,6 +705,14 @@ synonyms:
   - AMEN_WATERSPORT
   boi xuong:
   - AMEN_WATERSPORT
+  bon suc:
+  - AMEN_HOT_TUB
+  bon tam lo thien:
+  - AMEN_HOT_TUB
+  bon tam nuoc nong:
+  - AMEN_HOT_TUB
+  bon tam tao song:
+  - AMEN_HOT_TUB
   bong ban:
   - AMEN_GAME_ROOM
   boutique design:
@@ -699,6 +733,8 @@ synonyms:
   - ASPECT_FOOD
   bua sang:
   - ASPECT_FOOD
+  bua sang halal:
+  - AMEN_HALAL
   budget:
   - PRICE_BUDGET
   buffet:
@@ -1017,6 +1053,8 @@ synonyms:
   - AMEN_KITCHEN
   bếp chung:
   - AMEN_KITCHEN
+  bếp nướng:
+  - AMEN_BBQ
   bếp nấu:
   - AMEN_KITCHEN
   bể bơi:
@@ -1039,8 +1077,18 @@ synonyms:
   - LMK_VUON_BE_CANH
   bểcảnh:
   - LMK_VUON_BE_CANH
+  bồn sục:
+  - AMEN_HOT_TUB
+  bồn tắm lộ_thiên:
+  - AMEN_HOT_TUB
+  bồn tắm nước nóng:
+  - AMEN_HOT_TUB
+  bồn tắm tạo sóng:
+  - AMEN_HOT_TUB
   bữa sáng:
   - ASPECT_FOOD
+  bữa sáng halal:
+  - AMEN_HALAL
   ca gia dinh:
   - PURPOSE_FAMILY
   ca hoi:
@@ -1163,6 +1211,8 @@ synonyms:
   - LMK_HON_CAP_LONG_BIA
   capre:
   - LMK_HON_CAP_RE
+  car charging station:
+  - AMEN_EV_CHARGER
   car park:
   - AMEN_PARKING
   castaway island:
@@ -1240,6 +1290,8 @@ synonyms:
   - LMK_BAI_BIEN_CHAN_MAY
   chanmay:
   - LMK_BAI_BIEN_CHAN_MAY
+  charming:
+  - STYLE_FAMILY_FRIENDLY
   chat luong phong:
   - ASPECT_ROOM
   chau doc:
@@ -1254,6 +1306,10 @@ synonyms:
   - AMEN_WATERSPORT
   cheo thuyen vuot thac:
   - LMK_CHEO_THUYEN_VUOT_THAC
+  chi cho cac cap nam nu:
+  - AMEN_ADULTS_ONLY
+  chi danh cho nguoi lon:
+  - AMEN_ADULTS_ONLY
   chien thang:
   - LMK_TUONG_DAI_CHIEN_THANG
   chien thang b-52:
@@ -1326,6 +1382,8 @@ synonyms:
   - AMEN_PET_FRIENDLY
   cho mang thú cưng:
   - AMEN_PET_FRIENDLY
+  cho nghi chi danh cho nguoi lon:
+  - AMEN_ADULTS_ONLY
   cho phep thu cung:
   - AMEN_PET_FRIENDLY
   cho sat:
@@ -1536,10 +1594,16 @@ synonyms:
   - AMEN_GOLF
   chất_lượng phòng:
   - ASPECT_ROOM
+  chỉ cho các cặp nam_nữ:
+  - AMEN_ADULTS_ONLY
+  chỉ dành cho người_lớn:
+  - AMEN_ADULTS_ONLY
   chỗ cho bé chơi:
   - AMEN_KIDS_CLUB
   chỗ cho trẻ chơi:
   - AMEN_KIDS_CLUB
+  chỗ nghỉ chỉ dành cho người_lớn:
+  - AMEN_ADULTS_ONLY
   chỗ đậu xe:
   - AMEN_PARKING
   chợ sắt:
@@ -2247,6 +2311,8 @@ synonyms:
   - ASPECT_FACILITIES
   de chiu:
   - STYLE_RELAXING
+  de thuong:
+  - STYLE_FAMILY_FRIENDLY
   decor tham my:
   - STYLE_AESTHETIC
   decor thẩm_mỹ:
@@ -2344,6 +2410,8 @@ synonyms:
   - ASPECT_SERVICE
   dich vu dua don:
   - AMEN_AIRPORT_SHUTTLE
+  dich vu phat truc tuyen nhu netflix:
+  - AMEN_STREAMING
   dich vu phong:
   - AMEN_RESTAURANT
   dich vu trong tre:
@@ -2419,10 +2487,16 @@ synonyms:
   - ASPECT_FOOD
   disabled access:
   - AMEN_WHEELCHAIR
+  dishwasher:
+  - AMEN_DISHWASHER
   diving:
   - AMEN_WATERSPORT
   do an:
   - ASPECT_FOOD
+  do an chay:
+  - AMEN_VEGETARIAN
+  do an halal:
+  - AMEN_HALAL
   do sach se:
   - ASPECT_CLEANLINESS
   do thoai mai cua phong:
@@ -2633,10 +2707,14 @@ synonyms:
   - PURPOSE_FAMILY
   dắt theo con:
   - PURPOSE_FAMILY
+  dễ thương:
+  - STYLE_FAMILY_FRIENDLY
   dễ_chịu:
   - STYLE_RELAXING
   dịch_vụ:
   - ASPECT_SERVICE
+  dịch_vụ phát trực_tuyến như netflix:
+  - AMEN_STREAMING
   dịch_vụ phòng:
   - AMEN_RESTAURANT
   dịch_vụ trông trẻ:
@@ -2653,6 +2731,8 @@ synonyms:
   - STYLE_ECO
   eco-friendly:
   - STYLE_ECO
+  electric vehicle charging:
+  - AMEN_EV_CHARGER
   elegant:
   - STYLE_LUXURY
   elevator:
@@ -2665,6 +2745,8 @@ synonyms:
   - STYLE_EUROPEAN_JAPANESE
   european style:
   - STYLE_EUROPEAN_JAPANESE
+  ev charging:
+  - AMEN_EV_CHARGER
   exclusive:
   - STYLE_LUXURY
   facilities:
@@ -2675,8 +2757,11 @@ synonyms:
   - PURPOSE_FAMILY
   family-friendly:
   - PURPOSE_FAMILY
+  - STYLE_FAMILY_FRIENDLY
   fancy:
   - STYLE_LUXURY
+  fireplace:
+  - AMEN_FIREPLACE
   fishing:
   - AMEN_WATERSPORT
   fitness:
@@ -2701,6 +2786,8 @@ synonyms:
   - AMEN_PARKING
   free wifi:
   - AMEN_WIFI
+  friendly:
+  - STYLE_FAMILY_FRIENDLY
   fusop:
   - LMK_FUSOP
   ga da lat:
@@ -2945,6 +3032,10 @@ synonyms:
   - LMK_HON_HAI_CO_TIEN
   haiduonghocquocgiavietnam:
   - LMK_BAO_TANG_HAI_DUONG_HOC_QUOC_GIA_VIET_NAM
+  halal food:
+  - AMEN_HALAL
+  halal restaurant:
+  - AMEN_HALAL
   ham chi huy cua tuong do cat:
   - LMK_HAM_CHI_HUY_CUA_TUONG_DO_CAT
   ham chi_huy cua tuong do cat:
@@ -3303,6 +3394,8 @@ synonyms:
   - LMK_CHUA_HO_QUOC
   hosoncotu:
   - LMK_DINH_HO_SON_CO_TU
+  hot tub:
+  - AMEN_HOT_TUB
   hotay:
   - LMK_CONG_VIEN_NUOC_HO_TAY
   hotel:
@@ -3663,6 +3756,8 @@ synonyms:
   - STYLE_QUIET
   it tien:
   - PRICE_BUDGET
+  jacuzzi:
+  - AMEN_HOT_TUB
   japan-inspired design:
   - STYLE_EUROPEAN_JAPANESE
   japanese design:
@@ -3781,6 +3876,10 @@ synonyms:
   - OBJ_RESORT
   khu nghỉ_dưỡng hoàn_cầu:
   - LMK_KHU_NGHI_DUONG_HOAN_CAU
+  khu nuong bbq:
+  - AMEN_BBQ
+  khu nướng bbq:
+  - AMEN_BBQ
   khu pho phap:
   - LMK_KHU_PHO_PHAP
   khu resort:
@@ -3865,6 +3964,8 @@ synonyms:
   - STYLE_QUIET
   kich thuoc phong:
   - ASPECT_ROOM
+  kid-friendly:
+  - STYLE_FAMILY_FRIENDLY
   kids club:
   - AMEN_KIDS_CLUB
   kids pool:
@@ -3875,6 +3976,8 @@ synonyms:
   - STYLE_EUROPEAN_JAPANESE
   kien truc co dien:
   - STYLE_VINTAGE
+  kien truc doc dao:
+  - STYLE_FAMILY_FRIENDLY
   kien truc nhat ban:
   - STYLE_EUROPEAN_JAPANESE
   kim doi:
@@ -3905,6 +4008,8 @@ synonyms:
   - STYLE_VINTAGE
   kiến_trúc nhật_bản:
   - STYLE_EUROPEAN_JAPANESE
+  kiến_trúc độc_đáo:
+  - STYLE_FAMILY_FRIENDLY
   ks:
   - OBJ_HOTEL
   ky co:
@@ -4018,6 +4123,8 @@ synonyms:
   - LMK_LANG_LAO_CHAI
   laochải:
   - LMK_LANG_LAO_CHAI
+  laundry machine:
+  - AMEN_WASHING_MACHINE
   le duan:
   - LMK_DUONG_LE_DUAN
   le duc tho:
@@ -4078,6 +4185,12 @@ synonyms:
   - LMK_SAN_BAY_LIEN_KHUONG
   liênkhương:
   - LMK_SAN_BAY_LIEN_KHUONG
+  lo suoi:
+  - AMEN_FIREPLACE
+  lo suoi cui:
+  - AMEN_FIREPLACE
+  lo vi song:
+  - AMEN_MICROWAVE
   loc tho:
   - LOC_NHA_TRANG__LOC_THO
   loc vung:
@@ -4174,6 +4287,12 @@ synonyms:
   - SETTING_MOUNTAIN
   lêđứcthọ:
   - LMK_CONG_VIEN_LE_DUC_THO
+  lò sưởi:
+  - AMEN_FIREPLACE
+  lò sưởi củi:
+  - AMEN_FIREPLACE
+  lò_vi sóng:
+  - AMEN_MICROWAVE
   lăng cá_ông:
   - LMK_LANG_CA_ONG
   lăng cô:
@@ -4248,10 +4367,24 @@ synonyms:
   - LMK_CONG_VIEN_MAT_TROI_MOI
   mattroimoihotay:
   - LMK_CONG_VIEN_MAT_TROI_MOI_HO_TAY
+  may giat:
+  - AMEN_WASHING_MACHINE
+  may giat say:
+  - AMEN_WASHING_MACHINE
   may lanh:
   - AMEN_AC
+  may rua bat:
+  - AMEN_DISHWASHER
+  may rua chen:
+  - AMEN_DISHWASHER
+  may say quan ao:
+  - AMEN_WASHING_MACHINE
   meeting room:
   - AMEN_MEETING_ROOM
+  microwave:
+  - AMEN_MICROWAVE
+  microwave oven:
+  - AMEN_MICROWAVE
   mid-range:
   - PRICE_MID
   midscale:
@@ -4298,6 +4431,8 @@ synonyms:
   - STYLE_NEW
   mon an:
   - ASPECT_FOOD
+  mon chay:
+  - AMEN_VEGETARIAN
   mong tay:
   - LMK_HON_MONG_TAY
   mongtay:
@@ -4339,8 +4474,20 @@ synonyms:
   - LMK_BAO_TANG_MY_THUAT_VIET_NAM
   mát-xa:
   - AMEN_SPA
+  máy giặt:
+  - AMEN_WASHING_MACHINE
+  máy giặt_sấy:
+  - AMEN_WASHING_MACHINE
+  máy rửa bát:
+  - AMEN_DISHWASHER
+  máy rửa chén:
+  - AMEN_DISHWASHER
+  máy sấy quần_áo:
+  - AMEN_WASHING_MACHINE
   máy_lạnh:
   - AMEN_AC
+  món chay:
+  - AMEN_VEGETARIAN
   món ăn:
   - ASPECT_FOOD
   móng tay:
@@ -4416,6 +4563,8 @@ synonyms:
   - SETTING_NATURE
   nature:
   - SETTING_NATURE
+  netflix:
+  - AMEN_STREAMING
   new hotel:
   - STYLE_NEW
   newly:
@@ -4585,6 +4734,10 @@ synonyms:
   - OBJ_BUNGALOW
   nha hang:
   - AMEN_RESTAURANT
+  nha hang halal:
+  - AMEN_HALAL
+  nha hang phuc vu mon chay:
+  - AMEN_VEGETARIAN
   nha hat lon ha noi:
   - LMK_NHA_HAT_LON_HA_NOI
   nha hat tuong nguyen hien dinh:
@@ -4764,6 +4917,10 @@ synonyms:
   - AMEN_KITCHEN
   nhà_hàng:
   - AMEN_RESTAURANT
+  nhà_hàng halal:
+  - AMEN_HALAL
+  nhà_hàng phục_vụ món chay:
+  - AMEN_VEGETARIAN
   nhà_hát lớn hà_nội:
   - LMK_NHA_HAT_LON_HA_NOI
   nhà_hát tuồng nguyễn_hiển_dĩnh:
@@ -5008,8 +5165,12 @@ synonyms:
   - OBJ_HOMESTAY
   ocean view:
   - AMEN_SEA_VIEW
+  on-demand movies:
+  - AMEN_STREAMING
   opulent:
   - STYLE_LUXURY
+  outdoor grill:
+  - AMEN_BBQ
   outdoor pool:
   - AMEN_POOL
   parking:
@@ -5067,8 +5228,14 @@ synonyms:
   - LMK_CHUA_PHAP_LAM
   phat co:
   - LMK_HON_PHAT_CO
+  phat truc tuyen:
+  - AMEN_STREAMING
   phatco:
   - LMK_HON_PHAT_CO
+  phim theo yeu cau:
+  - AMEN_STREAMING
+  phim theo yêu_cầu:
+  - AMEN_STREAMING
   pho bich hoa phung hung:
   - LMK_PHO_BICH_HOA_PHUNG_HUNG
   pho binh:
@@ -5098,6 +5265,8 @@ synonyms:
   - STYLE_EUROPEAN_JAPANESE
   phong cach co dien:
   - STYLE_VINTAGE
+  phong cach gia dinh:
+  - STYLE_FAMILY_FRIENDLY
   phong cach nhat:
   - STYLE_EUROPEAN_JAPANESE
   phong cach nhat ban:
@@ -5124,6 +5293,8 @@ synonyms:
   - AMEN_MEETING_ROOM
   phong karaoke:
   - AMEN_KARAOKE
+  phong may giat tu dong:
+  - AMEN_WASHING_MACHINE
   phong moi tinh:
   - STYLE_NEW
   phong rong:
@@ -5134,6 +5305,10 @@ synonyms:
   - AMEN_GYM
   phong the duc:
   - AMEN_GYM
+  phong theo chu de:
+  - AMEN_THEMED_ROOM
+  phong thiet ke theo phong cach quan ca phe:
+  - AMEN_THEMED_ROOM
   phong thoai mai:
   - ASPECT_ROOM
   phong tranh artful:
@@ -5158,6 +5333,8 @@ synonyms:
   - STYLE_EUROPEAN_JAPANESE
   phong_cách cổ_điển:
   - STYLE_VINTAGE
+  phong_cách gia_đình:
+  - STYLE_FAMILY_FRIENDLY
   phong_cách nhật:
   - STYLE_EUROPEAN_JAPANESE
   phong_cách nhật_bản:
@@ -5252,6 +5429,8 @@ synonyms:
   - LMK_CHUA_PHAP_LAM
   pháplâm:
   - LMK_CHUA_PHAP_LAM
+  phát trực_tuyến:
+  - AMEN_STREAMING
   phòng:
   - ASPECT_ROOM
   phòng bi-a:
@@ -5270,12 +5449,18 @@ synonyms:
   - AMEN_MEETING_ROOM
   phòng karaoke:
   - AMEN_KARAOKE
+  phòng máy_giặt tự_động:
+  - AMEN_WASHING_MACHINE
   phòng mới tinh:
   - STYLE_NEW
   phòng rộng:
   - ASPECT_ROOM
   phòng rộng_rãi:
   - ASPECT_ROOM
+  phòng theo chủ_đề:
+  - AMEN_THEMED_ROOM
+  phòng thiết_kế theo phong_cách quán cà_phê:
+  - AMEN_THEMED_ROOM
   phòng thoải_mái:
   - ASPECT_ROOM
   phòng thể_dục:
@@ -5406,6 +5591,8 @@ synonyms:
   - AMEN_GAME_ROOM
   premium:
   - PRICE_UPSCALE
+  private balcony:
+  - AMEN_BALCONY
   private beach:
   - AMEN_BEACHFRONT
   private island:
@@ -5641,6 +5828,8 @@ synonyms:
   - LMK_CONG_VIEN_RONG_BIEN
   rừng dừa_nước:
   - LMK_RUNG_DUA_NUOC
+  sac xe dien:
+  - AMEN_EV_CHARGER
   sach ho chi minh:
   - LMK_DUONG_SACH_HO_CHI_MINH
   sach ho chi_minh:
@@ -5771,6 +5960,7 @@ synonyms:
   san gon da_nang:
   - LMK_SAN_GON_DA_NANG
   san hien:
+  - AMEN_BALCONY
   - AMEN_GARDEN
   san quan vot:
   - AMEN_TENNIS
@@ -5873,6 +6063,8 @@ synonyms:
   - ASPECT_SERVICE
   story beach & pool:
   - LMK_STORY_BEACH_POOL
+  streaming service:
+  - AMEN_STREAMING
   sun world ha long:
   - LMK_KHU_VUI_CHOI_GIAI_TRI_SUN_WORLD_HA_LONG
   sun world ha long complex:
@@ -5954,6 +6146,7 @@ synonyms:
   sân gôn đà_nẵng:
   - LMK_SAN_GON_DA_NANG
   sân hiên:
+  - AMEN_BALCONY
   - AMEN_GARDEN
   sân quần_vợt:
   - AMEN_TENNIS
@@ -6039,6 +6232,10 @@ synonyms:
   - LMK_CHUA_SUNG_DUC
   sơn phong:
   - LOC_HOI_AN__SON_PHONG
+  sưởi:
+  - AMEN_FIREPLACE
+  sạc xe_điện:
+  - AMEN_EV_CHARGER
   sạch:
   - ASPECT_CLEANLINESS
   sạch_sẽ:
@@ -6184,6 +6381,7 @@ synonyms:
   tennis court:
   - AMEN_TENNIS
   terrace:
+  - AMEN_BALCONY
   - AMEN_GARDEN
   thac bac:
   - LMK_THAC_BAC
@@ -6220,8 +6418,14 @@ synonyms:
   - LMK_DINH_THAN_NGUYEN_TRUNG_TRUC
   than nguyen trung_truc:
   - LMK_DINH_THAN_NGUYEN_TRUNG_TRUC
+  than thien:
+  - STYLE_FAMILY_FRIENDLY
   than thien moi truong:
   - STYLE_ECO
+  than thien voi moi truong:
+  - STYLE_FAMILY_FRIENDLY
+  than thien voi tre em:
+  - STYLE_FAMILY_FRIENDLY
   than tho:
   - LMK_HO_THAN_THO
   than_thở:
@@ -6317,6 +6521,10 @@ synonyms:
   - LMK_KHU_THE_THAO_TAN_TRUONG
   thehuc:
   - LMK_CAU_THE_HUC
+  theme room:
+  - AMEN_THEMED_ROOM
+  themed room:
+  - AMEN_THEMED_ROOM
   thethao:
   - LMK_CONG_VIEN_THE_THAO
   thethaotantruong:
@@ -6337,6 +6545,8 @@ synonyms:
   - STYLE_EUROPEAN_JAPANESE
   thiet ke co dien:
   - STYLE_VINTAGE
+  thiet ke dep:
+  - STYLE_FAMILY_FRIENDLY
   thiet ke dep mat:
   - STYLE_AESTHETIC
   thiet ke hien dai:
@@ -6371,6 +6581,8 @@ synonyms:
   - STYLE_AESTHETIC
   thiết_kế tối_giản:
   - STYLE_MINIMALIST
+  thiết_kế đẹp:
+  - STYLE_FAMILY_FRIENDLY
   thiết_kế đẹp_mắt:
   - STYLE_AESTHETIC
   thiếu_nhi:
@@ -6508,8 +6720,14 @@ synonyms:
   - LMK_THAP_DOI
   thápchăm-pa:
   - LMK_DEN_THAP_CHAM_PA
+  thân_thiện:
+  - STYLE_FAMILY_FRIENDLY
   thân_thiện môi_trường:
   - STYLE_ECO
+  thân_thiện với môi_trường:
+  - STYLE_FAMILY_FRIENDLY
+  thân_thiện với trẻ_em:
+  - STYLE_FAMILY_FRIENDLY
   thê húc:
   - LMK_CAU_THE_HUC
   thêhúc:
@@ -6581,6 +6799,8 @@ synonyms:
   - LOC_TIEN_GIANG_TINH
   tien ich:
   - ASPECT_FACILITIES
+  tien nghi bbq:
+  - AMEN_BBQ
   tien nghi cho khach khuyet tat:
   - AMEN_WHEELCHAIR
   tien nghi co so luu tru:
@@ -6589,6 +6809,10 @@ synonyms:
   - ASPECT_FACILITIES
   tien nghi hien dai:
   - STYLE_MODERN
+  tien nghi nau nuong ngoai troi:
+  - AMEN_BBQ
+  tien nghi nau nuong ngoai troi rieng:
+  - AMEN_BBQ
   tien nghi phong:
   - ASPECT_ROOM
   tien son:
@@ -6633,12 +6857,18 @@ synonyms:
   - LOC_TIEN_GIANG_TINH
   tiện đi_lại:
   - SETTING_CITY_CENTER
+  tiện_nghi bbq:
+  - AMEN_BBQ
   tiện_nghi cho khách khuyết_tật:
   - AMEN_WHEELCHAIR
   tiện_nghi cơ_sở lưu_trú:
   - ASPECT_FACILITIES
   tiện_nghi hiện_đại:
   - STYLE_MODERN
+  tiện_nghi nấu_nướng ngoài_trời:
+  - AMEN_BBQ
+  tiện_nghi nấu_nướng ngoài_trời riêng:
+  - AMEN_BBQ
   tiện_nghi phòng:
   - ASPECT_ROOM
   tiện_nghi đầy_đủ:
@@ -6683,6 +6913,10 @@ synonyms:
   - LMK_TRAI_PHU_SON
   tram khi tuong hai van con dao:
   - LMK_TRAM_KHI_TUONG_HAI_VAN_CON_DAO
+  tram sac dien xe hoi:
+  - AMEN_EV_CHARGER
+  tram sac xe dien:
+  - AMEN_EV_CHARGER
   tram trung:
   - LMK_KHU_DU_LICH_TRAM_TRUNG
   - LMK_TRAM_TRUNG
@@ -6943,6 +7177,10 @@ synonyms:
   - LMK_TRAI_PHU_SON
   trạm khí_tượng hải_văn côn_đảo:
   - LMK_TRAM_KHI_TUONG_HAI_VAN_CON_DAO
+  trạm sạc xe_điện:
+  - AMEN_EV_CHARGER
+  trạm sạc điện xe_hơi:
+  - AMEN_EV_CHARGER
   trấn_quốc:
   - LMK_CHUA_TRAN_QUOC
   trấnquốc:
@@ -7198,6 +7436,12 @@ synonyms:
   - LMK_BAO_TANG_VAN_HOA_SA_HUYNH_CHAMPA
   ve sinh:
   - ASPECT_CLEANLINESS
+  vegetarian food:
+  - AMEN_VEGETARIAN
+  vegetarian options:
+  - AMEN_VEGETARIAN
+  vegetarian restaurant:
+  - AMEN_VEGETARIAN
   ven bien:
   - AMEN_BEACHFRONT
   - SETTING_COASTAL
@@ -7563,16 +7807,24 @@ synonyms:
   - PRICE_MID
   vừa túi_tiền:
   - PRICE_BUDGET
+  washer and dryer:
+  - AMEN_WASHING_MACHINE
+  washing machine:
+  - AMEN_WASHING_MACHINE
   water sports:
   - AMEN_WATERSPORT
   waterfront:
   - SETTING_RIVERSIDE
+  welcoming:
+  - STYLE_FAMILY_FRIENDLY
   wellness:
   - PURPOSE_WELLNESS
   wenshan puzhehei airport:
   - LMK_WENSHAN_PUZHEHEI_AIRPORT
   wheelchair accessible:
   - AMEN_WHEELCHAIR
+  whirlpool bath:
+  - AMEN_HOT_TUB
   wi fi:
   - AMEN_WIFI
   wi-fi:
@@ -7585,6 +7837,8 @@ synonyms:
   - AMEN_WIFI
   windsurfing:
   - AMEN_WATERSPORT
+  wood stove:
+  - AMEN_FIREPLACE
   worth:
   - ASPECT_VALUE
   xa hoa:
@@ -7872,6 +8126,8 @@ synonyms:
   - PRICE_LUXURY
   đẳng_cấp sang_trọng:
   - STYLE_LUXURY
+  đẹp:
+  - STYLE_FAMILY_FRIENDLY
   đẹp mắt:
   - STYLE_AESTHETIC
   đền bà kiệu:
@@ -7908,8 +8164,12 @@ synonyms:
   - LMK_BAO_TANG_DIA_CHAT
   đống đa:
   - LOC_HA_NOI__DONG_DA
+  đồ ăn_chay:
+  - AMEN_VEGETARIAN
   đồ_ăn:
   - ASPECT_FOOD
+  đồ_ăn halal:
+  - AMEN_HALAL
   đồi a1:
   - LMK_DOI_A1
   đồi chè cầu đất:
@@ -7975,6 +8235,10 @@ synonyms:
   - LMK_DEN_AN_GIAO_SRI_THENDAY_YUTTHA_PANIN
   ấngiáosrithendayyutthapanin:
   - LMK_DEN_AN_GIAO_SRI_THENDAY_YUTTHA_PANIN
+  ẩm thực_chay:
+  - AMEN_VEGETARIAN
+  ẩm thực_halal:
+  - AMEN_HALAL
   ẩm_thực:
   - AMEN_RESTAURANT
   - ASPECT_FOOD

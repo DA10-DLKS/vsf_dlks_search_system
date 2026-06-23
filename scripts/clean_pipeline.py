@@ -24,6 +24,9 @@ from ingestion.cleaning.text_normalizer import normalize_text
 from ingestion.cleaning.html_stripper import strip_html
 from ingestion.cleaning.occupancy_imputer import impute_max_occupancy
 from ingestion.cleaning.price_mocker import mock_room_prices
+from ingestion.cleaning.name_normalizer import normalize_hotel_name
+from ingestion.cleaning.nearby_filter import filter_nearby_places
+from ingestion.cleaning.brand_normalizer import extract_brand
 
 DEFAULT_INPUT_DIR: Path = Path(__file__).resolve().parents[1] / "data" / "raw"
 DEFAULT_OUTPUT_DIR: Path = Path(__file__).resolve().parents[1] / "data" / "cleaned"
@@ -149,6 +152,24 @@ def clean_document(doc: dict[str, Any]) -> dict[str, Any]:
                     else:
                         cleaned_comments.append(c)
                 cleaned[key]["sample_comments"] = cleaned_comments
+
+        # name — chuẩn hóa tên KS (bỏ ngoặc EN + đuôi marketing). Gắn name + name_original +
+        # name_alt (DA09 #1). Giữ gốc để audit + alias search; KHÔNG vứt dữ liệu.
+        elif key == "name" and isinstance(val, str):
+            nm = normalize_hotel_name(val)
+            cleaned["name"] = nm["name"]
+            cleaned["name_original"] = nm["name_original"]
+            if nm["name_alt"]:
+                cleaned["name_alt"] = nm["name_alt"]
+            # brand (chuỗi KS) trích từ name + name_alt -> field filter. None nếu không thuộc brand
+            # đã biết. Query "khách sạn thuộc Vinpearl" lọc theo field này. (DA09: query brand.)
+            brand = extract_brand(nm["name"], nm["name_alt"])
+            if brand:
+                cleaned["brand"] = brand
+
+        # nearby_places — loại điểm quá xa theo loại (DA09 #2). Sân bay/ga ngoại lệ (xa hợp lệ).
+        elif key == "nearby_places" and isinstance(val, list):
+            cleaned[key] = filter_nearby_places(val)
 
         # amenities — normalize + merge near-duplicates
         elif key == "amenities" and isinstance(val, list):

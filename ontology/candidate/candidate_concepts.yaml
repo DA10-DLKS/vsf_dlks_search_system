@@ -389,7 +389,8 @@ concepts:
       vi: Một không gian mang lại cảm giác thoải mái và dễ chịu.
       en: A space that provides a comfortable and relaxed feeling.
     status: rejected
-    reject_reason: "Hạ khỏi core 2026-06-16: trùng STYLE_RELAXING (cảm nhận thoải mái/dễ chịu), không phải bối cảnh; fact_type=hard sai. discovery chỉ 6 hotel."
+    reject_reason: 'Hạ khỏi core 2026-06-16: trùng STYLE_RELAXING (cảm nhận thoải
+      mái/dễ chịu), không phải bối cảnh; fact_type=hard sai. discovery chỉ 6 hotel.'
     discovery:
       cluster_id: c008
       hotel_count: 6
@@ -434,7 +435,8 @@ concepts:
       vi: Một khung cảnh nhiệt đới với thiên nhiên tươi đẹp và khí hậu ấm áp.
       en: A tropical setting with beautiful nature and warm climate.
     status: rejected
-    reject_reason: "Hạ khỏi core 2026-06-16: gần như toàn bộ VN là nhiệt đới → không phân biệt/lọc được; trùng SETTING_NATURE."
+    reject_reason: 'Hạ khỏi core 2026-06-16: gần như toàn bộ VN là nhiệt đới → không
+      phân biệt/lọc được; trùng SETTING_NATURE.'
     discovery:
       cluster_id: c009
       hotel_count: 5
@@ -569,7 +571,8 @@ concepts:
       vi: Một không gian yên bình giữa sự ồn ào của thành phố.
       en: A peaceful space amidst the hustle and bustle of the city.
     status: rejected
-    reject_reason: "Hạ khỏi core 2026-06-16: trùng STYLE_QUIET (yên bình); nhãn marketing, không phải fact bối cảnh. discovery chỉ 4 hotel."
+    reject_reason: 'Hạ khỏi core 2026-06-16: trùng STYLE_QUIET (yên bình); nhãn marketing,
+      không phải fact bối cảnh. discovery chỉ 4 hotel.'
     discovery:
       cluster_id: c012
       hotel_count: 4
@@ -614,7 +617,8 @@ concepts:
       vi: Một không gian thoải mái và dễ chịu.
       en: A comfortable and pleasant atmosphere.
     status: rejected
-    reject_reason: "Hạ khỏi core 2026-06-16: trùng SETTING_CHILL/STYLE_RELAXING; surface 'không khí' quá generic. discovery chỉ 4 hotel."
+    reject_reason: 'Hạ khỏi core 2026-06-16: trùng SETTING_CHILL/STYLE_RELAXING; surface
+      ''không khí'' quá generic. discovery chỉ 4 hotel.'
     discovery:
       cluster_id: c013
       hotel_count: 4
@@ -658,7 +662,8 @@ concepts:
       vi: Một bối cảnh mang lại cảm giác kỳ diệu và huyền bí.
       en: A setting that provides a magical and enchanting experience.
     status: rejected
-    reject_reason: "Hạ khỏi core 2026-06-16: nhãn marketing 'kỳ diệu/huyền bí', không phải fact có/không lọc được. discovery chỉ 3 hotel."
+    reject_reason: 'Hạ khỏi core 2026-06-16: nhãn marketing ''kỳ diệu/huyền bí'',
+      không phải fact có/không lọc được. discovery chỉ 3 hotel.'
     discovery:
       cluster_id: c014
       hotel_count: 3
@@ -785,7 +790,8 @@ concepts:
       vi: Một loại hình lưu trú mang lại cảm giác như ở nhà.
       en: A type of accommodation that provides a home-like experience.
     status: rejected
-    reject_reason: "Hạ khỏi core 2026-06-16: SAI FACET — đây là loại hình lưu trú, trùng OBJ_HOMESTAY; không phải setting/bối cảnh."
+    reject_reason: 'Hạ khỏi core 2026-06-16: SAI FACET — đây là loại hình lưu trú,
+      trùng OBJ_HOMESTAY; không phải setting/bối cảnh.'
     discovery:
       cluster_id: c017
       hotel_count: 3
@@ -806,3 +812,302 @@ concepts:
       rationale: Concept này phù hợp vì 'homestay' thể hiện một bối cảnh lưu trú đặc
         biệt, nơi khách có thể trải nghiệm cuộc sống địa phương và sự ấm cúng như
         ở nhà.
+  AMEN_BBQ:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Tiện nghi nướng BBQ
+      en: BBQ facilities
+    surface_forms:
+      vi:
+      - tiện nghi nấu nướng ngoài trời
+      - tiện nghi nấu nướng ngoài trời riêng
+      - tiện nghi bbq
+      - bếp nướng
+      - khu nướng bbq
+      en:
+      - bbq facilities
+      - barbecue
+      - outdoor grill
+    description:
+      vi: Khu vực hoặc thiết bị nướng BBQ ngoài trời cho khách tự nấu nướng.
+      en: An outdoor area or equipment for guests to grill and barbecue.
+    status: approved
+  AMEN_HOT_TUB:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Bồn tắm nước nóng
+      en: Hot tub / Jacuzzi
+    surface_forms:
+      vi:
+      - bồn tắm nước nóng
+      - bồn tắm tạo sóng
+      - bồn tắm lộ thiên
+      - bồn sục
+      - jacuzzi
+      en:
+      - hot tub
+      - jacuzzi
+      - whirlpool bath
+    description:
+      vi: Bồn tắm nước nóng (jacuzzi) tạo sủi bọt hoặc tạo sóng để thư giãn.
+      en: A heated tub (jacuzzi) with bubbles or jets for relaxation.
+    status: approved
+  AMEN_EV_CHARGER:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Trạm sạc xe điện
+      en: EV charging station
+    surface_forms:
+      vi:
+      - trạm sạc điện xe hơi
+      - trạm sạc xe điện
+      - sạc xe điện
+      en:
+      - ev charging
+      - electric vehicle charging
+      - car charging station
+    description:
+      vi: Trạm sạc pin cho xe điện tại chỗ nghỉ.
+      en: An on-site charging station for electric vehicles.
+    status: approved
+  AMEN_WASHING_MACHINE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Máy giặt
+      en: Washing machine
+    surface_forms:
+      vi:
+      - máy giặt
+      - phòng máy giặt tự động
+      - máy sấy quần áo
+      - máy giặt sấy
+      en:
+      - washing machine
+      - laundry machine
+      - washer and dryer
+    description:
+      vi: Máy giặt (và/hoặc máy sấy) cho khách tự giặt đồ — quan trọng cho lưu trú
+        dài.
+      en: A washing machine (and/or dryer) for guests' self-service laundry.
+    status: approved
+  AMEN_FIREPLACE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Lò sưởi
+      en: Fireplace
+    surface_forms:
+      vi:
+      - lò sưởi
+      - lò sưởi củi
+      - sưởi
+      en:
+      - fireplace
+      - wood stove
+    description:
+      vi: Lò sưởi trong phòng hoặc khu vực chung — đặc trưng vùng khí hậu lạnh.
+      en: A fireplace in the room or common area, typical of cold-climate destinations.
+    status: approved
+  AMEN_ADULTS_ONLY:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Chỉ dành cho người lớn
+      en: Adults only
+    surface_forms:
+      vi:
+      - chỗ nghỉ chỉ dành cho người lớn
+      - chỉ dành cho người lớn
+      - chỉ cho các cặp nam nữ
+      en:
+      - adults only
+      - adult-only property
+    description:
+      vi: Chỗ nghỉ chỉ phục vụ khách người lớn, không nhận trẻ em.
+      en: A property that accommodates adults only and does not accept children.
+    status: approved
+  AMEN_STREAMING:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Dịch vụ phát trực tuyến
+      en: Streaming service
+    surface_forms:
+      vi:
+      - dịch vụ phát trực tuyến như netflix
+      - netflix
+      - phát trực tuyến
+      - phim theo yêu cầu
+      en:
+      - streaming service
+      - netflix
+      - on-demand movies
+    description:
+      vi: TV có dịch vụ phát trực tuyến (Netflix...) hoặc phim theo yêu cầu.
+      en: A TV with streaming services (Netflix, etc.) or on-demand movies.
+    status: approved
+  AMEN_HALAL:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Ẩm thực Halal
+      en: Halal food
+    surface_forms:
+      vi:
+      - nhà hàng halal
+      - bữa sáng halal
+      - đồ ăn halal
+      - ẩm thực halal
+      en:
+      - halal food
+      - halal restaurant
+    description:
+      vi: Phục vụ đồ ăn theo tiêu chuẩn Halal.
+      en: Serves food prepared according to Halal standards.
+    status: approved
+  AMEN_VEGETARIAN:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Ẩm thực chay
+      en: Vegetarian food
+    surface_forms:
+      vi:
+      - nhà hàng phục vụ món chay
+      - món chay
+      - đồ ăn chay
+      - ẩm thực chay
+      en:
+      - vegetarian food
+      - vegetarian restaurant
+      - vegetarian options
+    description:
+      vi: Phục vụ các món chay.
+      en: Serves vegetarian dishes.
+    status: approved
+  AMEN_THEMED_ROOM:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Phòng theo chủ đề
+      en: Themed room
+    surface_forms:
+      vi:
+      - phòng theo chủ đề
+      - phòng thiết kế theo phong cách quán cà phê
+      en:
+      - themed room
+      - theme room
+    description:
+      vi: Phòng được trang trí/thiết kế theo một chủ đề riêng.
+      en: A room decorated or designed around a specific theme.
+    status: approved
+  AMEN_MICROWAVE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Lò vi sóng
+      en: Microwave
+    surface_forms:
+      vi:
+      - lò vi sóng
+      en:
+      - microwave
+      - microwave oven
+    description:
+      vi: Lò vi sóng trong phòng hoặc bếp chung.
+      en: A microwave in the room or shared kitchen.
+    status: approved
+  AMEN_DISHWASHER:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Máy rửa bát
+      en: Dishwasher
+    surface_forms:
+      vi:
+      - máy rửa bát
+      - máy rửa chén
+      en:
+      - dishwasher
+    description:
+      vi: Máy rửa bát trong bếp của chỗ nghỉ — tiện cho căn hộ/lưu trú dài.
+      en: A dishwasher in the accommodation's kitchen, useful for apartments/long
+        stays.
+    status: approved
+  AMEN_BALCONY:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Ban công / sân hiên
+      en: Balcony / terrace
+    surface_forms:
+      vi:
+      - ban công hoặc sân hiên
+      - ban công
+      - sân hiên
+      - ban công sân hiên
+      en:
+      - balcony
+      - terrace
+      - private balcony
+    description:
+      vi: Phòng có ban công hoặc sân hiên riêng.
+      en: A room with a private balcony or terrace.
+    status: approved

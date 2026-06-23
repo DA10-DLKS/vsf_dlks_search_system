@@ -67,7 +67,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:53+00:00"
+  "created_at": "2026-06-11T05:12:53+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "519473293": {
   "review_id": 519473293,
@@ -407,7 +410,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:53+00:00"
+  "created_at": "2026-06-11T05:12:53+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "996534358": {
   "review_id": 996534358,
@@ -637,7 +643,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:13:05+00:00"
+  "created_at": "2026-06-11T05:13:05+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "939476403": {
   "review_id": 939476403,
@@ -1107,7 +1116,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:57+00:00"
+  "created_at": "2026-06-11T05:12:57+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1062631632": {
   "review_id": 1062631632,
@@ -1479,7 +1491,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:50+00:00"
+  "created_at": "2026-06-11T05:12:50+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "921105774": {
   "review_id": 921105774,
@@ -1875,6 +1890,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "a peaceful and relaxing place for a holiday"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "peaceful and relaxing place for a holiday with friends or family"
    }
   ],
   "novel": [],
@@ -1884,7 +1904,8 @@
   "created_at": "2026-06-11T05:12:50+00:00",
   "backfilled_versions": {
    "STYLE_QUIET": "v5-novel-style-only+ef3e0450",
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "4785697": {
@@ -1913,7 +1934,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:57+00:00"
+  "created_at": "2026-06-11T05:12:57+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "221959096": {
   "review_id": 221959096,
@@ -2359,7 +2383,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:49+00:00"
+  "created_at": "2026-06-11T05:12:49+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "2400199": {
   "review_id": 2400199,
@@ -2389,7 +2416,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T05:12:51+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "702187032": {
@@ -2472,7 +2500,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:49+00:00"
+  "created_at": "2026-06-11T05:12:49+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "6033473": {
   "review_id": 6033473,
@@ -3443,13 +3474,21 @@
     "concept": "ASPECT_ROOM",
     "sentiment": "positive",
     "span": "decent sized rooms."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Child and family friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:13:11+00:00"
+  "created_at": "2026-06-11T05:13:11+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "766687322": {
   "review_id": 766687322,
@@ -3532,7 +3571,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:13:11+00:00"
+  "created_at": "2026-06-11T05:13:11+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "3395050": {
   "review_id": 3395050,
@@ -4000,7 +4042,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:49+00:00"
+  "created_at": "2026-06-11T05:12:49+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "914738222": {
   "review_id": 914738222,
@@ -4135,7 +4180,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:12:58+00:00"
+  "created_at": "2026-06-11T05:12:58+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "914738191": {
   "review_id": 914738191,
@@ -5719,7 +5767,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T05:13:17+00:00"
+  "created_at": "2026-06-11T05:13:17+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1022274065": {
   "review_id": 1022274065,
@@ -7594,6 +7645,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "negative",
     "span": "instead it was replaced with an argument over whether we had payed for a child's bed in one room we had booked."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the childcare room was a godsend for our 2yr old"
    }
   ],
   "novel": [],
@@ -7602,7 +7658,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T05:13:16+00:00",
   "backfilled_versions": {
-   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450"
+   "STYLE_ROMANTIC": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "771455933": {

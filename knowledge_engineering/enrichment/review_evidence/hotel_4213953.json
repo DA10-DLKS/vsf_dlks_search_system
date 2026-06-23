@@ -161,7 +161,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T10:11:48+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "250983749": {
@@ -215,13 +216,21 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "Nhân viên thân thiện, chủ khách sạn hiếu khách nhiệt tình, quá dễ thương luôn"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "Nhân viên thân thiện, chủ khách sạn hiếu khách nhiệt tình, quá dễ thương luôn"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:11:48+00:00"
+  "created_at": "2026-06-11T10:11:48+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "490651494": {
   "review_id": 490651494,
@@ -510,6 +519,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "positive",
     "span": "Phòng rộng thoai mái"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "nhan viên thân thiện"
    }
   ],
   "novel": [],
@@ -518,7 +532,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T10:11:48+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "178478649": {
@@ -639,7 +654,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:11:57+00:00"
+  "created_at": "2026-06-11T10:11:57+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1124234858": {
   "review_id": 1124234858,
@@ -695,7 +713,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:11:57+00:00"
+  "created_at": "2026-06-11T10:11:57+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1075786996": {
   "review_id": 1075786996,
@@ -758,13 +779,21 @@
     "concept": "ASPECT_VALUE",
     "sentiment": "positive",
     "span": "the prices is cheap"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "staff is friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:11:57+00:00"
+  "created_at": "2026-06-11T10:11:57+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "823914405": {
   "review_id": 823914405,
@@ -810,7 +839,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:11:57+00:00"
+  "created_at": "2026-06-11T10:11:57+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "823914406": {
   "review_id": 823914406,
@@ -1419,13 +1451,21 @@
     "concept": "ASPECT_FOOD",
     "sentiment": "positive",
     "span": "Local street food just around the corner."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "negative",
+    "span": "not so much families with children"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:11:58+00:00"
+  "created_at": "2026-06-11T10:11:58+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "927045649": {
   "review_id": 927045649,
@@ -1460,13 +1500,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "positive",
     "span": "The staff are hospitable and friendly."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff are hospitable and friendly"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:11:58+00:00"
+  "created_at": "2026-06-11T10:11:58+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "921091110": {
   "review_id": 921091110,
@@ -1501,13 +1549,21 @@
     "concept": "ASPECT_LOCATION",
     "sentiment": "neutral",
     "span": "It’s a bit far from the center but close to some nearby temples and a night market with decent food."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "The staff is friendly and enthusiastic"
    }
   ],
   "novel": [],
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T10:11:58+00:00"
+  "created_at": "2026-06-11T10:11:58+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1075786997": {
   "review_id": 1075786997,

@@ -20,7 +20,10 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "prompt_version": "v5-novel-style-only+b068dc47",
-  "created_at": "2026-06-11T17:02:51+00:00"
+  "created_at": "2026-06-11T17:02:51+00:00",
+  "backfilled_versions": {
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
+  }
  },
  "1122002540": {
   "review_id": 1122002540,
@@ -57,6 +60,11 @@
     "concept": "STYLE_NEW",
     "sentiment": "positive",
     "span": "newly built"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "It's great for fully enjoying the hotel."
    }
   ],
   "novel": [],
@@ -65,7 +73,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T17:02:51+00:00",
   "backfilled_versions": {
-   "STYLE_NEW": "v5-novel-style-only+ef3e0450"
+   "STYLE_NEW": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1124198083": {
@@ -181,6 +190,11 @@
     "concept": "ASPECT_SERVICE",
     "sentiment": "positive",
     "span": "friendly and attentive staff"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "friendly and attentive staff."
    }
   ],
   "novel": [],
@@ -189,7 +203,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T17:02:51+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1066911798": {
@@ -721,6 +736,11 @@
     "concept": "STYLE_RELAXING",
     "sentiment": "negative",
     "span": "hơi khó ngủ xíu"
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "mọi người vô cùng thân thiện."
    }
   ],
   "novel": [],
@@ -729,7 +749,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T17:02:58+00:00",
   "backfilled_versions": {
-   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450"
+   "STYLE_RELAXING": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1120908667": {
@@ -752,6 +773,11 @@
     "concept": "STYLE_LUXURY",
     "sentiment": "negative",
     "span": "not someone fitting for a luxury resort."
+   },
+   {
+    "concept": "STYLE_FAMILY_FRIENDLY",
+    "sentiment": "positive",
+    "span": "the staff members were friendly"
    }
   ],
   "novel": [],
@@ -760,7 +786,8 @@
   "prompt_version": "v5-novel-style-only+b068dc47",
   "created_at": "2026-06-11T17:02:58+00:00",
   "backfilled_versions": {
-   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450"
+   "STYLE_LUXURY": "v5-novel-style-only+ef3e0450",
+   "STYLE_FAMILY_FRIENDLY": "v5-novel-style-only+343d0bc4"
   }
  },
  "1099874652": {
