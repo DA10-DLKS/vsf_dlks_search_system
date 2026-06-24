@@ -185,11 +185,19 @@ def to_search_response(query: str, pipeline_result: dict[str, Any]) -> dict[str,
     if not pairs:
         return {"query": query, "results": [], "total": 0}
 
-    # Extract price filter from intent
+    # Extract price filter from intent (numeric range or price tier)
     intent = pipeline_result.get("intent") or {}
     intent_range = intent.get("range") or {}
     price_min = intent_range.get("price_min")
     price_max = intent_range.get("price_max")
+
+    # Map price_tiers to numeric range when no explicit min/max
+    if price_min is None and price_max is None:
+        tiers = set(intent.get("price_tiers") or [])
+        if "PRICE_BUDGET" in tiers:
+            price_max = 800000
+        elif "PRICE_LUXURY" in tiers:
+            price_min = 2000000
 
     results = []
     for hid, score in pairs:
