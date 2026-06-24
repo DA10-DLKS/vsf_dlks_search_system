@@ -214,13 +214,14 @@ def to_search_response(query: str, pipeline_result: dict[str, Any]) -> dict[str,
         if "score" not in merged:
             merged["score"] = score
 
-        # Rooms matching the user's price range
+        # Override rooms with price-filtered list so frontend only sees matching rooms
         if price_min is not None or price_max is not None:
-            merged["rooms_matching"] = filter_rooms(
-                hid, min_price=price_min, max_price=price_max
-            )
+            merged["rooms"] = filter_rooms(hid, min_price=price_min, max_price=price_max)
+            prices = [r["price_per_night"] for r in merged["rooms"] if r.get("price_per_night")]
+            merged["price_from"] = min(prices) if prices else None
         else:
-            merged["rooms_matching"] = get_rooms(hid)
+            merged["rooms"] = get_rooms(hid)
+        merged["rooms_matching"] = merged["rooms"]
 
         results.append(merged)
 
