@@ -190,10 +190,22 @@ def parse_range(q: str) -> dict[str, Any]:
     if m:
         rf["price_max"] = int(float(m.group(2).replace(",", ".")) * 1_000_000)
         rf.pop("price_min", None)
+
+    # "trên X triệu" — min price
+    m = re.search(r"(trên|>|hơn|cao hơn)\s*([\d.,]+)\s*(triệu|tr)", ql)
+    if m and "price_min" not in rf:
+        rf["price_min"] = int(float(m.group(2).replace(",", ".")) * 1_000_000)
+        rf.pop("price_max", None)
+
     # "không quá X nghìn/k" — giá rẻ dạng nghìn đồng
     m = re.search(r"(dưới|<|không quá|tối đa)\s*([\d.,]+)\s*(nghìn|nghin|k)\b", ql)
     if m and "price_max" not in rf:
         rf["price_max"] = int(float(m.group(2).replace(",", ".")) * 1_000)
+
+    # "trên X nghìn/k" — min price dạng nghìn
+    m = re.search(r"(trên|>|hơn|cao hơn)\s*([\d.,]+)\s*(nghìn|nghin|k)\b", ql)
+    if m and "price_min" not in rf:
+        rf["price_min"] = int(float(m.group(2).replace(",", ".")) * 1_000)
     return _parse_range_tail(ql, rf)
 
 
