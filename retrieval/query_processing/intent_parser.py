@@ -29,6 +29,7 @@ import yaml
 
 from knowledge_engineering.common.implicit_intent import parse_implicit_intent
 from knowledge_engineering.common.normalize import normalize
+from knowledge_engineering.common.query_negation import negation_spans
 
 SYN_YAML_DEFAULT = "ontology/synonym_dictionary.yaml"
 
@@ -55,6 +56,7 @@ class ParsedIntent:
     brand: str | None = None      # chuỗi KS user hỏi đích danh ("thuộc Vinpearl") -> filter
     range: dict[str, Any] = field(default_factory=dict)
     implicit: dict[str, str] = field(default_factory=dict)
+    exclude_concepts: list[str] = field(default_factory=list)  # concept user KHÔNG muốn (negation)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -71,6 +73,7 @@ class ParsedIntent:
             "brand": self.brand,
             "range": self.range,
             "implicit": self.implicit,
+            "exclude_concepts": self.exclude_concepts,
         }
 
 
@@ -127,10 +130,57 @@ def _lookup_concepts(q: str, syn: dict[str, list[str]], max_gram: int) -> set[st
     return found
 
 
+# Đơn vị tiền -> hệ số nhân (nghìn vs triệu). "k"/"nghìn" = 1e3, "tr"/"triệu" = 1e6.
+_UNIT_MULT = {"k": 1_000, "nghìn": 1_000, "nghin": 1_000, "tr": 1_000_000, "triệu": 1_000_000}
+
+# "1tr2" = 1 triệu 2 trăm nghìn = 1.200.000 (đơn vị NẰM GIỮA số). Chuẩn hóa "<N>tr<M>" -> "<N>.<M> triệu"
+# để regex giá phía sau bắt thống nhất. M là phần trăm-nghìn (1 chữ số): "1tr2"->1.2 triệu, "2tr5"->2.5 triệu.
+_TR_INFIX_RE = re.compile(r"(\d+)\s*tr\s*(\d)\b")
+
+
+def _expand_tr_infix(ql: str) -> str:
+    return _TR_INFIX_RE.sub(lambda m: f"{m.group(1)}.{m.group(2)} triệu", ql)
+
+
+def _money_to_vnd(num: str, unit: str) -> int:
+    """Chuỗi số + đơn vị -> VND. Xử lý 'Ntr M' kiểu '1tr2' = 1.200.000 (1 triệu 2 trăm nghìn):
+    phần thập phân của 'triệu' tính theo trăm-nghìn ('1.2 triệu' và '1tr2' đều = 1_200_000).
+    'k'/'nghìn' nhân thẳng. Trả int VND."""
+    num = num.replace(",", ".")
+    val = float(num) * _UNIT_MULT.get(unit, 1)
+    return int(val)
+
+
+# Range giá KÉP: "từ 800k đến 1tr2", "800 nghìn - 1.2 triệu". Đơn vị 2 vế có thể KHÁC nhau.
+# Nếu vế đầu thiếu đơn vị thì mượn đơn vị vế sau ("1 đến 2 triệu" -> cả hai 'triệu').
+_PRICE_RANGE_RE = re.compile(
+    r"(?:từ|tầm|khoảng)?\s*([\d.,]+)\s*(triệu|tr|nghìn|nghin|k)?\s*"
+    r"(?:đến|tới|-|–|~)\s*([\d.,]+)\s*(triệu|tr|nghìn|nghin|k)"
+)
+
+
 def parse_range(q: str) -> dict[str, Any]:
-    """Bắt range filter phổ biến: giá (tầm/dưới X triệu), điểm, sao. Port từ query_demo."""
+    """Bắt range filter phổ biến: giá (range kép/tầm/dưới X), superlative, điểm, sao. Port từ query_demo."""
     rf: dict[str, Any] = {}
-    ql = q.lower()
+    ql = _expand_tr_infix(q.lower())  # "1tr2" -> "1.2 triệu" trước khi match giá
+
+    # Range KÉP trước (ưu tiên cao nhất): "800k đến 1tr2" -> price_min + price_max.
+    mr = _PRICE_RANGE_RE.search(ql)
+    if mr:
+        lo_num, lo_unit, hi_num, hi_unit = mr.groups()
+        lo_unit = lo_unit or hi_unit  # vế đầu thiếu đơn vị -> mượn vế sau
+        rf["price_min"] = _money_to_vnd(lo_num, lo_unit)
+        rf["price_max"] = _money_to_vnd(hi_num, hi_unit)
+
+    # Superlative sort theo giá. Lưu vào range để không đổi chữ ký ParsedIntent.
+    if re.search(r"rẻ nhất|giá rẻ nhất|rẻ nhất có thể", ql):
+        rf["sort"] = "price_asc"
+    elif re.search(r"đắt nhất|sang nhất|cao cấp nhất|xịn nhất", ql):
+        rf["sort"] = "price_desc"
+
+    if "price_min" in rf:  # range kép đã set -> bỏ qua các pattern đơn dưới đây
+        return _parse_range_tail(ql, rf)
+
     m = re.search(r"(tầm|khoảng|tầm khoảng|cỡ|xấp xỉ)\s*([\d.,]+)\s*(triệu|tr)", ql)
     if m:
         x = float(m.group(2).replace(",", ".")) * 1_000_000
@@ -144,6 +194,12 @@ def parse_range(q: str) -> dict[str, Any]:
     m = re.search(r"(dưới|<|không quá|tối đa)\s*([\d.,]+)\s*(nghìn|nghin|k)\b", ql)
     if m and "price_max" not in rf:
         rf["price_max"] = int(float(m.group(2).replace(",", ".")) * 1_000)
+    return _parse_range_tail(ql, rf)
+
+
+def _parse_range_tail(ql: str, rf: dict[str, Any]) -> dict[str, Any]:
+    """Phần range KHÔNG phải giá (điểm review, số sao). Tách riêng để cả nhánh range-kép và
+    nhánh giá-đơn dùng chung."""
     m = re.search(r"(trên|>|từ)\s*([\d.,]+)\s*điểm", ql)
     if m:
         rf["score_min"] = float(m.group(2).replace(",", "."))
@@ -179,6 +235,15 @@ def parse_intent(q: str, syn_yaml: str = SYN_YAML_DEFAULT) -> ParsedIntent:
     implicit = parse_implicit_intent(q)
     found.update(implicit)
 
+    # Gia đình ĐÈ lãng mạn: câu có con nhỏ ("2 đứa nhỏ") thì "vợ chồng"/"hai người" KHÔNG còn là
+    # tín hiệu romantic (đây là chuyến gia đình). Chỉ giữ ROMANTIC nếu có cue romantic MẠNH
+    # (trăng mật/honeymoon/lãng mạn/hẹn hò) — tránh "2 vợ chồng + 2 con" bị gán nhầm romantic.
+    if {"PURPOSE_FAMILY", "PURPOSE_ROMANTIC"} <= found:
+        qf = normalize(q, fold=True)
+        if not re.search(r"trang mat|honeymoon|lang man|hen ho|ky niem (ngay )?cuoi|nguoi yeu", qf):
+            found.discard("PURPOSE_ROMANTIC")
+            found.discard("STYLE_ROMANTIC")
+
     rng = parse_range(q)
 
     # Suppress PRICE_BUDGET khi "ngân sách/budget" đi kèm SỐ TIỀN (là khai báo ngân sách, không
@@ -188,6 +253,24 @@ def parse_intent(q: str, syn_yaml: str = SYN_YAML_DEFAULT) -> ParsedIntent:
         normalize(q, fold=True),
     ):
         found.discard("PRICE_BUDGET")
+
+    # NEGATION: concept nằm trong vế phủ định ("không sát đường", "không có trẻ em") -> exclude.
+    # lookup bind sẵn syn+max_gram (1 nguồn surface form). positive = concept ở câu ĐÃ BỎ span phủ
+    # định (concept vừa muốn vừa-trong-span-phủ-định, vd "có hồ bơi nhưng không phải hồ bơi chung",
+    # KHÔNG bị exclude). exclude bị gỡ khỏi found chính (found gom cả span phủ định trước đó).
+    _mg = _max_gram(syn_yaml)
+    spans = negation_spans(q)
+    exclude: set[str] = set()
+    if spans:
+        q_wo_neg = q
+        for s in spans:
+            q_wo_neg = q_wo_neg.replace(s, " ")
+        # positive = concept (surface + implicit) ở câu ĐÃ BỎ span phủ định.
+        positive = _lookup_concepts(q_wo_neg, syn, _mg) | set(parse_implicit_intent(q_wo_neg))
+        for s in spans:
+            exclude |= _lookup_concepts(s, syn, _mg) | set(parse_implicit_intent(s))
+        exclude -= positive
+        found -= exclude
 
     concepts = sorted(found)
     return ParsedIntent(
@@ -200,6 +283,7 @@ def parse_intent(q: str, syn_yaml: str = SYN_YAML_DEFAULT) -> ParsedIntent:
         price_tiers=[c for c in concepts if c.startswith("PRICE_")],
         landmarks=[c for c in concepts if c.startswith("LMK_")],
         location_concepts=[c for c in concepts if c.startswith("LOC_")],
+        exclude_concepts=sorted(exclude),
         city=parse_city(q),
         brand=parse_brand(q),
         range=rng,

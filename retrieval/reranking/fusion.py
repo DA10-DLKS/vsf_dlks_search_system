@@ -162,6 +162,7 @@ def business_rerank(
     concepts: list[str] | None = None,
     weights: dict[str, float] | None = None,
     intent_max_price: int | None = None,
+    intent_min_price: int | None = None,
 ) -> list[dict[str, Any]]:
     """Node 7C: rerank theo tín hiệu business (review_score/count, price_fit, concept match).
 
@@ -206,8 +207,19 @@ def business_rerank(
         neural = (raw - t_lo) / t_span if t_span > 0 else 0.0
         review_score = (md.get("ke_review_score") or md.get("review_score") or 0.0) / 10.0
         review_count = math.log1p(md.get("review_count") or 0) / math.log1p(max_rc)
-        price = md.get("ke_price_min_vnd") or md.get("price_min_vnd") or 0
-        price_fit = 1.0 if (not intent_max_price or not price or price <= intent_max_price) else 0.0
+        # price_fit: hotel khớp tầm giá user thì điểm 1.0. Dùng DẢI giá hotel [min,max] giao với
+        # [intent_min, intent_max] (nhất quán hard-filter). Hard-filter đã loại hotel ngoài khoảng;
+        # price_fit ở đây chủ yếu tie-break + xử lý hotel price_capped (lọt qua hard-filter).
+        p_lo = md.get("ke_price_min_vnd") or md.get("price_min_vnd") or 0
+        p_hi = md.get("ke_price_max_vnd") or md.get("price_max_vnd") or p_lo
+        if not intent_max_price and not intent_min_price:
+            price_fit = 1.0
+        elif not p_lo:
+            price_fit = 1.0  # thiếu giá -> không phạt
+        else:
+            q_lo = intent_min_price or 0
+            q_hi = intent_max_price or float("inf")
+            price_fit = 1.0 if (p_lo <= q_hi and p_hi >= q_lo) else 0.0
         oc = set(md.get("ontology_concepts") or [])
         concept_match = len(concepts & oc) / max(len(concepts), 1) if concepts else 0.0
         # relation_match: tỉ lệ amenity-minh-chứng hotel CÓ trên tổng minh-chứng cần. boost_targets
@@ -229,9 +241,21 @@ def business_rerank(
     return fused
 
 
-def aggregate_by_hotel(reranked: list[dict[str, Any]], top_n: int = 5) -> list[dict[str, Any]]:
+def _doc_price(doc: dict[str, Any]) -> int | None:
+    """Giá đại diện hotel (VND) cho superlative sort. None nếu data thiếu giá."""
+    md = doc.get("metadata") or {}
+    return md.get("ke_price_min_vnd") or md.get("price_min_vnd") or None
+
+
+def aggregate_by_hotel(
+    reranked: list[dict[str, Any]], top_n: int = 5, sort: str | None = None
+) -> list[dict[str, Any]]:
     """Gom chunk theo hotel, lấy chunk điểm cao nhất mỗi hotel + bonus thông tin phong phú.
-    Trả top_n hotel (mỗi hotel 1 đại diện). Port logic aggregation Node 7C."""
+    Trả top_n hotel (mỗi hotel 1 đại diện). Port logic aggregation Node 7C.
+
+    sort: superlative giá ("price_asc"/"price_desc"). Khi set, relevance vẫn quyết định hotel nào
+    HỢP LỆ (giữ nguyên hard filter + business_score upstream), nhưng top_n hiển thị sắp theo giá.
+    Hotel thiếu giá xếp cuối (không lẫn vào "rẻ nhất"/"đắt nhất")."""
     groups: dict[Any, dict[str, Any]] = {}
     for doc in reranked:
         hid = doc.get("hotel_id")
@@ -254,4 +278,14 @@ def aggregate_by_hotel(reranked: list[dict[str, Any]], top_n: int = 5) -> list[d
         rep["matched_chunks"] = g["count"]
         out.append(rep)
     out.sort(key=lambda d: -d["final_score"])
+
+    if sort in ("price_asc", "price_desc"):
+        # Sắp theo giá trên TOÀN nhóm hợp lệ rồi mới cắt top_n (để "rẻ nhất" ra đúng cái rẻ nhất,
+        # không chỉ rẻ nhất trong top relevance). Hotel thiếu giá -> đẩy về cuối cả 2 chiều bằng
+        # cờ (price is None) đứng trước key giá.
+        asc = sort == "price_asc"
+        def _key(d):
+            p = _doc_price(d)
+            return (p is None, p if asc else -p) if p is not None else (True, 0)
+        out.sort(key=_key)
     return out[:top_n]

@@ -93,6 +93,31 @@ def _emit_rerank_method(method: str) -> None:
         pass
 
 
+# Câu CẢM TÍNH thuần (không concept/city/giá/sao/brand/loc): vector ĐỀ CỬ top hotel vào pool.
+# N + sàn điểm cosine — số đo thật (2026-06): câu cảm tính ~0.57-0.60 lọt, câu vô nghĩa ~0.40 bị
+# chặn. Sàn 0.5 phân biệt được. Mục tiêu: hotel vector hiểu đúng ("Old Quarter 1961") vốn KHÔNG
+# lọt pool review-cao chung chung -> nay được union vào để rerank phân xử. Xem plan + memory.
+SEMANTIC_VECTOR_N = 40
+SEMANTIC_VECTOR_FLOOR = 0.5
+
+
+def _is_semantic_only(intent) -> bool:
+    """True khi câu KHÔNG có tín hiệu CẤU TRÚC nào để lọc, chỉ còn ngữ nghĩa thuần. Đây là lúc
+    DUY NHẤT cho vector đề cử hotel vào pool (câu có city/concept thì pool đã đúng, không đụng).
+
+    OBJ_HOTEL là concept TRỐNG NGHĨA ('mọi lưu trú', soft, không lọc — xem _obj_ok) nên KHÔNG tính
+    là tín hiệu cấu trúc. OBJ_RESORT/VILLA... thì CÓ (lọc loại cụ thể) -> tính. Vì vậy 'khách sạn
+    cũ kỹ hoài niệm' (chỉ OBJ_HOTEL) vẫn là semantic-only, còn 'resort đẹp' (OBJ_RESORT) thì không."""
+    meaningful_concepts = [c for c in intent.concepts if c != "OBJ_HOTEL"]
+    return not (
+        meaningful_concepts
+        or intent.city
+        or intent.location_concepts
+        or intent.brand
+        or intent.range
+    )
+
+
 def _candidate_concepts(intent) -> list[str]:
     """Concept dùng cho Node 3 lookup (hard + feel + price + lmk). KHÔNG gồm:
     - location_concepts: xử lý RIÊNG bằng hierarchy (hotel ở xã con khớp query thành phố cha) —
@@ -168,6 +193,8 @@ def run_hybrid_search(
             star_eq=intent.range.get("star_eq"),
             score_min=intent.range.get("score_min"),
             brand=intent.brand,
+            price_min=intent.range.get("price_min"),
+            price_max=intent.range.get("price_max"),
         )
 
         # Node 2b: LOCATION hierarchy. Nếu câu nêu LOC_* -> giao sw với tập hotel thuộc loc (hoặc xã
@@ -191,6 +218,32 @@ def run_hybrid_search(
                 h for h in candidates
                 if _obj_ok(intent, set((labels_for(h) or {}).get("ontology_concepts", [])))
             ]
+
+        # Node 4c: NEGATION exclude — loại hotel MANG concept user nói KHÔNG muốn ("không có trẻ em"
+        # -> loại hotel gắn PURPOSE_FAMILY). Chỉ exclude concept HARD/PURPOSE/OBJ (rõ có-không);
+        # feel (STYLE_/ASPECT_) để rerank lo bằng penalty, không loại cứng (tránh mixed-signal).
+        excl = {c for c in intent.exclude_concepts if not c.startswith(("STYLE_", "ASPECT_"))}
+        if excl:
+            candidates = [
+                h for h in candidates
+                if excl.isdisjoint(set((labels_for(h) or {}).get("ontology_concepts", [])))
+            ]
+
+        # Node 4d: VECTOR ĐỀ CỬ (câu cảm tính thuần). Khi câu không có tín hiệu cấu trúc, pool hiện
+        # rơi về 'top review chung chung' (hard-filter trả full 520 -> build_candidates sort review),
+        # khiến hotel vector hiểu đúng KHÔNG lọt pool -> rerank vô hiệu (đã đo). Union top-N hotel
+        # vector điểm cao (>= sàn) VÀO pool (không thay thế) -> rerank phân xử. Câu có city/concept
+        # KHÔNG vào đây (_is_semantic_only=False) nên pool đúng giữ nguyên.
+        if _is_semantic_only(intent) and vector_service is not None:
+            vr = vector_service.search(query, candidate_hotel_ids=None, top_k=SEMANTIC_VECTOR_N * 4)["results"]
+            best: dict[int, float] = {}
+            for r in vr:
+                hid = r.get("hotel_id")
+                if hid is not None:
+                    best[hid] = max(best.get(hid, 0.0), r.get("score") or 0.0)
+            vec_ids = [hid for hid, sc in sorted(best.items(), key=lambda x: -x[1])
+                       if sc >= SEMANTIC_VECTOR_FLOOR][:SEMANTIC_VECTOR_N]
+            candidates = list(dict.fromkeys(candidates + vec_ids))
 
         # V3: candidate rỗng (query không khớp city/concept nào) → KHÔNG trả màn hình trắng.
         # Để vector quyết định (broad semantic), nếu vector vắng thì lấy top hotel theo review.
@@ -252,11 +305,18 @@ def run_hybrid_search(
             METHOD_DENSITY_FALLBACK,
         )
 
-        # Node 7C
+        # Node 7C. Câu CẢM TÍNH thuần: nâng trọng số vector (neural) + hạ review — vì lúc này ngữ
+        # nghĩa MỚI là tín hiệu đúng, không phải "hotel review cao chung chung". Đã đo: chỉ union
+        # hotel vào pool CHƯA đủ (neural 0.05 vẫn để review dìm hotel vector), phải nâng neural thì
+        # "Khách sạn Hoài Cổ"/"Old Quarter" mới lên top cho câu "cũ kỹ hoài niệm". Câu có cấu trúc
+        # giữ trọng số mặc định (review/concept dẫn dắt như cũ).
+        rerank_weights = {"neural": 0.4, "review": 0.1} if _is_semantic_only(intent) else None
         reranked = business_rerank(
-            reranked, concepts=intent.concepts, intent_max_price=intent.range.get("price_max")
+            reranked, concepts=intent.concepts, weights=rerank_weights,
+            intent_max_price=intent.range.get("price_max"),
+            intent_min_price=intent.range.get("price_min"),
         )
-        top_hotels = aggregate_by_hotel(reranked, top_n=top_n)
+        top_hotels = aggregate_by_hotel(reranked, top_n=top_n, sort=intent.range.get("sort"))
 
     # Đếm phương pháp rerank thực tế (cross-encoder vs density-fallback) để theo dõi tỉ lệ
     # reranker neural có thực sự chạy hay luôn rơi về fallback.
@@ -329,6 +389,7 @@ def _candidates_as_docs(candidate_ids: list[int]) -> list[dict[str, Any]]:
                 "ke_review_score": (ke.get("range_filters") or {}).get("review_score"),
                 "ke_star_rating": (ke.get("range_filters") or {}).get("star_rating"),
                 "ke_price_min_vnd": (ke.get("range_filters") or {}).get("price_min_vnd"),
+                "ke_price_max_vnd": (ke.get("range_filters") or {}).get("price_max_vnd"),
             },
         })
     return docs

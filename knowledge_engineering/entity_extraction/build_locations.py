@@ -81,6 +81,8 @@ CITY_OVERRIDE = {
     "BIEN_CUA_LO":   {"id": "LOC_CUA_LO",   "related": ["SETTING_COASTAL"], "extra": ["cửa lò", "biển cửa lò"]},
     # "Thanh Hoá / Bãi biển Sầm Sơn" -> city_clean "Bãi biển Sầm Sơn"; thêm cách gõ trần "sầm sơn".
     "BAI_BIEN_SAM_SON": {"id": "LOC_BAI_BIEN_SAM_SON", "related": ["SETTING_COASTAL"], "extra": ["sầm sơn", "bãi biển sầm sơn"]},
+    # Data lưu "Sapa" (viết liền) nhưng người dùng hay gõ "Sa Pa" (tách) -> thêm biến thể tách-từ.
+    "SAPA": {"extra": ["sa pa"]},
 }
 
 # AREA_OVERRIDE: (city_slug, area_slug từ data) -> {id, related?}. parent = id của city (đã override).
@@ -490,7 +492,8 @@ def build(hotels_glob: str = HOTELS_GLOB) -> str:
             city_id[(co, ci)] = province_id(city_clean[(co, ci)])
             continue
         cc = city_clean[(co, ci)]
-        if slug(cc) in CITY_OVERRIDE:
+        # Override "id" là TÙY CHỌN (entry chỉ có "extra"/"related" thì id vẫn theo slug mặc định).
+        if CITY_OVERRIDE.get(slug(cc), {}).get("id"):
             proposed = CITY_OVERRIDE[slug(cc)]["id"]
         else:
             base = slug(cc)
