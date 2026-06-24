@@ -11,7 +11,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from opensearchpy import OpenSearch
 from dotenv import load_dotenv
 from prometheus_client import Histogram, Counter, generate_latest
@@ -499,6 +499,8 @@ def eval_golden(
 class SearchRequest(BaseModel):
     query: str
     filters: dict | None = None
+    # Số hotel tối đa muốn trả về. Cho phép client truyền n nhỏ hơn mặc định (1..10).
+    top_n: int = Field(default=10, ge=1, le=10)
 
 
 class ContextRequest(BaseModel):
@@ -521,7 +523,7 @@ def fe_search(req: SearchRequest) -> dict:
             req.query,
             vector_service=_get_vector_service(),
             bm25_service=_get_bm25_service(),
-            top_n=10,
+            top_n=req.top_n,
             generate_answer=False,
         )
         latency_ms = round((time.time() - start) * 1000, 1)
