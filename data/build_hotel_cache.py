@@ -62,13 +62,19 @@ def build_cache() -> dict:
 
         # Trim rooms
         rooms = raw.get("rooms") or []
-        # Sort rooms by price ascending so price_from/min/max are correct
+        # Sort rooms by price ascending
         rooms_sorted = sorted(
             rooms,
             key=lambda r: r.get("price_per_night") or 0,
         )
+        # Pick rooms that span the full price range so price filtering works:
+        # 2 cheapest + 2 most expensive + 1 mid, up to MAX_ROOMS.
+        if len(rooms_sorted) <= MAX_ROOMS:
+            picked = rooms_sorted
+        else:
+            picked = rooms_sorted[:2] + rooms_sorted[-2:] + [rooms_sorted[len(rooms_sorted)//2]]
         entry["rooms"] = []
-        for r in rooms_sorted[:MAX_ROOMS]:
+        for r in picked[:MAX_ROOMS]:
             sr = {k: r[k] for k in ROOM_FIELDS if k in r}
             entry["rooms"].append(sr)
 
