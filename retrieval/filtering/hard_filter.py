@@ -38,12 +38,18 @@ def inmemory_hard_filter(
     star_eq: int | None = None,
     score_min: float | None = None,
     brand: str | None = None,
+    price_min: int | None = None,
+    price_max: int | None = None,
 ) -> list[int]:
-    """Node 2 không cần DB: lọc hotel theo city text + star/score + brand trong ke_labels.
+    """Node 2 không cần DB: lọc hotel theo city text + star/score + brand + GIÁ trong ke_labels.
 
     City match: fold 2 chiều substring giữa city query và city/province của KE — bắt biến thể
-    "phú quốc" vs "Đảo Phú Quốc", "cát bà" vs "Quần Đảo Cát Bà". GIÁ là placeholder trong KE
-    -> KHÔNG lọc cứng giá (giống query_demo), chỉ star/score. Production: dùng sql_hard_filter.
+    "phú quốc" vs "Đảo Phú Quốc", "cát bà" vs "Quần Đảo Cát Bà".
+
+    GIÁ (price_min/price_max = khoảng user muốn): lọc CỨNG theo "có room trong khoảng" — giữ hotel
+    nếu DẢI giá hotel [price_min_vnd, price_max_vnd] GIAO với [price_min, price_max] (tức hotel có
+    ít nhất 1 room rơi vào tầm giá user). GUARD: hotel price_capped=True (giá mock kẹp trần 5tr,
+    không đáng tin) -> BỎ QUA lọc giá (cho qua, rerank lo) tránh loại oan nhóm cao cấp.
 
     Brand (chuỗi KS): LỌC CỨNG — "thuộc Vinpearl" chỉ trả hotel brand=Vinpearl. So khớp canonical
     (cùng extract_brand cho query lẫn data nên khớp đúng). brand=None -> không lọc brand.
@@ -52,6 +58,9 @@ def inmemory_hard_filter(
     city_norm = normalize(city, fold=True) if city else None
     blobs = _city_blobs() if city_norm else {}
     city_toks = [tok for tok in city_norm.split() if len(tok) > 2] if city_norm else []
+    # Biến thể bỏ khoảng trắng: data lưu "Sapa" (liền) nhưng query/_CITIES dùng "sa pa" (rời) ->
+    # substring + token AND đều fail. So khớp nospace 2 chiều bắt cả "sa pa"<->"sapa". (giống parse_city)
+    city_nospace = city_norm.replace(" ", "") if city_norm else None
     out: list[int] = []
     for hid, ke in labels.items():
         rf = ke.get("range_filters") or {}
@@ -61,12 +70,24 @@ def inmemory_hard_filter(
             continue
         if brand is not None and ke.get("brand") != brand:
             continue
+        if (price_min is not None or price_max is not None) and not rf.get("price_capped"):
+            h_lo = rf.get("price_min_vnd")
+            h_hi = rf.get("price_max_vnd") or h_lo
+            # Hotel có giá -> đòi DẢI hotel giao khoảng query (q_lo..q_hi). Thiếu giá -> không loại
+            # (không đủ căn cứ). Khoảng giao: h_lo <= q_hi AND h_hi >= q_lo.
+            if h_lo is not None:
+                q_lo = price_min if price_min is not None else 0
+                q_hi = price_max if price_max is not None else float("inf")
+                if not (h_lo <= q_hi and h_hi >= q_lo):
+                    continue
         if city_norm:
             blob = blobs.get(hid, "")
-            # khớp city: full substring HOẶC TẤT CẢ token đặc trưng có trong blob (AND, không OR).
-            # OR cũ làm "phú quốc"=[phu,quoc] khớp "phu ly" (chỉ trùng "phu") -> Phủ Lý lọt vào
-            # kết quả Phú Quốc. AND đòi cả "phu" VÀ "quoc" -> Phủ Lý thiếu "quoc" -> loại đúng.
-            if city_norm not in blob and not (city_toks and blob and all(tok in blob for tok in city_toks)):
+            # khớp city: full substring HOẶC nospace substring HOẶC TẤT CẢ token đặc trưng có trong
+            # blob (AND, không OR). OR token cũ làm "phú quốc"=[phu,quoc] khớp "phu ly" (chỉ trùng
+            # "phu") -> Phủ Lý lọt; AND đòi cả "phu" VÀ "quoc" -> loại đúng. nospace bắt "sapa".
+            if (city_norm not in blob
+                    and city_nospace not in blob.replace(" ", "")
+                    and not (city_toks and blob and all(tok in blob for tok in city_toks))):
                 continue
         out.append(hid)
     return out

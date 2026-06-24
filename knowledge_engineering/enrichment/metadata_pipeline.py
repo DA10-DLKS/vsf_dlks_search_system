@@ -51,14 +51,26 @@ def map_location(hotel: dict) -> dict:
     }
 
 
-def price_min(hotel: dict) -> int | None:
-    """Giá thấp nhất từ rooms[].price_per_night (room_grid.cheapest_price rỗng toàn corpus)."""
-    prices = [
-        r.get("price_per_night")
+def _room_prices(hotel: dict) -> list[int]:
+    """Giá các room hợp lệ (price_per_night > 0). room_grid.cheapest_price rỗng toàn corpus."""
+    return [
+        int(r["price_per_night"])
         for r in (hotel.get("rooms") or [])
         if isinstance(r.get("price_per_night"), (int, float)) and r.get("price_per_night") > 0
     ]
-    return int(min(prices)) if prices else None
+
+
+def price_min(hotel: dict) -> int | None:
+    """Giá room THẤP nhất."""
+    prices = _room_prices(hotel)
+    return min(prices) if prices else None
+
+
+def price_max(hotel: dict) -> int | None:
+    """Giá room CAO nhất. Cùng price_min tạo DẢI giá thật của hotel — query giá cần cả hai để
+    biết hotel có room NÀO trong khoảng user muốn (không nén dải thành 1 số)."""
+    prices = _room_prices(hotel)
+    return max(prices) if prices else None
 
 
 def map_range_filters(hotel: dict) -> dict:
@@ -69,6 +81,7 @@ def map_range_filters(hotel: dict) -> dict:
         "star_rating": star,
         "review_score": hotel.get("review_score"),
         "price_min_vnd": price_min(hotel),
+        "price_max_vnd": price_max(hotel),
     }
     return {k: v for k, v in rf.items() if v is not None}
 
