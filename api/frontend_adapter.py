@@ -1,44 +1,26 @@
-"""frontend_adapter.py — Map kết quả pipeline (run_hybrid_search) sang schema FRONTEND.
+"""frontend_adapter.py — Map pipeline -> frontend hotel2.json schema.
 
-Frontend (frontend/src/types/searchTypes.js) có contract CỐ ĐỊNH:
-  /search  -> {query, results[], total}; result = {id,title,snippet,score,metadata,citations,
-               source_documents, context_chunks}
-  /context -> {result_id, llm_context, citations, source_documents, context_chunks}
+Replaces the OTA (Supabase) API with a local 6.6MB hotel_detail_cache.json
+built from cleaned data (520 hotels). No external HTTP calls needed for
+hotel detail — faster, no cold-start, no Render.com dependency.
 
-Backend không bắt frontend đổi — adapter này dịch shape pipeline -> shape frontend. Lấy thêm
-metadata hiển thị (location/amenities/price_level/best_for) từ ke_labels + knowledge_objects.
+Response schema matches frontend/src/types/searchTypes.js (HotelMetadata).
 """
 
 from __future__ import annotations
 
-import asyncio
 import json
 import logging
-import os
-import re
-import time
 from functools import lru_cache
 from typing import Any
 
-import httpx
-
 from knowledge_engineering.common.ke_labels import labels_for
+from knowledge_engineering.common.hotel_data import filter_rooms, get_hotel, get_rooms
 
 KO_JSON = "knowledge_engineering/enrichment/knowledge_objects.json"
 
 _log = logging.getLogger(__name__)
 
-# API OTA (Supabase) trả full hotel object đúng schema frontend (hotel2.json). /search chỉ lo
-# RANKING (pipeline) còn DỮ LIỆU hiển thị lấy từ đây theo hotel_id. Key/timeout cấu hình qua env.
-OTA_API_BASE = os.getenv("OTA_API_BASE", "https://supabase-ota-travel.onrender.com").rstrip("/")
-OTA_API_KEY = os.getenv("OTA_API_KEY", "ota_sk_7f3d9b2e1a4c8f6e5d3a")
-OTA_API_TIMEOUT = float(os.getenv("OTA_API_TIMEOUT", "60"))
-
-# Cache hotel objects in memory để tránh OTA cold-start. TTL mặc định 1 giờ.
-_OTA_CACHE: dict[int, tuple[float, dict[str, Any]]] = {}
-_OTA_CACHE_TTL = float(os.getenv("OTA_CACHE_TTL", "3600"))
-
-# Map concept -> nhãn hiển thị tiếng Việt cho amenities/best_for (gọn, dễ đọc trên UI).
 _AMEN_VI = {
     "AMEN_POOL": "Hồ bơi", "AMEN_INFINITY_POOL": "Hồ bơi vô cực", "AMEN_PRIVATE_POOL": "Hồ bơi riêng",
     "AMEN_KIDS_POOL": "Hồ bơi trẻ em", "AMEN_BEACHFRONT": "Sát biển", "AMEN_SEA_VIEW": "View biển",
@@ -57,7 +39,6 @@ _PRICE_VI = {
     "PRICE_BUDGET": "Bình dân", "PRICE_MID": "Tầm trung",
     "PRICE_UPSCALE": "Cao cấp", "PRICE_LUXURY": "Sang trọng",
 }
-# Nhãn aspect (ABSA) tiếng Việt — dùng dựng evidence grounding cho /context (V6).
 _ASPECT_VI = {
     "ASPECT_SERVICE": "Dịch vụ", "ASPECT_VALUE": "Đáng tiền", "ASPECT_CLEANLINESS": "Sạch sẽ",
     "ASPECT_FACILITIES": "Cơ sở vật chất", "ASPECT_LOCATION": "Vị trí", "ASPECT_ROOM": "Phòng",
@@ -67,26 +48,18 @@ _ASPECT_VI = {
 
 
 def _concept_vi(concept: str) -> str:
-    """Nhãn tiếng Việt cho 1 concept, gộp mọi nhóm (aspect/purpose/amenity); fallback = raw."""
     return _ASPECT_VI.get(concept) or _PURPOSE_VI.get(concept) or _AMEN_VI.get(concept) or concept
 
 
 def _grounded_evidence(
     hotel_id: Any, max_pos: int = 5, query_concepts: set[str] | None = None
 ) -> dict[str, Any]:
-    """V6: rút bằng chứng THẬT từ ABSA (semantic_profile + negative_style_profile) thay vì chỉ
-    dùng content marketing. Trả mặt mạnh (aspect score cao, có evidence_count) + mặt yếu (negative
-    span review thật) để câu trả lời CÂN BẰNG, không tâng bốc, không bịa.
-
-    V7 (#4-A): nếu có query_concepts (từ parse_intent), ƯU TIÊN aspect KHỚP query lên đầu ở CẢ hai
-    chiều pos/neg và đánh dấu `matched=True`. Soi cả negative để KHÔNG tâng bốc sai: hotel điểm
-    positive thấp nhưng negative cao về cùng aspect (vd 'yên tĩnh') sẽ nổi lên ở mặt hạn chế."""
+    """V6: real evidence from ABSA (semantic_profile + negative_style_profile)."""
     ke = labels_for(hotel_id)
     sp = ke.get("semantic_profile") or {}
     neg = ke.get("negative_style_profile") or {}
     qc = query_concepts or set()
 
-    # Ưu tiên: aspect khớp query trước (matched), trong mỗi nhóm vẫn sort theo score giảm dần.
     def _pos_key(item):
         c, v = item
         return (0 if c in qc else 1, -(v.get("score") or 0))
@@ -124,10 +97,6 @@ def _grounded_evidence(
 
 
 def _evidence_text(title: str, content: str, evidence: dict[str, Any]) -> str:
-    """Gộp content + evidence ABSA thành 1 đoạn ngữ cảnh có dẫn chứng cho LLM.
-
-    V7: nêu RÕ aspect khớp nhu cầu query (matched) ở phần đầu — gồm CẢ chiều tích cực lẫn tiêu cực —
-    để LLM trả lời trung thực: hotel mạnh/yếu đúng tiêu chí user hỏi, không tâng bốc."""
     parts = []
     if content:
         parts.append(content[:600])
@@ -135,7 +104,6 @@ def _evidence_text(title: str, content: str, evidence: dict[str, Any]) -> str:
     pos = evidence.get("positives") or []
     neg = evidence.get("negatives") or []
 
-    # Phần khớp nhu cầu user: gom cả pos+neg của các aspect matched để LLM cân nhắc 2 chiều.
     matched_pos = [p for p in pos if p.get("matched")]
     matched_neg = [n for n in neg if n.get("matched")]
     for p in matched_pos:
@@ -185,7 +153,6 @@ def _hotel_metadata(hotel_id: Any) -> dict[str, Any]:
         rank_bits.append(f"{star:g}★")
     if score:
         rank_bits.append(f"điểm {score:g}/10")
-    # location: bỏ trùng city==province (data nhiều nơi city=province)
     parts = [loc.get("city")]
     if loc.get("province") and loc.get("province") != loc.get("city"):
         parts.append(loc.get("province"))
@@ -195,47 +162,17 @@ def _hotel_metadata(hotel_id: Any) -> dict[str, Any]:
         "amenities": amenities[:8],
         "ranking_info": " · ".join(rank_bits) or "No ranking information",
         "price_level": price_level,
-        "best_for": best_for[:3],   # giới hạn 3 nhóm chính, tránh nhiễu UI
+        "best_for": best_for[:3],
     }
 
 
-async def _fetch_hotel(client: httpx.AsyncClient, hotel_id: Any) -> dict[str, Any] | None:
-    """Lấy full hotel object từ API OTA (hoặc cache). Trả None nếu lỗi/không tồn tại."""
-    now = time.time()
-    cached = _OTA_CACHE.get(hotel_id)
-    if cached and now - cached[0] < _OTA_CACHE_TTL:
-        return cached[1]
-    try:
-        r = await client.get(f"{OTA_API_BASE}/api/hotels/{hotel_id}")
-        r.raise_for_status()
-        obj = r.json()
-        if isinstance(obj, dict):
-            _OTA_CACHE[hotel_id] = (now, obj)
-            return obj
-        return None
-    except Exception as exc:
-        _log.warning("OTA fetch hotel_id=%s lỗi: %s", hotel_id, exc)
-        if cached:
-            return cached[1]
-        return None
-
-
-async def _fetch_hotels(pairs: list[tuple[Any, float]]) -> dict[Any, dict[str, Any]]:
-    """Gọi API OTA cho tất cả hotel_id ĐỒNG THỜI (render.com cold-start chậm nếu gọi tuần tự)."""
-    async with httpx.AsyncClient(
-        timeout=OTA_API_TIMEOUT, headers={"X-API-Key": OTA_API_KEY}
-    ) as client:
-        objs = await asyncio.gather(*(_fetch_hotel(client, hid) for hid, _ in pairs))
-    return {hid: obj for (hid, _), obj in zip(pairs, objs) if obj is not None}
-
-
 def to_search_response(query: str, pipeline_result: dict[str, Any]) -> dict[str, Any]:
-    """pipeline run_hybrid_search -> {query, results[], total} cho frontend /search.
+    """pipeline -> {query, results[], total} for frontend /search.
 
-    Mỗi result là full hotel object (schema hotel2.json) lấy từ API OTA theo hotel_id, chèn thêm
-    `score` = final_score của pipeline (làm tròn 4). Pipeline lo RANKING, API OTA lo DỮ LIỆU hiển thị.
-    Hotel nào fetch lỗi thì bỏ qua; giữ nguyên thứ tự rank của pipeline."""
-    # Gom (hotel_id, score) theo thứ tự rank, bỏ trùng (1 hotel có thể có nhiều chunk).
+    Reads full hotel detail from local hotel_detail_cache.json (no OTA API).
+    Each result includes `rooms_matching[]` — rooms that fall within the
+    price range the user specified in their query.
+    """
     pairs: list[tuple[Any, float]] = []
     seen: set[Any] = set()
     for c in pipeline_result.get("context_package", {}).get("chunks", []):
@@ -245,33 +182,48 @@ def to_search_response(query: str, pipeline_result: dict[str, Any]) -> dict[str,
         seen.add(hid)
         pairs.append((hid, round(float(c.get("score", 0)), 4)))
 
-    fetched = asyncio.run(_fetch_hotels(pairs)) if pairs else {}
+    if not pairs:
+        return {"query": query, "results": [], "total": 0}
+
+    # Extract price filter from intent
+    intent = pipeline_result.get("intent") or {}
+    intent_range = intent.get("range") or {}
+    price_min = intent_range.get("price_min")
+    price_max = intent_range.get("price_max")
 
     results = []
     for hid, score in pairs:
-        obj = fetched.get(hid)
+        obj = get_hotel(hid)
         if obj is None:
+            _log.warning("hotel_id=%s not found in local cache, skipping", hid)
             continue
-        # Chèn `score` ngay sau `id` để khớp thứ tự field trong schema hotel2.json.
+
         merged: dict[str, Any] = {}
         for k, v in obj.items():
             merged[k] = v
-            if k == "id":
+            if k == "hotel_id":
                 merged["score"] = score
-        if "score" not in merged:  # phòng khi object không có `id`
+        if "score" not in merged:
             merged["score"] = score
+
+        # Rooms matching the user's price range
+        if price_min is not None or price_max is not None:
+            merged["rooms_matching"] = filter_rooms(
+                hid, min_price=price_min, max_price=price_max
+            )
+        else:
+            merged["rooms_matching"] = get_rooms(hid)
+
         results.append(merged)
+
     return {"query": query, "results": results, "total": len(results)}
 
 
 def build_hotel_context(result_id: str, query: str | None = None) -> dict[str, Any]:
-    """Dựng context cho 1 hotel ĐƯỢC CHỌN (result_id='hotel_<id>') -> Node 9 sinh llm_context.
+    """Build /context response for a single selected hotel.
 
-    KHÔNG search lại — lấy thẳng knowledge_object của hotel đó làm ngữ cảnh, để LLM giải thích
-    đúng hotel user click (tránh trả 'không tìm thấy' khi search theo tên không khớp).
-
-    V6: grounding theo BẰNG CHỨNG THẬT (ABSA: aspect mạnh + mặt yếu từ review), không chỉ content
-    marketing → câu trả lời cân bằng, đáng tin. Truyền query gốc của user nếu có (thay câu hard-code)."""
+    Uses hotel_detail_cache.json for data (not OTA API).
+    """
     from context import ContextChunk, ContextPackage, generate_answer
 
     hotel_id = result_id.replace("hotel_", "")
@@ -280,7 +232,6 @@ def build_hotel_context(result_id: str, query: str | None = None) -> dict[str, A
     md = _hotel_metadata(hotel_id)
     content = (obj.get("content") or "").strip()
 
-    # #4-A: trích concept từ query gốc để ƯU TIÊN evidence khớp nhu cầu user (cả pos lẫn neg).
     query_concepts: set[str] = set()
     q_clean = (query or "").strip()
     if q_clean:
@@ -293,8 +244,6 @@ def build_hotel_context(result_id: str, query: str | None = None) -> dict[str, A
     grounded_text = _evidence_text(title, content, evidence)
     rf = labels_for(hotel_id).get("range_filters") or {}
 
-    # #3-B: vẫn truyền query gốc (đã được nới prompt trong context_package) để câu trả lời bám nhu cầu;
-    # nếu không có query thì hỏi giới thiệu chung hotel.
     pkg = ContextPackage(
         query=q_clean or f"Vì sao {title} phù hợp? Giới thiệu ngắn gọn.",
         chunks=[ContextChunk(
@@ -314,12 +263,10 @@ def build_hotel_context(result_id: str, query: str | None = None) -> dict[str, A
     )
     ans = generate_answer(pkg)
 
-    # #1-B: tách evidence ABSA đã có thành NHIỀU chunk hiển thị (matched lên đầu), thay vì 1 chunk gộp.
     display_chunks = _evidence_chunks(hotel_id, title, content, evidence, md)
     return {
         "result_id": result_id,
         "llm_context": ans.get("answer", ""),
-        # #2: trả OBJECT thật (không phải string id) để frontend render đúng text + metadata.
         "citations": [{
             "id": f"cit_{hotel_id}",
             "source_document_id": f"doc_{hotel_id}",
@@ -341,11 +288,6 @@ def build_hotel_context(result_id: str, query: str | None = None) -> dict[str, A
 def _evidence_chunks(
     hotel_id: Any, title: str, content: str, evidence: dict[str, Any], md: dict[str, Any]
 ) -> list[dict[str, Any]]:
-    """#1-B: dựng NHIỀU chunk hiển thị từ ABSA đã enrich (không search lại).
-
-    Thứ tự: (1) chunk tổng quan từ content; (2) các aspect KHỚP query (matched) — cả mặt mạnh lẫn
-    mặt hạn chế có span review thật; (3) các điểm mạnh/hạn chế nổi bật khác. Positive chỉ có
-    score+count (data không lưu span positive); negative có top_spans = câu review nguyên văn."""
     chunks: list[dict[str, Any]] = []
 
     if content:
@@ -360,7 +302,6 @@ def _evidence_chunks(
 
     pos = evidence.get("positives") or []
     neg = evidence.get("negatives") or []
-    # matched trước, trong nhóm giữ nguyên thứ tự đã sort ở _grounded_evidence.
     ordered_pos = [p for p in pos if p.get("matched")] + [p for p in pos if not p.get("matched")]
     ordered_neg = [n for n in neg if n.get("matched")] + [n for n in neg if not n.get("matched")]
 
