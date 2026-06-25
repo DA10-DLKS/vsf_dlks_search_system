@@ -544,7 +544,114 @@
       background: #ecfdf3;
     }
 
-    .score-stack {
+
+    .latency-grid {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr) 110px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .latency-row { display: contents; }
+
+    .latency-label {
+      color: var(--ink);
+      font-weight: 750;
+      min-width: 0;
+    }
+
+    .latency-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .latency-bar {
+      height: 12px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .latency-fill {
+      height: 100%;
+      width: 0%;
+      min-width: 4px;
+      background: var(--accent);
+      border-radius: inherit;
+    }
+
+    .latency-fill.warn { background: #f59e0b; }
+    .latency-fill.red { background: #ef4444; }
+
+    .latency-value {
+      text-align: right;
+      font-weight: 850;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .flow-diagram-panel {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 14px;
+    }
+
+    .flow-diagram-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .flow-diagram-title h3 { margin: 0; }
+
+    .flow-canvas { overflow-x: auto; padding: 10px 2px 2px; }
+
+    .flow-lanes {
+      display: grid;
+      grid-template-columns: minmax(170px, 1fr) minmax(230px, 1.25fr) minmax(210px, 1.15fr) minmax(210px, 1.15fr);
+      gap: 12px;
+      min-width: 980px;
+      align-items: stretch;
+    }
+
+    .flow-lane { display: grid; gap: 8px; align-content: start; }
+
+    .flow-node {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px;
+      min-height: 64px;
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
+    }
+
+    .flow-node.emphasis { border-color: #93c5fd; background: #eff6ff; }
+    .flow-node.warn { border-color: #fcd34d; background: #fffbeb; }
+
+    .flow-node-title { font-weight: 850; color: var(--ink); margin-bottom: 4px; }
+
+    .flow-time {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      padding: 3px 8px;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 850;
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .flow-arrow { color: var(--muted); font-weight: 850; text-align: center; line-height: 1; }
+    .flow-note { color: var(--muted); font-size: 12px; line-height: 1.4; }.score-stack {
       display: grid;
       gap: 4px;
       min-width: 150px;
@@ -802,6 +909,17 @@
         </article>
       </section>
 
+      <section class="section" style="margin-bottom:14px;">
+        <div class="section-head">
+          <div>
+            <h2>Latency trace</h2>
+            <p class="section-subtitle">Đo wall-clock từ browser, request API và backend stage. Lưu ý <code>/hybrid_search</code> và <code>/search</code> được gọi song song nên không cộng hai request lại.</p>
+          </div>
+          <span class="badge blue">REAL TIMING</span>
+        </div>
+        <div id="latencyBody" class="state">Chạy query để xem tổng thời gian và phần nào đang chậm.</div>
+      </section>
+
       <section class="section" style="margin-top:14px;">
         <div class="section-head">
           <div>
@@ -896,7 +1014,9 @@
       bm25: null,
       selectedHotelId: null,
       contextByHotel: {},
-      lastErrors: {}
+      lastErrors: {},
+      timing: null,
+      showFlowDiagram: false
     };
 
     const els = {
@@ -908,6 +1028,7 @@
       runButton: document.getElementById("runButton"),
       statusRow: document.getElementById("statusRow"),
       overview: document.getElementById("overview"),
+      latencyBody: document.getElementById("latencyBody"),
       journeyBody: document.getElementById("journeyBody"),
       understandingBody: document.getElementById("understandingBody"),
       bm25Body: document.getElementById("bm25Body"),
@@ -1008,6 +1129,34 @@
       return data;
     }
 
+
+    async function fetchTimedJson(label, path, options = {}) {
+      const startedAt = performance.now();
+      try {
+        const data = await fetchJson(path, options);
+        const endedAt = performance.now();
+        return {
+          ok: true,
+          label,
+          path,
+          data,
+          durationMs: Math.round((endedAt - startedAt) * 10) / 10,
+          startedAt,
+          endedAt
+        };
+      } catch (error) {
+        const endedAt = performance.now();
+        error.timing = {
+          ok: false,
+          label,
+          path,
+          durationMs: Math.round((endedAt - startedAt) * 10) / 10,
+          startedAt,
+          endedAt
+        };
+        throw error;
+      }
+    }
     async function checkBackend() {
       state.apiBase = getApiBase();
       els.apiBadge.className = "badge blue";
@@ -1070,6 +1219,13 @@
       state.selectedHotelId = null;
       state.contextByHotel = {};
       state.lastErrors = {};
+      state.showFlowDiagram = false;
+      state.timing = {
+        queryStartedAt: performance.now(),
+        totalMs: null,
+        requests: {},
+        context: {}
+      };
 
       els.apiBadge.className = "badge blue";
       els.apiBadge.textContent = `API: ${state.apiBase}`;
@@ -1090,22 +1246,27 @@
       const bm25Path = `/search?q=${encodeURIComponent(query)}&size=${bm25Size}`;
 
       const [hybridResult, bm25Result] = await Promise.allSettled([
-        fetchJson(hybridPath),
-        fetchJson(bm25Path)
+        fetchTimedJson("GET /hybrid_search", hybridPath),
+        fetchTimedJson("GET /search", bm25Path)
       ]);
 
       if (hybridResult.status === "fulfilled") {
-        state.hybrid = hybridResult.value;
+        state.hybrid = hybridResult.value.data;
+        state.timing.requests.hybrid = hybridResult.value;
       } else {
         state.lastErrors.hybrid = hybridResult.reason;
+        state.timing.requests.hybrid = hybridResult.reason?.timing || null;
       }
 
       if (bm25Result.status === "fulfilled") {
-        state.bm25 = bm25Result.value;
+        state.bm25 = bm25Result.value.data;
+        state.timing.requests.bm25 = bm25Result.value;
       } else {
         state.lastErrors.bm25 = bm25Result.reason;
+        state.timing.requests.bm25 = bm25Result.reason?.timing || null;
       }
 
+      state.timing.totalMs = Math.round((performance.now() - state.timing.queryStartedAt) * 10) / 10;
       renderAll();
 
       els.runButton.disabled = false;
@@ -1120,6 +1281,7 @@
         ${overviewCard("Top Hotels", "...", "GET /hybrid_search")}
         ${overviewCard("BM25 Hits", "...", "GET /search")}
       `;
+      els.latencyBody.innerHTML = loading;
       els.journeyBody.innerHTML = loading;
       els.understandingBody.innerHTML = loading;
       els.bm25Body.innerHTML = loading;
@@ -1140,6 +1302,7 @@
       setBadges(badges);
 
       renderOverview();
+      renderLatency();
       renderJourney();
       renderUnderstanding();
       renderBm25();
@@ -1149,6 +1312,213 @@
       els.evidenceBody.innerHTML = `<div class="state">Click một khách sạn trong bảng ranking để gọi <strong>POST /context</strong>.</div>`;
     }
 
+
+    function renderLatency() {
+      const timing = state.timing;
+      if (!timing) {
+        els.latencyBody.innerHTML = `<div class="state">Chạy query để đo latency.</div>`;
+        return;
+      }
+
+      const totalRow = {
+        label: "Thời gian người dùng chờ (wall-clock)",
+        value: timing.totalMs,
+        note: "Đo ở browser từ lúc bấm Chạy truy vết đến khi các request song song /hybrid_search và /search hoàn tất hoặc lỗi. Đây KHÔNG phải tổng cộng các dòng bên dưới."
+      };
+
+      const requestRows = [];
+      const hybridReq = timing.requests?.hybrid;
+      requestRows.push({
+        label: "Request GET /hybrid_search",
+        value: hybridReq?.durationMs,
+        note: hybridReq?.ok === false ? `Frontend nhận lỗi từ ${hybridReq.path}` : "Request explainability chính: intent/filter/retrieval/fusion/rerank/context."
+      });
+
+      const bm25Req = timing.requests?.bm25;
+      requestRows.push({
+        label: "Request GET /search",
+        value: bm25Req?.durationMs,
+        note: bm25Req?.ok === false ? `Frontend nhận lỗi từ ${bm25Req.path}` : "Request baseline BM25. Request này chạy song song với /hybrid_search, không cộng vào wall-clock nếu nó xong sớm hơn."
+      });
+
+      if (state.bm25?.took_ms !== undefined) {
+        requestRows.push({
+          label: "Backend /search took_ms",
+          value: Number(state.bm25.took_ms),
+          note: "Thời gian backend báo riêng cho BM25. Chênh lệch với request GET /search là network + JSON parse + overhead FastAPI/browser."
+        });
+      }
+
+      const stageRows = [];
+      const stageMs = state.hybrid?.stage_ms || {};
+      Object.entries(stageMs).forEach(([name, value]) => {
+        stageRows.push({
+          label: `Backend stage: ${name}`,
+          value: Number(value),
+          note: stageNote(name)
+        });
+      });
+
+      const stageValues = stageRows.map((r) => Number(r.value)).filter((n) => Number.isFinite(n) && n >= 0);
+      const stageSum = stageValues.reduce((sum, value) => sum + value, 0);
+      const hybridDuration = Number(hybridReq?.durationMs);
+      const overhead = Number.isFinite(hybridDuration) && stageValues.length ? Math.max(0, hybridDuration - stageSum) : null;
+
+      const contextRows = [];
+      const contextTiming = timing.context?.[state.selectedHotelId];
+      if (contextTiming) {
+        contextRows.push({
+          label: `Request POST /context (${state.selectedHotelId})`,
+          value: contextTiming.durationMs,
+          note: "Thời gian tải context/chunks/citations/source documents cho khách sạn đang chọn."
+        });
+      }
+
+      const allRows = [totalRow, ...requestRows, ...stageRows, ...contextRows];
+      const numeric = allRows.map((r) => Number(r.value)).filter((n) => Number.isFinite(n) && n >= 0);
+      const max = Math.max(...numeric, 1);
+      const slowestRows = [...requestRows, ...stageRows, ...contextRows];
+      const slowest = slowestRows
+        .filter((r) => Number.isFinite(Number(r.value)))
+        .sort((a, b) => Number(b.value) - Number(a.value))[0];
+
+      els.latencyBody.innerHTML = `
+        <div class="badges" style="margin:0 0 12px;">
+          <span class="badge ok">wall-clock: ${escapeHtml(fmt(timing.totalMs, 1))} ms</span>
+          ${slowest ? `<span class="badge warn">request/stage chậm nhất: ${escapeHtml(slowest.label)} (${escapeHtml(fmt(slowest.value, 1))} ms)</span>` : ""}
+          ${stageValues.length ? `<span class="badge blue">backend stage sum: ${escapeHtml(fmt(stageSum, 1))} ms</span>` : ""}
+          ${overhead !== null ? `<span class="badge blue">hybrid overhead: ${escapeHtml(fmt(overhead, 1))} ms</span>` : ""}
+          <button class="secondary" type="button" id="flowDiagramToggle" style="height:32px;padding:0 12px;">${state.showFlowDiagram ? "Ẩn sơ đồ luồng dữ liệu" : "Xem sơ đồ luồng dữ liệu + timing"}</button>
+        </div>
+        ${state.showFlowDiagram ? renderQueryFlowDiagram({ totalRow, requestRows, stageRows, contextRows, stageSum, overhead }) : ""}
+        <div class="state" style="margin-bottom:12px;">
+          Cách đọc đúng: <strong>wall-clock</strong> là thời gian người dùng thấy. <strong>/hybrid_search</strong> và <strong>/search</strong> được gọi song song, nên không cộng hai request. Các dòng <strong>Backend stage</strong> là breakdown bên trong /hybrid_search để biết bước nào chậm.
+        </div>
+        <h3 style="margin:12px 0 8px;">1. Tổng thời gian</h3>
+        <div class="latency-grid">${latencyRow(totalRow, max)}</div>
+        <h3 style="margin:16px 0 8px;">2. Request API</h3>
+        <div class="latency-grid">${requestRows.map((row) => latencyRow(row, max)).join("")}</div>
+        <h3 style="margin:16px 0 8px;">3. Backend stages trong /hybrid_search</h3>
+        ${stageRows.length ? `<div class="latency-grid">${stageRows.map((row) => latencyRow(row, max)).join("")}</div>` : `<div class="state">Backend chưa trả <code>stage_ms</code>.</div>`}
+        ${contextRows.length ? `<h3 style="margin:16px 0 8px;">4. Context request</h3><div class="latency-grid">${contextRows.map((row) => latencyRow(row, max)).join("")}</div>` : ""}
+
+      `;
+
+      const toggle = els.latencyBody.querySelector("#flowDiagramToggle");
+      if (toggle) {
+        toggle.addEventListener("click", () => {
+          state.showFlowDiagram = !state.showFlowDiagram;
+          renderLatency();
+        });
+      }
+    }
+
+    function renderQueryFlowDiagram({ totalRow, requestRows, stageRows, contextRows, stageSum, overhead }) {
+      const getReq = (label) => requestRows.find((row) => row.label.includes(label));
+      const getStage = (name) => stageRows.find((row) => row.label === `Backend stage: ${name}`);
+      const time = (row) => Number.isFinite(Number(row?.value)) ? `${escapeHtml(fmt(Number(row.value), 1))} ms` : "TODO";
+      const topHotels = asArray(state.hybrid?.top_hotels).slice(0, state.topN);
+      const selectedName = selectedHotelName();
+      const concepts = localQuerySignals(state.query).concepts.length;
+      const topCount = topHotels.length || asArray(state.bm25?.results).length || 0;
+
+      return `
+        <div class="flow-diagram-panel">
+          <div class="flow-diagram-title">
+            <h3>Sơ đồ luồng dữ liệu có timing</h3>
+            <span class="badge blue">Số liệu tính từ lần query hiện tại</span>
+          </div>
+          <div class="flow-canvas">
+            <div class="flow-lanes">
+              <div class="flow-lane">
+                ${flowNode("1. Query", state.query || "-", time(totalRow), "emphasis")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("2. Frontend UI", "Gọi /hybrid_search và /search song song", time(totalRow))}
+              </div>
+              <div class="flow-lane">
+                ${flowNode("3A. GET /hybrid_search", "Explainability pipeline", time(getReq("/hybrid_search")), "emphasis")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("4. Query Understanding", `${concepts} ontology/local tags. Intent/location/concept nếu backend expose.`, time(getStage("intent")))}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("5. Candidate Filter", "Hard filter, location, purpose, candidate builder", time(getStage("filter")))}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("6. Text Retrieval", "BM25/vector retrieval trên candidate set", time(getStage("text_retrieval")))}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("7. Fusion", "Gộp tín hiệu BM25/vector/profile nếu backend trả", time(getStage("fusion")))}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("8. Rerank", "Rerank/business ranking", time(getStage("rerank")))}
+              </div>
+              <div class="flow-lane">
+                ${flowNode("3B. GET /search", "Baseline BM25 chạy song song", time(getReq("/search")), "emphasis")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("OpenSearch BM25", `${asArray(state.bm25?.results).length || 0} kết quả trả về UI`, time({ value: state.bm25?.took_ms }))}
+                <div class="flow-arrow">↘</div>
+                ${flowNode("9. Top-K Hotels", `${topCount} khách sạn hiển thị. Không cộng /search vào /hybrid_search vì chạy song song.`, time(totalRow), "warn")}
+              </div>
+              <div class="flow-lane">
+                ${flowNode("10. User chọn hotel", selectedName || "Chưa chọn hotel", selectedName ? "selected" : "waiting")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("11. POST /context", "Tải chunks/citations/source documents", contextRows.length ? time(contextRows[0]) : "chưa gọi")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("12. LLM Context + Evidence", "Context chunks, citations, review evidence nếu backend trả", time(getStage("context")))}
+              </div>
+            </div>
+          </div>
+          <div class="state" style="margin-top:12px;">
+            Ghi chú: <strong>wall-clock</strong> là thời gian người dùng chờ. <strong>stage sum</strong> = ${escapeHtml(fmt(stageSum, 1))} ms; ${overhead !== null ? `hybrid overhead = ${escapeHtml(fmt(overhead, 1))} ms.` : "backend chưa đủ stage để tính overhead."}
+          </div>
+        </div>
+      `;
+    }
+
+    function flowNode(title, body, timing, variant = "") {
+      const cls = variant ? ` ${variant}` : "";
+      return `
+        <div class="flow-node${cls}">
+          <div class="flow-node-title">${escapeHtml(title)}</div>
+          <div class="flow-note">${escapeHtml(String(body || "-"))}</div>
+          <span class="flow-time">${escapeHtml(String(timing || "TODO"))}</span>
+        </div>
+      `;
+    }
+
+    function selectedHotelName() {
+      if (!state.selectedHotelId) return "";
+      const selectedId = String(state.selectedHotelId);
+      const fromHybrid = asArray(state.hybrid?.top_hotels).find((item) => String(hotelIdFor(item)) === selectedId);
+      const fromBm25 = asArray(state.bm25?.results).find((item) => String(hotelIdFor(item)) === selectedId);
+      const item = fromHybrid || fromBm25 || {};
+      const md = item.metadata || {};
+      return md.hotel_name || md.name || item.hotel_name || item.name || selectedId;
+    }
+    function latencyRow(row, max) {
+      const value = Number(row.value);
+      const hasValue = Number.isFinite(value);
+      const pct = hasValue ? Math.max(2, Math.min(100, (value / max) * 100)) : 0;
+      const cls = hasValue && value >= 5000 ? " red" : hasValue && value >= 1500 ? " warn" : "";
+      return `
+        <div class="latency-row">
+          <div>
+            <div class="latency-label">${escapeHtml(row.label)}</div>
+            <div class="latency-note">${escapeHtml(row.note || "")}</div>
+          </div>
+          <div class="latency-bar"><div class="latency-fill${cls}" style="width:${pct}%"></div></div>
+          <div class="latency-value">${hasValue ? `${escapeHtml(fmt(value, 1))} ms` : "-"}</div>
+        </div>
+      `;
+    }
+
+    function stageNote(name) {
+      const notes = {
+        intent: "Parse query, nhận diện intent/concept/location/range.",
+        filter: "Hard filter, concept lookup, location whitelist, candidate builder.",
+        text_retrieval: "BM25/vector retrieval trên candidate set.",
+        fusion: "RRF fusion và profile boost.",
+        rerank: "Density fallback hoặc cross-encoder rerank + business rerank.",
+        context: "Build context package và prompt từ top hotels."
+      };
+      return notes[name] || "Backend stage từ hybrid_search.stage_ms.";
+    }
     function renderOverview() {
       const intent = state.hybrid?.intent || {};
       const fallbackSignals = localQuerySignals(state.query);
@@ -1860,11 +2230,16 @@
           include_metadata: true,
           include_evidence: true
         };
-        const data = await fetchJson("/context", {
+        const timed = await fetchTimedJson("POST /context", "/context", {
           method: "POST",
           body: JSON.stringify(payload)
         });
+        const data = timed.data;
         state.contextByHotel[hotelId] = data;
+        if (!state.timing) state.timing = { requests: {}, context: {} };
+        if (!state.timing.context) state.timing.context = {};
+        state.timing.context[hotelId] = timed;
+        renderLatency();
         renderContextResponse(hotelId, data);
       } catch (error) {
         els.contextBody.innerHTML = errorState("POST /context chưa gọi được hoặc backend chưa hỗ trợ route này.", error);
