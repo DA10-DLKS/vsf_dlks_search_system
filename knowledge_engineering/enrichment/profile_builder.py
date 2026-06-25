@@ -32,6 +32,29 @@ _map = yaml.safe_load(open(MAP_YAML, encoding="utf-8"))
 RB_MAP = _map["rating_breakdown"]
 TAG_MAP = _map["review_tags"]
 
+# ── PURPOSE score (2026-06-25): suitable_for loãng (450/520 hotel đủ 5 purpose -> không phân
+#    biệt). Lấy ĐIỂM PHÂN BIỆT từ reviews_detail.demographics (score/10 + count per nhóm khách).
+#    Fallback chain mỗi purpose: demographics > review_tag (cũ) > derived(related) > presence-only.
+# (1) demographics nhóm Agoda -> PURPOSE_*. 2 nhóm gia đình GỘP vào FAMILY (cộng count, score
+#     trọng số theo count).
+DEMO_MAP = {
+    "Khách du lịch một mình": "PURPOSE_SOLO",
+    "Cặp đôi": "PURPOSE_ROMANTIC",
+    "Nhóm du khách": "PURPOSE_GROUP",
+    "Gia đình có trẻ nhỏ": "PURPOSE_FAMILY",
+    "Gia đình có thanh thiếu niên": "PURPOSE_FAMILY",
+    "Khách đi công tác": "PURPOSE_BUSINESS",
+}
+DEMO_PRIOR = 0.86   # mean điểm demographics toàn corpus (8.6/10) — kéo về khi ít review
+DEMO_K = 20         # ngưỡng shrinkage: count<<K -> về prior; count>>K -> tin score thật
+# (3) derived: purpose KHÔNG có nhóm demographics (vd WELLNESS) suy từ related concepts đã khai
+#     báo trong ontology. Map purpose -> [(concept, loại)]. loại: "presence"(amenity có=1.0) |
+#     "score"(lấy score SOFT từ profile). Purpose mới chỉ cần thêm dòng ở đây, KHÔNG sửa logic.
+DERIVED_RELATED = {
+    "PURPOSE_WELLNESS": [("AMEN_SPA", "presence"), ("STYLE_QUIET", "score")],
+}
+DERIVED_DISCOUNT = 0.8   # điểm gián tiếp -> nhân 0.8 (tin thấp hơn nguồn trực tiếp)
+
 # Phân vai 2 nguồn (sau khi đo: review crawl thiên-thấp -> ABSA mẫu lệch tiêu cực):
 #   - ASPECT score  : LẤY TỪ SEED (rating_breakdown = toàn bộ review Agoda, cân bằng).
 #                     KHÔNG đè bằng ABSA (mẫu crawl không đại diện tỷ lệ pos/neg).
@@ -53,6 +76,61 @@ def wilson_lower_bound(pos: int, n: int, z: float = 1.96) -> float:
     return max(0.0, (centre - margin) / denom)
 
 
+def _demographics_purpose(rd: dict) -> dict[str, dict]:
+    """reviews_detail.demographics (score/10 + count per nhóm) -> PURPOSE_* score.
+    Shrinkage Bayesian: count nhỏ -> kéo về prior (đỡ overconfident, đúng tinh thần Wilson).
+    2 nhóm gia đình GỘP (cộng count, score trung bình trọng số count)."""
+    agg: dict[str, dict] = defaultdict(lambda: {"wsum": 0.0, "count": 0})
+    for d in rd.get("demographics", []) or []:
+        if not isinstance(d, dict):
+            continue
+        cid = DEMO_MAP.get(d.get("name"))
+        score10, count = d.get("score"), int(d.get("count") or 0)
+        if not cid or not isinstance(score10, (int, float)) or count <= 0:
+            continue
+        agg[cid]["wsum"] += (score10 / 10.0) * count
+        agg[cid]["count"] += count
+    out: dict[str, dict] = {}
+    for cid, a in agg.items():
+        cnt = a["count"]
+        raw = a["wsum"] / cnt                                   # điểm thật (trọng số count)
+        score = (cnt * raw + DEMO_K * DEMO_PRIOR) / (cnt + DEMO_K)   # kéo về prior khi ít review
+        out[cid] = {
+            "score": round(score, 3),
+            "score_source": "agoda_demographics(shrunk)",
+            "evidence_count": cnt,
+            "source": "agoda_demographics", "nature": "presence",
+        }
+    return out
+
+
+def derive_purpose(prof: dict[str, dict], amenities: set[str]) -> None:
+    """Purpose KHÔNG có nhóm demographics (WELLNESS...) -> suy điểm từ related concepts đã
+    khai báo (DERIVED_RELATED). Chỉ gán nếu hotel có >=1 related. Đánh dấu source=derived."""
+    for cid, rels in DERIVED_RELATED.items():
+        if cid in prof:                       # đã có điểm từ nguồn mạnh hơn -> không đè
+            continue
+        vals = []
+        for concept, kind in rels:
+            if kind == "presence":
+                if concept in amenities:
+                    vals.append(1.0)
+            elif kind == "score":
+                s = prof.get(concept, {}).get("score")
+                if s is not None:
+                    vals.append(s)
+        if not vals:
+            continue
+        prof[cid] = {
+            "score": round(sum(vals) / len(vals) * DERIVED_DISCOUNT, 3),
+            "score_source": "derived(related)",
+            "evidence_count": len(vals),
+            "source": "derived",
+            "nature": "presence",
+            "derived_from": [c for c, _ in rels],
+        }
+
+
 def seed_from_hotel(hotel: dict) -> dict[str, dict]:
     """Seed profile 1 hotel từ aggregate Agoda. concept -> {score,pos,neg,evidence_count,source,nature}."""
     prof: dict[str, dict] = {}
@@ -72,6 +150,10 @@ def seed_from_hotel(hotel: dict) -> dict[str, dict]:
                 "nature": "experience",
             }
 
+    # (1b) demographics -> PURPOSE_* score (nguồn PHÂN BIỆT, thay suitable_for loãng). Đặt TRƯỚC
+    #      review_tags để purpose lấy score demographics làm chính, review_tag chỉ thêm mention.
+    prof.update(_demographics_purpose(rd))
+
     # (2) reviews_detail.tags -> mention pos/neg. LƯU Ý 2 NGUỒN KHÁC NHAU:
     #     score (trên) = grades toàn bộ; mention_pos/neg (dưới) = SỐ REVIEW NHẮC TỚI aspect
     #     (Agoda chỉ trích vài trăm review tiêu biểu, KHÔNG phải toàn bộ). 2 số đo việc khác
@@ -85,8 +167,9 @@ def seed_from_hotel(hotel: dict) -> dict[str, dict]:
         mentioned = int(t.get("mentioned") or 0)
         pos = round(mentioned * float(t.get("positive_pct") or 0) / 100.0)
         neg = mentioned - pos
-        if cid in prof and prof[cid].get("source") == "agoda_grades":
-            # aspect đã có score từ grades -> CHỈ thêm mention (đánh dấu nguồn riêng), KHÔNG đè score.
+        if cid in prof and prof[cid].get("source") in ("agoda_grades", "agoda_demographics"):
+            # đã có score mạnh hơn (grades cho aspect / demographics cho purpose) -> CHỈ thêm
+            # mention (nguồn riêng), KHÔNG đè score.
             prof[cid]["mention_pos"] = pos
             prof[cid]["mention_neg"] = neg
             prof[cid]["mention_source"] = "agoda_tags(mentioned)"

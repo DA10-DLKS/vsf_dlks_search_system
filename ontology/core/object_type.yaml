@@ -44,7 +44,7 @@ concepts:
     provenance: [domain_knowledge, agoda, booking]
     label: {vi: Homestay, en: Homestay}
     surface_forms:
-      vi: [homestay, nhà nghỉ tại gia, nhà dân, ở nhà dân]   # "Nhà dân" (10 hotel) = lưu trú tại nhà dân = homestay
+      vi: [homestay, nhà nghỉ tại gia, nhà dân, ở nhà dân, nhà nguyên căn, nguyên căn, thuê nguyên căn]  # "Nhà dân"(10)/"Toàn bộ căn nhà"(5) = lưu trú tại nhà dân / nguyên căn = homestay
       en: [homestay]
     description: {vi: Lưu trú dạng homestay / nhà dân, en: Homestay accommodation}
 
@@ -55,8 +55,8 @@ concepts:
     provenance: [domain_knowledge, agoda, booking]
     label: {vi: Căn hộ, en: Apartment}
     surface_forms:
-      vi: [căn hộ, toàn bộ căn nhà, căn hộ dịch vụ, apartment]
-      en: [apartment, entire place, serviced apartment]
+      vi: [căn hộ, toàn bộ căn nhà, căn hộ dịch vụ, apartment, condotel, căn hộ khách sạn]  # condotel (13 hotel trong tên) = căn hộ khách sạn ~ apartment
+      en: [apartment, entire place, serviced apartment, condotel]
     description: {vi: Căn hộ / toàn bộ căn nhà cho thuê, en: Apartment / entire place rental}
 
   # ── Bổ sung từ corpus 520 VN (loại hình thật chưa có concept) ──────────────
@@ -67,8 +67,8 @@ concepts:
     provenance: [domain_knowledge, agoda, booking]
     label: {vi: Nhà nghỉ, en: Guesthouse}
     surface_forms:
-      vi: [nhà nghỉ, nhà nghỉ ven đường, guesthouse]
-      en: [guesthouse, guest house, inn]
+      vi: [nhà nghỉ, nhà nghỉ ven đường, guesthouse, nhà trọ, motel]   # nhà trọ/motel = lưu trú bình dân ven đường ~ guesthouse
+      en: [guesthouse, guest house, inn, motel]
     description: {vi: Nhà nghỉ / cơ sở lưu trú bình dân (4 hotel trong corpus), en: Guesthouse / budget lodging}
 
   OBJ_BNB:
