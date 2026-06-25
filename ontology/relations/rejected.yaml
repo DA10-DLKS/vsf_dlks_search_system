@@ -161,3 +161,117 @@ relations:
   source_type: generated_lift
   status: rejected
   reject_reason: 'mâu thuẫn vibe: thư giãn vs hồ bơi trẻ em'
+- source: SETTING_VIEW
+  target: AMEN_SEA_VIEW
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: SETTING_VIEW suy TỪ sea_view -> quan hệ vòng, không boost
+- source: SETTING_VIEW
+  target: AMEN_BEACHFRONT
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: SETTING_VIEW suy từ coastal/sea_view -> vòng lặp
+- source: STYLE_LUXURY
+  target: STYLE_FAMILY_FRIENDLY
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: FAMILY_FRIENDLY phổ biến mọi hotel, lift 1.32 yếu
+- source: STYLE_MODERN
+  target: AMEN_KIDS_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: hiện đại không hàm ý hồ trẻ em, lift 1.52 yếu
+- source: STYLE_NEW
+  target: AMEN_GOLF
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: '''mới'' không hàm ý golf, lift 1.54 ngẫu nhiên'
+- source: STYLE_NEW
+  target: AMEN_EVENT_VENUE
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: '''mới'' không hàm ý sự kiện, lift 1.43'
+- source: STYLE_NEW
+  target: AMEN_INFINITY_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: '''mới'' không hàm ý hồ vô cực, lift 1.43'
+- source: STYLE_QUIET
+  target: AMEN_BBQ
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: yên tĩnh không hàm ý BBQ, lift 1.66 ngẫu nhiên
+- source: STYLE_QUIET
+  target: AMEN_BIKE
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: yên tĩnh không hàm ý xe đạp, lift 1.57 yếu
+- source: STYLE_QUIET
+  target: AMEN_INFINITY_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: lift 1.5 yếu, không hàm ý
+- source: STYLE_QUIET
+  target: STYLE_FAMILY_FRIENDLY
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: FAMILY_FRIENDLY noise, lift 1.33 yếu
+- source: STYLE_RELAXING
+  target: AMEN_GOLF
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: thư giãn không hàm ý golf, lift 1.74 ngẫu nhiên
+- source: STYLE_RELAXING
+  target: AMEN_BIKE
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: lift 1.64 yếu, không hàm ý
+- source: STYLE_RELAXING
+  target: STYLE_FAMILY_FRIENDLY
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: FAMILY_FRIENDLY noise, lift 1.43 yếu
+- source: STYLE_ROMANTIC
+  target: STYLE_LUXURY
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: support=5 quá nhỏ, lift 7.7 nhiễu mẫu
+- source: STYLE_ROMANTIC
+  target: STYLE_RELAXING
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: support=5 quá nhỏ
+- source: STYLE_ROMANTIC
+  target: AMEN_POOL
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: support=5 + POOL phổ biến, không đặc trưng
+- source: STYLE_ROMANTIC
+  target: STYLE_QUIET
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: support=5 quá nhỏ (dù nghĩa ok, chờ recall style cao hơn)
+- source: STYLE_ROMANTIC
+  target: STYLE_FAMILY_FRIENDLY
+  type: cooccurs_with
+  source_type: generated_lift
+  status: rejected
+  reject_reason: 'mâu thuẫn nghĩa: lãng mạn vs gia đình; support=5'

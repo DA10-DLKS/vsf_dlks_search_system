@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 
 HOTELS_GLOB = "data/cleaned/hotel_*.json"
 OUT_JSON = "knowledge_engineering/enrichment/hotel_metadata.json"
+PRICE_CAP_VND = 5_000_000  # giá min >= cap này = nghi mock (price_capped); không suy tier từ giá
 
 # Map accommodation_type -> type chữ thường cho knowledge_object.type (khác concept OBJ_*).
 TYPE_SLUG = {
@@ -117,7 +118,8 @@ def infer_price_tier(hotel: dict) -> tuple[str | None, str]:
       - star 4..4.5                                  -> PRICE_UPSCALE.
       - star 3..3.5                                  -> PRICE_MID.
       - star <3                                      -> PRICE_BUDGET.
-      - star None (chưa xếp hạng)                    -> None (để filter giá/score lo).
+      - star None (chưa xếp hạng) + CÓ giá thật      -> suy từ GIÁ (ngưỡng data-driven từ
+                                                        median tier theo star); thiếu giá -> None.
     Ghi chú reconcile khi nguồn mâu thuẫn (vd star>=5 nhưng is_luxury=False).
     """
     star = hotel.get("star_rating")
@@ -127,7 +129,23 @@ def infer_price_tier(hotel: dict) -> tuple[str | None, str]:
     note = ""
 
     if star is None:
-        return None, "star=0/None (chưa xếp hạng) -> không suy tier; dựa range_filter giá"
+        # star thiếu KHÔNG đồng nghĩa không suy được tier: nếu có GIÁ THẬT thì giá là tín hiệu
+        # tier hợp lệ (32 hotel chưa xếp sao nhưng giá 600k-1.5tr -> trước đây bị bỏ sót khi
+        # khách hỏi "giá rẻ"). Ngưỡng từ phân bố giá thật toàn corpus (median tier theo star):
+        # BUDGET p75=370k | MID 600-850k | UPSCALE 1.57-3tr | LUXURY p25=3.4tr.
+        prices = _room_prices(hotel)
+        if prices and min(prices) < PRICE_CAP_VND:   # giá min >=5tr = nghi mock (price_capped) -> không tin
+            p = min(prices)
+            if p < 450_000:
+                tier = "PRICE_BUDGET"
+            elif p < 1_200_000:
+                tier = "PRICE_MID"
+            elif p < 3_500_000:
+                tier = "PRICE_UPSCALE"
+            else:
+                tier = "PRICE_LUXURY"
+            return tier, f"star=None -> suy tier từ giá thật (price_inferred, min={p})"
+        return None, "star=0/None + không giá -> không suy tier; dựa range_filter giá"
 
     if star >= 5 and (gold or lux):
         tier = "PRICE_LUXURY"

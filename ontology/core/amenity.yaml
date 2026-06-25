@@ -53,6 +53,7 @@ concepts:
       vi:
       - hồ bơi vô cực
       - bể bơi vô cực
+      - hồ bơi có tầm nhìn
       - bể bơi có tầm nhìn
       en:
       - infinity pool
@@ -79,6 +80,8 @@ concepts:
       - bể bơi trẻ con
       - hồ bơi cho trẻ con
       - bể bơi cho trẻ con
+      - hồ bơi cho trẻ em
+      - bể bơi cho trẻ em
       en:
       - kids pool
       - children pool
@@ -104,6 +107,7 @@ concepts:
       - hồ bơi riêng
       - bể bơi riêng
       - hồ bơi trong phòng
+      - bể bơi trong phòng
       en:
       - private pool
     description:
@@ -185,10 +189,15 @@ concepts:
       - xông khô
       - phòng xông ướt
       - sauna
+      - suối nước nóng
+      - tắm suối nước nóng
+      - onsen
       en:
       - spa
       - massage
       - sauna
+      - hot spring
+      - onsen
     description:
       vi: Dịch vụ spa
       mát-xa: null
@@ -214,10 +223,13 @@ concepts:
       - phòng gym
       - gym
       - phòng thể dục
+      - phòng yoga
+      - yoga
       en:
       - gym
       - fitness
       - fitness center
+      - yoga
     description:
       vi: Phòng tập thể dục / trung tâm thể hình
       en: Gym / fitness center
@@ -341,6 +353,7 @@ concepts:
       - bar
       - quán bar cạnh bể bơi
       - pool bar
+      - quán rượu
       en:
       - bar
       - pool bar
@@ -483,6 +496,7 @@ concepts:
       - bếp chung
       - khu bếp
       - bếp nấu
+      - bếp nhỏ
       en:
       - kitchen
       - kitchenette
@@ -536,6 +550,8 @@ concepts:
       - tiện nghi cho khách khuyết tật
       - lối đi xe lăn
       - người khuyết tật
+      - hỗ trợ người khuyết tật
+      - khách hàng khuyết tật
       en:
       - wheelchair accessible
       - accessibility
@@ -821,6 +837,8 @@ concepts:
       - tiện nghi bbq
       - bếp nướng
       - khu nướng bbq
+      - lò nuớng ngoài trời
+      - lò nướng
       en:
       - bbq facilities
       - barbecue
@@ -1090,3 +1108,380 @@ concepts:
     description:
       vi: Phòng có ban công hoặc sân hiên riêng.
       en: A room with a private balcony or terrace.
+  # ── Bổ sung theo GÓC KHÁCH HÀNG (2026-06-25) — amenity khách hay hỏi dù phổ biến ──
+  # Tiêu chí: giữ nếu khách có thể hỏi (trả lời + lọc mặt phủ định), KHÔNG lọc theo "phân biệt".
+  AMEN_BREAKFAST:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Bữa sáng
+      en: Breakfast
+    surface_forms:
+      vi:
+      - bữa sáng
+      - ăn sáng
+      - bữa sáng miễn phí
+      - bữa sáng tự chọn
+      - bữa sáng buffet
+      - buffet sáng
+      - có ăn sáng
+      en:
+      - breakfast
+      - breakfast included
+      - free breakfast
+      - buffet breakfast
+    description:
+      vi: Có phục vụ bữa sáng (buffet / gọi món / miễn phí).
+      en: Breakfast served (buffet / a-la-carte / included).
+    related:
+    - AMEN_RESTAURANT
+  AMEN_BATHTUB:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Bồn tắm
+      en: Bathtub
+    surface_forms:
+      vi:
+      - bồn tắm
+      - bồn tắm nằm
+      - phòng có bồn tắm
+      - bồn tắm riêng
+      en:
+      - bathtub
+      - bath tub
+      - soaking tub
+    description:
+      vi: Phòng có bồn tắm (gắn cấp hotel nếu ≥1 loại phòng có).
+      en: Room with a bathtub (hotel-level if any room has one).
+  AMEN_LAUNDRY:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Dịch vụ giặt là
+      en: Laundry service
+    surface_forms:
+      vi:
+      - dịch vụ giặt là
+      - giặt là
+      - giặt ủi
+      - giặt khô
+      - dịch vụ ủi đồ
+      - giặt đồ
+      en:
+      - laundry service
+      - laundry
+      - dry cleaning
+      - ironing service
+    description:
+      vi: Dịch vụ giặt là / giặt khô / ủi đồ (khác máy giặt tự phục vụ).
+      en: Laundry / dry-cleaning / ironing service (distinct from self-service washer).
+    related:
+    - AMEN_WASHING_MACHINE
+  AMEN_24H_FRONTDESK:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Lễ tân 24 giờ
+      en: 24-hour front desk
+    surface_forms:
+      vi:
+      - lễ tân 24 giờ
+      - lễ tân 24/24
+      - nhận phòng 24 giờ
+      - check-in 24 giờ
+      - tiếp tân 24 giờ
+      - nhận phòng khuya
+      en:
+      - 24-hour front desk
+      - 24h reception
+      - late check-in
+    description:
+      vi: Lễ tân / nhận phòng phục vụ 24 giờ (cho khách đến khuya).
+      en: Front desk / check-in available 24 hours.
+  AMEN_SMOKING:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Cho phép hút thuốc
+      en: Smoking allowed
+    surface_forms:
+      vi:
+      - cho phép hút thuốc
+      - phòng hút thuốc
+      - khu vực hút thuốc
+      - được hút thuốc
+      en:
+      - smoking allowed
+      - smoking room
+      - smoking area
+    description:
+      vi: Có phòng / khu vực cho phép hút thuốc (gắn cấp hotel nếu ≥1 phòng có).
+      en: Has a smoking room / area (hotel-level if any room allows it).
+  AMEN_NON_SMOKING:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Phòng không hút thuốc
+      en: Non-smoking room
+    surface_forms:
+      vi:
+      - phòng không hút thuốc
+      - không hút thuốc
+      - hoàn toàn không hút thuốc
+      - phòng không khói thuốc
+      en:
+      - non-smoking room
+      - non-smoking
+      - smoke-free
+    description:
+      vi: Có phòng không hút thuốc (cho khách dị ứng khói thuốc).
+      en: Has non-smoking rooms (for smoke-sensitive guests).
+  AMEN_FAMILY_ROOM:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Phòng gia đình
+      en: Family room
+    surface_forms:
+      vi:
+      - phòng gia đình
+      - phòng cho gia đình
+      - phòng thông nhau
+      - phòng có cửa thông nhau
+      - phòng nhiều giường
+      en:
+      - family room
+      - connecting rooms
+      - interconnecting rooms
+    description:
+      vi: Có phòng gia đình / phòng thông nhau (gắn cấp hotel nếu ≥1 phòng có).
+      en: Has family rooms / connecting rooms (hotel-level if any room qualifies).
+    related:
+    - PURPOSE_FAMILY
+  AMEN_CAR_RENTAL:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Thuê xe / taxi
+      en: Car rental / taxi
+    surface_forms:
+      vi:
+      - cho thuê xe
+      - thuê xe
+      - thuê ô tô
+      - thuê xe máy
+      - dịch vụ taxi
+      - gọi taxi
+      en:
+      - car rental
+      - car hire
+      - taxi service
+    description:
+      vi: Dịch vụ thuê xe / gọi taxi (khác đưa đón sân bay).
+      en: Car rental / taxi service (distinct from airport shuttle).
+    related:
+    - AMEN_AIRPORT_SHUTTLE
+  AMEN_LOUNGE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Phòng chờ / khu vực chung
+      en: Lounge / common area
+    surface_forms:
+      vi:
+      - phòng chờ chung
+      - khu vực chung
+      - khu vực tiếp khách
+      - sảnh chờ
+      - phòng chờ
+      en:
+      - lounge
+      - shared lounge
+      - common area
+    description:
+      vi: Phòng chờ / khu vực sinh hoạt chung cho khách.
+      en: Shared lounge / common seating area for guests.
+  AMEN_LIBRARY:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Thư viện
+      en: Library
+    surface_forms:
+      vi:
+      - thư viện
+      - phòng đọc sách
+      - góc đọc sách
+      en:
+      - library
+      - reading room
+    description:
+      vi: Thư viện / góc đọc sách tại cơ sở lưu trú.
+      en: Library / reading nook at the property.
+  AMEN_WATERPARK:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Công viên nước
+      en: Water park
+    surface_forms:
+      vi:
+      - công viên nước
+      - cầu trượt nước
+      - khu vui chơi nước
+      en:
+      - water park
+      - water slide
+      - aqua park
+    description:
+      vi: Công viên nước / cầu trượt nước (điểm cộng cho gia đình).
+      en: Water park / water slides (a plus for families).
+    related:
+    - PURPOSE_FAMILY
+  AMEN_NIGHTCLUB:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Câu lạc bộ đêm
+      en: Nightclub
+    surface_forms:
+      vi:
+      - câu lạc bộ đêm
+      - club đêm
+      - hộp đêm
+      - vũ trường
+      en:
+      - nightclub
+      - night club
+    description:
+      vi: Câu lạc bộ đêm / hộp đêm tại cơ sở lưu trú.
+      en: Nightclub at the property.
+    related:
+    - STYLE_LIVELY
+  AMEN_EVENT_VENUE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Tổ chức sự kiện / tiệc cưới
+      en: Event / wedding venue
+    surface_forms:
+      vi:
+      - tổ chức sự kiện
+      - địa điểm tổ chức sự kiện
+      - tiệc cưới
+      - tổ chức tiệc cưới
+      - địa điểm cầu hôn
+      - sự kiện đặc biệt
+      en:
+      - event venue
+      - wedding venue
+      - special events
+    description:
+      vi: Không gian / dịch vụ tổ chức sự kiện, tiệc cưới (khác phòng họp công tác).
+      en: Space / service for events and weddings (distinct from business meeting rooms).
+    related:
+    - AMEN_MEETING_ROOM
+  AMEN_WORKSPACE:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Bàn / không gian làm việc
+      en: Workspace
+    surface_forms:
+      vi:
+      - bàn làm việc
+      - không gian làm việc
+      - góc làm việc
+      - bàn làm việc trong phòng
+      - tiện nghi làm việc
+      - phòng làm việc
+      - chỗ làm việc
+      en:
+      - workspace
+      - work desk
+      - desk
+    description:
+      vi: Bàn / không gian làm việc trong phòng (cho khách công tác, workation).
+      en: Work desk / workspace in the room (for business / workation guests).
+    related:
+    - PURPOSE_BUSINESS
+  AMEN_FEMALE_ONLY:
+    facet: amenity
+    fact_type: hard
+    tier: core
+    provenance:
+    - amenity_field
+    - manual_curated
+    label:
+      vi: Chỉ dành cho nữ
+      en: Female-only
+    surface_forms:
+      vi:
+      - chỉ dành cho nữ
+      - cơ sở chỉ dành cho nữ giới
+      - phòng dành cho nữ
+      - dorm nữ
+      en:
+      - female only
+      - women only
+      - female dormitory
+    description:
+      vi: Cơ sở / khu vực chỉ phục vụ khách nữ (cho khách nữ đi một mình).
+      en: Property / area for female guests only.

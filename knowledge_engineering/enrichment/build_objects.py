@@ -275,6 +275,30 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
     )
     if any(w in _loc_blob for w in ("trung tam", "noi thanh", "pho co", "pho di bo")):
         setting_set.add("SETTING_CITY_CENTER")
+    # Bổ sung CITY_CENTER (2026-06-25): rule chữ "trung tâm" bỏ sót 79 KS lõi HN/HCM
+    # (Hilton/Sofitel/Pullman ở Hoàn Kiếm/Quận 1 — address không chứa chữ "trung tâm").
+    #   (a) tín hiệu KHOẢNG CÁCH data-driven: location_tags "Cách trung tâm TP. X" <= 2km.
+    if "SETTING_CITY_CENTER" not in setting_set:
+        for _t in (hotel.get("location_tags") or []):
+            _m = re.search(r"trung t[aâ]m TP\.?\s*([\d.,]+)\s*(m|km)", str(_t), re.IGNORECASE)
+            if _m:
+                _d = float(_m.group(1).replace(",", "."))
+                _meters = _d * 1000 if _m.group(2).lower() == "km" else _d
+                if _meters <= 2000:
+                    setting_set.add("SETTING_CITY_CENTER")
+                break
+    #   (b) whitelist quận LÕI của 2 đô thị lớn nhất (nơi gap tập trung; quận ngoại vi KHÔNG gắn).
+    if "SETTING_CITY_CENTER" not in setting_set:
+        _prov = normalize(str(loc.get("province") or loc.get("city") or ""), fold=True)
+        _dist = normalize(str(loc.get("district") or loc.get("area") or ""), fold=True)
+        _CORE = {
+            "ha noi": ("hoan kiem", "pho co", "ba dinh", "hai ba trung", "dong da"),
+            "ho chi minh": ("quan 1", "quan 3"),
+        }
+        for _city, _cores in _CORE.items():
+            if _city in _prov and any(c in _dist for c in _cores):
+                setting_set.add("SETTING_CITY_CENTER")
+                break
 
     sm["setting"] = sorted(setting_set)
 
@@ -287,6 +311,13 @@ def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
         c for c, v in concept_profile.items()
         if c.startswith("STYLE_") and v["score"] >= SOFT_STYLE_MIN_SCORE
     )
+
+    # PURPOSE derived (2026-06-25): purpose KHÔNG có nhóm demographics (WELLNESS) suy điểm từ
+    # related concepts — cần CẢ amenity (presence) lẫn style score, có sẵn ở object này nên suy
+    # tại đây (profile_builder không thấy amenity concept). Ghi thẳng vào concept_profile để
+    # xuống semantic_profile như mọi điểm khác.
+    from knowledge_engineering.enrichment.profile_builder import derive_purpose
+    derive_purpose(concept_profile, set(sm.get("amenity", []) or []))
 
     # NEARBY LANDMARK (LMK_*) từ relations_near (đã sinh bởi build_relations). Đưa vào
     # semantic_metadata để tầng search nhặt được như mọi concept khác (many facet); giữ thêm

@@ -41,6 +41,8 @@ review_tags:
   "Tiện ích tại cơ sở lưu trú": ASPECT_FACILITIES
   "Nhận phòng": ASPECT_SERVICE
   "Trả phòng": ASPECT_SERVICE
+  # --- aspect (chất lượng, có positive_pct) ---
+  "Hướng nhìn từ phòng": ASPECT_VIEW   # 337 hotel — CHẤT LƯỢNG view (đẹp/xấu); gỡ khỏi _skip 2026-06-25
   # --- style (cảm nhận) ---
   "Cách âm": STYLE_QUIET
   "Không khí": STYLE_QUIET            # "không khí yên tĩnh/trong lành" — gần STYLE_QUIET
@@ -64,6 +66,7 @@ review_tags:
   "Thiên nhiên": SETTING_NATURE
   "Suối nước nóng": AMEN_SPA
   # --- _skip (không map: thuộc tính phòng vụn / trùng / không phân biệt) ---
-  # "Hướng nhìn từ phòng","Vòi sen","Nước nóng","Bồn tắm" -> chi tiết phòng.
+  # "Vòi sen","Nước nóng","Bồn tắm" -> chi tiết phòng.
+  # ("Hướng nhìn từ phòng" ĐÃ promote -> ASPECT_VIEW ở trên, 2026-06-25)
   # "Chủ nhà","An toàn","Di chuyển","Mua sắm","Hoạt động không thể bỏ qua",
   # "Cuộc sống về đêm" -> không có concept rõ / là intent, không seed.

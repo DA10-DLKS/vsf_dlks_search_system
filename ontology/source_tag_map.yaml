@@ -130,7 +130,6 @@ amenities:
   "Nhà hàng":               AMEN_RESTAURANT
   "Dịch vụ phòng":          AMEN_RESTAURANT
   "Dịch vụ phòng 24 giờ":   AMEN_RESTAURANT
-  "Bữa sáng tự chọn":       AMEN_RESTAURANT
   "Nhà hàng bữa sáng":      AMEN_RESTAURANT
   "Nhà hàng phục vụ bữa trưa": AMEN_RESTAURANT
   "Nhà hàng phục vụ cà phê trà": AMEN_RESTAURANT
@@ -256,6 +255,92 @@ amenities:
   "Đi chơi bằng thuyền":    AMEN_WATERSPORT
   "Đi bộ đường dài":        AMEN_HIKING
 
+  # ===========================================================================
+  # ── (A) Concept MỚI theo góc khách hàng (2026-06-25) ──
+  #    Giữ amenity khách hay hỏi dù phổ biến; thuộc tính phòng -> any-room cấp hotel.
+  # ---- Breakfast (chuỗi dạng CLEANED — bước clean đã gỡ [] và lowercase đuôi) ----
+  "Bữa sáng":                 AMEN_BREAKFAST
+  "Bữa sáng tự chọn":         AMEN_BREAKFAST
+  "Bữa sáng miễn phí":        AMEN_BREAKFAST
+  "Bữa sáng trong phòng":     AMEN_BREAKFAST
+  "Bữa sáng kiểu á":          AMEN_BREAKFAST
+  "Bữa sáng kiểu lục địa":    AMEN_BREAKFAST
+  "Bữa sáng kiểu tây":        AMEN_BREAKFAST
+  "Bữa sáng đầy đủ kiểu mỹ":  AMEN_BREAKFAST
+  "Bữa sáng gọi món":         AMEN_BREAKFAST
+  # "Bữa sáng halal" -> giữ ở AMEN_HALAL (đặc thù hơn, đã map sẵn)
+  # ---- Bathtub (KHÁC AMEN_HOT_TUB: jacuzzi/sủi bọt -> giữ ở HOT_TUB) ----
+  #   ("Bồn tắm" trần KHÔNG có ở field amenities cleaned; chỉ khớp qua rule/synonym từ text)
+  "Bồn tắm gỗ hinoki":        AMEN_BATHTUB
+  # ---- Laundry service (KHÁC AMEN_WASHING_MACHINE: máy tự giặt) ----
+  "Dịch vụ giặt là":          AMEN_LAUNDRY
+  "Giặt khô":                 AMEN_LAUNDRY
+  "Dịch vụ ủi đồ":            AMEN_LAUNDRY
+  # ---- 24h front desk ----
+  #   ("Dịch vụ phòng 24 giờ" = room service -> giữ AMEN_RESTAURANT, KHÔNG map ở đây)
+  "Bàn tiếp tân 24 giờ":      AMEN_24H_FRONTDESK
+  "Nhận/trả phòng 24 giờ":    AMEN_24H_FRONTDESK
+  # ---- Smoking / non-smoking (thuộc tính phòng -> any-room) ----
+  "Khu vực hút thuốc":        AMEN_SMOKING
+  "Cho phép hút thuốc":       AMEN_SMOKING
+  "Phòng không hút thuốc":    AMEN_NON_SMOKING
+  "Hoàn toàn không hút thuốc": AMEN_NON_SMOKING
+  "Không hút thuốc":          AMEN_NON_SMOKING
+  # ---- Family room / connecting (thuộc tính phòng -> any-room) ----
+  "Phòng gia đình":           AMEN_FAMILY_ROOM
+  "Có các phòng thông nhau":  AMEN_FAMILY_ROOM
+  "Phòng cho cặp đôi":        AMEN_FAMILY_ROOM
+  # ---- Car rental / taxi (KHÁC AMEN_AIRPORT_SHUTTLE) ----
+  "Ô tô cho thuê":            AMEN_CAR_RENTAL
+  "Dịch vụ taxi":             AMEN_CAR_RENTAL
+  # ---- Lounge / common area ----
+  "Phòng chờ chung khu vực tv": AMEN_LOUNGE
+  "Khu vực tiếp khách":       AMEN_LOUNGE
+  # ---- Library ----
+  "Thư viện":                 AMEN_LIBRARY
+  # ---- Water park ----
+  "Công viên nước":           AMEN_WATERPARK
+  "Cầu trượt nước":           AMEN_WATERPARK
+  # ---- Nightclub ----
+  "Câu lạc bộ đêm":           AMEN_NIGHTCLUB
+  # ---- Event / wedding venue (KHÁC AMEN_MEETING_ROOM business) ----
+  "Địa điểm trong nhà cho sự kiện đặc biệt":  AMEN_EVENT_VENUE
+  "Địa điểm ngoài trời cho sự kiện đặc biệt": AMEN_EVENT_VENUE
+  "Tổ chức sự kiện":          AMEN_EVENT_VENUE
+  "Địa điểm cầu hôn":         AMEN_EVENT_VENUE
+  # ---- Workspace (related PURPOSE_BUSINESS) ----
+  #   ("Bàn làm việc" KHÔNG có ở field amenities cleaned; khớp qua rule/synonym)
+  "Tiện nghi làm việc":       AMEN_WORKSPACE
+  "Không gian làm việc cho máy tính xách tay": AMEN_WORKSPACE
+  # ---- Female-only ----
+  "Cơ sở lưu trú chỉ dành cho nữ giới": AMEN_FEMALE_ONLY
+
+  # ===========================================================================
+  # ── (B) Biến thể surface cho concept ĐÃ CÓ (vá recall — chuỗi khác dấu []/()/ /) ──
+  # ---- Wi-Fi (cleaned: "Internet" standalone gộp WiFi — KHÔNG có ở field amenities) ----
+  #   ("WiFi", "WiFi miễn phí", "WiFi có dây", "WiFi mạng lan..." ĐÃ map ở block gốc trên)
+  "WiFi tính phí":            AMEN_WIFI
+  # ---- Watersport (biến thể chưa có ở block gốc) ----
+  "Lướt ván buồm":            AMEN_WATERSPORT
+  "Học lướt sóng":            AMEN_WATERSPORT
+  # ---- Game room ----
+  "Bảng phi tiêu":            AMEN_GAME_ROOM
+  "Bãi chơi bowling":         AMEN_GAME_ROOM
+  # ---- Garden ----
+  "Vườn hoặc sân sau":        AMEN_GARDEN
+  # ---- Spa (biến thể chưa có ở block gốc) ----
+  "Liệu pháp body wrap":      AMEN_SPA
+  "Ghế mát-xa":               AMEN_SPA
+  # ---- Restaurant (biến thể loại nhà hàng — cleaned lowercase đuôi) ----
+  "Nhà hàng phục vụ bữa tối": AMEN_RESTAURANT
+  "Nhà hàng phục vụ món tự chọn": AMEN_RESTAURANT
+  "Nhà hàng phục vụ tráng miệng": AMEN_RESTAURANT
+  "Nhà hàng phục vụ salad":   AMEN_RESTAURANT
+  "Nhà hàng phục vụ soup":    AMEN_RESTAURANT
+  "Nhà hàng ẩm thực quốc tế": AMEN_RESTAURANT
+  "Nhà hàng ẩm thực phương tây": AMEN_RESTAURANT
+  "Nhà hàng ẩm thực trung quốc": AMEN_RESTAURANT
+
 # ===========================================================================
 # _unmapped — vocabulary nguồn LẶP NHIỀU nhưng CHƯA có concept phù hợp.
 #   => ứng viên candidate_queue. KHÔNG tự thêm core. (đối chiếu candidate_queue.yaml)
@@ -263,14 +348,13 @@ amenities:
 # ===========================================================================
 _unmapped:
   # ✅ ĐÃ PROMOTE (2026-06-08): Tennis, Karaoke, GameRoom(bi-a/bóng bàn), Watersport, Hiking
-  #    -> đã chuyển lên mục `amenities` chính + thêm vào core/amenity.yaml.
+  # ✅ ĐÃ PROMOTE (2026-06-25, góc khách hàng): Breakfast, Bathtub, Laundry, 24hFrontDesk,
+  #    Smoking/NonSmoking, FamilyRoom, CarRental, Lounge, Library, Waterpark, Nightclub,
+  #    EventVenue, Workspace, FemaleOnly -> mục (A) ở trên + core/amenity.yaml.
   # ⏸ DEFER (chờ query log / review ABSA):
   amenities_defer:
     - {value: "Phòng yoga",   freq: 120, suggest: AMEN_YOGA,   note: "tạm map AMEN_GYM ở mục chính; tách riêng nếu query log đòi"}
-    - {value: "Câu lạc bộ đêm", freq: 88, suggest: null,       note: "nightclub; gần STYLE_LIVELY — chờ review"}
-    - {value: "Công viên nước", freq: 83, suggest: null,       note: "water park; gần PURPOSE_FAMILY — chờ tín hiệu"}
     - {value: "Công viên giải trí", freq: 45, suggest: null,   note: "thường là nearby landmark hơn amenity"}
-    - {value: "Thư viện",     freq: 52,  suggest: null,        note: "chờ tín hiệu"}
   # ❌ REJECT (không phân biệt / ít giá trị lọc — KHÔNG promote):
   amenities_reject:
     - {value: "Đổi ngoại tệ", freq: 514, reason: "dịch vụ vận hành, gần như KS nào cũng có -> không phân biệt khi search"}
