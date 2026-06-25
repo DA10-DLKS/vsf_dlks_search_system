@@ -80,3 +80,17 @@ concepts:
       vi: [cơ sở vật chất, tiện ích, tiện nghi cơ sở lưu trú, tiện nghi đầy đủ, trang thiết bị đầy đủ, đầy đủ tiện nghi]
       en: [facilities, amenities quality]
     description: {vi: Khía cạnh cơ sở vật chất / tiện nghi chung, en: Facilities aspect}
+
+  # ── Bổ sung 2026-06-25 — CHẤT LƯỢNG view (đẹp/xấu), tách khỏi SETTING_VIEW (presence "có view").
+  #    Nguồn điểm: review tag "Hướng nhìn từ phòng" (337 hotel, có positive_pct). KHÔNG cần LLM.
+  #    Giải lỗi "view xấu hiểu ngược": "đẹp/xấu" -> aspect+sentiment, "có view" -> setting/amenity.
+  ASPECT_VIEW:
+    facet: aspect
+    fact_type: soft
+    tier: core
+    provenance: [domain_knowledge, agoda, tripadvisor]
+    label: {vi: Tầm nhìn, en: View}
+    surface_forms:
+      vi: [tầm nhìn, view, view đẹp, view xấu, cảnh đẹp, hướng nhìn, hướng nhìn từ phòng, cảnh quan từ phòng, tầm nhìn từ phòng]
+      en: [view, room view, scenery, view quality]
+    description: {vi: Khía cạnh CHẤT LƯỢNG tầm nhìn từ phòng (đẹp/xấu — khác presence "có view"), en: View quality aspect (nice/bad — distinct from "has a view" presence)}

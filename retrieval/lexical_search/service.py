@@ -93,7 +93,7 @@ class BM25SearchService:
         """
         limit = size or self.default_size
         bool_query: dict[str, Any] = {
-            "must": [{"multi_match": {"query": query, "fields": self.search_fields, "fuzziness": "AUTO"}}],
+            "must": [{"multi_match": {"query": query, "fields": self.search_fields}}],
         }
         if candidate_hotel_ids:
             bool_query["filter"] = [{"terms": {"id": list(candidate_hotel_ids)}}]
