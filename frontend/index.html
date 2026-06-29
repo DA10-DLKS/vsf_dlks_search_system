@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VSF Travel Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #ff385c;
+        --primary-active: #e00b41;
+        --primary-disabled: #ffd1da;
+        --ink: #222;
+        --body: #3f3f3f;
+        --muted: #6a6a6a;
+        --muted-soft: #929292;
+        --hairline: #ddd;
+        --hairline-soft: #ebebeb;
+        --border-strong: #c1c1c1;
+        --canvas: #fff;
+        --surface-soft: #f7f7f7;
+        --surface-strong: #f2f2f2;
+        --star: #222;
+        --shadow: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px, rgba(0,0,0,0.1) 0 4px 8px;
+        --font: 'Inter', -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif;
+        --radius-sm: 8px;
+        --radius-md: 14px;
+        --radius-lg: 20px;
+        --radius-full: 9999px;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: var(--font);
+        color: var(--ink);
+        background: var(--canvas);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── Top Nav ── */
+      .top-nav {
+        height: 80px;
+        border-bottom: 1px solid var(--hairline);
+        display: flex;
+        align-items: center;
+        padding: 0 40px;
+        position: sticky;
+        top: 0;
+        background: var(--canvas);
+        z-index: 100;
+      }
+      .top-nav .logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--primary);
+        letter-spacing: -0.4px;
+      }
+      .top-nav .logo span { color: var(--ink); }
+
+      /* ── Hero ── */
+      .hero {
+        padding: 40px 40px 24px;
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+      .hero h1 {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.43;
+        margin-bottom: 4px;
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.43;
+      }
+
+      /* ── Metrics Bar ── */
+      .metrics-bar {
+        display: flex;
+        gap: 12px;
+        max-width: 720px;
+        margin: 0 auto 28px;
+        flex-wrap: wrap;
+      }
+      .metric-card {
+        flex: 1;
+        min-width: 140px;
+        background: var(--surface-soft);
+        border-radius: var(--radius-md);
+        padding: 14px 18px;
+        border: 1px solid var(--hairline-soft);
+      }
+      .metric-card .value {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .metric-card .value .highlight { color: var(--primary); }
+      .metric-card .label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .metric-card .desc {
+        font-size: 11px;
+        color: var(--muted-soft);
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+      .metric-card {
+        cursor: pointer;
+        position: relative;
+        transition: border-color 0.15s;
+      }
+      .metric-card:hover { border-color: var(--primary-disabled); }
+
+      /* ── Popup ── */
+      .popup-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.15s ease;
+      }
+      .popup-card {
+        background: var(--canvas);
+        border-radius: var(--radius-md);
+        max-width: 480px;
+        width: 90vw;
+        padding: 28px 32px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        position: relative;
+        animation: popIn 0.2s ease;
+      }
+      @keyframes popIn {
+        from { opacity: 0; transform: scale(0.95) translateY(8px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+      }
+      .popup-card .close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: none;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+        color: var(--muted-soft);
+        line-height: 1;
+        padding: 4px;
+      }
+      .popup-card .close:hover { color: var(--ink); }
+      .popup-card h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        letter-spacing: -0.3px;
+      }
+      .popup-card h3 .hl { color: var(--primary); }
+      .popup-card .val {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 8px 0 12px;
+        line-height: 1.1;
+      }
+      .popup-card .section {
+        margin-top: 16px;
+      }
+      .popup-card .section h4 {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+      .popup-card .section p {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--body);
+      }
+      .popup-card .formula {
+        background: var(--surface-soft);
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink);
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.2px;
+        overflow-x: auto;
+      }
+
+      /* ── Search Bar ── */
+      .search-section {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 40px 32px;
+      }
+      .search-bar {
+        display: flex;
+        align-items: center;
+        background: var(--canvas);
+        border: 1px solid var(--hairline);
+        border-radius: var(--radius-full);
+        height: 64px;
+        box-shadow: var(--shadow);
+        max-width: 720px;
+        transition: box-shadow 0.2s;
+      }
+      .search-bar:focus-within {
+        box-shadow: rgba(0,0,0,0.04) 0 0 0 1px, rgba(0,0,0,0.08) 0 4px 12px;
+      }
+      .search-bar .field {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 24px;
+        cursor: text;
+      }
+      .search-bar .field label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        color: var(--muted);
+        line-height: 1.33;
+      }
+      .search-bar .field input {
+        border: none;
+        outline: none;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: var(--font);
+        color: var(--ink);
+        background: transparent;
+        width: 100%;
+        line-height: 1.29;
+      }
+      .search-bar .field input::placeholder { color: var(--muted-soft); }
+      .search-orb {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--primary);
+        border: none;
+        cursor: pointer;
+        margin-right: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      .search-orb:hover { background: var(--primary-active); }
+      .search-orb svg { width: 18px; height: 18px; fill: white; }
+
+      .demo-strip {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        max-width: 720px;
+      }
+      .demo-strip button {
+        background: var(--surface-soft);
+        border: 1px solid var(--hairline-soft);
+        border-radius: var(--radius-full);
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: var(--font);
+        color: var(--ink);
+        cursor: pointer;
+        transition: background 0.15s;
+        white-space: nowrap;
+      }
+      .demo-strip button:hover { background: var(--hairline-soft); }
+
+      /* ── Content ── */
+      .content {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 40px 80px;
+      }
+
+      /* ── Intent Panel ── */
+      .intent-panel {
+        background: var(--surface-soft);
+        border-radius: var(--radius-md);
+        padding: 20px 24px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .intent-panel .label {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--muted);
+        flex-shrink: 0;
+        padding-top: 2px;
+      }
+      .intent-panel .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+      .intent-panel .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--canvas);
+        border: 1px solid var(--hairline-soft);
+        border-radius: var(--radius-full);
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--body);
+      }
+
+      /* ── State ── */
+      .state-box {
+        padding: 16px 24px;
+        border-radius: var(--radius-md);
+        margin-bottom: 24px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .state-box.loading {
+        background: var(--surface-soft);
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .state-box.loading .spinner {
+        width: 18px; height: 18px;
+        border: 2px solid var(--hairline);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .state-box.error { background: #fff5f5; color: #c13515; }
+      .state-box.empty { background: var(--surface-soft); color: var(--muted); }
+
+      /* ── Results Header ── */
+      .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 20px;
+      }
+      .results-header h2 {
+        font-size: 22px;
+        font-weight: 500;
+        letter-spacing: -0.44px;
+        line-height: 1.18;
+      }
+      .results-header .count {
+        font-size: 14px;
+        color: var(--muted);
+        font-weight: 400;
+      }
+
+      /* ── Result Card (Airbnb style) ── */
+      .hotel-card {
+        display: flex;
+        gap: 20px;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--hairline-soft);
+        transition: opacity 0.3s;
+      }
+      .hotel-card:last-child { border-bottom: none; }
+
+      .hotel-card .photo {
+        width: 300px;
+        min-height: 200px;
+        border-radius: var(--radius-md);
+        flex-shrink: 0;
+        overflow: hidden;
+        position: relative;
+        background: var(--surface-strong);
+      }
+      .hotel-card .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .hotel-card .photo .placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: 700;
+        color: white;
+      }
+      .hotel-card .photo .score-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: var(--canvas);
+        border-radius: var(--radius-full);
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      }
+
+      .hotel-card .info {
+        flex: 1;
+        min-width: 0;
+      }
+      .hotel-card .info .name-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .hotel-card .info .name-row h3 {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.25;
+      }
+      .hotel-card .info .name-row .final-score {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--primary);
+        white-space: nowrap;
+      }
+      .hotel-card .info .meta-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 6px 0 4px;
+        font-size: 13px;
+        color: var(--body);
+      }
+      .hotel-card .info .meta-row .star { color: var(--ink); letter-spacing: 1px; }
+      .hotel-card .info .meta-row .dot { color: var(--hairline); }
+      .hotel-card .info .meta-row .review {
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .hotel-card .info .meta-row .review-count {
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .hotel-card .info .address {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+
+      /* ── Score Bars ── */
+      .score-bars {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin: 8px 0 10px;
+      }
+      .score-bar-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+      .score-bar-item .bar-track {
+        width: 60px;
+        height: 4px;
+        background: var(--hairline-soft);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .score-bar-item .bar-fill {
+        height: 100%;
+        border-radius: 2px;
+        transition: width 0.6s ease;
+      }
+      .bar-fill.rrf { background: #6366f1; }
+      .bar-fill.vector { background: #10b981; }
+      .bar-fill.bm25 { background: #f59e0b; }
+      .bar-fill.business { background: #8b5cf6; }
+      .bar-fill.rerank { background: var(--primary); }
+
+      /* ── Expand sections ── */
+      .hotel-details {
+        margin-top: 10px;
+      }
+      .hotel-details summary {
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        padding: 6px 0;
+        user-select: none;
+      }
+      .hotel-details summary:hover { color: var(--ink); }
+      .hotel-details[open] summary { color: var(--ink); }
+
+      .hotel-details .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 12px 0 4px;
+      }
+      .hotel-details .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .hotel-details .detail-item .dt {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--muted-soft);
+      }
+      .hotel-details .detail-item .dd {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--body);
+      }
+
+      .chunk-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 0;
+      }
+      .chunk-item {
+        background: var(--surface-soft);
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--body);
+        border-left: 3px solid var(--primary-disabled);
+      }
+      .chunk-item .chunk-meta {
+        display: flex;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 820px) {
+        .top-nav { padding: 0 20px; }
+        .hero { padding: 28px 20px 16px; }
+        .hero h1 { font-size: 24px; }
+        .search-section { padding: 0 20px 24px; }
+        .content { padding: 0 20px 60px; }
+
+        .hotel-card { flex-direction: column; gap: 12px; }
+        .hotel-card .photo { width: 100%; min-height: 180px; }
+
+        .intent-panel { flex-direction: column; gap: 10px; }
+
+        .hotel-details .detail-grid { grid-template-columns: 1fr; }
+
+        .results-header { flex-direction: column; gap: 4px; }
+      }
+
+      @media (max-width: 480px) {
+        .search-bar { height: 52px; }
+        .search-bar .field { padding: 0 16px; }
+        .search-orb { width: 40px; height: 40px; margin-right: 6px; }
+        .search-orb svg { width: 16px; height: 16px; }
+      }
+
+      /* ── Animations ── */
+      .fade-in {
+        animation: fadeIn 0.3s ease;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .hotel-card { animation: fadeIn 0.3s ease both; }
+      .hotel-card:nth-child(2) { animation-delay: 0.05s; }
+      .hotel-card:nth-child(3) { animation-delay: 0.1s; }
+      .hotel-card:nth-child(4) { animation-delay: 0.15s; }
+      .hotel-card:nth-child(5) { animation-delay: 0.2s; }
+    </style>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <div class="logo">vsf<span>travel</span></div>
+    </nav>
+
+    <div class="hero">
+      <h1>Khám phá nơi bạn muốn đến</h1>
+      <p>Search bằng tiếng Việt tự nhiên &middot; Hybrid retrieval &middot; Xếp hạng thông minh</p>
+    </div>
+
+    <div class="search-section">
+      <div class="metrics-bar" id="metricsBar"></div>
+      <div class="search-bar" id="searchBar">
+        <div class="field">
+          <label>Điểm đến</label>
+          <input id="queryInput" type="text" placeholder="VD: resort 5 sao gần biển Nha Trang" value="resort 5 sao gần biển Nha Trang" />
+        </div>
+        <button class="search-orb" id="searchBtn" aria-label="Search">
+          <svg viewBox="0 0 24 24"><path d="M21.53 20.47l-5.66-5.66a8.5 8.5 0 1 0-1.06 1.06l5.66 5.66a.75.75 0 0 0 1.06-1.06ZM3.5 10.5a7 7 0 1 1 14 0 7 7 0 0 1-14 0Z"/></svg>
+        </button>
+      </div>
+      <div class="demo-strip" id="demoQueries"></div>
+    </div>
+
+    <div class="content">
+      <div id="state"></div>
+      <div id="intent"></div>
+      <div id="resultsHeader"></div>
+      <div id="results"></div>
+    </div>
+
+    <script>
+      const DEMOS = [
+        "resort 5 sao gần biển Nha Trang",
+        "khách sạn trung tâm Sài Gòn cho công tác",
+        "nghỉ dưỡng có tiện ích cho trẻ em Phú Quốc",
+        "homestay Đà Lạt view đẹp giá rẻ",
+        "khách sạn Hà Nội gần hồ Gươm",
+      ];
+
+      const COLORS = ["#ff385c","#e00b41","#ffd1da","#6366f1","#10b981","#f59e0b","#8b5cf6","#460479","#92174d"];
+
+      const $ = (s) => document.querySelector(s);
+      const input = $("#queryInput");
+      const results = $("#results");
+      const stateEl = $("#state");
+      const intentEl = $("#intent");
+      const headerEl = $("#resultsHeader");
+
+      function esc(v) { return String(v ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]); }
+
+      function num(v) { return Number(v ?? 0); }
+      function fmt(v) { return num(v).toFixed(3); }
+      function pct(v) { return (num(v) * 100).toFixed(0) + "%"; }
+
+      function stars(r) {
+        if (!r) return "";
+        return "★".repeat(Math.floor(r)) + (r % 1 >= 0.5 ? "½" : "");
+      }
+
+      function bgColor(id) { return COLORS[Math.abs(id ?? 0) % COLORS.length]; }
+
+      function renderState(type, msg) {
+        stateEl.innerHTML = `<div class="state-box ${type}">${type === "loading" ? '<span class="spinner"></span>' : ""}${esc(msg)}</div>`;
+      }
+
+      function renderIntent(intent, nCandidates, nFused) {
+        if (!intent) return "";
+        const tags = [];
+        if (intent.city) tags.push(`📍 ${esc(intent.city)}`);
+        if (intent.object_types) intent.object_types.forEach(t => tags.push(`<span class="tag">${esc(t)}</span>`));
+        if (intent.hard_concepts) intent.hard_concepts.forEach(c => tags.push(`<span class="tag">🔍 ${esc(c)}</span>`));
+        if (intent.feel_concepts) intent.feel_concepts.forEach(c => tags.push(`<span class="tag">✨ ${esc(c)}</span>`));
+        if (intent.landmarks) intent.landmarks.forEach(l => tags.push(`<span class="tag">📍 ${esc(l)}</span>`));
+        if (intent.price_tiers) intent.price_tiers.forEach(p => tags.push(`<span class="tag">💰 ${esc(p)}</span>`));
+        tags.push(`<span class="tag">🎯 ${nCandidates} candidates</span>`);
+        tags.push(`<span class="tag">⚡ ${nFused} fused</span>`);
+        return `<div class="intent-panel"><div class="label">Query Analysis</div><div class="tags">${tags.join("")}</div></div>`;
+      }
+
+      function renderScoreBar(label, cls, score) {
+        const p = Math.min(num(score) * 100, 100);
+        return `<div class="score-bar-item"><span>${esc(label)}</span><div class="bar-track"><div class="bar-fill ${cls}" style="width:${p}%"></div></div><span>${fmt(score)}</span></div>`;
+      }
+
+      function renderCard(h, index) {
+        const m = h.metadata || {};
+        const name = m.name || m.hotel_name || `Hotel #${h.hotel_id}`;
+        const city = m.city || m.address_city || "";
+        const addr = m.address || "";
+        const star = m.star_rating;
+        const revScore = m.review_score;
+        const revCount = m.review_count;
+        const accomType = m.accommodation_type || m.property_type || "";
+        const chunks = h.matched_chunks || [];
+        const text = h.text || chunks.map(c => c.text || "").join(" ") || "";
+        const imgUrl = m.image_urls ? m.image_urls[0] : null;
+
+        const id = h.hotel_id ?? 0;
+        const initial = (name.charAt(0) || "H").toUpperCase();
+
+        const scoreBars = [
+          h.rrf_score != null && renderScoreBar("RRF", "rrf", h.rrf_score),
+          h.vector_rank != null && renderScoreBar("Vector", "vector", 1 - (h.vector_rank / 100)),
+          h.rerank_score != null && renderScoreBar("Rerank", "rerank", h.rerank_score),
+          h.business_score != null && renderScoreBar("Business", "business", h.business_score),
+        ].filter(Boolean).join("");
+
+        const chunkHtml = chunks.length ? `
+          <details class="hotel-details">
+            <summary>Matched chunks (${chunks.length})</summary>
+            <div class="chunk-list">${chunks.map(c =>
+              `<div class="chunk-item">
+                <div class="chunk-meta">
+                  <span>${esc(c.section || "Section")}</span>
+                  ${c.score != null ? `<span>· score ${fmt(c.score)}</span>` : ""}
+                </div>
+                ${esc(c.text || "")}
+              </div>`
+            ).join("")}</div>
+          </details>` : "";
+
+        const scoreHtml = `
+          <details class="hotel-details">
+            <summary>Score breakdown</summary>
+            <div class="score-bars">${scoreBars}</div>
+          </details>`;
+
+        const metaHtml = `
+          <details class="hotel-details">
+            <summary>Hotel details</summary>
+            <div class="detail-grid">
+              <div class="detail-item"><span class="dt">Hotel ID</span><span class="dd">${h.hotel_id}</span></div>
+              <div class="detail-item"><span class="dt">Source</span><span class="dd">${esc(h.source || "N/A")}</span></div>
+              ${star ? `<div class="detail-item"><span class="dt">Star Rating</span><span class="dd">${star}★</span></div>` : ""}
+              ${revScore ? `<div class="detail-item"><span class="dt">Review Score</span><span class="dd">${revScore}/10 (${(revCount || 0).toLocaleString()} reviews)</span></div>` : ""}
+              ${accomType ? `<div class="detail-item"><span class="dt">Type</span><span class="dd">${esc(accomType)}</span></div>` : ""}
+              ${m.gold_circle_award_year ? `<div class="detail-item"><span class="dt">Award</span><span class="dd">Gold Circle ${m.gold_circle_award_year}</span></div>` : ""}
+              ${m.is_luxury ? `<div class="detail-item"><span class="dt">Luxury</span><span class="dd">Yes</span></div>` : ""}
+            </div>
+          </details>`;
+
+        return `
+          <div class="hotel-card">
+            <div class="photo">
+              ${imgUrl ? `<img src="${esc(imgUrl)}" alt="${esc(name)}" loading="lazy" onerror="this.style.display='none'" />` : ""}
+              <div class="placeholder" style="background:linear-gradient(135deg,${bgColor(id)},${bgColor(id+2)})${imgUrl ? ';display:none' : ''}">
+                ${initial}
+              </div>
+              <div class="score-badge">${fmt(h.score)}</div>
+            </div>
+            <div class="info">
+              <div class="name-row">
+                <h3>${esc(name)}</h3>
+                <span class="final-score">${fmt(h.score)}</span>
+              </div>
+              <div class="meta-row">
+                ${star ? `<span class="star">${stars(star)}</span><span class="dot">·</span>` : ""}
+                ${revScore ? `<span class="review">${revScore}</span><span class="review-count">(${(revCount || 0).toLocaleString()})</span><span class="dot">·</span>` : ""}
+                <span>${esc(city)}</span>
+                ${accomType ? `<span class="dot">·</span><span>${esc(accomType)}</span>` : ""}
+              </div>
+              ${addr ? `<div class="address">${esc(addr)}</div>` : ""}
+              ${scoreBars ? scoreHtml : ""}
+              ${chunkHtml}
+              ${metaHtml}
+              ${text ? `
+              <details class="hotel-details">
+                <summary>LLM Context Preview</summary>
+                <div class="chunk-item" style="border-left-color:var(--primary)">${esc(text.substring(0, 600))}</div>
+              </details>` : ""}
+            </div>
+          </div>`;
+      }
+
+      async function search(query) {
+        stateEl.innerHTML = "";
+        intentEl.innerHTML = "";
+        headerEl.innerHTML = "";
+        results.innerHTML = "";
+        renderState("loading", "Đang tìm kiếm...");
+
+        const url = (location.origin === "null" ? "http://localhost:8000" : location.origin) + "/hybrid_search?q=" + encodeURIComponent(query) + "&top_n=5";
+
+        try {
+          const resp = await fetch(url, { signal: AbortSignal.timeout(120000) });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const d = await resp.json();
+
+          stateEl.innerHTML = "";
+          intentEl.innerHTML = renderIntent(d.intent, d.n_candidates, d.n_fused);
+
+          const hotels = d.top_hotels || [];
+          if (!hotels.length) {
+            renderState("empty", "Không tìm thấy kết quả phù hợp.");
+            return;
+          }
+
+          headerEl.innerHTML = `<div class="results-header"><h2>Kết quả tìm kiếm</h2><span class="count">${hotels.length} khách sạn</span></div>`;
+          results.innerHTML = hotels.map((h, i) => renderCard(h, i)).join("");
+        } catch (err) {
+          if (err.name === "AbortError" || err.message?.includes("timeout")) {
+            renderState("error", "Tìm kiếm quá thời gian (>120s). Vui lòng thử lại.");
+          } else {
+            renderState("error", "Lỗi kết nối: " + esc(err.message));
+          }
+        }
+      }
+
+      // ── Evaluation Metrics ──
+      const EVAL_METRICS = [
+        {
+          value: "0.50", label: "Recall@10", highlight: true,
+          desc: "Tỷ lệ hotel đúng trong Top-10",
+          title: "Độ bao phủ",
+          detail: "Hệ thống trả về Top-K, trong số đó có bao nhiêu hotel đúng so với tổng số hotel đúng kỳ vọng. Cao = ít bỏ sót kết quả đúng.",
+          formula: "Recall@K = Số hotel đúng trong Top-K / Tổng số hotel đúng kỳ vọng",
+          example: "Recall@10 = 0.50 → trong 10 kết quả đầu, tìm được 50% số hotel đúng."
+        },
+        {
+          value: "0.69", label: "Precision@10", highlight: false,
+          desc: "69% kết quả Top-10 là relevant",
+          title: "Độ chính xác",
+          detail: "Trong Top-K kết quả trả về, bao nhiêu phần trăm là đúng. Cao = ít nhiễu, ít kết quả không liên quan.",
+          formula: "Precision@K = Số hotel đúng trong Top-K / K",
+          example: "Precision@10 = 0.69 → 69% kết quả trong Top-10 là relevant."
+        },
+        {
+          value: "0.95", label: "Hit@10", highlight: true,
+          desc: "95% câu hỏi có ≥1 kết quả đúng",
+          title: "Hit Rate",
+          detail: "Bao nhiêu phần trăm số câu query có ít nhất 1 kết quả đúng trong Top-K. Hữu ích cho RAG — chỉ cần 1 chunk đúng là LLM có thể trả lời.",
+          formula: "Hit@K = Số query có ≥1 kết quả đúng trong Top-K / Tổng số query",
+          example: "Hit@10 = 0.95 → 95% số câu query có ít nhất 1 hotel đúng trong Top-10."
+        },
+        {
+          value: "0.89", label: "MRR", highlight: true,
+          desc: "Kết quả đúng ở rank ~1.1",
+          title: "Mean Reciprocal Rank",
+          detail: "Thứ hạng trung bình của kết quả đúng đầu tiên. Nếu kết quả đúng xuất hiện ở vị trí rank R, reciprocal rank = 1/R. MRR là trung bình của tất cả câu. Cao = kết quả tốt lên đầu.",
+          formula: "MRR = (1/N) × Σ (1 / rank_của_kết_quả_đúng_đầu_tiên)",
+          example: "MRR = 0.89 → trung bình kết quả đúng đầu tiên xuất hiện ở rank ~1.1 (1/0.89)."
+        }
+      ];
+
+      function showPopup(idx) {
+        const m = EVAL_METRICS[idx];
+        const overlay = document.createElement("div");
+        overlay.className = "popup-overlay";
+        overlay.innerHTML = `
+          <div class="popup-card">
+            <button class="close">&times;</button>
+            <h3><span class="hl">${m.label}</span> &mdash; ${esc(m.title)}</h3>
+            <div class="val">${m.value}</div>
+            <div class="section">
+              <h4>Giải thích</h4>
+              <p>${m.detail}</p>
+            </div>
+            <div class="section">
+              <h4>Công thức</h4>
+              <div class="formula">${m.formula}</div>
+            </div>
+            <div class="section">
+              <h4>Ví dụ</h4>
+              <p>${m.example}</p>
+            </div>
+          </div>`;
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay || e.target.classList.contains("close")) overlay.remove();
+        });
+        document.body.appendChild(overlay);
+      }
+
+      function renderMetrics() {
+        const bar = document.getElementById("metricsBar");
+        bar.innerHTML = EVAL_METRICS.map((m, i) =>
+          `<div class="metric-card" data-idx="${i}">
+            <div class="value">${m.highlight ? '<span class="highlight">' : ""}${m.value}${m.highlight ? '</span>' : ""}</div>
+            <div class="label">${m.label}</div>
+            <div class="desc">${m.desc}</div>
+          </div>`
+        ).join("");
+        bar.querySelectorAll(".metric-card").forEach(el =>
+          el.addEventListener("click", () => showPopup(+el.dataset.idx))
+        );
+      }
+      renderMetrics();
+
+      // ── Bindings ──
+      $("#searchBtn").addEventListener("click", () => search(input.value));
+      input.addEventListener("keydown", (e) => { if (e.key === "Enter") search(input.value); });
+
+      const demoEl = $("#demoQueries");
+      DEMOS.forEach(q => {
+        const btn = document.createElement("button");
+        btn.textContent = q;
+        btn.addEventListener("click", () => { input.value = q; search(q); });
+        demoEl.appendChild(btn);
+      });
+
+      // ── Initial search ──
+      search(input.value);
+    </script>
+  </body>
+</html>

@@ -5,7 +5,7 @@ pydantic
 pydantic-settings
 
 # ===== Config =====
-pyyaml
+pyyaml>=6.0
 python-dotenv
 
 # ===== Crawler (Layer 1) =====
@@ -13,12 +13,23 @@ scrapy
 beautifulsoup4
 lxml
 httpx
+playwright==1.49.1
 
 # ===== Ingestion / data processing (Layer 2-3) =====
 pandas
+numpy                    # V17: enrichment (discovery_cluster/suggest) — thiếu trước, import được do là dep gián tiếp
+datasketch               # MinHash LSH for near-duplicate detection
+deep-translator          # Dịch review text sang tiếng Việt (Google Translate engine)
+psycopg2-binary          # PostgreSQL driver
+sqlalchemy               # ORM / Core for PostgreSQL
+alembic                  # Schema migrations
+
+# ===== Knowledge Engineering (Layer 3) =====
+underthesea              # V17: chuẩn hóa/tách từ tiếng Việt (normalize.py, candidate_mining) — BẮT BUỘC, thiếu thì pipeline vỡ
 
 # ===== Embedding & Indexing (Layer 4) =====
 sentence-transformers
+torch                    # V17: device cuda/mps/cpu cho bge-m3 (indexing/embedding/models.py)
 # openai            # if using OpenAI embeddings
 
 # ===== Retrieval (Layer 6) =====
@@ -32,6 +43,10 @@ rank-bm25
 
 # ===== Observability =====
 structlog
+prometheus-client
+
+# ===== Frontend debug console =====
+streamlit
 
 # ===== Testing =====
 pytest

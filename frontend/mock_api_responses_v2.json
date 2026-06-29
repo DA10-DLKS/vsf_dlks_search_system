@@ -1,0 +1,806 @@
+{
+  "schema_version": "kien_api_schema_v1",
+  "search_api": {
+    "endpoint": "POST /api/v1/search",
+    "requests": [
+      {
+        "query": "Tôi muốn resort yên tĩnh gần biển cho gia đình",
+        "top_k": 10,
+        "page": 0,
+        "filters": {
+          "accommodation_type": ["Resort"],
+          "suitable_for": ["Gia đình"]
+        },
+        "options": {
+          "include_debug": false
+        }
+      },
+      {
+        "query": "Khách sạn phù hợp cho chuyến công tác ở trung tâm",
+        "top_k": 10,
+        "page": 0,
+        "filters": {
+          "suitable_for": ["Khách đi công tác"]
+        },
+        "options": {
+          "include_debug": false
+        }
+      },
+      {
+        "query": "Địa điểm nghỉ dưỡng có tiện ích cho trẻ em",
+        "top_k": 10,
+        "page": 0,
+        "filters": {
+          "suitable_for": ["Gia đình có trẻ nhỏ"]
+        },
+        "options": {
+          "include_debug": false
+        }
+      }
+    ],
+    "responses": [
+      {
+        "query_id": "q-demo-family-beach-001",
+        "query": "Tôi muốn resort yên tĩnh gần biển cho gia đình",
+        "total_found": 18,
+        "returned": 2,
+        "page": 0,
+        "latency_ms": 318,
+        "parsed_intent": {
+          "original_query": "Tôi muốn resort yên tĩnh gần biển cho gia đình",
+          "normalized_query": "resort yên tĩnh gần biển cho gia đình",
+          "hard_filters": {},
+          "keyword_expansion": ["resort", "yên tĩnh", "gần biển", "gia đình", "kids club", "bãi biển"],
+          "intent_type": "hotel_search",
+          "confidence": 0.93,
+          "parsed_by": "llm"
+        },
+        "results": [
+          {
+            "hotel_id": 805030,
+            "name": "Vinpearl Resort & Spa Nha Trang Bay",
+            "accommodation_type": "Resort",
+            "address": "Đảo Hòn Tre, Nha Trang, Khánh Hòa, Việt Nam",
+            "city": "Nha Trang",
+            "latitude": 12.2167,
+            "longitude": 109.2417,
+            "star_rating": 5,
+            "review_score": 8.9,
+            "review_count": 2410,
+            "is_luxury": true,
+            "price_from": 3200000,
+            "description": "Khu nghỉ dưỡng gần biển, không gian riêng tư, phù hợp gia đình cần nghỉ dưỡng yên tĩnh tại Nha Trang.",
+            "suitable_for": ["Gia đình", "Gia đình có trẻ nhỏ", "Nghỉ dưỡng biển"],
+            "amenities_top": ["Bãi biển riêng", "Hồ bơi", "Kids club", "Spa", "Nhà hàng gia đình"],
+            "thumbnail_url": "https://example.com/images/hotel_805030_01.jpg",
+            "image_count": 32,
+            "ranking": {
+              "final_score": 0.94,
+              "rank": 1,
+              "relevance_score": 0.91
+            },
+            "nearby_places": [
+              {
+                "name": "Bãi biển Nha Trang",
+                "type": "beach",
+                "distance_km": 0.2
+              },
+              {
+                "name": "VinWonders Nha Trang",
+                "type": "attraction",
+                "distance_km": 1.1
+              }
+            ],
+            "source_url": "https://www.agoda.com/vinpearl-resort-spa-nha-trang-bay"
+          },
+          {
+            "hotel_id": 6377313,
+            "name": "Vinpearl Wonderworld Phú Quốc",
+            "accommodation_type": "Villa resort",
+            "address": "Bãi Dài, Gành Dầu, Phú Quốc, Kiên Giang, Việt Nam",
+            "city": "Phú Quốc",
+            "latitude": 10.3378,
+            "longitude": 103.8542,
+            "star_rating": 5,
+            "review_score": 8.7,
+            "review_count": 1860,
+            "is_luxury": true,
+            "price_from": 4100000,
+            "description": "Resort biệt thự rộng, có nhiều tiện ích cho gia đình và nhóm khách cần không gian yên tĩnh.",
+            "suitable_for": ["Gia đình đông người", "Nghỉ dưỡng riêng tư", "Gia đình có trẻ nhỏ"],
+            "amenities_top": ["Biệt thự", "Bãi biển", "Hồ bơi riêng", "Ẩm thực", "Khu vui chơi"],
+            "thumbnail_url": "https://example.com/images/hotel_6377313_01.jpg",
+            "image_count": 28,
+            "ranking": {
+              "final_score": 0.89,
+              "rank": 2,
+              "relevance_score": 0.86
+            },
+            "nearby_places": [
+              {
+                "name": "Bãi Dài",
+                "type": "beach",
+                "distance_km": 0.3
+              },
+              {
+                "name": "Grand World Phú Quốc",
+                "type": "attraction",
+                "distance_km": 2.4
+              }
+            ],
+            "source_url": "https://www.agoda.com/vinpearl-wonderworld-phu-quoc"
+          }
+        ]
+      },
+      {
+        "query_id": "q-demo-business-central-002",
+        "query": "Khách sạn phù hợp cho chuyến công tác ở trung tâm",
+        "total_found": 24,
+        "returned": 2,
+        "page": 0,
+        "latency_ms": 286,
+        "parsed_intent": {
+          "original_query": "Khách sạn phù hợp cho chuyến công tác ở trung tâm",
+          "normalized_query": "khách sạn công tác trung tâm",
+          "hard_filters": {},
+          "keyword_expansion": ["công tác", "trung tâm", "business hotel", "phòng họp", "wifi"],
+          "intent_type": "hotel_search",
+          "confidence": 0.9,
+          "parsed_by": "llm"
+        },
+        "results": [
+          {
+            "hotel_id": 6428322,
+            "name": "Vinpearl Landmark 81, Autograph Collection",
+            "accommodation_type": "Khách sạn",
+            "address": "720A Điện Biên Phủ, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+            "city": "Hồ Chí Minh",
+            "latitude": 10.7942,
+            "longitude": 106.7229,
+            "star_rating": 5,
+            "review_score": 9.1,
+            "review_count": 1540,
+            "is_luxury": true,
+            "price_from": 3800000,
+            "description": "Khách sạn cao cấp tại trung tâm TP.HCM, phù hợp chuyến công tác, gặp đối tác và di chuyển trong thành phố.",
+            "suitable_for": ["Khách đi công tác", "Cặp đôi", "Du lịch thành phố"],
+            "amenities_top": ["Trung tâm", "Phòng họp", "Nhà hàng", "Wi-Fi", "Dịch vụ doanh nhân"],
+            "thumbnail_url": "https://example.com/images/hotel_6428322_01.jpg",
+            "image_count": 35,
+            "ranking": {
+              "final_score": 0.96,
+              "rank": 1,
+              "relevance_score": 0.93
+            },
+            "nearby_places": [
+              {
+                "name": "Landmark 81",
+                "type": "business",
+                "distance_km": 0.1
+              },
+              {
+                "name": "Quận 1",
+                "type": "city_center",
+                "distance_km": 3.5
+              }
+            ],
+            "source_url": "https://www.agoda.com/vinpearl-landmark-81-autograph-collection"
+          },
+          {
+            "hotel_id": 4947690,
+            "name": "Melia Vinpearl Riverfront Đà Nẵng",
+            "accommodation_type": "Khách sạn",
+            "address": "341 Trần Hưng Đạo, Sơn Trà, Đà Nẵng, Việt Nam",
+            "city": "Đà Nẵng",
+            "latitude": 16.0716,
+            "longitude": 108.2322,
+            "star_rating": 5,
+            "review_score": 8.8,
+            "review_count": 1325,
+            "is_luxury": true,
+            "price_from": 2200000,
+            "description": "Lựa chọn phù hợp cho công tác tại Đà Nẵng với vị trí ven sông, tiện nghi khách sạn và kết nối trung tâm.",
+            "suitable_for": ["Khách đi công tác", "Du lịch kết hợp làm việc"],
+            "amenities_top": ["Vị trí trung tâm", "Wi-Fi", "Nhà hàng", "Phòng họp", "Gym"],
+            "thumbnail_url": "https://example.com/images/hotel_4947690_01.jpg",
+            "image_count": 24,
+            "ranking": {
+              "final_score": 0.87,
+              "rank": 2,
+              "relevance_score": 0.82
+            },
+            "nearby_places": [
+              {
+                "name": "Cầu Sông Hàn",
+                "type": "landmark",
+                "distance_km": 0.8
+              },
+              {
+                "name": "Trung tâm Đà Nẵng",
+                "type": "city_center",
+                "distance_km": 1.2
+              }
+            ],
+            "source_url": "https://www.agoda.com/melia-vinpearl-riverfront-da-nang"
+          }
+        ]
+      },
+      {
+        "query_id": "q-demo-kids-amenities-003",
+        "query": "Địa điểm nghỉ dưỡng có tiện ích cho trẻ em",
+        "total_found": 16,
+        "returned": 2,
+        "page": 0,
+        "latency_ms": 331,
+        "parsed_intent": {
+          "original_query": "Địa điểm nghỉ dưỡng có tiện ích cho trẻ em",
+          "normalized_query": "nghỉ dưỡng tiện ích trẻ em",
+          "hard_filters": {},
+          "keyword_expansion": ["trẻ em", "kids club", "khu vui chơi", "gia đình", "hồ bơi"],
+          "intent_type": "hotel_search",
+          "confidence": 0.92,
+          "parsed_by": "llm"
+        },
+        "results": [
+          {
+            "hotel_id": 625168,
+            "name": "Vinpearl Resort & Spa Phú Quốc",
+            "accommodation_type": "Resort",
+            "address": "Bãi Dài, Gành Dầu, Phú Quốc, Kiên Giang, Việt Nam",
+            "city": "Phú Quốc",
+            "latitude": 10.3312,
+            "longitude": 103.8571,
+            "star_rating": 5,
+            "review_score": 8.8,
+            "review_count": 2205,
+            "is_luxury": true,
+            "price_from": 3500000,
+            "description": "Khu nghỉ dưỡng biển có nhiều tiện ích cho trẻ em, gia đình và hoạt động giải trí tại Phú Quốc.",
+            "suitable_for": ["Gia đình có trẻ nhỏ", "Nghỉ dưỡng biển", "Nhóm gia đình"],
+            "amenities_top": ["Kids club", "Bãi biển", "Hồ bơi", "Spa", "Nhà hàng", "Hoạt động gia đình"],
+            "thumbnail_url": "https://example.com/images/hotel_625168_01.jpg",
+            "image_count": 30,
+            "ranking": {
+              "final_score": 0.93,
+              "rank": 1,
+              "relevance_score": 0.9
+            },
+            "nearby_places": [
+              {
+                "name": "Bãi Dài",
+                "type": "beach",
+                "distance_km": 0.2
+              },
+              {
+                "name": "VinWonders Phú Quốc",
+                "type": "attraction",
+                "distance_km": 2.0
+              }
+            ],
+            "source_url": "https://www.agoda.com/vinpearl-resort-spa-phu-quoc"
+          },
+          {
+            "hotel_id": 4593719,
+            "name": "Vinpearl Resort & Golf Nam Hội An",
+            "accommodation_type": "Resort and golf",
+            "address": "Bình Minh, Thăng Bình, Quảng Nam, Việt Nam",
+            "city": "Quảng Nam",
+            "latitude": 15.7891,
+            "longitude": 108.4102,
+            "star_rating": 5,
+            "review_score": 8.6,
+            "review_count": 1170,
+            "is_luxury": true,
+            "price_from": 3000000,
+            "description": "Resort có không gian rộng, hoạt động giải trí và tiện ích phù hợp gia đình có trẻ em tại Nam Hội An.",
+            "suitable_for": ["Gia đình", "Giải trí cuối tuần", "Gia đình có trẻ nhỏ"],
+            "amenities_top": ["Khu vui chơi", "Hồ bơi", "Golf", "Nhà hàng", "Hoạt động gia đình"],
+            "thumbnail_url": "https://example.com/images/hotel_4593719_01.jpg",
+            "image_count": 26,
+            "ranking": {
+              "final_score": 0.88,
+              "rank": 2,
+              "relevance_score": 0.84
+            },
+            "nearby_places": [
+              {
+                "name": "VinWonders Nam Hội An",
+                "type": "attraction",
+                "distance_km": 0.9
+              },
+              {
+                "name": "Bãi biển Bình Minh",
+                "type": "beach",
+                "distance_km": 1.4
+              }
+            ],
+            "source_url": "https://www.agoda.com/vinpearl-resort-golf-nam-hoi-an"
+          }
+        ]
+      }
+    ]
+  },
+  "context_api": {
+    "endpoint": "POST /api/v1/context",
+    "requests": [
+      {
+        "hotel_id": 805030,
+        "query": "Tôi muốn resort yên tĩnh gần biển cho gia đình",
+        "query_id": "q-demo-family-beach-001",
+        "options": {
+          "max_context_tokens": 1500,
+          "include_chunks": true,
+          "include_metadata": true,
+          "include_token_info": true
+        }
+      },
+      {
+        "hotel_id": 6428322,
+        "query": "Khách sạn phù hợp cho chuyến công tác ở trung tâm",
+        "query_id": "q-demo-business-central-002",
+        "options": {
+          "max_context_tokens": 1500,
+          "include_chunks": true,
+          "include_metadata": true,
+          "include_token_info": true
+        }
+      },
+      {
+        "hotel_id": 625168,
+        "query": "Địa điểm nghỉ dưỡng có tiện ích cho trẻ em",
+        "query_id": "q-demo-kids-amenities-003",
+        "options": {
+          "max_context_tokens": 1500,
+          "include_chunks": true,
+          "include_metadata": true,
+          "include_token_info": true
+        }
+      },
+      {
+        "hotel_id": 805030,
+        "query": "Tôi muốn resort yên tĩnh gần biển cho gia đình",
+        "query_id": "q-demo-family-beach-001",
+        "options": {
+          "max_context_tokens": 900,
+          "include_chunks": false,
+          "include_metadata": true,
+          "include_token_info": false
+        }
+      }
+    ],
+    "responses_by_hotel_id": {
+      "805030": {
+        "hotel_id": 805030,
+        "hotel_name": "Vinpearl Resort & Spa Nha Trang Bay",
+        "query_id": "q-demo-family-beach-001",
+        "context_text": "Vinpearl Resort & Spa Nha Trang Bay là resort gần biển tại đảo Hòn Tre, Nha Trang. Khách sạn phù hợp gia đình nhờ bãi biển riêng, hồ bơi, kids club, spa và nhà hàng gia đình.\n---\nCác tiện ích nổi bật liên quan truy vấn gồm bãi biển riêng, hồ bơi, khu vui chơi trẻ em và không gian nghỉ dưỡng yên tĩnh.\n---\nNguồn dữ liệu mock cho thấy khách sạn có review_score 8.9, 2410 đánh giá và giá tham khảo từ 3.200.000 VND/đêm.",
+        "chunks": [
+          {
+            "chunk_id": "chunk-805030-desc-001",
+            "text": "Resort gần biển với không gian riêng tư, phù hợp gia đình cần nghỉ dưỡng yên tĩnh tại Nha Trang.",
+            "source_type": "hotel_description",
+            "scores": {
+              "bm25_rank": 2,
+              "vector_rank": 1,
+              "rrf_score": 0.86,
+              "reranker_score": 0.93
+            },
+            "payload": {
+              "hotel_id": 805030,
+              "source_table": "hotels",
+              "source_column": "description",
+              "record_id": 805030,
+              "lang": "vi"
+            }
+          },
+          {
+            "chunk_id": "chunk-805030-amenity-001",
+            "text": "Tiện ích nổi bật gồm bãi biển riêng, hồ bơi, kids club, spa và nhà hàng gia đình.",
+            "source_type": "amenity",
+            "scores": {
+              "bm25_rank": 1,
+              "vector_rank": 3,
+              "rrf_score": 0.81,
+              "reranker_score": 0.9
+            },
+            "payload": {
+              "hotel_id": 805030,
+              "source_table": "hotels",
+              "source_column": "amenities",
+              "record_id": 805030,
+              "lang": "vi"
+            }
+          }
+        ],
+        "citations": [
+          {
+            "citation_id": "cit-805030-001",
+            "chunk_id": "chunk-805030-desc-001",
+            "source_type": "hotel_description",
+            "text_snippet": "Resort gần biển với không gian riêng tư, phù hợp gia đình cần nghỉ dưỡng yên tĩnh tại Nha Trang.",
+            "relevance_score": 0.93,
+            "metadata": {
+              "source_table": "hotels",
+              "source_column": "description",
+              "record_id": 805030
+            }
+          },
+          {
+            "citation_id": "cit-805030-002",
+            "chunk_id": "chunk-805030-amenity-001",
+            "source_type": "amenity",
+            "text_snippet": "Bãi biển riêng, hồ bơi, kids club, spa và nhà hàng gia đình.",
+            "relevance_score": 0.9,
+            "metadata": {
+              "source_table": "hotels",
+              "source_column": "amenities",
+              "record_id": 805030
+            }
+          }
+        ],
+        "metadata": {
+          "hotel_id": 805030,
+          "name": "Vinpearl Resort & Spa Nha Trang Bay",
+          "accommodation_type": "Resort",
+          "star_rating": 5,
+          "is_luxury": true,
+          "address": "Đảo Hòn Tre, Nha Trang, Khánh Hòa, Việt Nam",
+          "city": "Nha Trang",
+          "latitude": 12.2167,
+          "longitude": 109.2417,
+          "review_score": 8.9,
+          "review_count": 2410,
+          "reviews_detail": {
+            "grades": [],
+            "tags": ["family", "beach", "quiet"],
+            "demographics": ["family"]
+          },
+          "description": "Khu nghỉ dưỡng gần biển, không gian riêng tư, phù hợp gia đình cần nghỉ dưỡng yên tĩnh tại Nha Trang.",
+          "amenities": ["Bãi biển riêng", "Hồ bơi", "Kids club", "Spa", "Nhà hàng gia đình"],
+          "suitable_for": ["Gia đình", "Gia đình có trẻ nhỏ", "Nghỉ dưỡng biển"],
+          "policy_notes": ["Mock policy: trẻ em có thể cần phụ thu theo độ tuổi."],
+          "useful_info": {
+            "mock_notice": "Demo metadata only"
+          },
+          "price_from": 3200000,
+          "rooms": [],
+          "nearby_places": [
+            {
+              "id": 1,
+              "name": "Bãi biển Nha Trang",
+              "type": "beach",
+              "distance_km": 0.2
+            }
+          ],
+          "activities": [],
+          "images": ["https://example.com/images/hotel_805030_01.jpg"],
+          "source_url": "https://www.agoda.com/vinpearl-resort-spa-nha-trang-bay"
+        },
+        "token_info": {
+          "context_text_tokens": 118,
+          "metadata_tokens": 520,
+          "total_tokens": 638,
+          "model_used_for_count": "cl100k_base"
+        },
+        "latency_ms": 542
+      },
+      "6428322": {
+        "hotel_id": 6428322,
+        "hotel_name": "Vinpearl Landmark 81, Autograph Collection",
+        "query_id": "q-demo-business-central-002",
+        "context_text": "Vinpearl Landmark 81, Autograph Collection là khách sạn cao cấp tại khu Landmark 81, TP.HCM. Vị trí trung tâm và tiện ích như phòng họp, Wi-Fi, nhà hàng và dịch vụ doanh nhân giúp khách sạn phù hợp cho chuyến công tác.\n---\nKhách sạn có star_rating 5, review_score 9.1 và nguồn Agoda mock dùng để trình bày traceability.",
+        "chunks": [
+          {
+            "chunk_id": "chunk-6428322-desc-001",
+            "text": "Khách sạn cao cấp tại trung tâm TP.HCM, phù hợp chuyến công tác, gặp đối tác và di chuyển trong thành phố.",
+            "source_type": "hotel_description",
+            "scores": {
+              "bm25_rank": 1,
+              "vector_rank": 2,
+              "rrf_score": 0.88,
+              "reranker_score": 0.94
+            },
+            "payload": {
+              "hotel_id": 6428322,
+              "source_table": "hotels",
+              "source_column": "description",
+              "record_id": 6428322,
+              "lang": "vi"
+            }
+          },
+          {
+            "chunk_id": "chunk-6428322-amenity-001",
+            "text": "Tiện ích nổi bật gồm phòng họp, nhà hàng, Wi-Fi và dịch vụ doanh nhân.",
+            "source_type": "amenity",
+            "scores": {
+              "bm25_rank": 3,
+              "vector_rank": 4,
+              "rrf_score": 0.74,
+              "reranker_score": 0.86
+            },
+            "payload": {
+              "hotel_id": 6428322,
+              "source_table": "hotels",
+              "source_column": "amenities",
+              "record_id": 6428322,
+              "lang": "vi"
+            }
+          }
+        ],
+        "citations": [
+          {
+            "citation_id": "cit-6428322-001",
+            "chunk_id": "chunk-6428322-desc-001",
+            "source_type": "hotel_description",
+            "text_snippet": "Khách sạn cao cấp tại trung tâm TP.HCM, phù hợp chuyến công tác.",
+            "relevance_score": 0.94,
+            "metadata": {
+              "source_table": "hotels",
+              "source_column": "description",
+              "record_id": 6428322
+            }
+          }
+        ],
+        "metadata": {
+          "hotel_id": 6428322,
+          "name": "Vinpearl Landmark 81, Autograph Collection",
+          "accommodation_type": "Khách sạn",
+          "star_rating": 5,
+          "is_luxury": true,
+          "address": "720A Điện Biên Phủ, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+          "city": "Hồ Chí Minh",
+          "latitude": 10.7942,
+          "longitude": 106.7229,
+          "review_score": 9.1,
+          "review_count": 1540,
+          "reviews_detail": {
+            "grades": [],
+            "tags": ["business", "central", "luxury"],
+            "demographics": ["business"]
+          },
+          "description": "Khách sạn cao cấp tại trung tâm TP.HCM, phù hợp chuyến công tác, gặp đối tác và di chuyển trong thành phố.",
+          "amenities": ["Trung tâm", "Phòng họp", "Nhà hàng", "Wi-Fi", "Dịch vụ doanh nhân"],
+          "suitable_for": ["Khách đi công tác", "Cặp đôi", "Du lịch thành phố"],
+          "policy_notes": ["Mock policy: thông tin check-in/check-out cần lấy từ backend thật."],
+          "useful_info": {
+            "mock_notice": "Demo metadata only"
+          },
+          "price_from": 3800000,
+          "rooms": [],
+          "nearby_places": [
+            {
+              "id": 2,
+              "name": "Landmark 81",
+              "type": "business",
+              "distance_km": 0.1
+            }
+          ],
+          "activities": [],
+          "images": ["https://example.com/images/hotel_6428322_01.jpg"],
+          "source_url": "https://www.agoda.com/vinpearl-landmark-81-autograph-collection"
+        },
+        "token_info": {
+          "context_text_tokens": 96,
+          "metadata_tokens": 488,
+          "total_tokens": 584,
+          "model_used_for_count": "cl100k_base"
+        },
+        "latency_ms": 497
+      },
+      "625168": {
+        "hotel_id": 625168,
+        "hotel_name": "Vinpearl Resort & Spa Phú Quốc",
+        "query_id": "q-demo-kids-amenities-003",
+        "context_text": "Vinpearl Resort & Spa Phú Quốc là khu nghỉ dưỡng biển phù hợp gia đình có trẻ em. Mock context nhấn mạnh kids club, bãi biển, hồ bơi, nhà hàng và hoạt động gia đình.\n---\nKết quả phù hợp với intent tìm địa điểm nghỉ dưỡng có tiện ích cho trẻ em.",
+        "chunks": [
+          {
+            "chunk_id": "chunk-625168-desc-001",
+            "text": "Khu nghỉ dưỡng biển có nhiều tiện ích cho trẻ em, gia đình và hoạt động giải trí tại Phú Quốc.",
+            "source_type": "hotel_description",
+            "scores": {
+              "bm25_rank": 1,
+              "vector_rank": 1,
+              "rrf_score": 0.9,
+              "reranker_score": 0.95
+            },
+            "payload": {
+              "hotel_id": 625168,
+              "source_table": "hotels",
+              "source_column": "description",
+              "record_id": 625168,
+              "lang": "vi"
+            }
+          },
+          {
+            "chunk_id": "chunk-625168-amenity-001",
+            "text": "Tiện ích nổi bật gồm kids club, bãi biển, hồ bơi, spa, nhà hàng và hoạt động gia đình.",
+            "source_type": "amenity",
+            "scores": {
+              "bm25_rank": 2,
+              "vector_rank": 2,
+              "rrf_score": 0.84,
+              "reranker_score": 0.91
+            },
+            "payload": {
+              "hotel_id": 625168,
+              "source_table": "hotels",
+              "source_column": "amenities",
+              "record_id": 625168,
+              "lang": "vi"
+            }
+          }
+        ],
+        "citations": [
+          {
+            "citation_id": "cit-625168-001",
+            "chunk_id": "chunk-625168-desc-001",
+            "source_type": "hotel_description",
+            "text_snippet": "Khu nghỉ dưỡng biển có nhiều tiện ích cho trẻ em, gia đình và hoạt động giải trí tại Phú Quốc.",
+            "relevance_score": 0.95,
+            "metadata": {
+              "source_table": "hotels",
+              "source_column": "description",
+              "record_id": 625168
+            }
+          },
+          {
+            "citation_id": "cit-625168-002",
+            "chunk_id": "chunk-625168-amenity-001",
+            "source_type": "amenity",
+            "text_snippet": "Kids club, bãi biển, hồ bơi, spa, nhà hàng và hoạt động gia đình.",
+            "relevance_score": 0.91,
+            "metadata": {
+              "source_table": "hotels",
+              "source_column": "amenities",
+              "record_id": 625168
+            }
+          }
+        ],
+        "metadata": {
+          "hotel_id": 625168,
+          "name": "Vinpearl Resort & Spa Phú Quốc",
+          "accommodation_type": "Resort",
+          "star_rating": 5,
+          "is_luxury": true,
+          "address": "Bãi Dài, Gành Dầu, Phú Quốc, Kiên Giang, Việt Nam",
+          "city": "Phú Quốc",
+          "latitude": 10.3312,
+          "longitude": 103.8571,
+          "review_score": 8.8,
+          "review_count": 2205,
+          "reviews_detail": {
+            "grades": [],
+            "tags": ["kids", "family", "beach"],
+            "demographics": ["family"]
+          },
+          "description": "Khu nghỉ dưỡng biển có nhiều tiện ích cho trẻ em, gia đình và hoạt động giải trí tại Phú Quốc.",
+          "amenities": ["Kids club", "Bãi biển", "Hồ bơi", "Spa", "Nhà hàng", "Hoạt động gia đình"],
+          "suitable_for": ["Gia đình có trẻ nhỏ", "Nghỉ dưỡng biển", "Nhóm gia đình"],
+          "policy_notes": ["Mock policy: cần xác minh chính sách trẻ em từ backend thật."],
+          "useful_info": {
+            "mock_notice": "Demo metadata only"
+          },
+          "price_from": 3500000,
+          "rooms": [],
+          "nearby_places": [
+            {
+              "id": 3,
+              "name": "VinWonders Phú Quốc",
+              "type": "attraction",
+              "distance_km": 2.0
+            }
+          ],
+          "activities": [],
+          "images": ["https://example.com/images/hotel_625168_01.jpg"],
+          "source_url": "https://www.agoda.com/vinpearl-resort-spa-phu-quoc"
+        },
+        "token_info": {
+          "context_text_tokens": 84,
+          "metadata_tokens": 505,
+          "total_tokens": 589,
+          "model_used_for_count": "cl100k_base"
+        },
+        "latency_ms": 568
+      },
+      "805030_no_chunks": {
+        "hotel_id": 805030,
+        "hotel_name": "Vinpearl Resort & Spa Nha Trang Bay",
+        "query_id": "q-demo-family-beach-001",
+        "context_text": "Context text still returns when include_chunks=false. Detailed chunks are intentionally empty for this mock case.",
+        "chunks": [],
+        "citations": [],
+        "metadata": {
+          "hotel_id": 805030,
+          "name": "Vinpearl Resort & Spa Nha Trang Bay",
+          "accommodation_type": "Resort",
+          "star_rating": 5,
+          "is_luxury": true,
+          "address": "Đảo Hòn Tre, Nha Trang, Khánh Hòa, Việt Nam",
+          "city": "Nha Trang",
+          "latitude": 12.2167,
+          "longitude": 109.2417,
+          "review_score": 8.9,
+          "review_count": 2410,
+          "reviews_detail": {},
+          "description": "Khu nghỉ dưỡng gần biển, không gian riêng tư, phù hợp gia đình.",
+          "amenities": ["Bãi biển riêng", "Hồ bơi", "Kids club"],
+          "suitable_for": ["Gia đình"],
+          "policy_notes": [],
+          "useful_info": {},
+          "price_from": 3200000,
+          "rooms": [],
+          "nearby_places": [],
+          "activities": [],
+          "images": ["https://example.com/images/hotel_805030_01.jpg"],
+          "source_url": "https://www.agoda.com/vinpearl-resort-spa-nha-trang-bay"
+        },
+        "token_info": {
+          "context_text_tokens": 22,
+          "metadata_tokens": 260,
+          "total_tokens": 282,
+          "model_used_for_count": "cl100k_base"
+        },
+        "latency_ms": 302
+      }
+    }
+  },
+  "errors": {
+    "INVALID_REQUEST": {
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "Request body does not match the API schema.",
+        "user_message": "Yêu cầu tìm kiếm chưa đúng định dạng. Vui lòng kiểm tra lại thông tin nhập.",
+        "query_id": null,
+        "details": {
+          "field": "query",
+          "reason": "query is required"
+        }
+      }
+    },
+    "NO_RESULTS": {
+      "error": {
+        "code": "NO_RESULTS",
+        "message": "No hotels matched the provided query and filters.",
+        "user_message": "Không tìm thấy khách sạn phù hợp với tiêu chí hiện tại.",
+        "query_id": "q-demo-no-results-000",
+        "details": {
+          "filters": {
+            "city": "Không xác định"
+          }
+        }
+      }
+    },
+    "HOTEL_NOT_FOUND": {
+      "error": {
+        "code": "HOTEL_NOT_FOUND",
+        "message": "hotel_id does not exist in hotels table.",
+        "user_message": "Không tìm thấy thông tin khách sạn đã chọn.",
+        "query_id": "q-demo-family-beach-001",
+        "details": {
+          "hotel_id": 999999999
+        }
+      }
+    },
+    "RETRIEVAL_TIMEOUT": {
+      "error": {
+        "code": "RETRIEVAL_TIMEOUT",
+        "message": "Retrieval pipeline exceeded the service latency objective.",
+        "user_message": "Hệ thống tìm kiếm đang phản hồi chậm. Vui lòng thử lại.",
+        "query_id": "q-demo-timeout-001",
+        "details": {
+          "latency_ms": 1500,
+          "slo_ms": 500
+        }
+      }
+    },
+    "INTERNAL_ERROR": {
+      "error": {
+        "code": "INTERNAL_ERROR",
+        "message": "Unexpected server error while processing retrieval request.",
+        "user_message": "Đã có lỗi hệ thống. Vui lòng thử lại sau.",
+        "query_id": "q-demo-internal-001",
+        "details": {}
+      }
+    }
+  }
+}

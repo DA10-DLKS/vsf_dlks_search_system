@@ -1,0 +1,36 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - '--no-cache'
+      - '-t'
+      - 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/search-api/app-api:$COMMIT_SHA'
+      - '-t'
+      - 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/search-api/app-api:latest'
+      - .
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/search-api/app-api:$COMMIT_SHA'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - run
+      - deploy
+      - search-api
+      - '--image=asia-southeast1-docker.pkg.dev/$PROJECT_ID/search-api/app-api:$COMMIT_SHA'
+      - '--region=asia-southeast1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--cpu=2'
+      - '--memory=8Gi'
+      - '--concurrency=10'
+      - '--min-instances=0'
+      - '--max-instances=3'
+      - '--vpc-connector=da10-connector'
+      - '--vpc-egress=private-ranges-only'
+      - '--env-vars-file=cloudrun.env'
+      - '--timeout=600'
+      - '--no-cpu-throttling'
+images:
+  - 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/search-api/app-api:$COMMIT_SHA'
+  - 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/search-api/app-api:latest'

@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Evaluation Dashboard - MOCK / DEMO</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --panel: #ffffff;
+        --ink: #17211b;
+        --muted: #637067;
+        --line: #d9ddd6;
+        --accent: #116a5b;
+        --accent-2: #8a5a12;
+        --pass-bg: #edf8f2;
+        --pass-line: #9fd1b4;
+        --fail-bg: #fff0ee;
+        --fail-line: #e0a09a;
+        --shadow: 0 10px 30px rgba(22, 32, 26, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+
+      main {
+        width: min(1180px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 48px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 20px;
+        align-items: start;
+        margin-bottom: 18px;
+        padding: 24px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 10px;
+        font-size: clamp(26px, 4vw, 42px);
+        line-height: 1.08;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+        font-size: 20px;
+      }
+
+      h3 {
+        margin-bottom: 8px;
+        font-size: 16px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .kicker {
+        margin-bottom: 8px;
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 8px 12px;
+        border: 1px solid #e5c46f;
+        border-radius: 6px;
+        background: #fff7da;
+        color: #6d4a00;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .notice {
+        margin-bottom: 18px;
+        padding: 16px 18px;
+        border: 1px solid #b7cfc9;
+        border-left: 5px solid var(--accent);
+        border-radius: 8px;
+        background: #eef7f4;
+      }
+
+      .section {
+        margin-top: 18px;
+        padding: 20px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .metric {
+        min-height: 118px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfcfa;
+      }
+
+      .metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .metric strong {
+        display: block;
+        margin: 10px 0 8px;
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .metric small {
+        color: var(--accent-2);
+        font-weight: 800;
+      }
+
+      .provenance {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .provenance div {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfcfa;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      table {
+        width: 100%;
+        min-width: 980px;
+        border-collapse: collapse;
+        background: #fff;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+        font-size: 14px;
+      }
+
+      th {
+        background: #eef0ec;
+        color: #334038;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      tr.pass td {
+        background: var(--pass-bg);
+        border-bottom-color: var(--pass-line);
+      }
+
+      tr.fail td {
+        background: var(--fail-bg);
+        border-bottom-color: var(--fail-line);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .pass .status-pill {
+        background: #ccebd8;
+        color: #155d34;
+      }
+
+      .fail .status-pill {
+        background: #ffd6d2;
+        color: #8b2118;
+      }
+
+      .empty {
+        display: none;
+        padding: 22px;
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--muted);
+      }
+
+      code {
+        font-family: "Cascadia Code", Consolas, monospace;
+      }
+
+      @media (max-width: 860px) {
+        main {
+          width: min(100vw - 20px, 1180px);
+          padding-top: 12px;
+        }
+
+        header {
+          grid-template-columns: 1fr;
+        }
+
+        .grid,
+        .grid.three,
+        .provenance {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <p class="kicker">DA10 Display Layer</p>
+          <h1>Evaluation Dashboard - MOCK / DEMO</h1>
+          <p class="muted">
+            Kien calculates evaluation metrics. Hieu displays the outputs.
+            No real metric calculation runs in this page.
+          </p>
+        </div>
+        <div class="badge">MOCK / DEMO ONLY</div>
+      </header>
+
+      <section class="notice">
+        <strong>Ownership boundary:</strong>
+        Vu Duc Kien owns Evaluation Engine and metric calculation. Nguyen Duy
+        Hieu owns this frontend display layer. Current numbers are mock/demo
+        values for presentation only.
+      </section>
+
+      <div id="emptyState" class="empty">
+        No evaluation data is available. Provide evaluation output from Kien or
+        restore mock evaluation data.
+      </div>
+
+      <section class="section" id="provenanceSection">
+        <h2>Data Provenance</h2>
+        <div class="provenance" id="provenance"></div>
+      </section>
+
+      <section class="section">
+        <h2>Summary Cards</h2>
+        <div class="grid" id="summaryCards"></div>
+      </section>
+
+      <section class="section">
+        <h2>Retrieval Metrics</h2>
+        <div class="grid three" id="retrievalMetrics"></div>
+      </section>
+
+      <section class="section">
+        <h2>Context & Citation Metrics</h2>
+        <div class="grid three" id="contextMetrics"></div>
+      </section>
+
+      <section class="section">
+        <h2>API Latency</h2>
+        <div class="grid three" id="latencyMetrics"></div>
+      </section>
+
+      <section class="section">
+        <h2>Golden Dataset Coverage</h2>
+        <div class="grid three" id="coverageMetrics"></div>
+        <p class="muted" id="coverageNote"></p>
+      </section>
+
+      <section class="section">
+        <h2>Query-level Evaluation Table</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Query ID</th>
+                <th>Query</th>
+                <th>Business Category</th>
+                <th>Expected Hotel IDs</th>
+                <th>Returned Hotel IDs</th>
+                <th>Relevant Found</th>
+                <th>Status</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="queryRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const evaluationData = {
+        label: "MOCK / DEMO",
+        owner_boundary: {
+          calculated_by: "Vu Duc Kien - API & Evaluation",
+          displayed_by: "Nguyen Duy Hieu - Frontend Demo Tool",
+          rule:
+            "Frontend only displays provided evaluation values. It does not calculate Recall, MRR, NDCG, latency, citation coverage or context quality."
+        },
+        data_provenance: {
+          source: "Mock evaluation results for Sprint demo",
+          status: "Demo data only",
+          generated_for: "DA10 Frontend Display Layer",
+          last_updated: "2026-06-10"
+        },
+        summary: {
+          total_queries: 50,
+          tested_queries: 5,
+          passed_queries: 4,
+          failed_queries: 1
+        },
+        retrieval_metrics: {
+          recall_at_10: 0.84,
+          mrr_at_10: 0.72,
+          ndcg_at_10: 0.78,
+          hit_at_5: 0.8,
+          hit_at_10: 0.9,
+          zero_result_rate: 0.04
+        },
+        context_citation_metrics: {
+          chunk_recall: 0.76,
+          citation_coverage: 0.82,
+          context_quality: 0.8
+        },
+        latency_metrics: {
+          p95_search_latency_ms: 420,
+          p95_context_latency_ms: 610
+        },
+        golden_dataset_coverage: {
+          covered_queries: 5,
+          total_golden_queries: 50,
+          coverage_rate: 0.1,
+          note:
+            "Only 5 query-level rows are included for frontend demo review. Full golden dataset output is expected from the API & Evaluation owner."
+        },
+        query_results: [
+          {
+            query_id: "GQ-001",
+            query: "Tôi muốn resort yên tĩnh gần biển cho gia đình",
+            business_category: "Family beach resort",
+            expected_hotel_ids: ["hotel_805030", "hotel_6377313"],
+            returned_hotel_ids: ["hotel_805030", "hotel_6377313", "hotel_625168"],
+            relevant_found: true,
+            status: "PASS",
+            notes:
+              "Top results include family-friendly beach resorts with citations and context chunks."
+          },
+          {
+            query_id: "GQ-002",
+            query: "Khách sạn phù hợp cho chuyến công tác ở trung tâm",
+            business_category: "Business hotel",
+            expected_hotel_ids: ["hotel_10961", "hotel_10962"],
+            returned_hotel_ids: ["hotel_10961", "hotel_11002", "hotel_10962"],
+            relevant_found: true,
+            status: "PASS",
+            notes:
+              "Returned central hotels suitable for business travel. Ranking should be verified with real evaluator."
+          },
+          {
+            query_id: "GQ-003",
+            query: "Địa điểm nghỉ dưỡng có tiện ích cho trẻ em",
+            business_category: "Family amenities",
+            expected_hotel_ids: ["hotel_6377313", "hotel_805030"],
+            returned_hotel_ids: ["hotel_6377313", "hotel_805030"],
+            relevant_found: true,
+            status: "PASS",
+            notes:
+              "Returned family-oriented properties with child-friendly amenities in mock data."
+          },
+          {
+            query_id: "GQ-004",
+            query: "Khách sạn gần biển có spa và hồ bơi",
+            business_category: "Beach wellness",
+            expected_hotel_ids: ["hotel_805030", "hotel_2577124"],
+            returned_hotel_ids: ["hotel_805030", "hotel_6377313"],
+            relevant_found: true,
+            status: "PASS",
+            notes:
+              "Relevant beach resort found. Full spa-specific validation requires richer backend metadata."
+          },
+          {
+            query_id: "GQ-005",
+            query: "Khách sạn giá rẻ gần sân bay cho một đêm",
+            business_category: "Budget airport stay",
+            expected_hotel_ids: ["hotel_1602693", "hotel_1155111"],
+            returned_hotel_ids: ["hotel_10961", "hotel_11002"],
+            relevant_found: false,
+            status: "FAIL",
+            notes:
+              "Mock result set does not include enough airport-budget coverage. This should be retested when real Search API is available."
+          }
+        ]
+      };
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function formatPercent(value) {
+        if (typeof value !== "number") return "N/A";
+        return `${Math.round(value * 100)}%`;
+      }
+
+      function metricCard(label, value, suffix = "") {
+        return `
+          <article class="metric">
+            <span>${escapeHtml(label)}</span>
+            <strong>${escapeHtml(value)}${escapeHtml(suffix)}</strong>
+            <small>MOCK / DEMO</small>
+          </article>
+        `;
+      }
+
+      function renderMetrics(targetId, metrics) {
+        document.getElementById(targetId).innerHTML = metrics
+          .map((item) => metricCard(item.label, item.value, item.suffix || ""))
+          .join("");
+      }
+
+      function renderDashboard(data) {
+        const hasRows = Array.isArray(data?.query_results) && data.query_results.length > 0;
+        if (!data || !hasRows) {
+          document.getElementById("emptyState").style.display = "block";
+          return;
+        }
+
+        const provenance = data.data_provenance || {};
+        const boundary = data.owner_boundary || {};
+        document.getElementById("provenance").innerHTML = [
+          ["Source", provenance.source],
+          ["Status", provenance.status],
+          ["Generated For", provenance.generated_for],
+          ["Last Updated", provenance.last_updated],
+          ["Calculated By", boundary.calculated_by],
+          ["Displayed By", boundary.displayed_by]
+        ]
+          .map(
+            ([label, value]) => `
+              <div>
+                <h3>${escapeHtml(label)}</h3>
+                <p class="muted">${escapeHtml(value || "N/A")}</p>
+              </div>
+            `
+          )
+          .join("");
+
+        const summary = data.summary || {};
+        renderMetrics("summaryCards", [
+          { label: "Total Queries", value: summary.total_queries },
+          { label: "Tested Queries", value: summary.tested_queries },
+          { label: "Passed Queries", value: summary.passed_queries },
+          { label: "Failed Queries", value: summary.failed_queries }
+        ]);
+
+        const retrieval = data.retrieval_metrics || {};
+        renderMetrics("retrievalMetrics", [
+          { label: "Recall@10", value: formatPercent(retrieval.recall_at_10) },
+          { label: "MRR@10", value: formatPercent(retrieval.mrr_at_10) },
+          { label: "NDCG@10", value: formatPercent(retrieval.ndcg_at_10) },
+          { label: "Hit@5", value: formatPercent(retrieval.hit_at_5) },
+          { label: "Hit@10", value: formatPercent(retrieval.hit_at_10) },
+          { label: "Zero Result Rate", value: formatPercent(retrieval.zero_result_rate) }
+        ]);
+
+        const context = data.context_citation_metrics || {};
+        renderMetrics("contextMetrics", [
+          { label: "Chunk Recall", value: formatPercent(context.chunk_recall) },
+          { label: "Citation Coverage", value: formatPercent(context.citation_coverage) },
+          { label: "Context Quality", value: formatPercent(context.context_quality) }
+        ]);
+
+        const latency = data.latency_metrics || {};
+        renderMetrics("latencyMetrics", [
+          { label: "p95 Search Latency", value: latency.p95_search_latency_ms, suffix: " ms" },
+          { label: "p95 Context Latency", value: latency.p95_context_latency_ms, suffix: " ms" }
+        ]);
+
+        const coverage = data.golden_dataset_coverage || {};
+        renderMetrics("coverageMetrics", [
+          { label: "Covered Queries", value: coverage.covered_queries },
+          { label: "Total Golden Queries", value: coverage.total_golden_queries },
+          { label: "Coverage Rate", value: formatPercent(coverage.coverage_rate) }
+        ]);
+        document.getElementById("coverageNote").textContent = coverage.note || "";
+
+        document.getElementById("queryRows").innerHTML = data.query_results
+          .map((row) => {
+            const statusClass = row.status === "PASS" ? "pass" : "fail";
+            return `
+              <tr class="${statusClass}">
+                <td>${escapeHtml(row.query_id)}</td>
+                <td>${escapeHtml(row.query)}</td>
+                <td>${escapeHtml(row.business_category)}</td>
+                <td><code>${escapeHtml((row.expected_hotel_ids || []).join(", "))}</code></td>
+                <td><code>${escapeHtml((row.returned_hotel_ids || []).join(", "))}</code></td>
+                <td>${row.relevant_found ? "Yes" : "No"}</td>
+                <td><span class="status-pill">${escapeHtml(row.status)} - MOCK / DEMO</span></td>
+                <td>${escapeHtml(row.notes)}</td>
+              </tr>
+            `;
+          })
+          .join("");
+      }
+
+      renderDashboard(evaluationData);
+    </script>
+  </body>
+</html>

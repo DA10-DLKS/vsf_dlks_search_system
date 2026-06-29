@@ -1,0 +1,62 @@
+# DA10 — Prometheus alert rules (xem ở tab Alerts của Prometheus/Grafana).
+# Không gửi thông báo ngoài (chưa cấu hình Alertmanager) — mục tiêu hiển thị tình trạng vỡ SLO.
+# Nạp qua prometheus.yml -> rule_files. Ngưỡng đặt vừa phải cho môi trường demo, chỉnh theo SLO thật.
+groups:
+  - name: da10_api_alerts
+    rules:
+      # 1) Tỉ lệ lỗi 5xx cao trên toàn API.
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(da10_http_requests_total{status=~"5.."}[5m]))
+          / clamp_min(sum(rate(da10_http_requests_total[5m])), 1e-9) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Tỉ lệ lỗi 5xx > 5% (5 phút)"
+          description: "API đang trả nhiều lỗi 5xx. Kiểm tra log + dependency."
+
+      # 2) Latency search (frontend POST /search) vượt SLO.
+      - alert: HighSearchLatency
+        expr: |
+          histogram_quantile(0.95,
+            rate(da10_http_request_duration_seconds_bucket{endpoint="/search",method="POST"}[5m])
+          ) > 1.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "p95 latency POST /search > 1.5s (10 phút)"
+          description: "Search chậm hơn SLO. Soi da10_stage_duration_seconds để biết stage nào nghẽn."
+
+      # 3) Một dependency down (gauge do background probe cập nhật).
+      - alert: DependencyDown
+        expr: da10_dependency_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Dependency {{ $labels.dependency }} DOWN"
+          description: "Probe nền báo {{ $labels.dependency }} không phản hồi. Kiểm tra service."
+
+      # 4) Search chạy degraded (thiếu BM25/vector -> tụt candidate-only).
+      - alert: SearchDegraded
+        expr: sum(rate(da10_search_degraded_total[5m])) > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Hybrid search đang chạy degraded (thiếu nguồn retrieval)"
+          description: "Một số request bỏ qua BM25/vector. Chất lượng kết quả giảm. Kiểm tra OpenSearch/Qdrant."
+
+      # 5) LLM (Node 9) lỗi nhiều.
+      - alert: LLMErrors
+        expr: |
+          sum(rate(da10_llm_requests_total{status="error"}[15m]))
+          / clamp_min(sum(rate(da10_llm_requests_total[15m])), 1e-9) > 0.2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Tỉ lệ lỗi LLM > 20% (15 phút)"
+          description: "Node 9 sinh câu trả lời lỗi nhiều (key/quota/mạng). Câu trả lời có thể rỗng."

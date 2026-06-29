@@ -1,0 +1,330 @@
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "refresh_interval": "1s",
+      "analysis": {
+        "filter": {
+          "vi_ascii": {
+            "type": "asciifolding",
+            "preserve_original": true
+          }
+        },
+        "analyzer": {
+          "vietnamese_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase",
+              "decimal_digit",
+              "vi_ascii"
+            ]
+          }
+        },
+        "normalizer": {
+          "lowercase_normalizer": {
+            "type": "custom",
+            "filter": [
+              "lowercase",
+              "asciifolding"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "mappings": {
+    "_meta": {
+      "schema_source": "contracts/data_schema.json",
+      "schema_version": "1.0.0",
+      "purpose": "OpenSearch/Elasticsearch BM25 index mapping"
+    },
+    "dynamic": "strict",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer",
+            "ignore_above": 512
+          }
+        }
+      },
+      "accommodation_type": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer",
+            "ignore_above": 128
+          }
+        }
+      },
+      "star_rating": {
+        "type": "half_float"
+      },
+      "is_luxury": {
+        "type": "boolean"
+      },
+      "review_score": {
+        "type": "half_float"
+      },
+      "review_count": {
+        "type": "integer"
+      },
+      "address": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer",
+            "ignore_above": 1024
+          }
+        }
+      },
+      "city": {
+        "type": "keyword",
+        "normalizer": "lowercase_normalizer",
+        "ignore_above": 128
+      },
+      "latitude": {
+        "type": "double"
+      },
+      "longitude": {
+        "type": "double"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer"
+      },
+      "amenities": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer",
+            "ignore_above": 256
+          }
+        }
+      },
+      "useful_info": {
+        "type": "flat_object"
+      },
+      "policyNotes": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer"
+      },
+      "suitable_for": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer",
+            "ignore_above": 256
+          }
+        }
+      },
+      "reviews_detail": {
+        "type": "flat_object"
+      },
+      "images": {
+        "type": "keyword",
+        "ignore_above": 2048
+      },
+      "source_url": {
+        "type": "keyword",
+        "ignore_above": 2048
+      },
+      "crawled_at": {
+        "type": "date",
+        "format": "strict_date_optional_time||epoch_millis"
+      },
+      "rooms": {
+        "type": "nested",
+        "properties": {
+          "hotel_id": {
+            "type": "integer"
+          },
+          "room_type_id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "text",
+            "analyzer": "vietnamese_analyzer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer",
+                "ignore_above": 512
+              }
+            }
+          },
+          "price": {
+            "type": "double"
+          },
+          "room_size": {
+            "type": "keyword",
+            "ignore_above": 64
+          },
+          "max_occupancy": {
+            "type": "integer"
+          },
+          "bed_type": {
+            "type": "text",
+            "analyzer": "vietnamese_analyzer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer",
+                "ignore_above": 255
+              }
+            }
+          },
+          "room_view": {
+            "type": "text",
+            "analyzer": "vietnamese_analyzer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer",
+                "ignore_above": 128
+              }
+            }
+          },
+          "room_amenities": {
+            "type": "text",
+            "analyzer": "vietnamese_analyzer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer",
+                "ignore_above": 256
+              }
+            }
+          },
+          "images": {
+            "type": "keyword",
+            "ignore_above": 2048
+          },
+          "review_score": {
+            "type": "half_float"
+          }
+        }
+      },
+      "nearby_places": {
+        "type": "nested",
+        "properties": {
+          "hotel_id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "text",
+            "analyzer": "vietnamese_analyzer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer",
+                "ignore_above": 512
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "analyzer": "vietnamese_analyzer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer",
+                "ignore_above": 128
+              }
+            }
+          },
+          "distance_km": {
+            "type": "double"
+          }
+        }
+      },
+      "activities": {
+        "type": "nested",
+        "properties": {
+          "hotel_id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "text",
+            "analyzer": "vietnamese_analyzer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer",
+                "ignore_above": 512
+              }
+            }
+          },
+          "description": {
+            "type": "text",
+            "analyzer": "vietnamese_analyzer"
+          },
+          "price_amount": {
+            "type": "double"
+          },
+          "review_score": {
+            "type": "half_float"
+          }
+        }
+      },
+      "ontology_concepts": {
+        "type": "keyword"
+      },
+      "strong_feel_concepts": {
+        "type": "keyword"
+      },
+      "location_concept": {
+        "type": "keyword"
+      },
+      "nearby_landmarks": {
+        "type": "nested",
+        "properties": {
+          "concept": {
+            "type": "keyword"
+          },
+          "distance_km": {
+            "type": "double"
+          }
+        }
+      },
+      "name_alt": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer",
+            "ignore_above": 512
+          }
+        }
+      },
+      "brand": {
+        "type": "text",
+        "analyzer": "vietnamese_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer",
+            "ignore_above": 256
+          }
+        }
+      }
+    }
+  }
+}

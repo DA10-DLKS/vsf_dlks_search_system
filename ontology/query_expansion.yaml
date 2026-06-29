@@ -1,0 +1,895 @@
+# AUTO-GENERATED — KHÔNG sửa tay. COMPILER: knowledge_engineering/common/build_expansion.py
+# Nguồn: relation graph verified (ontology/relations/curated.yaml + legacy giữ lại).
+# Duyệt relation ở curated/candidates/rejected, KHÔNG sửa file này.
+# Backward-compatible: expands_to (cũ) + expansions typed (mới: relation_type/use_as/weight).
+version: 4.0.0
+status: compiled_from_relation_graph
+default_weight: 0.5
+rules:
+  AMEN_BEACHFRONT:
+    expands_to:
+    - SETTING_COASTAL
+    evidence:
+      SETTING_COASTAL: curated/broader/use_as=boost
+    status: verified
+    expansions:
+    - target: SETTING_COASTAL
+      relation_type: broader
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.95
+      status: verified
+  AMEN_INFINITY_POOL:
+    expands_to:
+    - AMEN_POOL
+    evidence:
+      AMEN_POOL: curated/broader/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_POOL
+      relation_type: broader
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 1.0
+      status: verified
+  AMEN_KIDS_CLUB:
+    expands_to:
+    - PURPOSE_FAMILY
+    evidence:
+      PURPOSE_FAMILY: curated/evidence_for/use_as=boost
+    status: verified
+    expansions:
+    - target: PURPOSE_FAMILY
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.85
+      status: verified
+  AMEN_MEETING_ROOM:
+    expands_to:
+    - PURPOSE_BUSINESS
+    evidence:
+      PURPOSE_BUSINESS: curated/evidence_for/use_as=boost
+    status: verified
+    expansions:
+    - target: PURPOSE_BUSINESS
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.8
+      status: verified
+  AMEN_POOL:
+    expands_to:
+    - AMEN_INFINITY_POOL
+    - AMEN_KIDS_POOL
+    - AMEN_PRIVATE_POOL
+    evidence:
+      AMEN_INFINITY_POOL: curated/narrower/use_as=boost
+      AMEN_KIDS_POOL: curated/narrower/use_as=boost
+      AMEN_PRIVATE_POOL: curated/narrower/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_INFINITY_POOL
+      relation_type: narrower
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 1.0
+      status: verified
+    - target: AMEN_KIDS_POOL
+      relation_type: narrower
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 1.0
+      status: verified
+    - target: AMEN_PRIVATE_POOL
+      relation_type: narrower
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 1.0
+      status: verified
+  AMEN_PRIVATE_POOL:
+    expands_to:
+    - AMEN_POOL
+    evidence:
+      AMEN_POOL: curated/broader/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_POOL
+      relation_type: broader
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 1.0
+      status: verified
+  AMEN_SPA:
+    expands_to:
+    - PURPOSE_WELLNESS
+    evidence:
+      PURPOSE_WELLNESS: curated/evidence_for/use_as=boost
+    status: verified
+    expansions:
+    - target: PURPOSE_WELLNESS
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.75
+      status: verified
+  LOC_PHU_QUOC:
+    expands_to:
+    - SETTING_ISLAND
+    evidence:
+      SETTING_ISLAND: curated/implies/use_as=filter
+    status: verified
+    expansions:
+    - target: SETTING_ISLAND
+      relation_type: implies
+      source_type: curated
+      use_as: filter
+      weight: 1.0
+      confidence: 1.0
+      status: verified
+  OBJ_APARTMENT:
+    expands_to:
+    - AMEN_KITCHEN
+    - AMEN_WASHING_MACHINE
+    evidence:
+      AMEN_WASHING_MACHINE: curated/cooccurs_with/use_as=boost
+      AMEN_KITCHEN: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_WASHING_MACHINE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.59
+      status: verified
+    - target: AMEN_KITCHEN
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.49
+      status: verified
+  OBJ_HOMESTAY:
+    expands_to:
+    - AMEN_KITCHEN
+    - AMEN_PET_FRIENDLY
+    evidence:
+      AMEN_PET_FRIENDLY: curated/cooccurs_with/use_as=boost
+      AMEN_KITCHEN: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_PET_FRIENDLY
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.58
+      status: verified
+    - target: AMEN_KITCHEN
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.49
+      status: verified
+  OBJ_RESORT:
+    expands_to:
+    - AMEN_BABYSITTING
+    - AMEN_BAR
+    - AMEN_BBQ
+    - AMEN_BEACHFRONT
+    - AMEN_BIKE
+    - AMEN_GAME_ROOM
+    - AMEN_GARDEN
+    - AMEN_GOLF
+    - AMEN_GYM
+    - AMEN_HOT_TUB
+    - AMEN_INFINITY_POOL
+    - AMEN_KIDS_POOL
+    - AMEN_POOL
+    - AMEN_SEA_VIEW
+    - AMEN_SPA
+    - AMEN_TENNIS
+    - AMEN_WATERSPORT
+    - AMEN_WORKSPACE
+    evidence:
+      AMEN_TENNIS: curated/cooccurs_with/use_as=boost
+      AMEN_GAME_ROOM: curated/cooccurs_with/use_as=boost
+      AMEN_WATERSPORT: curated/cooccurs_with/use_as=boost
+      AMEN_BBQ: curated/cooccurs_with/use_as=boost
+      AMEN_BEACHFRONT: curated/cooccurs_with/use_as=boost
+      AMEN_BABYSITTING: curated/cooccurs_with/use_as=boost
+      AMEN_HOT_TUB: curated/cooccurs_with/use_as=boost
+      AMEN_SEA_VIEW: curated/cooccurs_with/use_as=boost
+      AMEN_GOLF: curated/cooccurs_with/use_as=boost
+      AMEN_KIDS_POOL: curated/cooccurs_with/use_as=boost
+      AMEN_BIKE: curated/cooccurs_with/use_as=boost
+      AMEN_GARDEN: curated/cooccurs_with/use_as=boost
+      AMEN_GYM: curated/cooccurs_with/use_as=boost
+      AMEN_INFINITY_POOL: curated/cooccurs_with/use_as=boost
+      AMEN_POOL: curated/cooccurs_with/use_as=boost
+      AMEN_SPA: curated/cooccurs_with/use_as=boost
+      AMEN_BAR: curated/cooccurs_with/use_as=boost
+      AMEN_WORKSPACE: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_TENNIS
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.66
+      status: verified
+    - target: AMEN_GAME_ROOM
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.62
+      status: verified
+    - target: AMEN_WATERSPORT
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.61
+      status: verified
+    - target: AMEN_BBQ
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.59
+      status: verified
+    - target: AMEN_BEACHFRONT
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.57
+      status: verified
+    - target: AMEN_BABYSITTING
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.55
+      status: verified
+    - target: AMEN_HOT_TUB
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.54
+      status: verified
+    - target: AMEN_SEA_VIEW
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.54
+      status: verified
+    - target: AMEN_GOLF
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.53
+      status: verified
+    - target: AMEN_KIDS_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.53
+      status: verified
+    - target: AMEN_BIKE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.48
+      status: verified
+    - target: AMEN_GARDEN
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.48
+      status: verified
+    - target: AMEN_GYM
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: AMEN_INFINITY_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: AMEN_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: AMEN_SPA
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: AMEN_BAR
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.45
+      status: verified
+    - target: AMEN_WORKSPACE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.45
+      status: verified
+  PRICE_LUXURY:
+    expands_to:
+    - PRICE_UPSCALE
+    evidence:
+      PRICE_UPSCALE: curated/broader/use_as=boost
+    status: verified
+    expansions:
+    - target: PRICE_UPSCALE
+      relation_type: broader
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 1.0
+      status: verified
+  PRICE_UPSCALE:
+    expands_to:
+    - PRICE_LUXURY
+    evidence:
+      PRICE_LUXURY: curated/narrower/use_as=boost
+    status: verified
+    expansions:
+    - target: PRICE_LUXURY
+      relation_type: narrower
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 1.0
+      status: verified
+  PURPOSE_BUSINESS:
+    expands_to:
+    - AMEN_WIFI
+    evidence:
+      AMEN_WIFI: curated/evidence_for/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_WIFI
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.8
+      status: verified
+  PURPOSE_FAMILY:
+    expands_to:
+    - AMEN_KIDS_CLUB
+    - AMEN_KIDS_POOL
+    - AMEN_POOL
+    evidence:
+      AMEN_KIDS_CLUB: curated/evidence_for/use_as=boost
+      AMEN_KIDS_POOL: curated/evidence_for/use_as=boost
+      AMEN_POOL: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_KIDS_CLUB
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.9
+      status: verified
+    - target: AMEN_KIDS_POOL
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.85
+      status: verified
+    - target: AMEN_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.62
+      status: verified
+  PURPOSE_ROMANTIC:
+    expands_to:
+    - AMEN_PRIVATE_POOL
+    - AMEN_SEA_VIEW
+    - STYLE_ROMANTIC
+    evidence:
+      STYLE_ROMANTIC: curated/evidence_for/use_as=boost
+      AMEN_PRIVATE_POOL: curated/evidence_for/use_as=boost
+      AMEN_SEA_VIEW: curated/evidence_for/use_as=boost
+    status: verified
+    expansions:
+    - target: STYLE_ROMANTIC
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.85
+      status: verified
+    - target: AMEN_PRIVATE_POOL
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.8
+      status: verified
+    - target: AMEN_SEA_VIEW
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.8
+      status: verified
+  PURPOSE_WELLNESS:
+    expands_to:
+    - AMEN_SPA
+    - STYLE_QUIET
+    evidence:
+      AMEN_SPA: curated/evidence_for/use_as=boost
+      STYLE_QUIET: curated/evidence_for/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_SPA
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.9
+      status: verified
+    - target: STYLE_QUIET
+      relation_type: evidence_for
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.8
+      status: verified
+  SETTING_CITY_CENTER:
+    expands_to:
+    - AMEN_WORKSPACE
+    evidence:
+      AMEN_WORKSPACE: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_WORKSPACE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.45
+      status: verified
+  SETTING_COASTAL:
+    expands_to:
+    - AMEN_BEACHFRONT
+    - AMEN_INFINITY_POOL
+    - AMEN_SEA_VIEW
+    evidence:
+      AMEN_BEACHFRONT: curated/narrower/use_as=boost
+      AMEN_SEA_VIEW: curated/cooccurs_with/use_as=boost
+      AMEN_INFINITY_POOL: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_BEACHFRONT
+      relation_type: narrower
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.7
+      status: verified
+    - target: AMEN_SEA_VIEW
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.5
+      status: verified
+    - target: AMEN_INFINITY_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.45
+      status: verified
+  SETTING_ISLAND:
+    expands_to:
+    - AMEN_BBQ
+    - AMEN_BEACHFRONT
+    - AMEN_HOT_TUB
+    - AMEN_SEA_VIEW
+    - AMEN_WATERSPORT
+    evidence:
+      AMEN_WATERSPORT: curated/cooccurs_with/use_as=boost
+      AMEN_BEACHFRONT: curated/cooccurs_with/use_as=boost
+      AMEN_SEA_VIEW: curated/cooccurs_with/use_as=boost
+      AMEN_BBQ: curated/cooccurs_with/use_as=boost
+      AMEN_HOT_TUB: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_WATERSPORT
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.63
+      status: verified
+    - target: AMEN_BEACHFRONT
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.54
+      status: verified
+    - target: AMEN_SEA_VIEW
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.53
+      status: verified
+    - target: AMEN_BBQ
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.51
+      status: verified
+    - target: AMEN_HOT_TUB
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.45
+      status: verified
+  SETTING_NATURE:
+    expands_to:
+    - AMEN_BBQ
+    - AMEN_GARDEN
+    evidence:
+      AMEN_BBQ: curated/cooccurs_with/use_as=boost
+      AMEN_GARDEN: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_BBQ
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.5
+      status: verified
+    - target: AMEN_GARDEN
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.48
+      status: verified
+  SETTING_RIVERSIDE:
+    expands_to:
+    - AMEN_EVENT_VENUE
+    - AMEN_HOT_TUB
+    evidence:
+      AMEN_EVENT_VENUE: curated/cooccurs_with/use_as=boost
+      AMEN_HOT_TUB: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_EVENT_VENUE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.46
+      status: verified
+    - target: AMEN_HOT_TUB
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.46
+      status: verified
+  STYLE_LUXURY:
+    expands_to:
+    - AMEN_EVENT_VENUE
+    - AMEN_GOLF
+    - AMEN_GYM
+    - AMEN_INFINITY_POOL
+    - AMEN_POOL
+    - AMEN_SPA
+    - STYLE_MODERN
+    - STYLE_QUIET
+    - STYLE_RELAXING
+    evidence:
+      STYLE_QUIET: curated/cooccurs_with/use_as=boost
+      STYLE_MODERN: curated/cooccurs_with/use_as=boost
+      STYLE_RELAXING: curated/cooccurs_with/use_as=boost
+      AMEN_POOL: curated/cooccurs_with/use_as=boost
+      AMEN_INFINITY_POOL: curated/cooccurs_with/use_as=boost
+      AMEN_SPA: curated/cooccurs_with/use_as=boost
+      AMEN_EVENT_VENUE: curated/cooccurs_with/use_as=boost
+      AMEN_GOLF: curated/cooccurs_with/use_as=boost
+      AMEN_GYM: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: STYLE_QUIET
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.7
+      status: verified
+    - target: STYLE_MODERN
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.65
+      status: verified
+    - target: STYLE_RELAXING
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.61
+      status: verified
+    - target: AMEN_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.53
+      status: verified
+    - target: AMEN_INFINITY_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.5
+      status: verified
+    - target: AMEN_SPA
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.48
+      status: verified
+    - target: AMEN_EVENT_VENUE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: AMEN_GOLF
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: AMEN_GYM
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+  STYLE_MODERN:
+    expands_to:
+    - AMEN_EVENT_VENUE
+    - AMEN_INFINITY_POOL
+    - STYLE_LUXURY
+    - STYLE_QUIET
+    evidence:
+      STYLE_LUXURY: curated/cooccurs_with/use_as=boost
+      AMEN_EVENT_VENUE: curated/cooccurs_with/use_as=boost
+      AMEN_INFINITY_POOL: curated/cooccurs_with/use_as=boost
+      STYLE_QUIET: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: STYLE_LUXURY
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.65
+      status: verified
+    - target: AMEN_EVENT_VENUE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: AMEN_INFINITY_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+    - target: STYLE_QUIET
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.47
+      status: verified
+  STYLE_NEW:
+    expands_to:
+    - STYLE_MODERN
+    - STYLE_QUIET
+    evidence:
+      STYLE_MODERN: curated/cooccurs_with/use_as=boost
+      STYLE_QUIET: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: STYLE_MODERN
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.6
+      status: verified
+    - target: STYLE_QUIET
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.48
+      status: verified
+  STYLE_QUIET:
+    expands_to:
+    - AMEN_HOT_TUB
+    - AMEN_POOL
+    - STYLE_RELAXING
+    evidence:
+      AMEN_POOL: curated/cooccurs_with/use_as=boost
+      STYLE_RELAXING: curated/cooccurs_with/use_as=boost
+      AMEN_HOT_TUB: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.64
+      status: verified
+    - target: STYLE_RELAXING
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.57
+      status: verified
+    - target: AMEN_HOT_TUB
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.46
+      status: verified
+  STYLE_RELAXING:
+    expands_to:
+    - AMEN_BBQ
+    - AMEN_BEACHFRONT
+    - AMEN_GARDEN
+    - AMEN_INFINITY_POOL
+    - AMEN_POOL
+    - AMEN_SEA_VIEW
+    - STYLE_QUIET
+    evidence:
+      STYLE_QUIET: curated/cooccurs_with/use_as=boost
+      AMEN_POOL: curated/cooccurs_with/use_as=boost
+      AMEN_BEACHFRONT: curated/cooccurs_with/use_as=boost
+      AMEN_INFINITY_POOL: curated/cooccurs_with/use_as=boost
+      AMEN_SEA_VIEW: curated/cooccurs_with/use_as=boost
+      AMEN_BBQ: curated/cooccurs_with/use_as=boost
+      AMEN_GARDEN: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: STYLE_QUIET
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.67
+      status: verified
+    - target: AMEN_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.63
+      status: verified
+    - target: AMEN_BEACHFRONT
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.53
+      status: verified
+    - target: AMEN_INFINITY_POOL
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.48
+      status: verified
+    - target: AMEN_SEA_VIEW
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.48
+      status: verified
+    - target: AMEN_BBQ
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.46
+      status: verified
+    - target: AMEN_GARDEN
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.45
+      status: verified
+  STYLE_ROMANTIC:
+    expands_to:
+    - AMEN_BATHTUB
+    - AMEN_FIREPLACE
+    evidence:
+      AMEN_FIREPLACE: curated/cooccurs_with/use_as=boost
+      AMEN_BATHTUB: curated/cooccurs_with/use_as=boost
+    status: verified
+    expansions:
+    - target: AMEN_FIREPLACE
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.7
+      status: verified
+    - target: AMEN_BATHTUB
+      relation_type: cooccurs_with
+      source_type: curated
+      use_as: boost
+      weight: 0.8
+      confidence: 0.62
+      status: verified

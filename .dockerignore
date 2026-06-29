@@ -1,0 +1,43 @@
+# Build-time data (not needed at runtime)
+data/cleaned/
+data/_translation_cache.json
+data/raw/
+data/samples/
+data/quarantine/
+data/processed/
+data/golden_dataset/
+data/*.csv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Env files (secrets)
+.env
+.env.*
+cloudrun.env
+
+# CI/CD
+.github/
+
+# Dev scripts (not in runtime)
+scripts/
+
+# Tests (not in runtime)
+tests/
+
+# Docs (not in runtime)
+docs/
+*.md

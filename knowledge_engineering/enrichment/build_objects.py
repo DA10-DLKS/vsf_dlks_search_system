@@ -1,0 +1,430 @@
+"""build_objects.py — Ghép tag + metadata thành knowledge_object HARD (Sprint 2, Bước 4).
+
+Owner: Trương Anh Long (KE, DA10). Hợp nhất:
+  - tag concept (Bước 2, ontology_mapper -> hotel_tags.json)
+  - metadata map/reconcile (Bước 3, metadata_pipeline -> hotel_metadata.json)
+-> knowledge_object phần HARD cho cả 520 hotel, theo CONTRACT ontology/metadata_schema.yaml
+   + hình dạng docs/.../knowledge_object_SAMPLE.md.
+
+PHẦN HARD: semantic_metadata (object_type/location/amenity/setting/purpose/price_tier),
+range_filters, nearby_places, tags(provenance), provenance.
+PHẦN SOFT (style/aspect + sentiment từ review) -> Bước 5, gắn sau.
+
+Cardinality (facets.yaml): object_type/price_tier = one (1 id); amenity/setting/purpose = many (list).
+Giá: cờ price_capped=true cho hotel giá min=5tr (cap, xem Bước 3) -> tầng search không lọc-giá cứng.
+
+Chạy: .venv/Scripts/python.exe -X utf8 -m knowledge_engineering.enrichment.build_objects
+"""
+
+from __future__ import annotations
+
+import glob
+import json
+import re
+from collections import defaultdict
+
+import yaml
+
+HOTELS_GLOB = "data/cleaned/hotel_*.json"
+TAGS_JSON = "knowledge_engineering/enrichment/hotel_tags.json"
+META_JSON = "knowledge_engineering/enrichment/hotel_metadata.json"
+PROFILE_JSON = "knowledge_engineering/enrichment/hotel_profiles.json"  # Bước 5 SOFT
+CORE_GLOB = "ontology/core/*.yaml"
+OUT_JSON = "knowledge_engineering/enrichment/knowledge_objects.json"
+
+# Ngưỡng score để đưa SOFT concept (style) vào semantic_metadata (lọc/boost). Dưới ngưỡng =
+# tín hiệu yếu, giữ trong semantic_profile nhưng không đẩy lên metadata lọc.
+SOFT_STYLE_MIN_SCORE = 0.6
+
+ONTOLOGY_VERSION = "concepts_v2.0.0"
+PRICE_CAP_VND = 5_000_000  # giá min == cap này -> không tin (Bước 3)
+
+# Facet cardinality (khớp ontology/facets.yaml)
+ONE_FACETS = {"object_type", "location", "price_tier"}
+MANY_FACETS = {"amenity", "setting", "purpose", "style", "aspect"}
+
+
+LOC_YAML = "ontology/core/location.generated.yaml"
+LOC_SETTING_YAML = "ontology/core/location_setting.generated.yaml"
+RELATIONS_NEAR_YAML = "ontology/relations_near.generated.yaml"  # hotel <-> LMK_* (near + km)
+
+
+def load_near_landmarks() -> dict[str, list[dict]]:
+    """Map acc_id -> [{concept: LMK_*, distance_km}], sắp theo km gần->xa.
+
+    Nguồn: relations_near.generated.yaml (sinh bởi entity_extraction/build_relations.py từ
+    nearby_places.distance_km). Đây là cầu nối đưa quan hệ near (đã có sẵn trong ontology)
+    vào knowledge_object — trước đây object chỉ giữ nearby_places RAW, không có LMK_*.
+    """
+    import os
+    if not os.path.exists(RELATIONS_NEAR_YAML):
+        return {}
+    data = yaml.safe_load(open(RELATIONS_NEAR_YAML, encoding="utf-8")) or {}
+    out: dict[str, list[dict]] = defaultdict(list)
+    for r in data.get("relations", []) or []:
+        if r.get("rel") != "near":
+            continue
+        acc = r.get("from")
+        cid = r.get("to")
+        if not acc or not cid or not str(cid).startswith("LMK_"):
+            continue
+        out[acc].append({"concept": cid, "distance_km": r.get("distance_km")})
+    for acc in out:
+        out[acc].sort(key=lambda x: (x["distance_km"] is None, x["distance_km"] or 0))
+    return dict(out)
+
+
+def _location_text_forms(text: str | None) -> list[str]:
+    if not text:
+        return []
+    raw = str(text).strip()
+    if not raw:
+        return []
+    # Agoda sometimes stores city as "Tam Ky (Quang Nam)"; ontology label is "Tam Ky".
+    without_parentheses = re.sub(r"\s*\([^)]*\)\s*", " ", raw).strip()
+    out = [raw]
+    if without_parentheses and without_parentheses != raw:
+        out.append(without_parentheses)
+    return out
+
+
+def load_location_index() -> dict:
+    """Build a lookup index from location labels/surface forms to LOC_* concept ids."""
+    from knowledge_engineering.common.normalize import normalize
+
+    concepts = yaml.safe_load(open(LOC_YAML, encoding="utf-8"))["concepts"]
+    index: dict[str, list[str]] = defaultdict(list)
+
+    def add(text: str | None, cid: str) -> None:
+        for form in _location_text_forms(text):
+            key = normalize(form, fold=True)
+            if key and cid not in index[key]:
+                index[key].append(cid)
+
+    for cid, data in concepts.items():
+        if not cid.startswith("LOC_") or data.get("facet") != "location":
+            continue
+        label = data.get("label") or {}
+        add(label.get("vi"), cid)
+        add(label.get("en"), cid)
+        for forms in (data.get("surface_forms") or {}).values():
+            for form in forms or []:
+                add(form, cid)
+
+    depth_cache: dict[str, int] = {}
+
+    def depth(cid: str) -> int:
+        if cid in depth_cache:
+            return depth_cache[cid]
+        parent = concepts.get(cid, {}).get("parent") or concepts.get(cid, {}).get("located_in")
+        depth_cache[cid] = 1 + depth(parent) if parent in concepts else 0
+        return depth_cache[cid]
+
+    return {"concepts": concepts, "index": dict(index), "depth": depth}
+
+
+def _is_descendant(cid: str, parent_hint: str | None, concepts: dict) -> bool:
+    if not parent_hint:
+        return False
+    cur = cid
+    while cur in concepts:
+        parent = concepts[cur].get("parent") or concepts[cur].get("located_in")
+        if parent == parent_hint:
+            return True
+        cur = parent
+    return False
+
+
+def _resolve_location_value(
+    value: str | None,
+    loc_index: dict,
+    parent_hint: str | None = None,
+    preferred_kinds: tuple[str, ...] = (),
+) -> str | None:
+    from knowledge_engineering.common.normalize import normalize
+
+    concepts = loc_index["concepts"]
+    index = loc_index["index"]
+    depth = loc_index["depth"]
+    candidates: list[str] = []
+    for form in _location_text_forms(value):
+        candidates.extend(index.get(normalize(form, fold=True), []))
+    candidates = list(dict.fromkeys(candidates))
+    if not candidates:
+        return None
+
+    def rank(cid: str) -> tuple[int, int, int]:
+        data = concepts.get(cid, {})
+        parent_ok = _is_descendant(cid, parent_hint, concepts)
+        kind_ok = data.get("kind") in preferred_kinds if preferred_kinds else True
+        return (1 if parent_ok else 0, 1 if kind_ok else 0, depth(cid))
+
+    return max(candidates, key=rank)
+
+
+def resolve_location_concept(location: dict | None, loc_index: dict) -> str | None:
+    """Resolve structured hotel location to the most specific LOC_* concept id."""
+    if not isinstance(location, dict):
+        return None
+
+    country_id = _resolve_location_value(location.get("country"), loc_index, preferred_kinds=("country",))
+    province_id = _resolve_location_value(location.get("province"), loc_index, preferred_kinds=("place", "country"))
+    city_id = _resolve_location_value(location.get("city"), loc_index, province_id, preferred_kinds=("place",))
+    district_id = _resolve_location_value(location.get("district"), loc_index, city_id, preferred_kinds=("area",))
+    area_id = _resolve_location_value(location.get("area"), loc_index, city_id, preferred_kinds=("area",))
+    return area_id or district_id or city_id or province_id or country_id
+
+
+def load_facets() -> dict[str, str]:
+    out = {}
+    for f in sorted(glob.glob(CORE_GLOB)):
+        d = yaml.safe_load(open(f, encoding="utf-8")) or {}
+        for cid, v in (d.get("concepts") or {}).items():
+            out[cid] = v.get("facet", "")
+    return out
+
+
+def load_location_setting() -> dict[str, list[str]]:
+    """city text (fold) -> [SETTING_*] từ 2 nguồn: location.related (override) +
+    location_setting.generated (suy từ data hotel). Để gắn SETTING cho hotel theo location."""
+    import os
+    from knowledge_engineering.common.normalize import normalize
+    loc = yaml.safe_load(open(LOC_YAML, encoding="utf-8"))["concepts"]
+    # loc_id -> set(SETTING) từ related + từ file suy
+    by_locid: dict[str, set] = defaultdict(set)
+    for cid, v in loc.items():
+        for r in (v.get("related") or []):
+            if str(r).startswith("SETTING_"):
+                by_locid[cid].add(r)
+    if os.path.exists(LOC_SETTING_YAML):
+        ls = yaml.safe_load(open(LOC_SETTING_YAML, encoding="utf-8")) or {}
+        for lid, settings in (ls.get("location_setting") or {}).items():
+            by_locid[lid].update(settings.keys())
+    # map qua city text (label) -> setting
+    out: dict[str, list[str]] = {}
+    for cid, v in loc.items():
+        if v.get("kind") == "place" and cid in by_locid:
+            lab = (v.get("label") or {}).get("vi", "")
+            if lab:
+                out[normalize(lab, fold=True)] = sorted(by_locid[cid])
+    return out
+
+
+def split_by_facet(tags: list[dict], facets: dict[str, str]) -> dict[str, list[dict]]:
+    """Gom tag theo facet (giữ confidence/sources/nature)."""
+    by: dict[str, list[dict]] = defaultdict(list)
+    for t in tags:
+        fct = facets.get(t["concept"], "?")
+        by[fct].append(t)
+    return by
+
+
+def build_semantic_metadata(by_facet: dict[str, list[dict]]) -> dict:
+    """semantic_metadata: one-facet -> 1 concept_id (conf cao nhất); many -> list concept_id."""
+    sm: dict = {}
+    # object_type (one)
+    obj = by_facet.get("object_type", [])
+    sm["object_type"] = max(obj, key=lambda t: t["confidence"])["concept"] if obj else None
+    # price_tier (one) — gắn ở build (từ metadata), xử lý riêng ngoài hàm này
+    # many facets
+    for fct in ("amenity", "setting", "purpose"):
+        items = by_facet.get(fct, [])
+        # sort theo confidence giảm, khử trùng concept
+        seen, out = set(), []
+        for t in sorted(items, key=lambda x: -x["confidence"]):
+            if t["concept"] not in seen:
+                seen.add(t["concept"])
+                out.append(t["concept"])
+        sm[fct] = out
+    return sm
+
+
+def build_object(hotel: dict, tags: list[dict], meta: dict, profile: dict,
+                 facets: dict[str, str], loc_setting: dict[str, list[str]], loc_index: dict,
+                 near_landmarks: list[dict] | None = None) -> dict:
+    hid = hotel.get("hotel_id")
+    negative_style_profile = profile.get("negative_style_profile", {}) or {}
+    concept_profile = {
+        c: v for c, v in profile.items()
+        if c != "negative_style_profile" and isinstance(v, dict) and "score" in v
+    }
+    by_facet = split_by_facet(tags, facets)
+    sm = build_semantic_metadata(by_facet)
+    sm["location"] = resolve_location_concept(meta.get("location"), loc_index)
+
+    # SETTING bổ sung TỪ LOCATION (suy từ data: hotel ở Nha Trang -> COASTAL...). Gộp với
+    # setting đã có từ view_types (tag). Khử trùng. -> COASTAL/ISLAND/CITY_CENTER không còn "chết".
+    from knowledge_engineering.common.normalize import normalize
+    loc = meta.get("location") or {}
+    city = loc.get("city") or ""
+    extra_setting = loc_setting.get(normalize(city, fold=True), [])
+    setting_set = set(sm.get("setting", [])) | set(extra_setting)
+
+    # SETTING suy PER-HOTEL (không qua city — trong 1 city có hotel trung tâm, có hotel ngoại ô):
+    #   - SETTING_VIEW: hotel có CẢNH để nhìn -> "tầm nhìn". Nguồn = sea view (amenity) HOẶC
+    #     setting cảnh quan đã suy (núi/ven sông hồ). KHÔNG chỉ biển: Đà Lạt không có biển nhưng
+    #     hotel đều view núi/thung lũng -> phải tính, nếu không "view ở Đà Lạt" ra 0 (hard filter).
+    #     Nguồn = tín hiệu đã gắn, không gõ tay.
+    #   - SETTING_CITY_CENTER: area/district/address của HOTEL chứa "trung tâm/nội thành/phố cổ".
+    #     Đây là tín hiệu vị trí THẬT của từng hotel, khác co-occurrence theo city.
+    _view_src = {"SETTING_MOUNTAIN", "SETTING_RIVERSIDE", "SETTING_COASTAL"}
+    if "AMEN_SEA_VIEW" in set(sm.get("amenity", [])) or (_view_src & setting_set):
+        setting_set.add("SETTING_VIEW")
+    _loc_blob = normalize(
+        " ".join(str(loc.get(k) or "") for k in ("area", "district", "address")), fold=True
+    )
+    if any(w in _loc_blob for w in ("trung tam", "noi thanh", "pho co", "pho di bo")):
+        setting_set.add("SETTING_CITY_CENTER")
+    # Bổ sung CITY_CENTER (2026-06-25): rule chữ "trung tâm" bỏ sót 79 KS lõi HN/HCM
+    # (Hilton/Sofitel/Pullman ở Hoàn Kiếm/Quận 1 — address không chứa chữ "trung tâm").
+    #   (a) tín hiệu KHOẢNG CÁCH data-driven: location_tags "Cách trung tâm TP. X" <= 2km.
+    if "SETTING_CITY_CENTER" not in setting_set:
+        for _t in (hotel.get("location_tags") or []):
+            _m = re.search(r"trung t[aâ]m TP\.?\s*([\d.,]+)\s*(m|km)", str(_t), re.IGNORECASE)
+            if _m:
+                _d = float(_m.group(1).replace(",", "."))
+                _meters = _d * 1000 if _m.group(2).lower() == "km" else _d
+                if _meters <= 2000:
+                    setting_set.add("SETTING_CITY_CENTER")
+                break
+    #   (b) whitelist quận LÕI của 2 đô thị lớn nhất (nơi gap tập trung; quận ngoại vi KHÔNG gắn).
+    if "SETTING_CITY_CENTER" not in setting_set:
+        _prov = normalize(str(loc.get("province") or loc.get("city") or ""), fold=True)
+        _dist = normalize(str(loc.get("district") or loc.get("area") or ""), fold=True)
+        _CORE = {
+            "ha noi": ("hoan kiem", "pho co", "ba dinh", "hai ba trung", "dong da"),
+            "ho chi minh": ("quan 1", "quan 3"),
+        }
+        for _city, _cores in _CORE.items():
+            if _city in _prov and any(c in _dist for c in _cores):
+                setting_set.add("SETTING_CITY_CENTER")
+                break
+
+    sm["setting"] = sorted(setting_set)
+
+    # price_tier (one) từ metadata reconcile (Bước 3), KHÔNG từ tag
+    sm["price_tier"] = meta.get("price_tier")
+
+    # SOFT (Bước 5): style đủ mạnh -> semantic_metadata.style (để lọc/boost);
+    #                aspect -> luôn ở semantic_profile (điểm trải nghiệm, không lọc cứng).
+    sm["style"] = sorted(
+        c for c, v in concept_profile.items()
+        if c.startswith("STYLE_") and v["score"] >= SOFT_STYLE_MIN_SCORE
+    )
+
+    # PURPOSE derived (2026-06-25): purpose KHÔNG có nhóm demographics (WELLNESS) suy điểm từ
+    # related concepts — cần CẢ amenity (presence) lẫn style score, có sẵn ở object này nên suy
+    # tại đây (profile_builder không thấy amenity concept). Ghi thẳng vào concept_profile để
+    # xuống semantic_profile như mọi điểm khác.
+    from knowledge_engineering.enrichment.profile_builder import derive_purpose
+    derive_purpose(concept_profile, set(sm.get("amenity", []) or []))
+
+    # NEARBY LANDMARK (LMK_*) từ relations_near (đã sinh bởi build_relations). Đưa vào
+    # semantic_metadata để tầng search nhặt được như mọi concept khác (many facet); giữ thêm
+    # field nearby_landmarks (có distance_km) để rank theo khoảng cách + giải thích.
+    near_lmk = near_landmarks or []
+    sm["nearby_landmark"] = [x["concept"] for x in near_lmk]
+
+    # range_filters + cờ giá
+    rf = dict(meta.get("range_filters", {}))
+    price = rf.get("price_min_vnd")
+    price_capped = price is not None and price >= PRICE_CAP_VND
+    if price_capped:
+        rf["price_capped"] = True  # giá min chạm cap 5tr -> không tin, tầng search đừng lọc cứng
+
+    return {
+        "id": f"acc_{hid}",
+        "type": meta.get("type", "hotel"),
+        "title": hotel.get("name"),
+        "brand": hotel.get("brand"),   # chuỗi KS (từ cleaning brand_normalizer); None nếu không thuộc
+        "source": hotel.get("source", "agoda"),
+        "ontology_version": ONTOLOGY_VERSION,
+        "content": hotel.get("description_short") or hotel.get("description"),
+        # semantic_metadata: concept_id theo facet (HARD; SOFT style/aspect để Bước 5)
+        "semantic_metadata": sm,
+        # tags: provenance từng nhãn (đủ schema.py: concept/confidence/sources)
+        "tags": [
+            {"concept": t["concept"], "confidence": t["confidence"], "sources": t["sources"]}
+            for t in sorted(tags, key=lambda x: (-x["confidence"], x["concept"]))
+        ],
+        "range_filters": rf,
+        "location": meta.get("location"),
+        "nearby_places": meta.get("nearby_places", []),
+        # nearby_landmarks: LMK_* đã map (từ relations_near) + km, gần->xa. nearby_places ở trên
+        # giữ RAW (hiển thị); đây là phần đã chuẩn hóa về ontology để lọc/rank theo địa danh.
+        "nearby_landmarks": near_lmk,
+        # semantic_profile (Bước 5): điểm SOFT trải nghiệm/cảm nhận từ review (score/evidence/source).
+        # KHÔNG lọc cứng — dùng để rank/boost + giải thích. aspect ở đây, style cũng giữ đầy đủ.
+        "semantic_profile": {
+            c: {"score": v["score"], "evidence_count": v["evidence_count"], "source": v["source"]}
+            for c, v in sorted(concept_profile.items(), key=lambda x: -x[1]["score"])
+        },
+        # Negative style tách riêng để query/UI biết khách sạn bị chê theo cảm nhận nào
+        # (vd STYLE_QUIET negative = bị chê ồn). Không tạo STYLE_NOT_* trong ontology.
+        "negative_style_profile": negative_style_profile,
+        "provenance": {
+            "source": hotel.get("source", "agoda"),
+            "source_url": hotel.get("source_url"),
+            "crawled_at": hotel.get("crawled_at"),
+            "mapper_version": "mapper Tầng0+1 (B2) + metadata (B3) + profile seed (B5.2)",
+            "price_note": "price_min capped at 5M (placeholder)" if price_capped else None,
+        },
+    }
+
+
+def run() -> dict:
+    facets = load_facets()
+    tags_all = json.load(open(TAGS_JSON, encoding="utf-8"))
+    meta_all = json.load(open(META_JSON, encoding="utf-8"))
+    import os
+    prof_all = json.load(open(PROFILE_JSON, encoding="utf-8")) if os.path.exists(PROFILE_JSON) else {}
+    loc_setting = load_location_setting()
+    loc_index = load_location_index()
+    near_all = load_near_landmarks()
+    objects: dict[str, dict] = {}
+    stats = {
+        "n": 0,
+        "price_capped": 0,
+        "no_object_type": 0,
+        "with_style": 0,
+        "with_location": 0,
+        "no_location": 0,
+        "with_landmark": 0,
+        "tier": defaultdict(int),
+    }
+
+    for f in sorted(glob.glob(HOTELS_GLOB)):
+        hotel = json.load(open(f, encoding="utf-8"))
+        key = f"acc_{hotel.get('hotel_id')}"
+        obj = build_object(hotel, tags_all.get(key, []), meta_all.get(key, {}),
+                           prof_all.get(key, {}), facets, loc_setting, loc_index,
+                           near_all.get(key, []))
+        objects[key] = obj
+        stats["n"] += 1
+        if obj["semantic_metadata"].get("style"):
+            stats["with_style"] += 1
+        if obj["range_filters"].get("price_capped"):
+            stats["price_capped"] += 1
+        if obj["semantic_metadata"].get("object_type") is None:
+            stats["no_object_type"] += 1
+        if obj["semantic_metadata"].get("location"):
+            stats["with_location"] += 1
+        else:
+            stats["no_location"] += 1
+        if obj.get("nearby_landmarks"):
+            stats["with_landmark"] += 1
+        stats["tier"][obj["semantic_metadata"].get("price_tier")] += 1
+
+    json.dump(objects, open(OUT_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    return stats
+
+
+if __name__ == "__main__":
+    s = run()
+    print(f"Objects: {s['n']} -> {OUT_JSON}")
+    print(f"location LOC_*: {s['with_location']} | missing: {s['no_location']}")
+    print(f"có nearby_landmarks (LMK_* từ relations_near): {s['with_landmark']}")
+    print(f"price_capped (giá min=5tr, gắn cờ): {s['price_capped']}")
+    print(f"thiếu object_type: {s['no_object_type']}")
+    print(f"có style (SOFT từ profile): {s['with_style']}")
+    print(f"price_tier: {dict(sorted(s['tier'].items(), key=lambda x: str(x[0])))}")

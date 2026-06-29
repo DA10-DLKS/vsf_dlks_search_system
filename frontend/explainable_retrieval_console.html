@@ -1,0 +1,2543 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DA10 Explainable Retrieval Console</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --ink: #111827;
+      --muted: #667085;
+      --line: #d8dee8;
+      --strong-line: #b8c2d2;
+      --accent: #0f766e;
+      --accent-dark: #115e59;
+      --blue: #2563eb;
+      --green: #047857;
+      --amber: #b45309;
+      --red: #b42318;
+      --soft-blue: #eff6ff;
+      --soft-green: #ecfdf3;
+      --soft-amber: #fffbeb;
+      --soft-red: #fef3f2;
+      --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      height: 42px;
+      border: 1px solid var(--accent);
+      border-radius: 7px;
+      background: var(--accent);
+      color: #fff;
+      padding: 0 14px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    button:hover { background: var(--accent-dark); }
+    button:disabled { cursor: not-allowed; opacity: 0.65; }
+
+    button.secondary {
+      background: #fff;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    button.secondary:hover {
+      background: var(--surface-soft);
+    }
+
+    input, select {
+      height: 42px;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--ink);
+      padding: 0 12px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: 24px; line-height: 1.25; margin-bottom: 8px; }
+    h2 { font-size: 18px; line-height: 1.3; margin-bottom: 8px; }
+    h3 { font-size: 15px; line-height: 1.35; margin-bottom: 8px; }
+    p { color: var(--muted); line-height: 1.5; }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      background: #101828;
+      color: #f8fafc;
+      padding: 20px 18px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .sidebar h2 {
+      color: #fff;
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar p, .sidebar li {
+      color: #d0d5dd;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .side-block {
+      border-top: 1px solid rgba(255,255,255,0.12);
+      margin-top: 16px;
+      padding-top: 16px;
+    }
+
+    .side-list {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .side-list li {
+      display: grid;
+      grid-template-columns: 9px minmax(0, 1fr);
+      gap: 8px;
+      align-items: start;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      margin-top: 5px;
+      background: #38bdf8;
+    }
+
+    .dot.ok { background: #34d399; }
+    .dot.warn { background: #fbbf24; }
+    .dot.red { background: #f87171; }
+
+    .ascii {
+      white-space: pre-wrap;
+      color: #dbeafe;
+      background: #0b1220;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 12px;
+      font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow: auto;
+    }
+
+    main {
+      min-width: 0;
+      padding: 20px;
+    }
+
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .top-line {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .api-config {
+      display: grid;
+      grid-template-columns: 190px 1fr 120px;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .query-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 110px 150px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .badge.ok { color: var(--green); background: var(--soft-green); border-color: #bbf7d0; }
+    .badge.blue { color: var(--blue); background: var(--soft-blue); border-color: #bfdbfe; }
+    .badge.warn { color: var(--amber); background: var(--soft-amber); border-color: #fde68a; }
+    .badge.red { color: var(--red); background: var(--soft-red); border-color: #fecaca; }
+
+    .overview {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .metric-card, .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      min-width: 0;
+    }
+
+    .metric-card {
+      padding: 13px;
+      min-height: 92px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 850;
+      margin-bottom: 7px;
+    }
+
+    .metric-hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.two { grid-template-columns: minmax(0, 1fr) minmax(380px, 0.78fr); }
+    .grid.equal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .section {
+      padding: 16px;
+      min-width: 0;            /* grid/flex item không bị nội dung dài đẩy tràn ngang */
+      overflow-wrap: anywhere;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    .state {
+      border: 1px dashed var(--line);
+      background: var(--surface-soft);
+      border-radius: 8px;
+      padding: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .state.error {
+      color: var(--red);
+      background: var(--soft-red);
+      border-color: #fecaca;
+    }
+
+    .state.warn {
+      color: var(--amber);
+      background: var(--soft-amber);
+      border-color: #fde68a;
+    }
+
+    .state.ok {
+      color: var(--green);
+      background: var(--soft-green);
+      border-color: #bbf7d0;
+    }
+
+    .tag-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .tag-group {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: var(--surface-soft);
+      min-width: 0;
+    }
+
+    .tag-title {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      border-radius: 999px;
+      border: 1px solid #bfdbfe;
+      background: var(--soft-blue);
+      color: #1d4ed8;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 750;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .tag.green { color: var(--green); background: var(--soft-green); border-color: #bbf7d0; }
+    .tag.amber { color: var(--amber); background: var(--soft-amber); border-color: #fde68a; }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .journey-step {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      padding: 12px;
+      min-height: 128px;
+    }
+
+    .journey-step strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .reason-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .pipe-step {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      padding: 12px;
+      min-height: 108px;
+    }
+
+    .pipe-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      width: 13px;
+      border-top: 2px solid var(--strong-line);
+    }
+
+    .pipe-title {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      margin-bottom: 8px;
+    }
+
+    .pipe-value {
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 850;
+      margin-bottom: 8px;
+    }
+
+    .pipe-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    /* Vùng cuộn cho bảng/danh sách dài (candidates, BM25, vector, chunks). */
+    .scroll-box {
+      max-height: 420px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .scroll-box.tall { max-height: 560px; }
+    .scroll-box.short { max-height: 300px; }
+    /* Khung chứa bảng (BM25/ranking) cần cuộn ngang để không cắt cột; khung chứa chunk thì wrap. */
+    .scroll-box:has(table) { overflow-x: auto; }
+
+    /* Header bảng dính khi cuộn trong scroll-box. */
+    .scroll-box table { border: 0; }
+    .scroll-box thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .scroll-hint {
+      color: var(--muted);
+      font-size: 11px;
+      margin: 4px 2px 0;
+    }
+
+    /* Modal popup (ontology) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      width: min(720px, 100%);
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-body {
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .kv-grid {
+      display: grid;
+      grid-template-columns: minmax(120px, max-content) minmax(0, 1fr);
+      gap: 4px 12px;
+      font-size: 12px;
+    }
+
+    .kv-grid dt { color: var(--muted); font-weight: 750; }
+    .kv-grid dd { margin: 0; overflow-wrap: anywhere; }
+
+    .chunk-meta {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 10px 9px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      background: var(--surface-soft);
+      font-weight: 850;
+    }
+
+    tr.selectable {
+      cursor: pointer;
+    }
+
+    tr.selectable:hover td {
+      background: #f0f9ff;
+    }
+
+    tr.selected td {
+      background: #ecfdf3;
+    }
+
+
+    .latency-grid {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr) 110px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .latency-row { display: contents; }
+
+    .latency-label {
+      color: var(--ink);
+      font-weight: 750;
+      min-width: 0;
+    }
+
+    .latency-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .latency-bar {
+      height: 12px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .latency-fill {
+      height: 100%;
+      width: 0%;
+      min-width: 4px;
+      background: var(--accent);
+      border-radius: inherit;
+    }
+
+    .latency-fill.warn { background: #f59e0b; }
+    .latency-fill.red { background: #ef4444; }
+
+    .latency-value {
+      text-align: right;
+      font-weight: 850;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .flow-diagram-panel {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 14px;
+    }
+
+    .flow-diagram-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .flow-diagram-title h3 { margin: 0; }
+
+    .flow-canvas { overflow-x: auto; padding: 10px 2px 2px; }
+
+    .flow-lanes {
+      display: grid;
+      grid-template-columns: minmax(170px, 1fr) minmax(230px, 1.25fr) minmax(210px, 1.15fr) minmax(210px, 1.15fr);
+      gap: 12px;
+      min-width: 980px;
+      align-items: stretch;
+    }
+
+    .flow-lane { display: grid; gap: 8px; align-content: start; }
+
+    .flow-node {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px;
+      min-height: 64px;
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
+    }
+
+    .flow-node.emphasis { border-color: #93c5fd; background: #eff6ff; }
+    .flow-node.warn { border-color: #fcd34d; background: #fffbeb; }
+
+    .flow-node-title { font-weight: 850; color: var(--ink); margin-bottom: 4px; }
+
+    .flow-time {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      padding: 3px 8px;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 850;
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .flow-arrow { color: var(--muted); font-weight: 850; text-align: center; line-height: 1; }
+    .flow-note { color: var(--muted); font-size: 12px; line-height: 1.4; }.score-stack {
+      display: grid;
+      gap: 4px;
+      min-width: 150px;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .score-row strong { color: var(--ink); }
+
+    .mini {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .context-block {
+      display: grid;
+      gap: 10px;
+    }
+
+    .text-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      padding: 12px;
+      color: var(--ink);
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .chunk {
+      border-left: 4px solid var(--accent);
+      background: var(--surface-soft);
+      border-radius: 7px;
+      padding: 10px 12px;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    /* Mọi text con trong chunk (URL, chunk_id dài) phải xuống dòng, không tràn ngang. */
+    .chunk * { overflow-wrap: anywhere; word-break: break-word; }
+
+    .chunk-title {
+      font-weight: 800;
+      margin-bottom: 5px;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1180px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .grid.two, .grid.equal, .overview { grid-template-columns: 1fr; }
+      .api-config, .query-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <h2>DA10 Explainable Retrieval Console</h2>
+      <p>Prototype giao diện frontend kết nối backend thật. Console này không sửa backend và không giả lập metric retrieval.</p>
+
+      <div class="side-block">
+        <h2>Cấu trúc giao diện</h2>
+        <ul class="side-list">
+          <li><span class="dot ok"></span><span>Ô nhập query</span></li>
+          <li><span class="dot ok"></span><span>Kiểm tra backend</span></li>
+          <li><span class="dot ok"></span><span>Hiểu query và ontology tag</span></li>
+          <li><span class="dot ok"></span><span>Baseline BM25</span></li>
+          <li><span class="dot ok"></span><span>Luồng retrieval</span></li>
+          <li><span class="dot ok"></span><span>Giải thích xếp hạng</span></li>
+          <li><span class="dot ok"></span><span>Context package</span></li>
+          <li><span class="dot ok"></span><span>Bằng chứng review/citation</span></li>
+          <li><span class="dot warn"></span><span>TODO: độ tin cậy và số lượng từng bước nếu backend expose thêm.</span></li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <h2>API được gọi</h2>
+        <ul class="side-list">
+          <li><span class="dot ok"></span><span>GET /health: kiểm tra API đúng service hay không.</span></li>
+          <li><span class="dot ok"></span><span>GET /hybrid_search: luồng explainability chính.</span></li>
+          <li><span class="dot ok"></span><span>GET /search: baseline BM25.</span></li>
+          <li><span class="dot ok"></span><span>POST /context: evidence của khách sạn được chọn.</span></li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <h2>Sơ đồ nhanh</h2>
+        <div class="ascii">[Query + API URL + Health]
+   |
+   +-- Hiểu query + ontology tags
+   +-- Baseline BM25
+   |
+   +-- Luồng retrieval
+   |     candidates -> BM25 -> vector -> fusion -> rerank
+   |
+   +-- Giải thích xếp hạng
+   |     final_score / business / rrf / rerank
+   |
+   +-- Context + evidence
+         chunks / citations / review evidence</div>
+      </div>
+    </aside>
+
+    <main>
+      <section class="hero">
+        <div class="top-line">
+          <div>
+            <h1>Explainable Retrieval Console</h1>
+            <p>Nguồn dữ liệu: <strong>GET /hybrid_search</strong>, <strong>GET /search</strong>, <strong>POST /context</strong>. Field backend chưa expose sẽ được đánh dấu TODO.</p>
+          </div>
+          <span id="apiBadge" class="badge blue">API: chưa kiểm tra</span>
+        </div>
+
+        <div class="api-config">
+          <label class="mini" for="apiBaseInput"><strong>API base URL</strong></label>
+          <input id="apiBaseInput" autocomplete="off" />
+          <button id="healthButton" class="secondary" type="button">Kiểm tra API</button>
+        </div>
+
+        <div class="query-row">
+          <input id="queryInput" value="khách sạn phù hợp cho trẻ nhỏ gần VinWonders Phú Quốc" />
+          <select id="topN">
+            <option value="5">Top 5</option>
+            <option value="10" selected>Top 10</option>
+            <option value="20">Top 20</option>
+          </select>
+          <button id="runButton" type="button">Chạy truy vết</button>
+        </div>
+
+        <div id="statusRow" class="badges">
+          <span class="badge">Sẵn sàng</span>
+          <span class="badge warn">Chỉ dùng dữ liệu backend thật</span>
+        </div>
+      </section>
+
+      <section id="overview" class="overview">
+        <div class="metric-card">
+          <div class="metric-label">Ontology tags</div>
+          <div class="metric-value">-</div>
+          <div class="metric-hint">Chờ /hybrid_search hoặc fallback từ query</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Ứng viên</div>
+          <div class="metric-value">-</div>
+          <div class="metric-hint">Chờ retrieval trace</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Khách sạn top</div>
+          <div class="metric-value">-</div>
+          <div class="metric-hint">Chờ ranking backend</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Kết quả BM25</div>
+          <div class="metric-value">-</div>
+          <div class="metric-hint">Chờ GET /search</div>
+        </div>
+      </section>
+
+      <section class="section" style="margin-bottom:14px;">
+        <div class="section-head">
+          <div>
+            <h2>Luồng xử lý query</h2>
+            <p class="section-subtitle">Mục tiêu: cho thấy một câu hỏi được hiểu, gắn tag ontology, truy vấn BM25, rồi đi tới danh sách khách sạn.</p>
+          </div>
+          <span class="badge warn">FALLBACK KHI HYBRID TIMEOUT</span>
+        </div>
+        <div id="journeyBody" class="state">Chạy query để xem luồng xử lý.</div>
+      </section>
+
+      <section class="grid equal">
+        <article class="section">
+          <div class="section-head">
+            <div>
+              <h2>A. Hiểu query và ontology tags</h2>
+              <p class="section-subtitle">Fields: hybrid_search.intent.*</p>
+            </div>
+            <span class="badge ok">SẴN SÀNG NẾU BACKEND TRẢ FIELD</span>
+          </div>
+          <div id="understandingBody" class="state">Chạy query để xem concepts, intent, location và expansion.</div>
+        </article>
+
+        <article class="section">
+          <div class="section-head">
+            <div>
+              <h2>Baseline BM25</h2>
+              <p class="section-subtitle">Fields: search.results[].score, total_hits, took_ms</p>
+            </div>
+            <span class="badge ok">DỮ LIỆU THẬT</span>
+          </div>
+          <div id="bm25Body" class="state">Chạy query để xem baseline BM25/OpenSearch.</div>
+        </article>
+      </section>
+
+      <section class="section" style="margin-top:14px;">
+        <div class="section-head">
+          <div>
+            <h2>B. Luồng retrieval</h2>
+            <p class="section-subtitle">Fields: n_candidates, n_fused, bm25_rank, vector_rank, rrf_score, rerank_score</p>
+          </div>
+          <span class="badge warn">PARTIAL: chờ số lượng từng bước</span>
+        </div>
+        <div id="pipelineBody" class="state">Chạy query để xem retrieval pipeline.</div>
+      </section>
+
+      <section class="section" style="margin-top:14px;">
+        <div class="section-head">
+          <div>
+            <h2>C. Giải thích xếp hạng</h2>
+            <p class="section-subtitle">Click một khách sạn để gọi POST /context nếu backend hỗ trợ.</p>
+          </div>
+          <span class="badge ok">SẴN SÀNG KHI HYBRID TRẢ TOP HOTELS</span>
+        </div>
+        <div id="rankingBody" class="state">Chạy query để xem bảng ranking.</div>
+      </section>
+
+      <section class="grid equal" style="margin-top:14px;">
+        <article class="section">
+          <div class="section-head">
+            <div>
+              <h2>D. Context package</h2>
+              <p class="section-subtitle">context_package.chunks[] (chunk_id + nội dung + metadata) · prompt/llm_context rút gọn tối đa 200 ký tự</p>
+            </div>
+            <span class="badge ok">CHỌN KHÁCH SẠN</span>
+          </div>
+          <div id="contextBody" class="state">Chọn một khách sạn trong bảng ranking để xem context.</div>
+        </article>
+
+        <article class="section">
+          <div class="section-head">
+            <div>
+              <h2>E. Bằng chứng review/citation</h2>
+              <p class="section-subtitle">Fields: evidence.positives[], negatives[], citations[]</p>
+            </div>
+            <span class="badge ok">CHỌN KHÁCH SẠN</span>
+          </div>
+          <div id="evidenceBody" class="state">Chọn một khách sạn để xem evidence/citations nếu backend trả về.</div>
+        </article>
+      </section>
+
+      <section class="section" style="margin-bottom:14px;">
+        <div class="section-head">
+          <div>
+            <h2>Latency trace</h2>
+            <p class="section-subtitle">Đo wall-clock từ browser, request API và backend stage. Lưu ý <code>/hybrid_search</code> và <code>/search</code> được gọi song song nên không cộng hai request lại.</p>
+          </div>
+          <span class="badge blue">REAL TIMING</span>
+        </div>
+        <div id="latencyBody" class="state">Chạy query để xem tổng thời gian và phần nào đang chậm.</div>
+      </section>
+
+      <section class="section" style="margin-top:14px;">
+        <div class="section-head">
+          <div>
+            <h2>F. Đánh giá Golden Dataset</h2>
+            <p class="section-subtitle">Chạy golden_set_v2 qua pipeline → Recall / Precision / Hit / MRR / nDCG. Nguồn: GET /eval/golden.</p>
+          </div>
+          <span class="badge blue">METRIC THẬT</span>
+        </div>
+        <div class="query-row" style="grid-template-columns: 130px 130px minmax(0,1fr) 160px;">
+          <select id="evalLimit">
+            <option value="5">5 câu (nhanh)</option>
+            <option value="10" selected>10 câu</option>
+            <option value="20">20 câu</option>
+            <option value="59">59 câu (full ~2.5p)</option>
+          </select>
+          <select id="evalK">
+            <option value="10" selected>K=10</option>
+            <option value="20">K=20</option>
+            <option value="50">K=50</option>
+          </select>
+          <select id="evalMode">
+            <option value="false" selected>candidate-only (nhanh)</option>
+            <option value="true">full (vector+BM25)</option>
+          </select>
+          <button id="evalButton" type="button">Chạy đánh giá</button>
+        </div>
+        <div id="evalBody" class="state" style="margin-top:12px;">Bấm "Chạy đánh giá" để đo metric trên golden dataset. Lưu ý: nhiều câu sẽ lâu (~2s/câu).</div>
+      </section>
+
+      <section class="section" style="margin-top:14px;">
+        <div class="section-head">
+          <div>
+            <h2>Mapping field backend sang UI</h2>
+            <p class="section-subtitle">Bảng này giúp mentor thấy field nào đã có và field nào còn cần backend expose.</p>
+          </div>
+          <span class="badge blue">SOURCE OF UI</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Khu vực UI</th>
+              <th>Endpoint</th>
+              <th>Field sử dụng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hiểu query</td>
+              <td>GET /hybrid_search</td>
+              <td>intent.query, concepts, hard_concepts, feel_concepts, purposes, landmarks, location_concepts, implicit, city, range</td>
+            </tr>
+            <tr>
+              <td>Luồng retrieval</td>
+              <td>GET /hybrid_search</td>
+              <td>n_candidates, n_fused, top_hotels[].bm25_rank, vector_rank, rrf_score, rerank_score</td>
+            </tr>
+            <tr>
+              <td>Giải thích xếp hạng</td>
+              <td>GET /hybrid_search</td>
+              <td>top_hotels[].final_score, business_score, rerank_score, rrf_score, matched_chunks</td>
+            </tr>
+            <tr>
+              <td>Baseline BM25</td>
+              <td>GET /search</td>
+              <td>results[].id, name, score, city, address, description, took_ms, total_hits</td>
+            </tr>
+            <tr>
+              <td>Context + Evidence</td>
+              <td>POST /context</td>
+              <td>llm_context, context_text, context_chunks, citations, evidence, source_documents</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <p class="footer-note">Frontend boundary: file này chỉ consume backend runtime. Nếu lỗi đến từ index, service URL, Docker hoặc API contract, UI chỉ hiển thị nguyên nhân và không tự sửa backend.</p>
+    </main>
+  </div>
+
+  <script>
+    const DEFAULT_QUERY = "khách sạn phù hợp cho trẻ nhỏ gần VinWonders Phú Quốc";
+    const REQUEST_TIMEOUT_MS = 60000;
+    // D. Context package: prompt/llm_context chỉ hiển thị tối đa 200 ký tự.
+    const CONTEXT_PREVIEW_CHARS = 200;
+
+    const state = {
+      apiBase: "",
+      query: DEFAULT_QUERY,
+      topN: 10,
+      health: null,
+      hybrid: null,
+      bm25: null,
+      selectedHotelId: null,
+      contextByHotel: {},
+      lastErrors: {},
+      timing: null,
+      showFlowDiagram: false
+    };
+
+    const els = {
+      apiBaseInput: document.getElementById("apiBaseInput"),
+      apiBadge: document.getElementById("apiBadge"),
+      healthButton: document.getElementById("healthButton"),
+      queryInput: document.getElementById("queryInput"),
+      topN: document.getElementById("topN"),
+      runButton: document.getElementById("runButton"),
+      statusRow: document.getElementById("statusRow"),
+      overview: document.getElementById("overview"),
+      latencyBody: document.getElementById("latencyBody"),
+      journeyBody: document.getElementById("journeyBody"),
+      understandingBody: document.getElementById("understandingBody"),
+      bm25Body: document.getElementById("bm25Body"),
+      pipelineBody: document.getElementById("pipelineBody"),
+      rankingBody: document.getElementById("rankingBody"),
+      contextBody: document.getElementById("contextBody"),
+      evidenceBody: document.getElementById("evidenceBody"),
+      evalLimit: document.getElementById("evalLimit"),
+      evalK: document.getElementById("evalK"),
+      evalMode: document.getElementById("evalMode"),
+      evalButton: document.getElementById("evalButton"),
+      evalBody: document.getElementById("evalBody")
+    };
+
+    function defaultApiBase() {
+      if (!location.origin || location.origin === "null" || location.protocol === "file:") {
+        return "http://localhost:8000";
+      }
+      return location.origin;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function asArray(value) {
+      if (Array.isArray(value)) return value;
+      if (value === undefined || value === null || value === "") return [];
+      return [value];
+    }
+
+    function fmt(value, digits = 3) {
+      if (value === undefined || value === null || value === "") return "-";
+      const n = Number(value);
+      if (!Number.isFinite(n)) return String(value);
+      return n.toFixed(digits).replace(/\.?0+$/, "");
+    }
+
+    function getApiBase() {
+      const raw = els.apiBaseInput.value.trim() || defaultApiBase();
+      return raw.replace(/\/+$/, "");
+    }
+
+    function setBadges(items) {
+      els.statusRow.innerHTML = items.map((item) => {
+        const cls = item.type ? " " + item.type : "";
+        return `<span class="badge${cls}">${escapeHtml(item.label)}</span>`;
+      }).join("");
+    }
+
+    function endpointUrl(path) {
+      return `${getApiBase()}${path}`;
+    }
+
+    function makeTimeoutSignal(timeoutMs = REQUEST_TIMEOUT_MS) {
+      if (typeof AbortSignal !== "undefined" && AbortSignal.timeout) {
+        return AbortSignal.timeout(timeoutMs);
+      }
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), timeoutMs);
+      return controller.signal;
+    }
+
+    async function fetchJson(path, options = {}) {
+      // options.timeoutMs cho phép override timeout (vd /eval/golden chạy 59 câu mất vài phút).
+      const { timeoutMs, ...fetchOptions } = options;
+      const response = await fetch(endpointUrl(path), {
+        ...fetchOptions,
+        headers: {
+          "Accept": "application/json",
+          ...(options.body ? { "Content-Type": "application/json" } : {}),
+          ...(options.headers || {})
+        },
+        signal: makeTimeoutSignal(timeoutMs)
+      });
+
+      const text = await response.text();
+      let data = null;
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch (_err) {
+        data = { raw_text: text };
+      }
+
+      if (!response.ok) {
+        const message = data?.detail || data?.error?.user_message || data?.error?.message || text || response.statusText;
+        const error = new Error(`HTTP ${response.status}: ${message}`);
+        error.status = response.status;
+        error.data = data;
+        throw error;
+      }
+
+      return data;
+    }
+
+
+    async function fetchTimedJson(label, path, options = {}) {
+      const startedAt = performance.now();
+      try {
+        const data = await fetchJson(path, options);
+        const endedAt = performance.now();
+        return {
+          ok: true,
+          label,
+          path,
+          data,
+          durationMs: Math.round((endedAt - startedAt) * 10) / 10,
+          startedAt,
+          endedAt
+        };
+      } catch (error) {
+        const endedAt = performance.now();
+        error.timing = {
+          ok: false,
+          label,
+          path,
+          durationMs: Math.round((endedAt - startedAt) * 10) / 10,
+          startedAt,
+          endedAt
+        };
+        throw error;
+      }
+    }
+    async function checkBackend() {
+      state.apiBase = getApiBase();
+      els.apiBadge.className = "badge blue";
+      els.apiBadge.textContent = `API: ${state.apiBase}`;
+      els.healthButton.disabled = true;
+      els.healthButton.textContent = "Đang kiểm tra...";
+      setBadges([{ label: `Đang kiểm tra ${state.apiBase}`, type: "blue" }]);
+
+      try {
+        const health = await fetchJson("/health");
+        let openapi = null;
+        try {
+          openapi = await fetchJson("/openapi.json");
+        } catch (_err) {
+          openapi = null;
+        }
+
+        state.health = { health, openapi };
+        const apiTitle = openapi?.info?.title || "unknown API";
+        const looksWrongApp = openapi && !String(apiTitle).toLowerCase().includes("da10") && !String(apiTitle).toLowerCase().includes("search");
+
+        els.apiBadge.className = looksWrongApp ? "badge warn" : "badge ok";
+        els.apiBadge.textContent = looksWrongApp ? `API reachable, title: ${apiTitle}` : `API reachable: ${apiTitle}`;
+
+        const badges = [
+          { label: "GET /health OK", type: "ok" },
+          { label: `API title: ${apiTitle}`, type: looksWrongApp ? "warn" : "ok" }
+        ];
+        if (looksWrongApp) {
+          badges.push({ label: "Cảnh báo: port có thể trỏ sang app khác", type: "warn" });
+        }
+        setBadges(badges);
+      } catch (error) {
+        state.health = null;
+        els.apiBadge.className = "badge red";
+        els.apiBadge.textContent = "API not reachable";
+        setBadges([
+          { label: "GET /health lỗi", type: "red" },
+          { label: "Kiểm tra port backend hoặc Docker services", type: "warn" }
+        ]);
+        renderGlobalError("Không gọi được backend.", error);
+      } finally {
+        els.healthButton.disabled = false;
+        els.healthButton.textContent = "Kiểm tra API";
+      }
+    }
+
+    async function runTrace() {
+      const query = els.queryInput.value.trim();
+      if (!query) {
+        setBadges([{ label: "Query is empty", type: "red" }]);
+        return;
+      }
+
+      state.query = query;
+      state.topN = Number(els.topN.value || 10);
+      state.apiBase = getApiBase();
+      state.hybrid = null;
+      state.bm25 = null;
+      state.selectedHotelId = null;
+      state.contextByHotel = {};
+      state.lastErrors = {};
+      state.showFlowDiagram = false;
+      state.timing = {
+        queryStartedAt: performance.now(),
+        totalMs: null,
+        requests: {},
+        context: {}
+      };
+
+      els.apiBadge.className = "badge blue";
+      els.apiBadge.textContent = `API: ${state.apiBase}`;
+      els.runButton.disabled = true;
+      els.runButton.textContent = "Đang chạy...";
+      setBadges([
+        { label: "Đang gọi GET /hybrid_search", type: "blue" },
+        { label: "Đang gọi GET /search", type: "blue" }
+      ]);
+      renderLoading();
+
+      // Phương án 2: LUÔN fetch top_n=20 (trần backend) để các tab trace thấy TOÀN BỘ
+      // candidates/bm25/vector/rank; dropdown topN chỉ cắt ở phần HIỂN THỊ (xem renderOverview/renderRanking).
+      const hybridTopN = 20;
+      // BM25 baseline: backend GET /search nhận `size` (le=20) — truyền đúng topN người dùng chọn.
+      const bm25Size = Math.min(Math.max(state.topN, 1), 20);
+      const hybridPath = `/hybrid_search?q=${encodeURIComponent(query)}&top_n=${hybridTopN}&answer=true`;
+      const bm25Path = `/search?q=${encodeURIComponent(query)}&size=${bm25Size}`;
+
+      const [hybridResult, bm25Result] = await Promise.allSettled([
+        fetchTimedJson("GET /hybrid_search", hybridPath),
+        fetchTimedJson("GET /search", bm25Path)
+      ]);
+
+      if (hybridResult.status === "fulfilled") {
+        state.hybrid = hybridResult.value.data;
+        state.timing.requests.hybrid = hybridResult.value;
+      } else {
+        state.lastErrors.hybrid = hybridResult.reason;
+        state.timing.requests.hybrid = hybridResult.reason?.timing || null;
+      }
+
+      if (bm25Result.status === "fulfilled") {
+        state.bm25 = bm25Result.value.data;
+        state.timing.requests.bm25 = bm25Result.value;
+      } else {
+        state.lastErrors.bm25 = bm25Result.reason;
+        state.timing.requests.bm25 = bm25Result.reason?.timing || null;
+      }
+
+      state.timing.totalMs = Math.round((performance.now() - state.timing.queryStartedAt) * 10) / 10;
+      renderAll();
+
+      els.runButton.disabled = false;
+      els.runButton.textContent = "Chạy truy vết";
+    }
+
+    function renderLoading() {
+      const loading = `<div class="state">Đang gọi backend thật tại <strong>${escapeHtml(getApiBase())}</strong>...</div>`;
+      els.overview.innerHTML = `
+        ${overviewCard("Concepts", "...", "GET /hybrid_search")}
+        ${overviewCard("Candidates", "...", "GET /hybrid_search")}
+        ${overviewCard("Top Hotels", "...", "GET /hybrid_search")}
+        ${overviewCard("BM25 Hits", "...", "GET /search")}
+      `;
+      els.latencyBody.innerHTML = loading;
+      els.journeyBody.innerHTML = loading;
+      els.understandingBody.innerHTML = loading;
+      els.bm25Body.innerHTML = loading;
+      els.pipelineBody.innerHTML = loading;
+      els.rankingBody.innerHTML = loading;
+      els.contextBody.innerHTML = `<div class="state">Chờ người dùng chọn khách sạn sau khi có ranking.</div>`;
+      els.evidenceBody.innerHTML = `<div class="state">Chờ POST /context sau khi chọn khách sạn.</div>`;
+    }
+
+    function renderAll() {
+      const badges = [];
+      if (state.hybrid) badges.push({ label: "GET /hybrid_search OK", type: "ok" });
+      if (state.bm25) badges.push({ label: "GET /search OK", type: "ok" });
+      if (state.lastErrors.hybrid) badges.push({ label: "GET /hybrid_search lỗi", type: "red" });
+      if (state.lastErrors.bm25) badges.push({ label: "GET /search lỗi", type: "red" });
+      if (!state.hybrid && !state.bm25) badges.push({ label: "Chưa có response backend dùng được", type: "red" });
+      if (state.hybrid || state.bm25) badges.push({ label: "Đang hiển thị phần đã có", type: state.hybrid && state.bm25 ? "ok" : "warn" });
+      setBadges(badges);
+
+      renderOverview();
+      renderLatency();
+      renderJourney();
+      renderUnderstanding();
+      renderBm25();
+      renderPipeline();
+      renderRanking();
+      renderContextPackageFromHybrid();
+      els.evidenceBody.innerHTML = `<div class="state">Click một khách sạn trong bảng ranking để gọi <strong>POST /context</strong>.</div>`;
+    }
+
+
+    function renderLatency() {
+      const timing = state.timing;
+      if (!timing) {
+        els.latencyBody.innerHTML = `<div class="state">Chạy query để đo latency.</div>`;
+        return;
+      }
+
+      const totalRow = {
+        label: "Thời gian người dùng chờ (wall-clock)",
+        value: timing.totalMs,
+        note: "Đo ở browser từ lúc bấm Chạy truy vết đến khi các request song song /hybrid_search và /search hoàn tất hoặc lỗi. Đây KHÔNG phải tổng cộng các dòng bên dưới."
+      };
+
+      const requestRows = [];
+      const hybridReq = timing.requests?.hybrid;
+      requestRows.push({
+        label: "Request GET /hybrid_search",
+        value: hybridReq?.durationMs,
+        note: hybridReq?.ok === false ? `Frontend nhận lỗi từ ${hybridReq.path}` : "Request explainability chính: intent/filter/retrieval/fusion/rerank/context."
+      });
+
+      const bm25Req = timing.requests?.bm25;
+      requestRows.push({
+        label: "Request GET /search",
+        value: bm25Req?.durationMs,
+        note: bm25Req?.ok === false ? `Frontend nhận lỗi từ ${bm25Req.path}` : "Request baseline BM25. Request này chạy song song với /hybrid_search, không cộng vào wall-clock nếu nó xong sớm hơn."
+      });
+
+      if (state.bm25?.took_ms !== undefined) {
+        requestRows.push({
+          label: "Backend /search took_ms",
+          value: Number(state.bm25.took_ms),
+          note: "Thời gian backend báo riêng cho BM25. Chênh lệch với request GET /search là network + JSON parse + overhead FastAPI/browser."
+        });
+      }
+
+      const stageRows = [];
+      const stageMs = state.hybrid?.stage_ms || {};
+      Object.entries(stageMs).forEach(([name, value]) => {
+        stageRows.push({
+          label: `Backend stage: ${name}`,
+          value: Number(value),
+          note: stageNote(name)
+        });
+      });
+
+      const stageValues = stageRows.map((r) => Number(r.value)).filter((n) => Number.isFinite(n) && n >= 0);
+      const stageSum = stageValues.reduce((sum, value) => sum + value, 0);
+      const hybridDuration = Number(hybridReq?.durationMs);
+      const overhead = Number.isFinite(hybridDuration) && stageValues.length ? Math.max(0, hybridDuration - stageSum) : null;
+
+      const contextRows = [];
+      const contextTiming = timing.context?.[state.selectedHotelId];
+      if (contextTiming) {
+        contextRows.push({
+          label: `Request POST /context (${state.selectedHotelId})`,
+          value: contextTiming.durationMs,
+          note: "Thời gian tải context/chunks/citations/source documents cho khách sạn đang chọn."
+        });
+      }
+
+      const allRows = [totalRow, ...requestRows, ...stageRows, ...contextRows];
+      const numeric = allRows.map((r) => Number(r.value)).filter((n) => Number.isFinite(n) && n >= 0);
+      const max = Math.max(...numeric, 1);
+      const slowestRows = [...requestRows, ...stageRows, ...contextRows];
+      const slowest = slowestRows
+        .filter((r) => Number.isFinite(Number(r.value)))
+        .sort((a, b) => Number(b.value) - Number(a.value))[0];
+
+      els.latencyBody.innerHTML = `
+        <div class="badges" style="margin:0 0 12px;">
+          <span class="badge ok">wall-clock: ${escapeHtml(fmt(timing.totalMs, 1))} ms</span>
+          ${slowest ? `<span class="badge warn">request/stage chậm nhất: ${escapeHtml(slowest.label)} (${escapeHtml(fmt(slowest.value, 1))} ms)</span>` : ""}
+          ${stageValues.length ? `<span class="badge blue">backend stage sum: ${escapeHtml(fmt(stageSum, 1))} ms</span>` : ""}
+          ${overhead !== null ? `<span class="badge blue">hybrid overhead: ${escapeHtml(fmt(overhead, 1))} ms</span>` : ""}
+          <button class="secondary" type="button" id="flowDiagramToggle" style="height:32px;padding:0 12px;">${state.showFlowDiagram ? "Ẩn sơ đồ luồng dữ liệu" : "Xem sơ đồ luồng dữ liệu + timing"}</button>
+        </div>
+        ${state.showFlowDiagram ? renderQueryFlowDiagram({ totalRow, requestRows, stageRows, contextRows, stageSum, overhead }) : ""}
+        <div class="state" style="margin-bottom:12px;">
+          Cách đọc đúng: <strong>wall-clock</strong> là thời gian người dùng thấy. <strong>/hybrid_search</strong> và <strong>/search</strong> được gọi song song, nên không cộng hai request. Các dòng <strong>Backend stage</strong> là breakdown bên trong /hybrid_search để biết bước nào chậm.
+        </div>
+        <h3 style="margin:12px 0 8px;">1. Tổng thời gian</h3>
+        <div class="latency-grid">${latencyRow(totalRow, max)}</div>
+        <h3 style="margin:16px 0 8px;">2. Request API</h3>
+        <div class="latency-grid">${requestRows.map((row) => latencyRow(row, max)).join("")}</div>
+        <h3 style="margin:16px 0 8px;">3. Backend stages trong /hybrid_search</h3>
+        ${stageRows.length ? `<div class="latency-grid">${stageRows.map((row) => latencyRow(row, max)).join("")}</div>` : `<div class="state">Backend chưa trả <code>stage_ms</code>.</div>`}
+        ${contextRows.length ? `<h3 style="margin:16px 0 8px;">4. Context request</h3><div class="latency-grid">${contextRows.map((row) => latencyRow(row, max)).join("")}</div>` : ""}
+
+      `;
+
+      const toggle = els.latencyBody.querySelector("#flowDiagramToggle");
+      if (toggle) {
+        toggle.addEventListener("click", () => {
+          state.showFlowDiagram = !state.showFlowDiagram;
+          renderLatency();
+        });
+      }
+    }
+
+    function renderQueryFlowDiagram({ totalRow, requestRows, stageRows, contextRows, stageSum, overhead }) {
+      const getReq = (label) => requestRows.find((row) => row.label.includes(label));
+      const getStage = (name) => stageRows.find((row) => row.label === `Backend stage: ${name}`);
+      const time = (row) => Number.isFinite(Number(row?.value)) ? `${escapeHtml(fmt(Number(row.value), 1))} ms` : "TODO";
+      const topHotels = asArray(state.hybrid?.top_hotels).slice(0, state.topN);
+      const selectedName = selectedHotelName();
+      const concepts = localQuerySignals(state.query).concepts.length;
+      const topCount = topHotels.length || asArray(state.bm25?.results).length || 0;
+
+      return `
+        <div class="flow-diagram-panel">
+          <div class="flow-diagram-title">
+            <h3>Sơ đồ luồng dữ liệu có timing</h3>
+            <span class="badge blue">Số liệu tính từ lần query hiện tại</span>
+          </div>
+          <div class="flow-canvas">
+            <div class="flow-lanes">
+              <div class="flow-lane">
+                ${flowNode("1. Query", state.query || "-", time(totalRow), "emphasis")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("2. Frontend UI", "Gọi /hybrid_search và /search song song", time(totalRow))}
+              </div>
+              <div class="flow-lane">
+                ${flowNode("3A. GET /hybrid_search", "Explainability pipeline", time(getReq("/hybrid_search")), "emphasis")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("4. Query Understanding", `${concepts} ontology/local tags. Intent/location/concept nếu backend expose.`, time(getStage("intent")))}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("5. Candidate Filter", "Hard filter, location, purpose, candidate builder", time(getStage("filter")))}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("6. Text Retrieval", "BM25/vector retrieval trên candidate set", time(getStage("text_retrieval")))}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("7. Fusion", "Gộp tín hiệu BM25/vector/profile nếu backend trả", time(getStage("fusion")))}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("8. Rerank", "Rerank/business ranking", time(getStage("rerank")))}
+              </div>
+              <div class="flow-lane">
+                ${flowNode("3B. GET /search", "Baseline BM25 chạy song song", time(getReq("/search")), "emphasis")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("OpenSearch BM25", `${asArray(state.bm25?.results).length || 0} kết quả trả về UI`, time({ value: state.bm25?.took_ms }))}
+                <div class="flow-arrow">↘</div>
+                ${flowNode("9. Top-K Hotels", `${topCount} khách sạn hiển thị. Không cộng /search vào /hybrid_search vì chạy song song.`, time(totalRow), "warn")}
+              </div>
+              <div class="flow-lane">
+                ${flowNode("10. User chọn hotel", selectedName || "Chưa chọn hotel", selectedName ? "selected" : "waiting")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("11. POST /context", "Tải chunks/citations/source documents", contextRows.length ? time(contextRows[0]) : "chưa gọi")}
+                <div class="flow-arrow">↓</div>
+                ${flowNode("12. LLM Context + Evidence", "Context chunks, citations, review evidence nếu backend trả", time(getStage("context")))}
+              </div>
+            </div>
+          </div>
+          <div class="state" style="margin-top:12px;">
+            Ghi chú: <strong>wall-clock</strong> là thời gian người dùng chờ. <strong>stage sum</strong> = ${escapeHtml(fmt(stageSum, 1))} ms; ${overhead !== null ? `hybrid overhead = ${escapeHtml(fmt(overhead, 1))} ms.` : "backend chưa đủ stage để tính overhead."}
+          </div>
+        </div>
+      `;
+    }
+
+    function flowNode(title, body, timing, variant = "") {
+      const cls = variant ? ` ${variant}` : "";
+      return `
+        <div class="flow-node${cls}">
+          <div class="flow-node-title">${escapeHtml(title)}</div>
+          <div class="flow-note">${escapeHtml(String(body || "-"))}</div>
+          <span class="flow-time">${escapeHtml(String(timing || "TODO"))}</span>
+        </div>
+      `;
+    }
+
+    function selectedHotelName() {
+      if (!state.selectedHotelId) return "";
+      const selectedId = String(state.selectedHotelId);
+      const fromHybrid = asArray(state.hybrid?.top_hotels).find((item) => String(hotelIdFor(item)) === selectedId);
+      const fromBm25 = asArray(state.bm25?.results).find((item) => String(hotelIdFor(item)) === selectedId);
+      const item = fromHybrid || fromBm25 || {};
+      const md = item.metadata || {};
+      return md.hotel_name || md.name || item.hotel_name || item.name || selectedId;
+    }
+    function latencyRow(row, max) {
+      const value = Number(row.value);
+      const hasValue = Number.isFinite(value);
+      const pct = hasValue ? Math.max(2, Math.min(100, (value / max) * 100)) : 0;
+      const cls = hasValue && value >= 5000 ? " red" : hasValue && value >= 1500 ? " warn" : "";
+      return `
+        <div class="latency-row">
+          <div>
+            <div class="latency-label">${escapeHtml(row.label)}</div>
+            <div class="latency-note">${escapeHtml(row.note || "")}</div>
+          </div>
+          <div class="latency-bar"><div class="latency-fill${cls}" style="width:${pct}%"></div></div>
+          <div class="latency-value">${hasValue ? `${escapeHtml(fmt(value, 1))} ms` : "-"}</div>
+        </div>
+      `;
+    }
+
+    function stageNote(name) {
+      const notes = {
+        intent: "Parse query, nhận diện intent/concept/location/range.",
+        filter: "Hard filter, concept lookup, location whitelist, candidate builder.",
+        text_retrieval: "BM25/vector retrieval trên candidate set.",
+        fusion: "RRF fusion và profile boost.",
+        rerank: "Density fallback hoặc cross-encoder rerank + business rerank.",
+        context: "Build context package và prompt từ top hotels."
+      };
+      return notes[name] || "Backend stage từ hybrid_search.stage_ms.";
+    }
+    function renderOverview() {
+      const intent = state.hybrid?.intent || {};
+      const fallbackSignals = localQuerySignals(state.query);
+      const conceptCount = [
+        ...asArray(intent.concepts),
+        ...asArray(intent.hard_concepts),
+        ...asArray(intent.feel_concepts),
+        ...asArray(intent.location_concepts),
+        ...asArray(intent.purposes),
+        ...asArray(intent.landmarks)
+      ].length;
+
+      // Phương án 2: fetch 20 cho trace, nhưng card hiển thị theo topN người dùng chọn.
+      const topHotels = asArray(state.hybrid?.top_hotels).slice(0, state.topN);
+      const bm25Results = asArray(state.bm25?.results);
+      const bm25Hits = state.bm25 ? bm25Results.length : "-";
+      els.overview.innerHTML = `
+        ${overviewCard("Ontology tags", state.hybrid ? conceptCount : fallbackSignals.concepts.length, state.hybrid ? "Từ backend /hybrid_search" : "Fallback frontend từ query")}
+        ${overviewCard("Candidates", state.hybrid ? fmt(state.hybrid.n_candidates, 0) : "-", state.hybrid ? "Field: n_candidates" : "No candidate trace")}
+        ${overviewCard("Top Hotels", state.hybrid ? topHotels.length : "-", state.hybrid ? `Top ${state.topN} (đã chọn)` : "No ranked hotels")}
+        ${overviewCard("BM25 results", bm25Hits, state.bm25 ? `${fmt(state.bm25.took_ms, 0)} ms` : errorHint(state.lastErrors.bm25, "BM25 unavailable"))}
+      `;
+    }
+
+    function overviewCard(label, value, hint) {
+      return `
+        <div class="metric-card">
+          <div class="metric-label">${escapeHtml(label)}</div>
+          <div class="metric-value">${escapeHtml(value)}</div>
+          <div class="metric-hint">${escapeHtml(hint)}</div>
+        </div>
+      `;
+    }
+
+    function normalizeText(value) {
+      return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function localQuerySignals(query) {
+      const q = normalizeText(query);
+      const concepts = [];
+      const expansions = [];
+
+      function addConcept(id, label, matched, source, confidence) {
+        concepts.push({ id, label, matched, source, confidence });
+      }
+
+      if (q.includes("khach san") || q.includes("hotel")) {
+        addConcept("OBJ_HOTEL", "Đối tượng lưu trú", "khách sạn", "frontend rule", 0.95);
+      }
+      if (q.includes("resort")) {
+        addConcept("OBJ_RESORT", "Loại hình resort", "resort", "frontend rule", 0.92);
+      }
+      if (q.includes("tre nho") || q.includes("tre em") || q.includes("gia dinh")) {
+        addConcept("PURPOSE_FAMILY", "Phù hợp gia đình/trẻ nhỏ", "trẻ nhỏ / gia đình", "frontend rule", 0.9);
+        addConcept("AMEN_KIDS_FRIENDLY", "Tiện ích thân thiện trẻ em", "trẻ nhỏ", "frontend expansion", 0.82);
+        expansions.push(["PURPOSE_FAMILY", "AMEN_KIDS_CLUB", "boost tiện ích trẻ em"]);
+        expansions.push(["PURPOSE_FAMILY", "AMEN_KIDS_POOL", "boost hồ bơi trẻ em"]);
+        expansions.push(["PURPOSE_FAMILY", "ROOM_FAMILY", "boost phòng gia đình"]);
+      }
+      if (q.includes("vinwonders") || q.includes("vin wonder")) {
+        addConcept("LMK_VINWONDERS_PHU_QUOC", "Mốc gần VinWonders Phú Quốc", "VinWonders Phú Quốc", "frontend rule", 0.94);
+        expansions.push(["LMK_VINWONDERS_PHU_QUOC", "LOC_PHU_QUOC", "suy ra vị trí"]);
+      }
+      if (q.includes("phu quoc")) {
+        addConcept("LOC_PHU_QUOC", "Vị trí Phú Quốc", "Phú Quốc", "frontend rule", 0.93);
+      }
+      if (q.includes("bien") || q.includes("gan bien")) {
+        addConcept("LOC_NEAR_BEACH", "Gần biển", "biển / gần biển", "frontend rule", 0.84);
+      }
+      if (q.includes("yen tinh")) {
+        addConcept("STYLE_QUIET", "Không gian yên tĩnh", "yên tĩnh", "frontend rule", 0.86);
+      }
+
+      return { concepts, expansions };
+    }
+
+    function renderJourney() {
+      const signals = state.hybrid?.intent ? null : localQuerySignals(state.query);
+      const bm25Results = asArray(state.bm25?.results);
+      const hasHybrid = Boolean(state.hybrid);
+      const resultCount = bm25Results.length;
+      const firstResult = bm25Results[0];
+      const concepts = hasHybrid
+        ? [
+            ...asArray(state.hybrid.intent?.concepts),
+            ...asArray(state.hybrid.intent?.hard_concepts),
+            ...asArray(state.hybrid.intent?.location_concepts),
+            ...asArray(state.hybrid.intent?.purposes),
+            ...asArray(state.hybrid.intent?.landmarks)
+          ].map((id) => ({ id, label: id, source: "backend /hybrid_search" }))
+        : signals.concepts;
+
+      els.journeyBody.innerHTML = `
+        <div class="journey-grid">
+          <div class="journey-step">
+            <strong>1. Query gốc</strong>
+            <div class="mini">${escapeHtml(state.query)}</div>
+          </div>
+          <div class="journey-step">
+            <strong>2. Gắn ontology tags</strong>
+            <div class="tags">
+              ${concepts.length ? concepts.slice(0, 6).map((c) => `<span class="tag">${escapeHtml(c.id || c.label)}</span>`).join("") : `<span class="mini">Chưa có tag.</span>`}
+            </div>
+            <div class="mini" style="margin-top:8px;">${hasHybrid ? "Nguồn: backend /hybrid_search" : "Nguồn: frontend fallback vì /hybrid_search đang lỗi."}</div>
+          </div>
+          <div class="journey-step">
+            <strong>3. Mở rộng ontology</strong>
+            ${renderExpansionList(hasHybrid ? [] : signals.expansions)}
+          </div>
+          <div class="journey-step">
+            <strong>4. Tìm ứng viên bằng BM25</strong>
+            <div class="mini">Endpoint: GET /search</div>
+            <div class="metric-value" style="font-size:22px;margin-top:8px;">${escapeHtml(resultCount)}</div>
+            <div class="mini">khách sạn được lấy từ backend thật</div>
+          </div>
+          <div class="journey-step">
+            <strong>5. Chọn kết quả đích</strong>
+            <div class="mini">${firstResult ? escapeHtml(firstResult.name || firstResult.hotel_name || firstResult.id) : "Chưa có kết quả."}</div>
+            <div class="mini" style="margin-top:8px;">Nếu hybrid/context hoạt động, bước này sẽ có fusion, rerank, chunks và citations.</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderExpansionList(edges) {
+      if (!edges.length) {
+        return `<div class="state warn" style="padding:10px;">Backend chưa trả expansion graph. UI chỉ hiển thị fallback khi có rule frontend.</div>`;
+      }
+      return `
+        <ul class="reason-list">
+          ${edges.map(([from, to, reason]) => `<li><strong>${escapeHtml(from)}</strong> -> ${escapeHtml(to)}<br><span class="mini">${escapeHtml(reason)}</span></li>`).join("")}
+        </ul>
+      `;
+    }
+
+    function renderUnderstanding() {
+      if (!state.hybrid) {
+        const signals = localQuerySignals(state.query);
+        const rows = signals.concepts.map((c) => `
+          <tr>
+            <td><strong>${escapeHtml(c.id)}</strong><div class="mini">${escapeHtml(c.label)}</div></td>
+            <td>${escapeHtml(c.matched)}</td>
+            <td>${escapeHtml(c.source)}</td>
+            <td>${escapeHtml(fmt(c.confidence, 2))}</td>
+          </tr>
+        `).join("");
+        els.understandingBody.innerHTML = `
+          <div class="state warn" style="margin-bottom:12px;">
+            Backend /hybrid_search chưa trả được query understanding. Bảng dưới là fallback frontend để mentor vẫn thấy query đang được gắn ontology tags nào. Đây không phải output chính thức của backend.
+            ${state.lastErrors.hybrid ? `<br><strong>Lỗi backend:</strong> ${escapeHtml(state.lastErrors.hybrid.message || state.lastErrors.hybrid)}` : ""}
+          </div>
+          <table>
+            <thead><tr><th>Ontology tag</th><th>Đoạn khớp trong query</th><th>Nguồn</th><th>Độ tin cậy</th></tr></thead>
+            <tbody>${rows || `<tr><td colspan="4">Không suy ra được tag ontology từ query.</td></tr>`}</tbody>
+          </table>
+          <div style="height:10px"></div>
+          <h3>Mở rộng từ ontology</h3>
+          ${renderExpansionList(signals.expansions)}
+        `;
+        return;
+      }
+
+      const intent = state.hybrid.intent || {};
+      const implicit = intent.implicit || {};
+      const implicitRows = Object.keys(implicit).length
+        ? Object.entries(implicit).map(([key, value]) => `
+            <tr><td>${escapeHtml(key)}</td><td>${escapeHtml(formatValue(value))}</td></tr>
+          `).join("")
+        : `<tr><td colspan="2" class="mini">Backend chưa trả implicit signals.</td></tr>`;
+
+      els.understandingBody.innerHTML = `
+        <div class="tag-grid">
+          ${tagGroup("Concepts", intent.concepts)}
+          ${tagGroup("Hard concepts", intent.hard_concepts, "green")}
+          ${tagGroup("Feel concepts", intent.feel_concepts, "amber")}
+          ${tagGroup("Purpose", intent.purposes || intent.purpose)}
+          ${tagGroup("Location", intent.location_concepts || intent.city)}
+          ${tagGroup("Landmark", intent.landmarks)}
+        </div>
+        <div style="height:10px"></div>
+        <table>
+          <thead><tr><th>Intent Field</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>original_query</td><td>${escapeHtml(intent.query || state.query)}</td></tr>
+            <tr><td>city</td><td>${escapeHtml(formatValue(intent.city))}</td></tr>
+            <tr><td>range</td><td>${escapeHtml(formatValue(intent.range))}</td></tr>
+            ${implicitRows}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function tagGroup(title, values, color = "") {
+      const arr = asArray(values);
+      const tags = arr.length
+        ? arr.map((value) => `<span class="tag ${color}">${escapeHtml(formatValue(value))}</span>`).join("")
+        : `<span class="mini">Chưa có field này từ backend.</span>`;
+      return `
+        <div class="tag-group">
+          <div class="tag-title">${escapeHtml(title)}</div>
+          <div class="tags">${tags}</div>
+        </div>
+      `;
+    }
+
+    function renderBm25() {
+      if (!state.bm25) {
+        els.bm25Body.innerHTML = errorState("Không đọc được BM25 baseline từ GET /search.", state.lastErrors.bm25);
+        return;
+      }
+
+      const bm25All = asArray(state.bm25.results);
+      const rows = bm25All.map((r, index) => `
+        <tr>
+          <td>${index + 1}</td>
+          <td>
+            <strong>${escapeHtml(r.name || r.hotel_name || r.id || "Unnamed hotel")}</strong>
+            <div class="mini">${escapeHtml(r.city || "")} ${r.address ? " - " + escapeHtml(r.address) : ""}</div>
+          </td>
+          <td>${escapeHtml(fmt(r.score))}</td>
+          <td class="mini">${escapeHtml((r.description || "").slice(0, 180))}</td>
+        </tr>
+      `).join("");
+
+      els.bm25Body.innerHTML = `
+        <div class="badges" style="margin:0 0 10px;">
+          <span class="badge ok">số kết quả: ${escapeHtml(fmt(Number(state.bm25.total_hits) || bm25All.length, 0))}</span>
+          <span class="badge blue">took_ms: ${escapeHtml(fmt(state.bm25.took_ms, 0))}</span>
+          <span class="badge">hiển thị toàn bộ ${bm25All.length} dòng</span>
+        </div>
+        <div class="scroll-box">
+          <table>
+            <thead><tr><th>#</th><th>Khách sạn</th><th>Điểm BM25</th><th>Mô tả</th></tr></thead>
+            <tbody>${rows || `<tr><td colspan="4">Không có kết quả BM25.</td></tr>`}</tbody>
+          </table>
+        </div>
+        <div class="scroll-hint">Cuộn trong khung để xem hết kết quả BM25 (GET /search).</div>
+      `;
+    }
+
+    function renderPipeline() {
+      if (!state.hybrid) {
+        const signals = localQuerySignals(state.query);
+        const bm25Results = asArray(state.bm25?.results);
+        els.pipelineBody.innerHTML = `
+          <div class="state warn" style="margin-bottom:12px;">
+            Backend /hybrid_search đang lỗi nên chưa có vector/fusion/rerank trace. Giao diện đang hiển thị đường đi tối thiểu dựa trên query và BM25 thật.
+          </div>
+          <div class="pipeline">
+            ${pipeStep("1. Query", "1", "Người dùng nhập câu hỏi")}
+            ${pipeStep("2. Ontology tags", signals.concepts.length, "Fallback frontend: vị trí, địa danh, mục đích")}
+            ${pipeStep("3. Mở rộng query", signals.expansions.length, "family -> tiện ích trẻ em, landmark -> vị trí")}
+            ${pipeStep("4. BM25 Search", bm25Results.length, "GET /search trả khách sạn thật")}
+            ${pipeStep("5. Vector/Hybrid", "TODO", "Chờ /hybrid_search backend")}
+            ${pipeStep("6. Context", "TODO", "Chờ POST /context usable")}
+          </div>
+          <div class="state" style="margin-top:12px;">
+            Luồng hiện tại: Query -> ontology tags fallback -> BM25/OpenSearch -> danh sách khách sạn. Luồng mục tiêu: Query -> ontology backend -> BM25 + vector -> fusion/rerank -> context/evidence.
+          </div>
+        `;
+        return;
+      }
+
+      const topHotels = asArray(state.hybrid.top_hotels);
+      const intent = state.hybrid.intent || {};
+      const bm25RankCount = topHotels.filter((h) => h.bm25_rank !== undefined && h.bm25_rank !== null).length;
+      const vectorRankCount = topHotels.filter((h) => h.vector_rank !== undefined && h.vector_rank !== null).length;
+      const rrfCount = topHotels.filter((h) => h.rrf_score !== undefined && h.rrf_score !== null).length;
+      const rerankCount = topHotels.filter((h) => h.rerank_score !== undefined && h.rerank_score !== null).length;
+
+      // Suy ra phương pháp rerank đang dùng từ chính dữ liệu trả về:
+      // - rerank_score == text_signal_norm trên mọi hotel  => density fallback (USE_RERANKER=0, không model)
+      // - khác nhau                                        => cross-encoder model (USE_RERANKER=1)
+      const rerankMethod = detectRerankMethod(topHotels);
+
+      els.pipelineBody.innerHTML = `
+        <div class="pipeline">
+          ${pipeStep("1. Query", "1", "User query")}
+          ${pipeStep("2. Concepts", asArray(intent.concepts).length + asArray(intent.hard_concepts).length, "Detected concepts")}
+          ${pipeStep("3. Candidates", fmt(state.hybrid.n_candidates, 0), "Field: n_candidates (n_fused: " + fmt(state.hybrid.n_fused, 0) + ")")}
+          ${pipeStep("4. BM25", bm25RankCount, "Hotels có bm25_rank")}
+          ${pipeStep("5. Vector", vectorRankCount, "Hotels có vector_rank (Qdrant/bge-m3)")}
+          ${pipeStep("6. Fusion → Rerank", `${rrfCount} / ${rerankCount}`, "có rrf_score / có rerank_score")}
+        </div>
+        <div class="state ${rerankMethod.type}" style="margin-top:12px;">
+          <strong>Rerank đang thực hiện qua: ${escapeHtml(rerankMethod.label)}</strong><br />
+          ${escapeHtml(rerankMethod.detail)}
+        </div>
+        <div class="state" style="margin-top:10px;">
+          <strong>Thứ hạng cuối (final_score) = business_rerank</strong>, tổ hợp có trọng số của:
+          <code>text_signal_norm</code> (tín hiệu BM25+vector sau RRF, chuẩn hóa [0,1]) ·
+          <code>review_score</code> · <code>review_count</code> · <code>price_fit</code> · <code>concept_match</code>
+          (số concept khớp ontology). Sau đó <code>aggregate_by_hotel</code> gom chunk theo hotel.
+        </div>
+      `;
+    }
+
+    // Phương pháp rerank LẤY TRỰC TIẾP từ field backend `rerank_method` (Node 7B).
+    // Backend trả "cross-encoder" (bge-reranker-v2-m3) hoặc "density-fallback" (keyword density).
+    // Giá trị phản ánh CHẾ ĐỘ THỰC TẾ đã chạy: kể cả khi USE_RERANKER=1 mà model lỗi thì backend
+    // tự báo "density-fallback".
+    function detectRerankMethod(hotels) {
+      const method =
+        state.hybrid?.rerank_method ||
+        asArray(hotels).map((h) => h.rerank_method).find(Boolean) ||
+        "";
+
+      if (method === "cross-encoder") {
+        return {
+          type: "ok",
+          label: "Cross-encoder bge-reranker-v2-m3 (Node 7B, USE_RERANKER=1)",
+          detail: "Backend báo rerank_method = \"cross-encoder\": điểm rerank_score do mô hình cross-encoder chấm cặp (query, chunk)."
+        };
+      }
+      if (method === "density-fallback") {
+        return {
+          type: "warn",
+          label: "Density fallback (Node 7B — KHÔNG dùng model)",
+          detail: "Backend báo rerank_method = \"density-fallback\": rerank_score = keyword-density + tín hiệu RRF. Xảy ra khi USE_RERANKER=0, hoặc USE_RERANKER=1 nhưng model không tải được. Thứ hạng cuối vẫn do business_rerank quyết định."
+        };
+      }
+      return {
+        type: "warn",
+        label: "Chưa xác định (backend chưa trả rerank_method)",
+        detail: "Response /hybrid_search không có field rerank_method — backend có thể là bản cũ chưa expose."
+      };
+    }
+
+    function pipeStep(title, value, note) {
+      return `
+        <div class="pipe-step">
+          <div class="pipe-title">${escapeHtml(title)}</div>
+          <div class="pipe-value">${escapeHtml(value)}</div>
+          <div class="pipe-note">${escapeHtml(note)}</div>
+        </div>
+      `;
+    }
+
+    function renderRanking() {
+      if (!state.hybrid) {
+        const results = asArray(state.bm25?.results);
+        if (!results.length) {
+          els.rankingBody.innerHTML = errorState("Chưa có kết quả ranking để hiển thị.", state.lastErrors.hybrid || state.lastErrors.bm25);
+          return;
+        }
+        const rows = results.slice(0, 10).map((hotel, index) => {
+          const id = hotel.id || hotel.hotel_id || "";
+          const reasons = explainBm25Result(hotel, localQuerySignals(state.query));
+          return `
+            <tr class="selectable" data-hotel-id="${escapeHtml(id)}">
+              <td><strong>#${index + 1}</strong><div class="mini">${escapeHtml(id)}</div></td>
+              <td>
+                <strong>${escapeHtml(hotel.name || hotel.hotel_name || id)}</strong>
+                <div class="mini">${escapeHtml([hotel.city, hotel.accommodation_type].filter(Boolean).join(" - "))}</div>
+              </td>
+              <td>
+                <div class="score-stack">
+                  ${scoreRow("BM25 score", hotel.score)}
+                  ${scoreRow("review_score", hotel.review_score)}
+                  ${scoreRow("star_rating", hotel.star_rating)}
+                </div>
+              </td>
+              <td>
+                <ul class="reason-list">
+                  ${reasons.map((r) => `<li>${escapeHtml(r)}</li>`).join("")}
+                </ul>
+              </td>
+              <td><button class="secondary" type="button" data-context-id="${escapeHtml(id)}">Thử context</button></td>
+            </tr>
+          `;
+        }).join("");
+        els.rankingBody.innerHTML = `
+          <div class="state warn" style="margin-bottom:12px;">
+            Đây là bảng giải thích tạm từ BM25 thật. UI dùng score, tên, mô tả và các ontology tags fallback để chỉ ra vì sao kết quả có thể khớp query. Chưa có final_score/business_score/rerank_score vì /hybrid_search đang timeout.
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Hạng</th>
+                <th>Khách sạn</th>
+                <th>Điểm hiện có</th>
+                <th>Vì sao có thể khớp query?</th>
+                <th>Context</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+        els.rankingBody.querySelectorAll("[data-context-id]").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            loadContext(button.dataset.contextId);
+          });
+        });
+        return;
+      }
+
+      // Phương án 2: backend trả 20 (cho trace), bảng xếp hạng hiển thị đúng topN người dùng chọn.
+      const allHotels = asArray(state.hybrid.top_hotels);
+      const hotels = allHotels.slice(0, state.topN);
+      if (!hotels.length) {
+        els.rankingBody.innerHTML = `<div class="state warn">GET /hybrid_search trả về 0 top_hotels.</div>`;
+        return;
+      }
+
+      const rows = hotels.map((hotel, index) => {
+        const id = hotelIdFor(hotel);
+        const md = hotel.metadata || {};
+        const name = md.hotel_name || md.name || hotel.hotel_name || hotel.name || id;
+        const city = md.city || hotel.city || "";
+        const type = md.accommodation_type || hotel.accommodation_type || "";
+        // matched_chunks là SỐ ĐẾM (int) chunk gom theo hotel, không phải mảng chunk.
+        const matchedCount = typeof hotel.matched_chunks === "number"
+          ? hotel.matched_chunks
+          : asArray(hotel.matched_chunks || hotel.chunks).length;
+        const selected = id === state.selectedHotelId ? " selected" : "";
+        return `
+          <tr class="selectable${selected}" data-hotel-id="${escapeHtml(id)}">
+            <td><strong>#${index + 1}</strong><div class="mini">${escapeHtml(id)}</div></td>
+            <td>
+              <strong>${escapeHtml(name)}</strong>
+              <div class="mini">${escapeHtml([city, type].filter(Boolean).join(" - "))}</div>
+              <div class="mini">chunk đại diện: <strong>${escapeHtml(hotel.chunk_id || "-")}</strong></div>
+            </td>
+            <td>
+              <div class="score-stack">
+                ${scoreRow("final", hotel.final_score ?? hotel.score)}
+                ${scoreRow("business", hotel.business_score)}
+                ${scoreRow("rerank", hotel.rerank_score)}
+                ${scoreRow("text_signal", hotel.text_signal_norm)}
+                ${scoreRow("rrf", hotel.rrf_score)}
+              </div>
+            </td>
+            <td>
+              <div class="score-stack">
+                ${scoreRow("bm25_rank", hotel.bm25_rank)}
+                ${scoreRow("vector_rank", hotel.vector_rank)}
+                ${scoreRow("matched_chunks", matchedCount)}
+              </div>
+            </td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <button class="secondary" type="button" data-context-id="${escapeHtml(id)}">Load context</button>
+                <button class="secondary" type="button" data-ontology-id="${escapeHtml(id)}">Ontology</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      els.rankingBody.innerHTML = `
+        <div class="badges" style="margin:0 0 10px;">
+          <span class="badge ok">hiển thị ${hotels.length}/${allHotels.length} hotel (Top ${state.topN})</span>
+          <span class="badge blue">n_candidates: ${escapeHtml(fmt(state.hybrid.n_candidates, 0))}</span>
+          <span class="badge blue">n_fused: ${escapeHtml(fmt(state.hybrid.n_fused, 0))}</span>
+        </div>
+        <div class="scroll-box tall">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Hotel</th>
+                <th>Score Breakdown</th>
+                <th>Retrieval Signals</th>
+                <th>Context</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="scroll-hint">Mỗi hotel chỉ có 1 chunk đại diện vì <code>aggregate_by_hotel</code> gom các chunk theo hotel và giữ chunk điểm cao nhất; <code>matched_chunks</code> là TỔNG số chunk đã gom cho hotel đó.</div>
+      `;
+
+      els.rankingBody.querySelectorAll("[data-context-id]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          loadContext(button.dataset.contextId);
+        });
+      });
+
+      els.rankingBody.querySelectorAll("[data-ontology-id]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          showOntologyModal(button.dataset.ontologyId);
+        });
+      });
+
+      els.rankingBody.querySelectorAll("tr[data-hotel-id]").forEach((row) => {
+        row.addEventListener("click", () => loadContext(row.dataset.hotelId));
+      });
+    }
+
+    // Popup ontology: lấy hotel từ state.hybrid.top_hotels theo id, hiển thị
+    // concepts + semantic_profile (ASPECT score) + KE attributes.
+    function showOntologyModal(hotelId) {
+      const hotel = asArray(state.hybrid?.top_hotels).find((h) => hotelIdFor(h) === String(hotelId));
+      if (!hotel) return;
+      const md = hotel.metadata || {};
+      const name = md.hotel_name || md.name || hotelId;
+      const concepts = asArray(md.ontology_concepts);
+      const profile = md.semantic_profile || {};
+
+      // Concepts: gom theo prefix (AMEN_, ASPECT_, OBJ_, PURPOSE_...) cho dễ đọc.
+      const groups = {};
+      concepts.forEach((c) => {
+        const prefix = String(c).split("_")[0] || "KHÁC";
+        (groups[prefix] = groups[prefix] || []).push(c);
+      });
+      const conceptHtml = Object.keys(groups).sort().map((pfx) => `
+        <div class="tag-group">
+          <div class="tag-title">${escapeHtml(pfx)} (${groups[pfx].length})</div>
+          <div class="tags">${groups[pfx].map((c) => `<span class="tag">${escapeHtml(c)}</span>`).join("")}</div>
+        </div>
+      `).join("");
+
+      // Semantic profile gồm 2 loại: ASPECT_* (điểm khía cạnh từ review) và non-ASPECT
+      // (điểm profile của concept AMEN_/PURPOSE_/STYLE_...). Tách riêng cho dễ đọc.
+      const scoreOf = (info) => (typeof info === "object" ? (info.score ?? 0) : Number(info) || 0);
+      const evOf = (info) => (typeof info === "object" ? info.evidence_count : undefined);
+      const scoreBar = (label, info) => {
+        const score = scoreOf(info);
+        const ev = evOf(info);
+        const pct = Math.max(0, Math.min(100, score * 100));
+        return `
+          <div style="margin-bottom:8px;">
+            <div class="score-row" style="margin-bottom:3px;">
+              <span>${escapeHtml(label)}</span>
+              <strong>${escapeHtml(fmt(score, 2))}${ev !== undefined ? ` · ${escapeHtml(ev)} đánh giá` : ""}</strong>
+            </div>
+            <div style="height:7px;background:var(--line);border-radius:99px;overflow:hidden;">
+              <div style="height:100%;width:${pct}%;background:var(--accent);"></div>
+            </div>
+          </div>
+        `;
+      };
+      const entries = Object.entries(profile);
+      const aspectEntries = entries
+        .filter(([k]) => k.startsWith("ASPECT_"))
+        .sort((a, b) => scoreOf(b[1]) - scoreOf(a[1]));
+      const otherEntries = entries
+        .filter(([k]) => !k.startsWith("ASPECT_"))
+        .sort((a, b) => scoreOf(b[1]) - scoreOf(a[1]));
+      const aspectRows = aspectEntries.map(([k, info]) => scoreBar(k.replace(/^ASPECT_/, ""), info)).join("");
+      const otherRows = otherEntries.map(([k, info]) => scoreBar(k, info)).join("");
+
+      const attrHtml = `
+        <dl class="kv-grid">
+          <dt>Thành phố</dt><dd>${escapeHtml(md.city || "-")}</dd>
+          <dt>Review score</dt><dd>${escapeHtml(fmt(md.ke_review_score, 1))}</dd>
+          <dt>Star rating</dt><dd>${escapeHtml(fmt(md.ke_star_rating, 0))}</dd>
+          <dt>Giá từ (VND)</dt><dd>${escapeHtml(md.ke_price_min_vnd != null ? Number(md.ke_price_min_vnd).toLocaleString("vi-VN") : "-")}</dd>
+          <dt>Tổng concept</dt><dd>${concepts.length}</dd>
+        </dl>
+      `;
+
+      const body = `
+        <div style="margin-bottom:14px;">
+          <h3 style="margin-bottom:4px;">Thuộc tính KE</h3>
+          ${attrHtml}
+        </div>
+        <div style="margin-bottom:14px;">
+          <h3 style="margin-bottom:8px;">Đánh giá theo khía cạnh (ASPECT)</h3>
+          ${aspectRows || '<div class="state warn">Không có điểm ASPECT.</div>'}
+        </div>
+        ${otherRows ? `<div style="margin-bottom:14px;">
+          <h3 style="margin-bottom:8px;">Điểm profile concept khác</h3>
+          ${otherRows}
+        </div>` : ""}
+        <div>
+          <h3 style="margin-bottom:8px;">Ontology concepts (${concepts.length})</h3>
+          ${conceptHtml ? `<div class="tag-grid">${conceptHtml}</div>` : '<div class="state warn">Không có ontology_concepts.</div>'}
+        </div>
+      `;
+      openModal(`Ontology — ${name}`, body);
+    }
+
+    // Modal dùng chung: tạo overlay 1 lần, đóng bằng nút X / click nền / Esc.
+    function openModal(title, bodyHtml) {
+      let overlay = document.getElementById("modalOverlay");
+      if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "modalOverlay";
+        overlay.className = "modal-overlay";
+        overlay.innerHTML = `
+          <div class="modal-card" role="dialog" aria-modal="true">
+            <div class="modal-head">
+              <h2 id="modalTitle" style="margin:0;"></h2>
+              <button class="secondary" type="button" id="modalClose">Đóng</button>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+        const close = () => { overlay.style.display = "none"; };
+        overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+        overlay.querySelector("#modalClose").addEventListener("click", close);
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+      }
+      overlay.querySelector("#modalTitle").textContent = title;
+      overlay.querySelector("#modalBody").innerHTML = bodyHtml;
+      overlay.style.display = "flex";
+    }
+
+    function scoreRow(label, value) {
+      return `<div class="score-row"><span>${escapeHtml(label)}</span><strong>${escapeHtml(fmt(value))}</strong></div>`;
+    }
+
+    function explainBm25Result(hotel, signals) {
+      const haystack = normalizeText([
+        hotel.name,
+        hotel.hotel_name,
+        hotel.city,
+        hotel.address,
+        hotel.accommodation_type,
+        hotel.description,
+        hotel.amenities
+      ].filter(Boolean).join(" "));
+      const reasons = [];
+
+      for (const c of signals.concepts) {
+        if (c.id === "LOC_PHU_QUOC" && haystack.includes("phu quoc")) {
+          reasons.push("Khớp vị trí Phú Quốc trong tên/địa chỉ/mô tả.");
+        }
+        if (c.id === "LMK_VINWONDERS_PHU_QUOC" && (haystack.includes("vinwonders") || haystack.includes("vinpearl"))) {
+          reasons.push("Có dấu hiệu liên quan VinWonders/Vinpearl.");
+        }
+        if (c.id === "PURPOSE_FAMILY" && (haystack.includes("gia dinh") || haystack.includes("tre em") || haystack.includes("tre nho") || haystack.includes("family"))) {
+          reasons.push("Có tín hiệu phù hợp gia đình/trẻ em trong mô tả hoặc tiện ích.");
+        }
+        if (c.id === "AMEN_KIDS_FRIENDLY" && (haystack.includes("tre em") || haystack.includes("san choi") || haystack.includes("ho boi") || haystack.includes("kids"))) {
+          reasons.push("Có tiện ích hoặc ngữ cảnh thân thiện với trẻ em.");
+        }
+      }
+
+      if (hotel.review_score) {
+        reasons.push(`Có review_score ${fmt(hotel.review_score, 1)} để hỗ trợ lựa chọn.`);
+      }
+      if (hotel.score !== undefined) {
+        reasons.push(`Được BM25 chấm điểm ${fmt(hotel.score)} theo mức khớp từ khóa.`);
+      }
+      if (!reasons.length) {
+        reasons.push("BM25 trả về do khớp từ khóa trong name/description/address.");
+      }
+      return reasons.slice(0, 4);
+    }
+
+    function renderContextPackageFromHybrid() {
+      if (!state.hybrid) {
+        els.contextBody.innerHTML = `<div class="state">Context sẽ hiển thị sau khi GET /hybrid_search hoặc POST /context thành công.</div>`;
+        return;
+      }
+
+      const pkg = state.hybrid.context_package || {};
+      const chunks = asArray(pkg.chunks || state.hybrid.context_chunks);
+      const prompt = state.hybrid.prompt || pkg.prompt || pkg.context_text || "";
+
+      if (!chunks.length && !prompt) {
+        els.contextBody.innerHTML = `<div class="state warn">GET /hybrid_search chưa trả context_package/prompt. Chọn hotel để thử POST /context.</div>`;
+        return;
+      }
+
+      els.contextBody.innerHTML = `
+        <div class="context-block">
+          ${prompt ? `<div><h3>LLM-ready prompt/context</h3>${renderTruncated(prompt, CONTEXT_PREVIEW_CHARS)}</div>` : ""}
+          <div>
+            <h3>Matched chunks (context_package.chunks)</h3>
+            ${renderChunks(chunks)}
+          </div>
+        </div>
+      `;
+    }
+
+    // Hiển thị text rút gọn tối đa N ký tự, kèm độ dài đầy đủ để mentor biết bị cắt.
+    function renderTruncated(text, limit) {
+      const full = String(text ?? "");
+      const truncated = full.length > limit;
+      const shown = truncated ? full.slice(0, limit) + "…" : full;
+      return `
+        <div class="text-box">${escapeHtml(shown)}</div>
+        <div class="scroll-hint">${truncated
+          ? `Đã rút gọn còn ${limit} ký tự (đầy đủ: ${full.length} ký tự).`
+          : `${full.length} ký tự.`}</div>
+      `;
+    }
+
+    async function loadContext(hotelId) {
+      if (!hotelId) return;
+      state.selectedHotelId = hotelId;
+      renderRanking();
+      const resultId = contextResultIdFor(hotelId);
+      els.contextBody.innerHTML = `<div class="state">Đang gọi POST /context cho result_id <strong>${escapeHtml(resultId)}</strong>...</div>`;
+      els.evidenceBody.innerHTML = `<div class="state">Đang tải evidence/citations...</div>`;
+
+      if (state.contextByHotel[hotelId]) {
+        renderContextResponse(hotelId, state.contextByHotel[hotelId]);
+        return;
+      }
+
+      try {
+        const payload = {
+          result_id: resultId,
+          query: state.query,
+          include_chunks: true,
+          include_citations: true,
+          include_metadata: true,
+          include_evidence: true
+        };
+        const timed = await fetchTimedJson("POST /context", "/context", {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        const data = timed.data;
+        state.contextByHotel[hotelId] = data;
+        if (!state.timing) state.timing = { requests: {}, context: {} };
+        if (!state.timing.context) state.timing.context = {};
+        state.timing.context[hotelId] = timed;
+        renderLatency();
+        renderContextResponse(hotelId, data);
+      } catch (error) {
+        els.contextBody.innerHTML = errorState("POST /context chưa gọi được hoặc backend chưa hỗ trợ route này.", error);
+        els.evidenceBody.innerHTML = `
+          <div class="state warn">
+            Nếu backend chưa có Context API, frontend chỉ có thể hiển thị matched_chunks/citations đã nằm trong GET /hybrid_search.
+          </div>
+        `;
+      }
+    }
+
+    function renderContextResponse(hotelId, data) {
+      const chunks = asArray(data.context_chunks || data.chunks || data.matched_chunks);
+      const citations = asArray(data.citations);
+      const evidence = data.evidence || {};
+      const positives = asArray(evidence.positives || data.positive_evidence);
+      const negatives = asArray(evidence.negatives || data.negative_evidence);
+      const sourceDocs = asArray(data.source_documents);
+      const contextText = data.llm_context || data.context_text || data.prompt || "";
+
+      els.contextBody.innerHTML = `
+        <div class="context-block">
+          <div class="badges" style="margin:0;">
+            <span class="badge ok">result_id: ${escapeHtml(contextResultIdFor(hotelId))}</span>
+            <span class="badge blue">chunks: ${chunks.length}</span>
+            <span class="badge blue">citations: ${citations.length}</span>
+          </div>
+          ${contextText ? `<div><h3>LLM-ready context</h3>${renderTruncated(contextText, CONTEXT_PREVIEW_CHARS)}</div>` : `<div class="state warn">Backend không trả llm_context/context_text.</div>`}
+          <div><h3>Context chunks</h3>${renderChunks(chunks)}</div>
+          <div><h3>Source documents</h3>${renderList(sourceDocs, "Không có source_documents.")}</div>
+        </div>
+      `;
+
+      els.evidenceBody.innerHTML = `
+        <div class="context-block">
+          <div><h3>Citations</h3>${renderList(citations, "Không có citations.")}</div>
+          <div><h3>Positive evidence</h3>${renderEvidence(positives, "positive", "Không có positive evidence.")}</div>
+          <div><h3>Negative evidence</h3>${renderEvidence(negatives, "negative", "Không có negative evidence.")}</div>
+        </div>
+      `;
+    }
+
+    // Metadata "đã biết" được render thành nhãn riêng; phần còn lại đổ vào bảng key/value.
+    const CHUNK_KNOWN_KEYS = new Set([
+      "chunk_id", "id", "text", "content", "snippet",
+      "score", "rerank_score", "relevance_score", "scores",
+      "source_type", "source"
+    ]);
+
+    function renderChunkMetadata(chunk) {
+      // Gom metadata: ưu tiên chunk.metadata nếu có, cộng thêm các field lẻ ngoài "known keys".
+      const md = (chunk && typeof chunk.metadata === "object" && chunk.metadata) ? { ...chunk.metadata } : {};
+      for (const [k, v] of Object.entries(chunk || {})) {
+        if (!CHUNK_KNOWN_KEYS.has(k) && k !== "metadata") md[k] = v;
+      }
+      const entries = Object.entries(md).filter(([, v]) => v !== undefined && v !== null && v !== "");
+      if (!entries.length) return "";
+      const rows = entries.map(([k, v]) =>
+        `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(formatValue(v))}</dd>`
+      ).join("");
+      return `<div class="chunk-meta"><div class="tag-title">Metadata chi tiết</div><dl class="kv-grid">${rows}</dl></div>`;
+    }
+
+    function renderChunks(chunks) {
+      const arr = asArray(chunks);
+      if (!arr.length) return `<div class="state warn">Không có context chunks từ backend.</div>`;
+      const body = arr.map((chunk, index) => {
+        const id = chunk.chunk_id || chunk.id || `chunk_${index + 1}`;
+        const text = chunk.text || chunk.content || chunk.snippet || formatValue(chunk);
+        const score = chunk.score ?? chunk.rerank_score ?? chunk.relevance_score ?? chunk.scores?.reranker_score ?? chunk.scores?.score;
+        const sourceType = chunk.source_type || chunk.source || "";
+        const hotelName = chunk.hotel_name || chunk.metadata?.hotel_name || "";
+        return `
+          <div class="chunk">
+            <div class="chunk-title">
+              chunk_id: ${escapeHtml(id)}${score !== undefined ? ` · score ${escapeHtml(fmt(score))}` : ""}
+            </div>
+            <div class="mini">${escapeHtml([hotelName, sourceType].filter(Boolean).join(" · "))}</div>
+            <div class="text-box" style="margin-top:6px;">${escapeHtml(text)}</div>
+            ${renderChunkMetadata(chunk)}
+          </div>
+        `;
+      }).join("");
+      return `
+        <div class="scroll-box">${body}</div>
+        <div class="scroll-hint">Hiển thị toàn bộ ${arr.length} chunk — cuộn để xem chunk_id, nội dung và metadata chi tiết.</div>
+      `;
+    }
+
+    function renderList(items, emptyMessage) {
+      const arr = asArray(items);
+      if (!arr.length) return `<div class="state warn">${escapeHtml(emptyMessage)}</div>`;
+      const body = arr.map((item, index) => {
+        if (typeof item === "string") {
+          return `<div class="chunk"><div class="chunk-title">#${index + 1}</div><div>${escapeHtml(item)}</div></div>`;
+        }
+        const title = item.label || item.title || item.citation_id || item.source_id || item.id || item.chunk_id || `item_${index + 1}`;
+        const text = item.quote || item.text_snippet || item.text || item.content || item.snippet || formatValue(item);
+        const meta = item.url || item.source_type || item.source || item.type || item.table || "";
+        return `
+          <div class="chunk">
+            <div class="chunk-title">${escapeHtml(title)}</div>
+            <div class="mini">${escapeHtml(meta)}</div>
+            <div>${escapeHtml(text)}</div>
+          </div>
+        `;
+      }).join("");
+      return arr.length > 4
+        ? `<div class="scroll-box short">${body}</div>`
+        : body;
+    }
+
+    // Render evidence ABSA gọn (aspect/score + span review), ưu tiên item khớp query (matched).
+    function renderEvidence(items, kind, emptyMessage) {
+      const arr = asArray(items);
+      if (!arr.length) return `<div class="state warn">${escapeHtml(emptyMessage)}</div>`;
+      const body = arr.map((item) => {
+        if (typeof item !== "object") {
+          return `<div class="chunk"><div>${escapeHtml(formatValue(item))}</div></div>`;
+        }
+        const aspect = item.aspect || item.concept || "-";
+        const score = kind === "negative" ? item.negative_score : item.score;
+        const count = item.evidence_count;
+        const spans = asArray(item.spans);
+        const matched = item.matched
+          ? `<span class="badge ok" style="margin-left:6px;">khớp nhu cầu</span>` : "";
+        const scoreLine = (score !== undefined && score !== null)
+          ? `score ${escapeHtml(fmt(score))}${count ? ` · ${escapeHtml(fmt(count, 0))} lượt` : ""}` : "";
+        const spanHtml = spans.length
+          ? `<div class="text-box" style="margin-top:6px;">${spans.map((s) => escapeHtml(String(s))).join("<br>")}</div>` : "";
+        return `
+          <div class="chunk">
+            <div class="chunk-title">${escapeHtml(aspect)}${matched}</div>
+            ${scoreLine ? `<div class="mini">${scoreLine}</div>` : ""}
+            ${spanHtml}
+          </div>
+        `;
+      }).join("");
+      return arr.length > 4 ? `<div class="scroll-box short">${body}</div>` : body;
+    }
+
+    function hotelIdFor(hotel) {
+      return String(
+        hotel.result_id ||
+        hotel.hotel_id ||
+        hotel.id ||
+        hotel.metadata?.result_id ||
+        hotel.metadata?.hotel_id ||
+        hotel.metadata?.id ||
+        hotel.doc_id ||
+        ""
+      );
+    }
+
+    function contextResultIdFor(value) {
+      const raw = String(value || "").trim();
+      if (!raw) return "";
+      return raw.startsWith("hotel_") ? raw : `hotel_${raw}`;
+    }
+
+    function formatValue(value) {
+      if (value === undefined || value === null || value === "") return "-";
+      if (Array.isArray(value)) return value.map(formatValue).join(", ");
+      if (typeof value === "object") return JSON.stringify(value);
+      return String(value);
+    }
+
+    function errorHint(error, fallback) {
+      if (!error) return fallback;
+      if (error.status === 404) return "Endpoint missing";
+      if (error.status === 503) return "Dependency/index unavailable";
+      return error.message || fallback;
+    }
+
+    function errorState(title, error) {
+      const detail = error
+        ? `${error.message || error}. ${backendHint(error)}`
+        : "Không có response từ backend.";
+      return `
+        <div class="state error">
+          <strong>${escapeHtml(title)}</strong><br />
+          ${escapeHtml(detail)}
+        </div>
+      `;
+    }
+
+    function backendHint(error) {
+      if (!error) return "";
+      if (error.name === "AbortError") return "Request timeout sau 60 giây. Hybrid route có thể đang tải model, chờ dependency, hoặc chạy quá lâu.";
+      if (String(error.message || "").includes("Failed to fetch")) {
+        return "Backend không reachable hoặc CORS/port chưa đúng. Kiểm tra API base URL.";
+      }
+      if (error.status === 404) {
+        return "Route chưa tồn tại ở backend đang chạy hoặc port đang trỏ nhầm app.";
+      }
+      if (error.status === 500 || error.status === 503) {
+        return "Backend route có tồn tại nhưng dependency như OpenSearch/Qdrant/index có thể chưa sẵn sàng.";
+      }
+      return "";
+    }
+
+    function renderGlobalError(title, error) {
+      const html = errorState(title, error);
+      els.understandingBody.innerHTML = html;
+      els.bm25Body.innerHTML = html;
+      els.pipelineBody.innerHTML = html;
+      els.rankingBody.innerHTML = html;
+      els.contextBody.innerHTML = `<div class="state warn">Chưa thể gọi Context API vì backend chưa reachable.</div>`;
+      els.evidenceBody.innerHTML = `<div class="state warn">Chưa có evidence vì backend chưa reachable.</div>`;
+    }
+
+    // ── F. Golden Dataset evaluation ─────────────────────────────────────────
+    async function runEval() {
+      const limit = els.evalLimit.value;
+      const k = els.evalK.value;
+      const useServices = els.evalMode.value;
+      els.evalButton.disabled = true;
+      els.evalButton.textContent = "Đang chạy...";
+      els.evalBody.innerHTML = `<div class="state">Đang chạy ${escapeHtml(limit)} câu (K=${escapeHtml(k)})... ~2s/câu, vui lòng chờ.</div>`;
+
+      try {
+        const data = await fetchJson(
+          `/eval/golden?limit=${encodeURIComponent(limit)}&k=${encodeURIComponent(k)}&use_services=${encodeURIComponent(useServices)}`,
+          { timeoutMs: 600000 }   // 10 phút: eval 59 câu full ~90s, để dư.
+        );
+        renderEval(data);
+      } catch (error) {
+        els.evalBody.innerHTML = errorState("Không chạy được GET /eval/golden.", error);
+      } finally {
+        els.evalButton.disabled = false;
+        els.evalButton.textContent = "Chạy đánh giá";
+      }
+    }
+
+    function renderEval(data) {
+      const s = data.summary || {};
+      const rows = asArray(data.per_query);
+      const metricCard = (label, val) =>
+        `<div class="metric-card"><div class="metric-label">${escapeHtml(label)}</div>` +
+        `<div class="metric-value">${escapeHtml(fmt(val, 4))}</div></div>`;
+
+      const perRows = rows.map((r) => `
+        <tr>
+          <td>${escapeHtml(r.query_id || "")}</td>
+          <td class="mini">${escapeHtml(r.query || "")}</td>
+          <td>${escapeHtml(r.n_relevant)}</td>
+          <td>${escapeHtml(fmt(r.recall, 3))}</td>
+          <td>${escapeHtml(fmt(r.precision, 3))}</td>
+          <td>${escapeHtml(fmt(r.hit, 0))}</td>
+          <td>${escapeHtml(fmt(r.rr, 3))}</td>
+          <td>${escapeHtml(fmt(r.ndcg, 3))}</td>
+        </tr>
+      `).join("");
+
+      els.evalBody.innerHTML = `
+        <div class="badges" style="margin:0 0 12px;">
+          <span class="badge ok">n_queries: ${escapeHtml(s.n_queries)}</span>
+          <span class="badge blue">K: ${escapeHtml(s.k)}</span>
+          <span class="badge">mode: ${escapeHtml(data.mode || "")}</span>
+          <span class="badge">thời gian: ${escapeHtml(data.duration_s)}s</span>
+        </div>
+        <div class="overview" style="margin-bottom:12px;">
+          ${metricCard("Recall@" + s.k, s.recall)}
+          ${metricCard("Precision@" + s.k, s.precision)}
+          ${metricCard("Hit@" + s.k, s.hit)}
+          ${metricCard("MRR", s.rr)}
+        </div>
+        <div class="overview" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:12px;">
+          ${metricCard("nDCG@" + s.k, s.ndcg)}
+          ${metricCard("Số câu đánh giá", s.n_queries)}
+        </div>
+        <h3>Chi tiết theo câu</h3>
+        <div style="max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:8px;">
+          <table>
+            <thead><tr>
+              <th>query_id</th><th>Câu hỏi</th><th>#GT</th>
+              <th>Recall</th><th>Prec</th><th>Hit</th><th>RR</th><th>nDCG</th>
+            </tr></thead>
+            <tbody>${perRows || `<tr><td colspan="8">Không có per-query.</td></tr>`}</tbody>
+          </table>
+        </div>
+        <div class="mini" style="margin-top:8px;">Metric này cũng được đẩy vào Prometheus gauge <code>da10_eval_metric</code> (xem /metrics).</div>
+      `;
+    }
+
+    els.healthButton.addEventListener("click", checkBackend);
+    els.runButton.addEventListener("click", runTrace);
+    els.evalButton.addEventListener("click", runEval);
+    els.queryInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") runTrace();
+    });
+
+    els.apiBaseInput.value = defaultApiBase();
+    els.apiBadge.textContent = `API: ${els.apiBaseInput.value}`;
+    setBadges([
+      { label: "Ready", type: "ok" },
+      { label: "Run Check API first if backend port is uncertain", type: "warn" }
+    ]);
+  </script>
+</body>
+</html>
