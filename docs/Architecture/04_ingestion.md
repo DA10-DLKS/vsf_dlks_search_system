@@ -401,15 +401,15 @@ Output: `docs/amenity_frequency.tsv` — 432 unique amenities sorted by frequenc
 
 ## Kết quả hiện tại
 
-| Metric | Giá trị | Target | Kết quả |
-|---|---|---|---|---|
-| Total documents | 51 | – | – |
+| Metric | Giá trị | Target | Trạng thái |
+|---|---|---|---|
+| Total documents | 520 hotels | – | – |
 | Missing rate | 0.0% | < 5.0% | ✅ |
 | Duplicate rate | 0.0% | < 2.0% | ✅ |
 | Amenity trung bình/hotel | ~81 (giảm từ ~167 raw) | – | – |
 | Validation errors | 0 | – | ✅ |
-| Null max_occupancy (rooms) | 0/463 | – | ✅ |
-| Null price_per_night (rooms) | 0/463 | – | ✅ |
+| Null max_occupancy (rooms) | 0 | – | ✅ |
+| Null price_per_night (rooms) | 0 | – | ✅ |
 
 ## Hướng dẫn chạy end-to-end
 
