@@ -1,5 +1,7 @@
 # 02 — API Reference
 
+> 🎯 **CẦN TẬP TRUNG VÀO 3 API CHÍNH: `POST /search` · `POST /context` · `GET /hotel/{hotel_id}/ask`**
+
 > **Nguồn sự thật:** [`api/main.py`](../../api/main.py) và [`api/frontend_adapter.py`](../../api/frontend_adapter.py).
 > Tài liệu này liệt kê **đúng những endpoint đang chạy** (không phải bản đề xuất).
 > Base URL local mặc định: `http://localhost:8000`.
